@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>Quran For Kids</title>
+
+<meta name="theme-color" content="#0f172a"/>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at top,#172554,#020617 70%);
+min-height:100vh;
+overflow-x:hidden;
+color:white;
+padding:20px;
+}
+
+/* STARS */
+
+.stars{
+position:fixed;
+inset:0;
+overflow:hidden;
+z-index:-1;
+}
+
+.star{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle{
+from{
+opacity:.2;
+transform:scale(.5);
+}
+to{
+opacity:1;
+transform:scale(1.5);
+}
+}
+
+/* TITLE */
+
+h1{
+text-align:center;
+font-size:2.5rem;
+margin-bottom:8px;
+
+background:linear-gradient(
+90deg,
+#facc15,
+#38bdf8,
+#f472b6
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:glow 3s infinite alternate;
+}
+
+@keyframes glow{
+from{
+filter:drop-shadow(0 0 5px #38bdf8);
+}
+to{
+filter:drop-shadow(0 0 18px #f472b6);
+}
+}
+
+.subtitle{
+text-align:center;
+margin-bottom:28px;
+color:#cbd5e1;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:
+repeat(auto-fit,minmax(170px,1fr));
+
+gap:18px;
+max-width:1300px;
+margin:auto;
+}
+
+/* CARD */
+
+.card{
+position:relative;
+overflow:hidden;
+
+border-radius:28px;
+padding:18px;
+
+min-height:210px;
+
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+
+cursor:pointer;
+
+transition:.3s;
+
+backdrop-filter:blur(10px);
+
+box-shadow:
+0 0 20px rgba(255,255,255,.1);
+
+animation:float 4s ease-in-out infinite;
+}
+
+.card:hover{
+transform:
+translateY(-8px)
+scale(1.03);
+
+box-shadow:
+0 0 30px rgba(255,255,255,.35);
+}
+
+@keyframes float{
+0%,100%{
+transform:translateY(0);
+}
+50%{
+transform:translateY(-6px);
+}
+}
+
+.moon{
+position:absolute;
+top:-12px;
+right:-5px;
+font-size:4rem;
+opacity:.15;
+}
+
+.emoji{
+font-size:2rem;
+margin-bottom:12px;
+}
+
+.arabic{
+font-size:1.8rem;
+font-weight:bold;
+margin-bottom:6px;
+}
+
+.english{
+font-size:1rem;
+opacity:.95;
+}
+
+/* BUTTONS */
+
+.play-btn{
+margin-top:18px;
+
+border:none;
+border-radius:18px;
+
+padding:12px;
+
+font-size:1rem;
+font-weight:bold;
+
+cursor:pointer;
+
+background:white;
+color:black;
+
+transition:.3s;
+}
+
+.play-btn:hover{
+transform:scale(1.05);
+}
+
+.playing{
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{
+box-shadow:0 0 0 0 rgba(255,255,255,.7);
+}
+70%{
+box-shadow:0 0 0 18px rgba(255,255,255,0);
+}
+100%{
+box-shadow:0 0 0 0 rgba(255,255,255,0);
+}
+}
+
+/* TOP BAR */
+
+.topbar{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.topbar button{
+border:none;
+padding:12px 16px;
+border-radius:18px;
+font-weight:bold;
+cursor:pointer;
+background:linear-gradient(
+90deg,
+#facc15,
+#fde68a
+);
+}
+
+/* OVERLAY */
+
+#overlay{
+position:fixed;
+inset:0;
+
+display:none;
+
+align-items:center;
+justify-content:center;
+
+background:rgba(0,0,0,.8);
+
+z-index:999;
+}
+
+#overlay div{
+background:white;
+color:black;
+
+padding:22px;
+border-radius:20px;
+
+font-size:1.2rem;
+font-weight:bold;
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:35px;
+text-align:center;
+color:#94a3b8;
+font-size:.9rem;
+}
+
+audio{
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<h1>🌙 Quran For Kids</h1>
+
+<p class="subtitle">
+Tap any Surah to listen ✨
+</p>
+
+<div class="topbar">
+<button onclick="stopAll()">⏹ Stop</button>
+<button onclick="toggleLoopAll()" id="loopBtn">
+🔁 Loop OFF
+</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div id="overlay">
+<div>▶ Tap Anywhere To Play</div>
+</div>
+
+<div class="footer">
+Made with 💖 for little Muslims
+</div>
+
+<script>
+
+/* =========================
+SURAH MAPPING
+========================= */
+
+const surahs = [
+
+{
+id:"A1",
+name:"الفاتحة",
+eng:"Al Fatiha",
+emoji:"🌟",
+file:"A5.mp3",
+color:"linear-gradient(135deg,#f59e0b,#ef4444)"
+},
+
+{
+id:"A2",
+name:"الإخلاص",
+eng:"Al Ikhlas",
+emoji:"💖",
+file:"A6.mp3",
+color:"linear-gradient(135deg,#ec4899,#8b5cf6)"
+},
+
+{
+id:"A3",
+name:"الفلق",
+eng:"Al Falaq",
+emoji:"🌙",
+file:"A7.mp3",
+color:"linear-gradient(135deg,#06b6d4,#3b82f6)"
+},
+
+{
+id:"A4",
+name:"الناس",
+eng:"An Naas",
+emoji:"⭐",
+file:"A8.mp3",
+color:"linear-gradient(135deg,#10b981,#14b8a6)"
+},
+
+{
+id:"A5",
+name:"الفيل",
+eng:"Al Feel",
+emoji:"🐘",
+file:"A9.mp3",
+color:"linear-gradient(135deg,#8b5cf6,#6366f1)"
+},
+
+{
+id:"A6",
+name:"قريش",
+eng:"Quraish",
+emoji:"🕋",
+file:"A10.mp3",
+color:"linear-gradient(135deg,#0ea5e9,#2563eb)"
+},
+
+{
+id:"A7",
+name:"الماعون",
+eng:"Al Ma'un",
+emoji:"🤲",
+file:"A11.mp3",
+color:"linear-gradient(135deg,#14b8a6,#22c55e)"
+},
+
+{
+id:"A8",
+name:"الكوثر",
+eng:"Al Kawther",
+emoji:"💧",
+file:"A12.mp3",
+color:"linear-gradient(135deg,#f97316,#fb7185)"
+},
+
+{
+id:"A9",
+name:"الكافرون",
+eng:"Al Kafiroon",
+emoji:"☀️",
+file:"A13.mp3",
+color:"linear-gradient(135deg,#84cc16,#22c55e)"
+},
+
+{
+id:"A10",
+name:"النصر",
+eng:"An Nasr",
+emoji:"🏆",
+file:"A14.mp3",
+color:"linear-gradient(135deg,#38bdf8,#818cf8)"
+},
+
+{
+id:"A11",
+name:"المسد",
+eng:"Al Masad",
+emoji:"🔥",
+file:"A15.mp3",
+color:"linear-gradient(135deg,#ef4444,#f97316)"
+},
+
+{
+id:"A12",
+name:"تكبير",
+eng:"Takbir",
+emoji:"🕌",
+file:"A16.mp3",
+color:"linear-gradient(135deg,#6366f1,#8b5cf6)"
+},
+
+{
+id:"A13",
+name:"الأذان",
+eng:"Azan",
+emoji:"📢",
+file:"A17.mp3",
+color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"
+},
+
+{
+id:"A14",
+name:"الكلمة الثانية",
+eng:"Second Kalima",
+emoji:"☪️",
+file:"A18.mp3",
+color:"linear-gradient(135deg,#14b8a6,#0f766e)"
+},
+
+{
+id:"A15",
+name:"الضحى",
+eng:"Ad Duha",
+emoji:"☀️",
+file:"A19.mp3",
+color:"linear-gradient(135deg,#facc15,#fb7185)"
+},
+
+{
+id:"A16",
+name:"إِنَّ الْمُسْلِمِينَ",
+eng:"Innal Muslimeena",
+emoji:"💚",
+file:"A20.mp3",
+color:"linear-gradient(135deg,#22c55e,#16a34a)"
+}
+
+];
+
+/* =========================
+RENDER
+========================= */
+
+const grid =
+document.getElementById("grid");
+
+let currentAudio = null;
+let currentButton = null;
+
+let loopAll = false;
+
+surahs.forEach((s,index)=>{
+
+const card =
+document.createElement("div");
+
+card.className = "card";
+
+card.style.background = s.color;
+
+card.style.animationDelay =
+`${index * .15}s`;
+
+card.innerHTML = `
+
+<div class="moon">☪️</div>
+
+<div>
+
+<div class="emoji">
+${s.emoji}
+</div>
+
+<div class="arabic">
+${s.name}
+</div>
+
+<div class="english">
+${s.eng}
+</div>
+
+</div>
+
+<button class="play-btn">
+▶ Play
+</button>
+
+<audio
+src="${s.file}"
+preload="auto">
+</audio>
+
+`;
+
+const button =
+card.querySelector(".play-btn");
+
+const audio =
+card.querySelector("audio");
+
+button.addEventListener(
+"click",
+()=>{
+
+if(
+currentAudio &&
+currentAudio !== audio
+){
+
+currentAudio.pause();
+currentAudio.currentTime = 0;
+
+if(currentButton){
+currentButton.innerHTML =
+"▶ Play";
+
+currentButton.classList
+.remove("playing");
+}
+}
+
+if(audio.paused){
+
+audio.loop = loopAll;
+
+audio.play()
+.catch(()=>{
+document
+.getElementById("overlay")
+.style.display = "flex";
+});
+
+button.innerHTML =
+"⏸ Pause";
+
+button.classList
+.add("playing");
+
+currentAudio = audio;
+currentButton = button;
+
+}else{
+
+audio.pause();
+
+button.innerHTML =
+"▶ Play";
+
+button.classList
+.remove("playing");
+}
+
+});
+
+audio.addEventListener(
+"ended",
+()=>{
+
+button.innerHTML =
+"▶ Play";
+
+button.classList
+.remove("playing");
+
+});
+
+grid.appendChild(card);
+
+});
+
+/* =========================
+LOOP
+========================= */
+
+function toggleLoopAll(){
+
+loopAll = !loopAll;
+
+document
+.getElementById("loopBtn")
+.innerHTML =
+
+loopAll
+? "🔁 Loop ON"
+: "🔁 Loop OFF";
+
+if(currentAudio){
+currentAudio.loop = loopAll;
+}
+
+}
+
+/* =========================
+STOP
+========================= */
+
+function stopAll(){
+
+if(currentAudio){
+
+currentAudio.pause();
+
+currentAudio.currentTime = 0;
+
+if(currentButton){
+
+currentButton.innerHTML =
+"▶ Play";
+
+currentButton.classList
+.remove("playing");
+
+}
+
+}
+
+}
+
+/* =========================
+OVERLAY
+========================= */
+
+document
+.getElementById("overlay")
+.addEventListener(
+"click",
+()=>{
+
+if(currentAudio){
+
+currentAudio.play();
+
+document
+.getElementById("overlay")
+.style.display = "none";
+
+}
+
+});
+
+/* =========================
+STARS
+========================= */
+
+const stars =
+document.querySelector(".stars");
+
+for(let i=0;i<90;i++){
+
+const star =
+document.createElement("div");
+
+star.className = "star";
+
+star.style.left =
+Math.random()*100 + "%";
+
+star.style.top =
+Math.random()*100 + "%";
+
+star.style.animationDelay =
+Math.random()*5 + "s";
+
+stars.appendChild(star);
+
+}
+
+</script>
+
+</body>
+</html>
