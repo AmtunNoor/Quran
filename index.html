@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +6,12 @@
 <title>Surah Player</title>
 
 <style>
-
 body{
   margin:0;
   font-family:Arial;
   background: radial-gradient(circle at top,#071b12,#0f5132);
   color:white;
   text-align:center;
-  overflow-x:hidden;
 }
 
 h1{
@@ -26,8 +23,6 @@ h1{
 }
 
 .tile{
-  position:relative;
-  overflow:hidden;
   margin:25px auto;
   width:90%;
   max-width:500px;
@@ -38,49 +33,38 @@ h1{
   font-size:1.4rem;
   font-weight:bold;
   animation: glow 2.5s infinite alternate;
-  transition:all 0.4s ease;
-}
-
-/* PLAYING EFFECT */
-
-.tile.playing{
-  transform:scale(1.03);
-  box-shadow:
-    0 0 20px rgba(244,196,48,0.4),
-    0 0 40px rgba(244,196,48,0.7),
-    0 0 60px rgba(255,215,0,0.5);
-}
-
-/* GOLDEN SPARKLES */
-
-.tile.playing::after{
-  content:'✨ ✨ ✨';
-  position:absolute;
-  top:10px;
-  right:15px;
-  font-size:20px;
-  animation:sparkle 1.2s infinite alternate;
-  opacity:0.9;
-}
-
-@keyframes sparkle{
-  from{
-    transform:translateY(0px) scale(1);
-    opacity:0.5;
-  }
-  to{
-    transform:translateY(-6px) scale(1.2);
-    opacity:1;
-  }
+  transition:0.4s ease;
 }
 
 @keyframes glow{
-  from{
-    box-shadow:0 0 10px rgba(244,196,48,0.2);
-  }
-  to{
-    box-shadow:0 0 30px rgba(244,196,48,0.5);
-  }
+  from{box-shadow:0 0 10px rgba(244,196,48,0.2);}
+  to{box-shadow:0 0 30px rgba(244,196,48,0.5);}
+}
+
+/* ✅ ADDED: ACTIVE PLAYING EFFECT */
+.tile.playing{
+  transform: scale(1.03);
+  box-shadow:
+    0 0 25px rgba(244,196,48,0.5),
+    0 0 45px rgba(255,215,0,0.4),
+    0 0 60px rgba(255,215,0,0.25);
+  position: relative;
+}
+
+/* ✨ subtle sparkle overlay */
+.tile.playing::after{
+  content:"✨ ✨";
+  position:absolute;
+  top:10px;
+  right:12px;
+  font-size:18px;
+  animation:sparkle 1.2s infinite alternate;
+  pointer-events:none;
+}
+
+@keyframes sparkle{
+  from{ transform:translateY(0); opacity:0.5; }
+  to{ transform:translateY(-6px); opacity:1; }
 }
 
 .controls{
@@ -99,7 +83,6 @@ button{
   cursor:pointer;
   background:linear-gradient(90deg,#f4c430,#ffe38a);
   color:black;
-  transition:0.2s;
 }
 
 button:active{
@@ -140,7 +123,6 @@ button:active{
 #endScreen button{
   width:200px;
 }
-
 </style>
 </head>
 
@@ -148,9 +130,7 @@ button:active{
 
 <h1 id="title">Loading...</h1>
 
-<div class="tile" id="tile">
-  Loading Surah...
-</div>
+<div class="tile" id="tile">Loading Surah...</div>
 
 <div class="controls">
   <button onclick="playAudio()">▶ Play</button>
@@ -193,7 +173,6 @@ const surahMap = {
 "A16":"Innal Muslimeena wal Muslimaati"
 };
 
-// SHIFT RULE
 const SHIFT = 4;
 
 const id = new URLSearchParams(location.search).get("id");
@@ -215,6 +194,7 @@ const endScreen = document.getElementById("endScreen");
 
 let isLoop = false;
 
+/* ✅ NEW: tile control */
 function activateTile(){
   tile.classList.add("playing");
 }
@@ -224,7 +204,6 @@ function deactivateTile(){
 }
 
 function playAudio(){
-
   audio.play().then(()=>{
     activateTile();
   }).catch(()=>{
@@ -248,7 +227,6 @@ function stopAudio(){
 function toggleLoop(){
   isLoop = !isLoop;
   audio.loop = isLoop;
-
   document.getElementById("loopBtn").innerText =
     isLoop ? "🔁 Loop ON" : "🔁 Loop OFF";
 }
@@ -256,7 +234,6 @@ function toggleLoop(){
 function replay(){
   endScreen.style.display="none";
   audio.currentTime=0;
-
   audio.play();
   activateTile();
 }
@@ -271,9 +248,7 @@ window.addEventListener("load", ()=>{
 });
 
 audio.onended = ()=>{
-
   deactivateTile();
-
   if(!isLoop){
     endScreen.style.display="flex";
   }
@@ -285,4 +260,3 @@ overlay.addEventListener("click", playAudio);
 
 </body>
 </html>
-```
