@@ -33,7 +33,7 @@ h1{
   font-size:1.4rem;
   font-weight:bold;
   animation: glow 2.5s infinite alternate;
-  transition:0.4s ease;
+  position:relative; /* ✅ REQUIRED for sparkle overlay */
 }
 
 @keyframes glow{
@@ -41,17 +41,16 @@ h1{
   to{box-shadow:0 0 30px rgba(244,196,48,0.5);}
 }
 
-/* ✅ ADDED: ACTIVE PLAYING EFFECT */
+/* ✨ PATCH ADDITION: ACTIVE PLAYING STATE */
 .tile.playing{
-  transform: scale(1.03);
+  transform:scale(1.03);
   box-shadow:
-    0 0 25px rgba(244,196,48,0.5),
-    0 0 45px rgba(255,215,0,0.4),
-    0 0 60px rgba(255,215,0,0.25);
-  position: relative;
+    0 0 25px rgba(244,196,48,0.55),
+    0 0 45px rgba(255,215,0,0.35),
+    0 0 65px rgba(255,215,0,0.2);
 }
 
-/* ✨ subtle sparkle overlay */
+/* ✨ PATCH ADDITION: subtle sparkle */
 .tile.playing::after{
   content:"✨ ✨";
   position:absolute;
@@ -63,8 +62,8 @@ h1{
 }
 
 @keyframes sparkle{
-  from{ transform:translateY(0); opacity:0.5; }
-  to{ transform:translateY(-6px); opacity:1; }
+  from{transform:translateY(0px); opacity:0.5;}
+  to{transform:translateY(-6px); opacity:1;}
 }
 
 .controls{
@@ -194,7 +193,7 @@ const endScreen = document.getElementById("endScreen");
 
 let isLoop = false;
 
-/* ✅ NEW: tile control */
+/* ✅ PATCH: TILE CONTROL */
 function activateTile(){
   tile.classList.add("playing");
 }
