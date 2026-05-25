@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Mariam & Hamza's Quran Adventure!</title>
+<title>Little Quran Corner</title>
 <meta name="theme-color" content="#0f172a"/>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
 
 body{
 background:radial-gradient(circle at top,#172554,#020617 70%);
@@ -24,29 +17,15 @@ color:white;
 padding:20px;
 }
 
-/* STARS */
-.stars{
-position:fixed;
-inset:0;
-overflow:hidden;
-z-index:-1;
-}
-
-.star{
-position:absolute;
-width:3px;
-height:3px;
-background:white;
-border-radius:50%;
-animation:twinkle 3s infinite alternate;
-}
+.stars{position:fixed;inset:0;overflow:hidden;z-index:-1;}
+.star{position:absolute;width:3px;height:3px;background:white;border-radius:50%;
+animation:twinkle 3s infinite alternate;}
 
 @keyframes twinkle{
 from{opacity:.2;transform:scale(.5);}
 to{opacity:1;transform:scale(1.5);}
 }
 
-/* TITLE (UNCHANGED UI) */
 h1{
 text-align:center;
 font-size:2.5rem;
@@ -62,13 +41,8 @@ from{filter:drop-shadow(0 0 5px #38bdf8);}
 to{filter:drop-shadow(0 0 18px #f472b6);}
 }
 
-.subtitle{
-text-align:center;
-margin-bottom:28px;
-color:#cbd5e1;
-}
+.subtitle{text-align:center;margin-bottom:28px;color:#cbd5e1;}
 
-/* GRID (UNCHANGED) */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
@@ -77,13 +51,12 @@ max-width:1300px;
 margin:auto;
 }
 
-/* CARD (UNCHANGED) */
 .card{
 position:relative;
 overflow:hidden;
 border-radius:28px;
 padding:18px;
-min-height:210px;
+min-height:210px; I 
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -104,12 +77,10 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 50%{transform:translateY(-6px);}
 }
 
-/* TEXT (UNCHANGED) */
 .emoji{font-size:2rem;margin-bottom:12px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
 .english{font-size:1rem;opacity:.95;}
 
-/* BUTTON (UNCHANGED) */
 .play-btn{
 margin-top:18px;
 border:none;
@@ -120,75 +91,37 @@ font-weight:bold;
 cursor:pointer;
 background:white;
 color:black;
-transition:.3s;
 }
 
-.play-btn:hover{transform:scale(1.05);}
-
-.playing{
-animation:pulse 1s infinite;
-}
-
-@keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(255,255,255,.7);}
-70%{box-shadow:0 0 0 18px rgba(255,255,255,0);}
-100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}
-}
-
-/* TOPBAR (UNCHANGED) */
-.topbar{
-display:flex;
-justify-content:center;
-gap:12px;
-margin-bottom:25px;
-flex-wrap:wrap;
-}
-
-.topbar button{
-border:none;
-padding:12px 16px;
-border-radius:18px;
-font-weight:bold;
-cursor:pointer;
-background:linear-gradient(90deg,#facc15,#fde68a);
-}
-
-/* OVERLAY (UNCHANGED) */
-#overlay{
-position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-background:rgba(0,0,0,.8);
-z-index:999;
-}
-
-#overlay div{
-background:white;
-color:black;
-padding:22px;
-border-radius:20px;
-font-size:1.2rem;
-font-weight:bold;
-text-align:center;
-}
-
-/* ACTIVE TILE */
 .active-tile{
-box-shadow:0 0 25px 6px rgba(255,255,255,.7) !important;
+box-shadow:0 0 25px 6px rgba(255,255,255,.7)!important;
 transform:scale(1.05);
 }
 
-.footer{
-margin-top:35px;
-text-align:center;
-color:#94a3b8;
-font-size:.9rem;
+.topbar{
+display:flex;justify-content:center;gap:12px;margin-bottom:25px;flex-wrap:wrap;
+}
+
+.topbar button{
+border:none;padding:12px 16px;border-radius:18px;font-weight:bold;
+background:linear-gradient(90deg,#facc15,#fde68a);
+}
+
+#overlay{
+position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+background:rgba(0,0,0,.8);z-index:999;
+}
+
+#overlay div{
+background:white;color:black;padding:22px;border-radius:20px;
+font-size:1.2rem;font-weight:bold;text-align:center;
 }
 
 audio{display:none;}
 
+.footer{
+margin-top:35px;text-align:center;color:#94a3b8;font-size:.9rem;
+}
 </style>
 </head>
 
@@ -196,8 +129,8 @@ audio{display:none;}
 
 <div class="stars"></div>
 
-<h1>Mariam & Hamza's Quran Adventure with Mom!</h1>
-<p class="subtitle">Tap any Surah to listen ✨</p>
+<h1>🌙 Mariam & Hamza's</h1>
+<p class="subtitle">Quran Adventure with Mom! ✨</p>
 
 <div class="topbar">
 <button onclick="stopAll()">⏹ Stop</button>
@@ -218,23 +151,11 @@ audio{display:none;}
 DATA
 ========================= */
 
-const surahs = [
+const surahs=[
 {id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
 {id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
 {id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
-{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)"},
-{id:"A5",name:"الفيل",eng:"Al Feel",emoji:"🐘",file:"A9.mp3",color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
-{id:"A6",name:"قريش",eng:"Quraish",emoji:"🕋",file:"A10.mp3",color:"linear-gradient(135deg,#0ea5e9,#2563eb)"},
-{id:"A7",name:"الماعون",eng:"Al Ma'un",emoji:"🤲",file:"A11.mp3",color:"linear-gradient(135deg,#14b8a6,#22c55e)"},
-{id:"A8",name:"الكوثر",eng:"Al Kawther",emoji:"💧",file:"A12.mp3",color:"linear-gradient(135deg,#f97316,#fb7185)"},
-{id:"A9",name:"الكافرون",eng:"Al Kafiroon",emoji:"☀️",file:"A13.mp3",color:"linear-gradient(135deg,#84cc16,#22c55e)"},
-{id:"A10",name:"النصر",eng:"An Nasr",emoji:"🏆",file:"A14.mp3",color:"linear-gradient(135deg,#38bdf8,#818cf8)"},
-{id:"A11",name:"المسد",eng:"Al Masad",emoji:"🔥",file:"A15.mp3",color:"linear-gradient(135deg,#ef4444,#f97316)"},
-{id:"A12",name:"تكبير",eng:"Takbir",emoji:"🕌",file:"A16.mp3",color:"linear-gradient(135deg,#6366f1,#8b5cf6)"},
-{id:"A13",name:"الأذان",eng:"Azan",emoji:"📢",file:"A17.mp3",color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"},
-{id:"A14",name:"الكلمة الثانية",eng:"Second Kalima",emoji:"☪️",file:"A18.mp3",color:"linear-gradient(135deg,#14b8a6,#0f766e)"},
-{id:"A15",name:"الضحى",eng:"Ad Duha",emoji:"☀️",file:"A19.mp3",color:"linear-gradient(135deg,#facc15,#fb7185)"},
-{id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
+{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)"}
 ];
 
 const grid=document.getElementById("grid");
@@ -242,8 +163,7 @@ const grid=document.getElementById("grid");
 let currentAudio=null;
 let currentButton=null;
 let currentCard=null;
-let loopAll=false;
-let pendingSurah=null;
+let pending=null;
 
 const map={};
 
@@ -253,12 +173,11 @@ VOICE (SAFE)
 
 function speak(text){
 try{
-const msg=new SpeechSynthesisUtterance(text);
-msg.rate=0.9;
-msg.pitch=1;
-msg.lang="en-US";
+const u=new SpeechSynthesisUtterance(text);
+u.rate=0.9;
+u.lang="en-US";
 speechSynthesis.cancel();
-speechSynthesis.speak(msg);
+speechSynthesis.speak(u);
 }catch(e){}
 }
 
@@ -282,12 +201,12 @@ card.innerHTML=`
 <audio src="${s.file}" preload="auto"></audio>
 `;
 
-const button=card.querySelector(".play-btn");
+const btn=card.querySelector("button");
 const audio=card.querySelector("audio");
 
-map[s.id]={card,audio,button,surah:s};
+map[s.id]={card,audio,btn,s};
 
-button.addEventListener("click",()=>playSurah(s.id));
+btn.onclick=()=>play(s.id);
 
 grid.appendChild(card);
 
@@ -297,62 +216,43 @@ grid.appendChild(card);
 PLAY
 ========================= */
 
-function playSurah(id){
+function play(id){
 
 const item=map[id];
 if(!item)return;
 
-const {card,audio,button,surah}=item;
-
-if(currentAudio && currentAudio!==audio){
+if(currentAudio && currentAudio!==item.audio){
 currentAudio.pause();
 currentAudio.currentTime=0;
-if(currentButton)currentButton.innerHTML="▶ Play";
 if(currentCard)currentCard.classList.remove("active-tile");
 }
 
-if(audio.paused){
+item.audio.play();
 
-audio.loop=loopAll;
+item.card.classList.add("active-tile");
 
-audio.play().catch(()=>{
-document.getElementById("overlay").style.display="flex";
-});
+currentAudio=item.audio;
+currentButton=item.btn;
+currentCard=item.card;
 
-button.innerHTML="⏸ Pause";
-card.classList.add("active-tile");
-
-currentAudio=audio;
-currentButton=button;
-currentCard=card;
-
-setTimeout(()=>speak(surah.name),300);
-
-}else{
-
-audio.pause();
-button.innerHTML="▶ Play";
-card.classList.remove("active-tile");
-}
+speak(item.s.name);
 }
 
 /* =========================
-FIXED QR FLOW (STABLE)
+🔒 LOCK MODE QR FIX
 ========================= */
 
-function runQR(){
+function qrFix(){
 
-const params=new URLSearchParams(window.location.search);
-const surah=params.get("surah");
+const id=new URLSearchParams(location.search).get("surah");
+if(!id || !map[id])return;
 
-if(!surah || !map[surah])return;
+const item=map[id];
 
-const item=map[surah];
+/* wait FULL paint cycle */
+requestAnimationFrame(()=>{
 
-setTimeout(()=>{
-
-document.querySelectorAll(".active-tile")
-.forEach(c=>c.classList.remove("active-tile"));
+requestAnimationFrame(()=>{
 
 item.card.classList.add("active-tile");
 
@@ -363,54 +263,50 @@ block:"center"
 
 currentCard=item.card;
 currentAudio=item.audio;
-currentButton=item.button;
-
-pendingSurah=surah;
+currentButton=item.btn;
 
 /* overlay */
 document.getElementById("overlay").style.display="flex";
 
-/* voice cue */
-setTimeout(()=>speak(item.surah.name),500);
-
-},400);
-}
-
-window.addEventListener("load",runQR);
-
-/* =========================
-OVERLAY CLICK
-========================= */
-
-document.getElementById("overlay").addEventListener("click",()=>{
-
-if(pendingSurah){
-playSurah(pendingSurah);
-pendingSurah=null;
-}
-
-document.getElementById("overlay").style.display="none";
+/* voice */
+setTimeout(()=>speak(item.s.name),600);
 
 });
+
+});
+
+}
+
+window.addEventListener("load",qrFix);
+
+/* =========================
+OVERLAY
+========================= */
+
+document.getElementById("overlay").onclick=()=>{
+
+const id=new URLSearchParams(location.search).get("surah");
+if(id && map[id]) play(id);
+
+document.getElementById("overlay").style.display="none";
+};
 
 /* =========================
 CONTROLS
 ========================= */
-
-function toggleLoopAll(){
-loopAll=!loopAll;
-document.getElementById("loopBtn").innerHTML=
-loopAll?"🔁 Loop ON":"🔁 Loop OFF";
-if(currentAudio)currentAudio.loop=loopAll;
-}
 
 function stopAll(){
 if(currentAudio){
 currentAudio.pause();
 currentAudio.currentTime=0;
 }
-if(currentButton)currentButton.innerHTML="▶ Play";
 if(currentCard)currentCard.classList.remove("active-tile");
+}
+
+function toggleLoopAll(){
+const b=document.getElementById("loopBtn");
+b.innerText=b.innerText.includes("OFF")?"🔁 Loop ON":"🔁 Loop OFF";
+if(currentAudio)currentAudio.loop=!currentAudio.loop;
 }
 
 /* =========================
@@ -418,14 +314,12 @@ STARS
 ========================= */
 
 const stars=document.querySelector(".stars");
-
-for(let i=0;i<90;i++){
-const star=document.createElement("div");
-star.className="star";
-star.style.left=Math.random()*100+"%";
-star.style.top=Math.random()*100+"%";
-star.style.animationDelay=Math.random()*5+"s";
-stars.appendChild(star);
+for(let i=0;i<60;i++){
+const d=document.createElement("div");
+d.className="star";
+d.style.left=Math.random()*100+"%";
+d.style.top=Math.random()*100+"%";
+stars.appendChild(d);
 }
 
 </script>
