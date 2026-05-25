@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Quran For Kids</title>
-
 <meta name="theme-color" content="#0f172a"/>
 
 <style>
@@ -18,8 +17,7 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:
-radial-gradient(circle at top,#172554,#020617 70%);
+background:radial-gradient(circle at top,#172554,#020617 70%);
 min-height:100vh;
 overflow-x:hidden;
 color:white;
@@ -106,14 +104,12 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 50%{transform:translateY(-6px);}
 }
 
-/* REMOVED ICON AS REQUESTED */
-
-/* TEXT */
+/* TEXT ONLY (NO DESIGN CHANGE) */
 .emoji{font-size:2rem;margin-bottom:12px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
 .english{font-size:1rem;opacity:.95;}
 
-/* BUTTONS */
+/* BUTTON */
 .play-btn{
 margin-top:18px;
 border:none;
@@ -184,7 +180,6 @@ box-shadow:0 0 25px 6px rgba(255,255,255,.7) !important;
 transform:scale(1.05);
 }
 
-/* FOOTER */
 .footer{
 margin-top:35px;
 text-align:center;
@@ -253,6 +248,21 @@ let pendingSurah=null;
 const map={};
 
 /* =========================
+VOICE CUE (NEW)
+========================= */
+
+function speak(text){
+try{
+const msg=new SpeechSynthesisUtterance(text);
+msg.rate=0.9;
+msg.pitch=1;
+msg.lang="en-US";
+speechSynthesis.cancel();
+speechSynthesis.speak(msg);
+}catch(e){}
+}
+
+/* =========================
 RENDER
 ========================= */
 
@@ -275,7 +285,7 @@ card.innerHTML=`
 const button=card.querySelector(".play-btn");
 const audio=card.querySelector("audio");
 
-map[s.id]={card,audio,button};
+map[s.id]={card,audio,button,surah:s};
 
 button.addEventListener("click",()=>playSurah(s.id));
 
@@ -284,7 +294,7 @@ grid.appendChild(card);
 });
 
 /* =========================
-PLAY
+PLAY LOGIC
 ========================= */
 
 function playSurah(id){
@@ -292,7 +302,7 @@ function playSurah(id){
 const item=map[id];
 if(!item)return;
 
-const {card,audio,button}=item;
+const {card,audio,button,surah}=item;
 
 if(currentAudio && currentAudio!==audio){
 currentAudio.pause();
@@ -316,6 +326,9 @@ currentAudio=audio;
 currentButton=button;
 currentCard=card;
 
+/* 🔊 VOICE CUE */
+setTimeout(()=>speak(surah.name),200);
+
 }else{
 
 audio.pause();
@@ -325,10 +338,12 @@ card.classList.remove("active-tile");
 }
 
 /* =========================
-INSTANT START MODE (QR SAFE)
+INSTANT START MODE (FIXED)
 ========================= */
 
 window.addEventListener("load",()=>{
+
+setTimeout(()=>{
 
 const params=new URLSearchParams(window.location.search);
 const surah=params.get("surah");
@@ -339,11 +354,26 @@ pendingSurah=surah;
 
 const item=map[surah];
 item.card.classList.add("active-tile");
-item.card.scrollIntoView({behavior:"smooth",block:"center"});
+
+item.card.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
 
 document.getElementById("overlay").style.display="flex";
+
+/* voice cue on selection */
+setTimeout(()=>speak(item.surah.name),400);
+
 }
+
+},300);
+
 });
+
+/* =========================
+OVERLAY CLICK
+========================= */
 
 document.getElementById("overlay").addEventListener("click",()=>{
 
