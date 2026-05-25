@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Quran For Kids</title>
+<title>Mariam & Hamza's Quran Adventure</title>
 
 <meta name="theme-color" content="#0f172a"/>
 
@@ -209,6 +209,31 @@ opacity:0;
 }
 }
 
+/* AUTO PLAY OVERLAY */
+
+#autoPlayOverlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.82);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+padding:20px;
+}
+
+#autoPlayBtn{
+border:none;
+border-radius:28px;
+padding:22px 34px;
+font-size:1.2rem;
+font-weight:bold;
+cursor:pointer;
+background:white;
+color:black;
+box-shadow:0 0 30px rgba(255,255,255,.4);
+}
+
 /* BUTTONS */
 
 .play-btn{
@@ -320,7 +345,7 @@ display:none;
 
 <div class="stars"></div>
 
-<h1>Quran For Kids</h1>
+<h1>🌙 Quran For Kids</h1>
 
 <p class="subtitle">
 Tap any Surah to listen ✨
@@ -337,6 +362,13 @@ Tap any Surah to listen ✨
 
 <div id="overlay">
 <div>▶ Tap Anywhere To Play</div>
+</div>
+
+<!-- AUTO PLAY BUTTON -->
+<div id="autoPlayOverlay">
+<button id="autoPlayBtn">
+▶ Start Surah
+</button>
 </div>
 
 <div class="footer">
@@ -439,60 +471,6 @@ eng:"An Nasr",
 emoji:"🏆",
 file:"A14.mp3",
 color:"linear-gradient(135deg,#38bdf8,#818cf8)"
-},
-
-{
-id:"A11",
-name:"المسد",
-eng:"Al Masad",
-emoji:"🔥",
-file:"A15.mp3",
-color:"linear-gradient(135deg,#ef4444,#f97316)"
-},
-
-{
-id:"A12",
-name:"تكبير",
-eng:"Takbir",
-emoji:"🕌",
-file:"A16.mp3",
-color:"linear-gradient(135deg,#6366f1,#8b5cf6)"
-},
-
-{
-id:"A13",
-name:"الأذان",
-eng:"Azan",
-emoji:"📢",
-file:"A17.mp3",
-color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"
-},
-
-{
-id:"A14",
-name:"الكلمة الثانية",
-eng:"Second Kalima",
-emoji:"☪️",
-file:"A18.mp3",
-color:"linear-gradient(135deg,#14b8a6,#0f766e)"
-},
-
-{
-id:"A15",
-name:"الضحى",
-eng:"Ad Duha",
-emoji:"☀️",
-file:"A19.mp3",
-color:"linear-gradient(135deg,#facc15,#fb7185)"
-},
-
-{
-id:"A16",
-name:"إِنَّ الْمُسْلِمِينَ",
-eng:"Innal Muslimeena",
-emoji:"💚",
-file:"A20.mp3",
-color:"linear-gradient(135deg,#22c55e,#16a34a)"
 }
 
 ];
@@ -516,6 +494,8 @@ const card =
 document.createElement("div");
 
 card.className = "card";
+
+card.dataset.id = s.id;
 
 card.style.background = s.color;
 
@@ -588,11 +568,7 @@ if(audio.paused){
 audio.loop = loopAll;
 
 audio.play()
-.catch(()=>{
-document
-.getElementById("overlay")
-.style.display = "flex";
-});
+.catch(()=>{});
 
 button.innerHTML =
 "⏸ Pause";
@@ -641,6 +617,63 @@ card.classList
 grid.appendChild(card);
 
 });
+
+/* =========================
+AUTO PLAY FROM QR
+========================= */
+
+function autoPlayFromQR(){
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const playId =
+params.get("play");
+
+if(!playId) return;
+
+const targetCard =
+document.querySelector(
+`.card[data-id="${playId}"]`
+);
+
+if(!targetCard) return;
+
+targetCard.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
+
+targetCard.classList
+.add("active-playing");
+
+const targetButton =
+targetCard.querySelector(".play-btn");
+
+document
+.getElementById("autoPlayOverlay")
+.style.display = "flex";
+
+document
+.getElementById("autoPlayBtn")
+.onclick = ()=>{
+
+targetButton.click();
+
+document
+.getElementById("autoPlayOverlay")
+.style.display = "none";
+
+};
+
+}
+
+window.addEventListener(
+"load",
+autoPlayFromQR
+);
 
 /* =========================
 LOOP
@@ -694,78 +727,6 @@ currentCard.classList
 }
 
 }
-
-/* =========================
-OVERLAY
-========================= */
-
-document
-.getElementById("overlay")
-.addEventListener(
-"click",
-()=>{
-
-if(currentAudio){
-
-currentAudio.play();
-
-document
-.getElementById("overlay")
-.style.display = "none";
-
-}
-
-});
-
-/* =========================
-AUTO PLAY FROM QR
-Example:
-index.html?play=A1
-========================= */
-
-function autoPlayFromQR(){
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-const playId =
-params.get("play");
-
-if(!playId) return;
-
-const targetIndex =
-surahs.findIndex(
-s => s.id === playId
-);
-
-if(targetIndex === -1) return;
-
-setTimeout(()=>{
-
-const targetCard =
-document.querySelectorAll(".card")[targetIndex];
-
-if(!targetCard) return;
-
-const targetButton =
-targetCard.querySelector(".play-btn");
-
-if(targetButton){
-
-targetButton.click();
-
-}
-
-},600);
-
-}
-
-window.addEventListener(
-"load",
-autoPlayFromQR
-);
 
 /* =========================
 STARS
