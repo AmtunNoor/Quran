@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Mariam & Hamza's Quran Adventure</title>
+<title>Quran Time with Mariam & Hamza 🌙</title>
 
 <meta name="theme-color" content="#0f172a"/>
 
@@ -209,31 +209,6 @@ opacity:0;
 }
 }
 
-/* AUTO PLAY OVERLAY */
-
-#autoPlayOverlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.82);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:9999;
-padding:20px;
-}
-
-#autoPlayBtn{
-border:none;
-border-radius:28px;
-padding:22px 34px;
-font-size:1.2rem;
-font-weight:bold;
-cursor:pointer;
-background:white;
-color:black;
-box-shadow:0 0 30px rgba(255,255,255,.4);
-}
-
 /* BUTTONS */
 
 .play-btn{
@@ -323,6 +298,7 @@ border-radius:20px;
 
 font-size:1.2rem;
 font-weight:bold;
+text-align:center;
 }
 
 /* FOOTER */
@@ -345,7 +321,7 @@ display:none;
 
 <div class="stars"></div>
 
-<h1>🌙 Quran For Kids</h1>
+<h1>🌙 Quran Time with Mariam & Hamza</h1>
 
 <p class="subtitle">
 Tap any Surah to listen ✨
@@ -362,13 +338,6 @@ Tap any Surah to listen ✨
 
 <div id="overlay">
 <div>▶ Tap Anywhere To Play</div>
-</div>
-
-<!-- AUTO PLAY BUTTON -->
-<div id="autoPlayOverlay">
-<button id="autoPlayBtn">
-▶ Start Surah
-</button>
 </div>
 
 <div class="footer">
@@ -426,51 +395,6 @@ eng:"Al Feel",
 emoji:"🐘",
 file:"A9.mp3",
 color:"linear-gradient(135deg,#8b5cf6,#6366f1)"
-},
-
-{
-id:"A6",
-name:"قريش",
-eng:"Quraish",
-emoji:"🕋",
-file:"A10.mp3",
-color:"linear-gradient(135deg,#0ea5e9,#2563eb)"
-},
-
-{
-id:"A7",
-name:"الماعون",
-eng:"Al Ma'un",
-emoji:"🤲",
-file:"A11.mp3",
-color:"linear-gradient(135deg,#14b8a6,#22c55e)"
-},
-
-{
-id:"A8",
-name:"الكوثر",
-eng:"Al Kawther",
-emoji:"💧",
-file:"A12.mp3",
-color:"linear-gradient(135deg,#f97316,#fb7185)"
-},
-
-{
-id:"A9",
-name:"الكافرون",
-eng:"Al Kafiroon",
-emoji:"☀️",
-file:"A13.mp3",
-color:"linear-gradient(135deg,#84cc16,#22c55e)"
-},
-
-{
-id:"A10",
-name:"النصر",
-eng:"An Nasr",
-emoji:"🏆",
-file:"A14.mp3",
-color:"linear-gradient(135deg,#38bdf8,#818cf8)"
 }
 
 ];
@@ -568,7 +492,13 @@ if(audio.paused){
 audio.loop = loopAll;
 
 audio.play()
-.catch(()=>{});
+.catch(()=>{
+
+document
+.getElementById("overlay")
+.style.display = "flex";
+
+});
 
 button.innerHTML =
 "⏸ Pause";
@@ -635,8 +565,9 @@ params.get("play");
 if(!playId) return;
 
 const targetCard =
-document.querySelector(
-`.card[data-id="${playId}"]`
+[...document.querySelectorAll(".card")]
+.find(card =>
+card.dataset.id === playId
 );
 
 if(!targetCard) return;
@@ -646,27 +577,39 @@ behavior:"smooth",
 block:"center"
 });
 
-targetCard.classList
-.add("active-playing");
-
 const targetButton =
 targetCard.querySelector(".play-btn");
 
-document
-.getElementById("autoPlayOverlay")
-.style.display = "flex";
+targetCard.classList
+.add("active-playing");
 
-document
-.getElementById("autoPlayBtn")
-.onclick = ()=>{
+setTimeout(()=>{
 
 targetButton.click();
 
-document
-.getElementById("autoPlayOverlay")
-.style.display = "none";
+},700);
 
-};
+setTimeout(()=>{
+
+if(
+currentAudio &&
+!currentAudio.paused
+){
+
+return;
+
+}
+
+document
+.getElementById("overlay")
+.style.display = "flex";
+
+document
+.querySelector("#overlay div")
+.innerHTML =
+`▶ Tap Anywhere To Play<br><br>${playId}`;
+
+},1200);
 
 }
 
@@ -727,6 +670,28 @@ currentCard.classList
 }
 
 }
+
+/* =========================
+OVERLAY
+========================= */
+
+document
+.getElementById("overlay")
+.addEventListener(
+"click",
+()=>{
+
+if(currentAudio){
+
+currentAudio.play();
+
+document
+.getElementById("overlay")
+.style.display = "none";
+
+}
+
+});
 
 /* =========================
 STARS
