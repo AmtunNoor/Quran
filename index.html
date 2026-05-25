@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>Quran Time with Mariam & Hamza 🌙</title>
+<title>Quran For Kids</title>
 
 <meta name="theme-color" content="#0f172a"/>
 
@@ -27,7 +27,6 @@ padding:20px;
 }
 
 /* STARS */
-
 .stars{
 position:fixed;
 inset:0;
@@ -45,43 +44,24 @@ animation:twinkle 3s infinite alternate;
 }
 
 @keyframes twinkle{
-from{
-opacity:.2;
-transform:scale(.5);
-}
-to{
-opacity:1;
-transform:scale(1.5);
-}
+from{opacity:.2;transform:scale(.5);}
+to{opacity:1;transform:scale(1.5);}
 }
 
 /* TITLE */
-
 h1{
 text-align:center;
 font-size:2.5rem;
 margin-bottom:8px;
-
-background:linear-gradient(
-90deg,
-#facc15,
-#38bdf8,
-#f472b6
-);
-
+background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-
 animation:glow 3s infinite alternate;
 }
 
 @keyframes glow{
-from{
-filter:drop-shadow(0 0 5px #38bdf8);
-}
-to{
-filter:drop-shadow(0 0 18px #f472b6);
-}
+from{filter:drop-shadow(0 0 5px #38bdf8);}
+to{filter:drop-shadow(0 0 18px #f472b6);}
 }
 
 .subtitle{
@@ -91,167 +71,72 @@ color:#cbd5e1;
 }
 
 /* GRID */
-
 .grid{
 display:grid;
-grid-template-columns:
-repeat(auto-fit,minmax(170px,1fr));
-
+grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
 gap:18px;
 max-width:1300px;
 margin:auto;
 }
 
 /* CARD */
-
 .card{
 position:relative;
 overflow:hidden;
-
 border-radius:28px;
 padding:18px;
-
 min-height:210px;
-
 display:flex;
 flex-direction:column;
 justify-content:space-between;
-
 cursor:pointer;
-
 transition:.3s;
-
 backdrop-filter:blur(10px);
-
-box-shadow:
-0 0 20px rgba(255,255,255,.1);
-
+box-shadow:0 0 20px rgba(255,255,255,.1);
 animation:float 4s ease-in-out infinite;
 }
 
 .card:hover{
-transform:
-translateY(-8px)
-scale(1.03);
-
-box-shadow:
-0 0 30px rgba(255,255,255,.35);
+transform:translateY(-8px) scale(1.03);
+box-shadow:0 0 30px rgba(255,255,255,.35);
 }
 
 @keyframes float{
-0%,100%{
-transform:translateY(0);
-}
-50%{
-transform:translateY(-6px);
-}
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
 }
 
-.emoji{
-font-size:2rem;
-margin-bottom:12px;
-}
-
-.arabic{
-font-size:1.8rem;
-font-weight:bold;
-margin-bottom:6px;
-}
-
-.english{
-font-size:1rem;
-opacity:.95;
-}
-
-/* CURRENTLY PLAYING EFFECT */
-
-.card.active-playing{
-box-shadow:
-0 0 18px rgba(255,255,255,.45),
-0 0 45px rgba(255,255,255,.35),
-0 0 70px rgba(250,204,21,.35);
-}
-
-.card.active-playing::before,
-.card.active-playing::after{
-content:"✨";
-position:absolute;
-font-size:1.2rem;
-animation:sparkle 1.8s linear infinite;
-pointer-events:none;
-}
-
-.card.active-playing::before{
-top:12px;
-left:14px;
-}
-
-.card.active-playing::after{
-bottom:18px;
-right:18px;
-animation-delay:.9s;
-}
-
-@keyframes sparkle{
-0%{
-transform:scale(.6) rotate(0deg);
-opacity:0;
-}
-30%{
-opacity:1;
-}
-70%{
-opacity:1;
-}
-100%{
-transform:scale(1.4) rotate(180deg);
-opacity:0;
-}
-}
+.emoji{font-size:2rem;margin-bottom:12px;}
+.arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
+.english{font-size:1rem;opacity:.95;}
 
 /* BUTTONS */
-
 .play-btn{
 margin-top:18px;
-
 border:none;
 border-radius:18px;
-
 padding:12px;
-
 font-size:1rem;
 font-weight:bold;
-
 cursor:pointer;
-
 background:white;
 color:black;
-
 transition:.3s;
 }
 
-.play-btn:hover{
-transform:scale(1.05);
-}
+.play-btn:hover{transform:scale(1.05);}
 
 .playing{
 animation:pulse 1s infinite;
 }
 
 @keyframes pulse{
-0%{
-box-shadow:0 0 0 0 rgba(255,255,255,.7);
-}
-70%{
-box-shadow:0 0 0 18px rgba(255,255,255,0);
-}
-100%{
-box-shadow:0 0 0 0 rgba(255,255,255,0);
-}
+0%{box-shadow:0 0 0 0 rgba(255,255,255,.7);}
+70%{box-shadow:0 0 0 18px rgba(255,255,255,0);}
+100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}
 }
 
 /* TOP BAR */
-
 .topbar{
 display:flex;
 justify-content:center;
@@ -266,43 +151,36 @@ padding:12px 16px;
 border-radius:18px;
 font-weight:bold;
 cursor:pointer;
-background:linear-gradient(
-90deg,
-#facc15,
-#fde68a
-);
+background:linear-gradient(90deg,#facc15,#fde68a);
 }
 
 /* OVERLAY */
-
 #overlay{
 position:fixed;
 inset:0;
-
 display:none;
-
 align-items:center;
 justify-content:center;
-
 background:rgba(0,0,0,.8);
-
 z-index:999;
 }
 
 #overlay div{
 background:white;
 color:black;
-
 padding:22px;
 border-radius:20px;
-
 font-size:1.2rem;
 font-weight:bold;
-text-align:center;
+}
+
+/* ACTIVE TILE */
+.active-tile{
+box-shadow:0 0 25px 6px rgba(255,255,255,.7) !important;
+transform:scale(1.05);
 }
 
 /* FOOTER */
-
 .footer{
 margin-top:35px;
 text-align:center;
@@ -310,9 +188,7 @@ color:#94a3b8;
 font-size:.9rem;
 }
 
-audio{
-display:none;
-}
+audio{display:none;}
 
 </style>
 </head>
@@ -321,17 +197,12 @@ display:none;
 
 <div class="stars"></div>
 
-<h1>🌙 Quran Time with Mariam & Hamza</h1>
-
-<p class="subtitle">
-Tap any Surah to listen ✨
-</p>
+<h1>🌙 Quran For Kids</h1>
+<p class="subtitle">Tap any Surah to listen ✨</p>
 
 <div class="topbar">
 <button onclick="stopAll()">⏹ Stop</button>
-<button onclick="toggleLoopAll()" id="loopBtn">
-🔁 Loop OFF
-</button>
+<button onclick="toggleLoopAll()" id="loopBtn">🔁 Loop OFF</button>
 </div>
 
 <div class="grid" id="grid"></div>
@@ -340,384 +211,150 @@ Tap any Surah to listen ✨
 <div>▶ Tap Anywhere To Play</div>
 </div>
 
-<div class="footer">
-Made with 💖 for little Muslims
-</div>
+<div class="footer">Made with 💖 for little Muslims</div>
 
 <script>
 
-/* =========================
-SURAH MAPPING
-========================= */
-
+/* SURAH DATA (UNCHANGED) */
 const surahs = [
-
-{
-id:"A1",
-name:"الفاتحة",
-eng:"Al Fatiha",
-emoji:"🌟",
-file:"A5.mp3",
-color:"linear-gradient(135deg,#f59e0b,#ef4444)"
-},
-
-{
-id:"A2",
-name:"الإخلاص",
-eng:"Al Ikhlas",
-emoji:"💖",
-file:"A6.mp3",
-color:"linear-gradient(135deg,#ec4899,#8b5cf6)"
-},
-
-{
-id:"A3",
-name:"الفلق",
-eng:"Al Falaq",
-emoji:"🌙",
-file:"A7.mp3",
-color:"linear-gradient(135deg,#06b6d4,#3b82f6)"
-},
-
-{
-id:"A4",
-name:"الناس",
-eng:"An Naas",
-emoji:"⭐",
-file:"A8.mp3",
-color:"linear-gradient(135deg,#10b981,#14b8a6)"
-},
-
-{
-id:"A5",
-name:"الفيل",
-eng:"Al Feel",
-emoji:"🐘",
-file:"A9.mp3",
-color:"linear-gradient(135deg,#8b5cf6,#6366f1)"
-}
-
+{id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
+{id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
+{id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
+{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)"},
+{id:"A5",name:"الفيل",eng:"Al Feel",emoji:"🐘",file:"A9.mp3",color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
+{id:"A6",name:"قريش",eng:"Quraish",emoji:"🕋",file:"A10.mp3",color:"linear-gradient(135deg,#0ea5e9,#2563eb)"},
+{id:"A7",name:"الماعون",eng:"Al Ma'un",emoji:"🤲",file:"A11.mp3",color:"linear-gradient(135deg,#14b8a6,#22c55e)"},
+{id:"A8",name:"الكوثر",eng:"Al Kawther",emoji:"💧",file:"A12.mp3",color:"linear-gradient(135deg,#f97316,#fb7185)"},
+{id:"A9",name:"الكافرون",eng:"Al Kafiroon",emoji:"☀️",file:"A13.mp3",color:"linear-gradient(135deg,#84cc16,#22c55e)"},
+{id:"A10",name:"النصر",eng:"An Nasr",emoji:"🏆",file:"A14.mp3",color:"linear-gradient(135deg,#38bdf8,#818cf8)"},
+{id:"A11",name:"المسد",eng:"Al Masad",emoji:"🔥",file:"A15.mp3",color:"linear-gradient(135deg,#ef4444,#f97316)"},
+{id:"A12",name:"تكبير",eng:"Takbir",emoji:"🕌",file:"A16.mp3",color:"linear-gradient(135deg,#6366f1,#8b5cf6)"},
+{id:"A13",name:"الأذان",eng:"Azan",emoji:"📢",file:"A17.mp3",color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"},
+{id:"A14",name:"الكلمة الثانية",eng:"Second Kalima",emoji:"☪️",file:"A18.mp3",color:"linear-gradient(135deg,#14b8a6,#0f766e)"},
+{id:"A15",name:"الضحى",eng:"Ad Duha",emoji:"☀️",file:"A19.mp3",color:"linear-gradient(135deg,#facc15,#fb7185)"},
+{id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-/* =========================
-RENDER
-========================= */
+const grid = document.getElementById("grid");
 
-const grid =
-document.getElementById("grid");
+let currentAudio=null;
+let currentButton=null;
+let currentCard=null;
+let loopAll=false;
 
-let currentAudio = null;
-let currentButton = null;
-let currentCard = null;
+const map={};
 
-let loopAll = false;
+/* RENDER */
+surahs.forEach(s=>{
 
-surahs.forEach((s,index)=>{
+const card=document.createElement("div");
+card.className="card";
+card.style.background=s.color;
 
-const card =
-document.createElement("div");
-
-card.className = "card";
-
-card.dataset.id = s.id;
-
-card.style.background = s.color;
-
-card.style.animationDelay =
-`${index * .15}s`;
-
-card.innerHTML = `
-
+card.innerHTML=`
 <div>
-
-<div class="emoji">
-${s.emoji}
+<div class="emoji">${s.emoji}</div>
+<div class="arabic">${s.name}</div>
+<div class="english">${s.eng}</div>
 </div>
-
-<div class="arabic">
-${s.name}
-</div>
-
-<div class="english">
-${s.eng}
-</div>
-
-</div>
-
-<button class="play-btn">
-▶ Play
-</button>
-
-<audio
-src="${s.file}"
-preload="auto">
-</audio>
-
+<button class="play-btn">▶ Play</button>
+<audio src="${s.file}" preload="auto"></audio>
 `;
 
-const button =
-card.querySelector(".play-btn");
+const button=card.querySelector(".play-btn");
+const audio=card.querySelector("audio");
 
-const audio =
-card.querySelector("audio");
+map[s.id]={card,audio,button};
 
-button.addEventListener(
-"click",
-()=>{
+button.addEventListener("click",()=>playSurah(s.id));
 
-if(
-currentAudio &&
-currentAudio !== audio
-){
+grid.appendChild(card);
+});
 
+/* PLAY + HIGHLIGHT */
+function playSurah(id){
+
+const item=map[id];
+if(!item)return;
+
+const {card,audio,button}=item;
+
+if(currentAudio && currentAudio!==audio){
 currentAudio.pause();
-currentAudio.currentTime = 0;
-
-if(currentButton){
-currentButton.innerHTML =
-"▶ Play";
-
-currentButton.classList
-.remove("playing");
-}
-
-if(currentCard){
-currentCard.classList
-.remove("active-playing");
-}
+currentAudio.currentTime=0;
+if(currentButton)currentButton.innerHTML="▶ Play";
+if(currentCard)currentCard.classList.remove("active-tile");
 }
 
 if(audio.paused){
 
-audio.loop = loopAll;
+audio.loop=loopAll;
 
-audio.play()
-.catch(()=>{
-
-document
-.getElementById("overlay")
-.style.display = "flex";
-
+audio.play().catch(()=>{
+document.getElementById("overlay").style.display="flex";
 });
 
-button.innerHTML =
-"⏸ Pause";
+button.innerHTML="⏸ Pause";
 
-button.classList
-.add("playing");
+card.classList.add("active-tile");
 
-card.classList
-.add("active-playing");
-
-currentAudio = audio;
-currentButton = button;
-currentCard = card;
+currentAudio=audio;
+currentButton=button;
+currentCard=card;
 
 }else{
 
 audio.pause();
-
-button.innerHTML =
-"▶ Play";
-
-button.classList
-.remove("playing");
-
-card.classList
-.remove("active-playing");
+button.innerHTML="▶ Play";
+card.classList.remove("active-tile");
+}
 }
 
-});
-
-audio.addEventListener(
-"ended",
-()=>{
-
-button.innerHTML =
-"▶ Play";
-
-button.classList
-.remove("playing");
-
-card.classList
-.remove("active-playing");
-
-});
-
-grid.appendChild(card);
-
-});
-
-/* =========================
-AUTO PLAY FROM QR
-========================= */
-
-function autoPlayFromQR(){
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-const playId =
-params.get("play");
-
-if(!playId) return;
-
-const targetCard =
-[...document.querySelectorAll(".card")]
-.find(card =>
-card.dataset.id === playId
-);
-
-if(!targetCard) return;
-
-targetCard.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-
-const targetButton =
-targetCard.querySelector(".play-btn");
-
-targetCard.classList
-.add("active-playing");
-
-setTimeout(()=>{
-
-targetButton.click();
-
-},700);
-
-setTimeout(()=>{
-
-if(
-currentAudio &&
-!currentAudio.paused
-){
-
-return;
-
+/* QR AUTO PLAY */
+window.addEventListener("load",()=>{
+const params=new URLSearchParams(window.location.search);
+const surah=params.get("surah");
+if(surah && map[surah]){
+setTimeout(()=>playSurah(surah),500);
 }
+});
 
-document
-.getElementById("overlay")
-.style.display = "flex";
-
-document
-.querySelector("#overlay div")
-.innerHTML =
-`▶ Tap Anywhere To Play<br><br>${playId}`;
-
-},1200);
-
-}
-
-window.addEventListener(
-"load",
-autoPlayFromQR
-);
-
-/* =========================
-LOOP
-========================= */
-
+/* LOOP */
 function toggleLoopAll(){
-
-loopAll = !loopAll;
-
-document
-.getElementById("loopBtn")
-.innerHTML =
-
-loopAll
-? "🔁 Loop ON"
-: "🔁 Loop OFF";
-
-if(currentAudio){
-currentAudio.loop = loopAll;
+loopAll=!loopAll;
+document.getElementById("loopBtn").innerHTML=
+loopAll?"🔁 Loop ON":"🔁 Loop OFF";
+if(currentAudio)currentAudio.loop=loopAll;
 }
 
-}
-
-/* =========================
-STOP
-========================= */
-
+/* STOP */
 function stopAll(){
-
 if(currentAudio){
-
 currentAudio.pause();
-
-currentAudio.currentTime = 0;
-
-if(currentButton){
-
-currentButton.innerHTML =
-"▶ Play";
-
-currentButton.classList
-.remove("playing");
-
+currentAudio.currentTime=0;
+}
+if(currentButton)currentButton.innerHTML="▶ Play";
+if(currentCard)currentCard.classList.remove("active-tile");
 }
 
-if(currentCard){
-currentCard.classList
-.remove("active-playing");
-}
-
-}
-
-}
-
-/* =========================
-OVERLAY
-========================= */
-
-document
-.getElementById("overlay")
-.addEventListener(
-"click",
-()=>{
-
+/* OVERLAY */
+document.getElementById("overlay").addEventListener("click",()=>{
 if(currentAudio){
-
 currentAudio.play();
-
-document
-.getElementById("overlay")
-.style.display = "none";
-
+document.getElementById("overlay").style.display="none";
 }
-
 });
 
-/* =========================
-STARS
-========================= */
-
-const stars =
-document.querySelector(".stars");
+/* STARS */
+const stars=document.querySelector(".stars");
 
 for(let i=0;i<90;i++){
-
-const star =
-document.createElement("div");
-
-star.className = "star";
-
-star.style.left =
-Math.random()*100 + "%";
-
-star.style.top =
-Math.random()*100 + "%";
-
-star.style.animationDelay =
-Math.random()*5 + "s";
-
+const star=document.createElement("div");
+star.className="star";
+star.style.left=Math.random()*100+"%";
+star.style.top=Math.random()*100+"%";
+star.style.animationDelay=Math.random()*5+"s";
 stars.appendChild(star);
-
 }
 
 </script>
