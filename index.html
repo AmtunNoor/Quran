@@ -46,7 +46,7 @@ from{opacity:.2;transform:scale(.5);}
 to{opacity:1;transform:scale(1.5);}
 }
 
-/* TITLE */
+/* TITLE (UNCHANGED UI) */
 h1{
 text-align:center;
 font-size:2.5rem;
@@ -68,7 +68,7 @@ margin-bottom:28px;
 color:#cbd5e1;
 }
 
-/* GRID */
+/* GRID (UNCHANGED) */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
@@ -77,7 +77,7 @@ max-width:1300px;
 margin:auto;
 }
 
-/* CARD */
+/* CARD (UNCHANGED) */
 .card{
 position:relative;
 overflow:hidden;
@@ -104,12 +104,12 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 50%{transform:translateY(-6px);}
 }
 
-/* TEXT ONLY (NO DESIGN CHANGE) */
+/* TEXT (UNCHANGED) */
 .emoji{font-size:2rem;margin-bottom:12px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
 .english{font-size:1rem;opacity:.95;}
 
-/* BUTTON */
+/* BUTTON (UNCHANGED) */
 .play-btn{
 margin-top:18px;
 border:none;
@@ -135,7 +135,7 @@ animation:pulse 1s infinite;
 100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}
 }
 
-/* TOP BAR */
+/* TOPBAR (UNCHANGED) */
 .topbar{
 display:flex;
 justify-content:center;
@@ -153,7 +153,7 @@ cursor:pointer;
 background:linear-gradient(90deg,#facc15,#fde68a);
 }
 
-/* OVERLAY */
+/* OVERLAY (UNCHANGED) */
 #overlay{
 position:fixed;
 inset:0;
@@ -248,7 +248,7 @@ let pendingSurah=null;
 const map={};
 
 /* =========================
-VOICE CUE (NEW)
+VOICE (SAFE)
 ========================= */
 
 function speak(text){
@@ -294,7 +294,7 @@ grid.appendChild(card);
 });
 
 /* =========================
-PLAY LOGIC
+PLAY
 ========================= */
 
 function playSurah(id){
@@ -326,8 +326,7 @@ currentAudio=audio;
 currentButton=button;
 currentCard=card;
 
-/* 🔊 VOICE CUE */
-setTimeout(()=>speak(surah.name),200);
+setTimeout(()=>speak(surah.name),300);
 
 }else{
 
@@ -338,21 +337,23 @@ card.classList.remove("active-tile");
 }
 
 /* =========================
-INSTANT START MODE (FIXED)
+FIXED QR FLOW (STABLE)
 ========================= */
 
-window.addEventListener("load",()=>{
-
-setTimeout(()=>{
+function runQR(){
 
 const params=new URLSearchParams(window.location.search);
 const surah=params.get("surah");
 
-if(surah && map[surah]){
-
-pendingSurah=surah;
+if(!surah || !map[surah])return;
 
 const item=map[surah];
+
+setTimeout(()=>{
+
+document.querySelectorAll(".active-tile")
+.forEach(c=>c.classList.remove("active-tile"));
+
 item.card.classList.add("active-tile");
 
 item.card.scrollIntoView({
@@ -360,16 +361,22 @@ behavior:"smooth",
 block:"center"
 });
 
+currentCard=item.card;
+currentAudio=item.audio;
+currentButton=item.button;
+
+pendingSurah=surah;
+
+/* overlay */
 document.getElementById("overlay").style.display="flex";
 
-/* voice cue on selection */
-setTimeout(()=>speak(item.surah.name),400);
+/* voice cue */
+setTimeout(()=>speak(item.surah.name),500);
 
+},400);
 }
 
-},300);
-
-});
+window.addEventListener("load",runQR);
 
 /* =========================
 OVERLAY CLICK
@@ -387,7 +394,7 @@ document.getElementById("overlay").style.display="none";
 });
 
 /* =========================
-LOOP + STOP
+CONTROLS
 ========================= */
 
 function toggleLoopAll(){
