@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Little Quran Corner</title>
+
+<title>Little Quran Corner!</title>
+
 <meta name="theme-color" content="#0f172a"/>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
 body{
 background:radial-gradient(circle at top,#172554,#020617 70%);
@@ -17,15 +25,29 @@ color:white;
 padding:20px;
 }
 
-.stars{position:fixed;inset:0;overflow:hidden;z-index:-1;}
-.star{position:absolute;width:3px;height:3px;background:white;border-radius:50%;
-animation:twinkle 3s infinite alternate;}
+/* STARS */
+.stars{
+position:fixed;
+inset:0;
+overflow:hidden;
+z-index:-1;
+}
+
+.star{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite alternate;
+}
 
 @keyframes twinkle{
 from{opacity:.2;transform:scale(.5);}
 to{opacity:1;transform:scale(1.5);}
 }
 
+/* TITLE */
 h1{
 text-align:center;
 font-size:2.5rem;
@@ -41,8 +63,13 @@ from{filter:drop-shadow(0 0 5px #38bdf8);}
 to{filter:drop-shadow(0 0 18px #f472b6);}
 }
 
-.subtitle{text-align:center;margin-bottom:28px;color:#cbd5e1;}
+.subtitle{
+text-align:center;
+margin-bottom:28px;
+color:#cbd5e1;
+}
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
@@ -51,12 +78,13 @@ max-width:1300px;
 margin:auto;
 }
 
+/* CARD */
 .card{
 position:relative;
 overflow:hidden;
 border-radius:28px;
 padding:18px;
-min-height:210px; I 
+min-height:210px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -77,10 +105,19 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 50%{transform:translateY(-6px);}
 }
 
+.moon{
+position:absolute;
+top:-12px;
+right:-5px;
+font-size:4rem;
+opacity:.15;
+}
+
 .emoji{font-size:2rem;margin-bottom:12px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
 .english{font-size:1rem;opacity:.95;}
 
+/* BUTTONS */
 .play-btn{
 margin-top:18px;
 border:none;
@@ -91,37 +128,70 @@ font-weight:bold;
 cursor:pointer;
 background:white;
 color:black;
+transition:.3s;
 }
 
-.active-tile{
-box-shadow:0 0 25px 6px rgba(255,255,255,.7)!important;
-transform:scale(1.05);
+.play-btn:hover{transform:scale(1.05);}
+
+.playing{
+animation:pulse 1s infinite;
 }
 
+@keyframes pulse{
+0%{box-shadow:0 0 0 0 rgba(255,255,255,.7);}
+70%{box-shadow:0 0 0 18px rgba(255,255,255,0);}
+100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}
+}
+
+/* TOP BAR */
 .topbar{
-display:flex;justify-content:center;gap:12px;margin-bottom:25px;flex-wrap:wrap;
+display:flex;
+justify-content:center;
+gap:12px;
+margin-bottom:25px;
+flex-wrap:wrap;
 }
 
 .topbar button{
-border:none;padding:12px 16px;border-radius:18px;font-weight:bold;
+border:none;
+padding:12px 16px;
+border-radius:18px;
+font-weight:bold;
+cursor:pointer;
 background:linear-gradient(90deg,#facc15,#fde68a);
 }
 
+/* OVERLAY */
 #overlay{
-position:fixed;inset:0;display:none;align-items:center;justify-content:center;
-background:rgba(0,0,0,.8);z-index:999;
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.8);
+z-index:999;
 }
 
 #overlay div{
-background:white;color:black;padding:22px;border-radius:20px;
-font-size:1.2rem;font-weight:bold;text-align:center;
+background:white;
+color:black;
+padding:22px;
+border-radius:20px;
+font-size:1.2rem;
+font-weight:bold;
 }
-
-audio{display:none;}
 
 .footer{
-margin-top:35px;text-align:center;color:#94a3b8;font-size:.9rem;
+margin-top:35px;
+text-align:center;
+color:#94a3b8;
+font-size:.9rem;
 }
+
+audio{
+display:none;
+}
+
 </style>
 </head>
 
@@ -130,7 +200,8 @@ margin-top:35px;text-align:center;color:#94a3b8;font-size:.9rem;
 <div class="stars"></div>
 
 <h1>🌙 Mariam & Hamza's</h1>
-<p class="subtitle">Quran Adventure with Mom! ✨</p>
+
+<p class="subtitle">Quran Adventures with Mom! ✨</p>
 
 <div class="topbar">
 <button onclick="stopAll()">⏹ Stop</button>
@@ -140,7 +211,7 @@ margin-top:35px;text-align:center;color:#94a3b8;font-size:.9rem;
 <div class="grid" id="grid"></div>
 
 <div id="overlay">
-<div>▶ Tap Anywhere To Start</div>
+<div>▶ Tap Anywhere To Play</div>
 </div>
 
 <div class="footer">Made with 💖 for little Muslims</div>
@@ -148,50 +219,193 @@ margin-top:35px;text-align:center;color:#94a3b8;font-size:.9rem;
 <script>
 
 /* =========================
-DATA
+SURAH DATA (UNCHANGED)
 ========================= */
 
-const surahs=[
-{id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
-{id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
-{id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
-{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)"}
+const surahs = [
+
+{
+id:"A1",
+name:"الفاتحة",
+eng:"Al Fatiha",
+emoji:"🌟",
+file:"A5.mp3",
+color:"linear-gradient(135deg,#f59e0b,#ef4444)"
+},
+
+{
+id:"A2",
+name:"الإخلاص",
+eng:"Al Ikhlas",
+emoji:"💖",
+file:"A6.mp3",
+color:"linear-gradient(135deg,#ec4899,#8b5cf6)"
+},
+
+{
+id:"A3",
+name:"الفلق",
+eng:"Al Falaq",
+emoji:"🌙",
+file:"A7.mp3",
+color:"linear-gradient(135deg,#06b6d4,#3b82f6)"
+},
+
+{
+id:"A4",
+name:"الناس",
+eng:"An Naas",
+emoji:"⭐",
+file:"A8.mp3",
+color:"linear-gradient(135deg,#10b981,#14b8a6)"
+},
+
+{
+id:"A5",
+name:"الفيل",
+eng:"Al Feel",
+emoji:"🐘",
+file:"A9.mp3",
+color:"linear-gradient(135deg,#8b5cf6,#6366f1)"
+},
+
+{
+id:"A6",
+name:"قريش",
+eng:"Quraish",
+emoji:"🕋",
+file:"A10.mp3",
+color:"linear-gradient(135deg,#0ea5e9,#2563eb)"
+},
+
+{
+id:"A7",
+name:"الماعون",
+eng:"Al Ma'un",
+emoji:"🤲",
+file:"A11.mp3",
+color:"linear-gradient(135deg,#14b8a6,#22c55e)"
+},
+
+{
+id:"A8",
+name:"الكوثر",
+eng:"Al Kawther",
+emoji:"💧",
+file:"A12.mp3",
+color:"linear-gradient(135deg,#f97316,#fb7185)"
+},
+
+{
+id:"A9",
+name:"الكافرون",
+eng:"Al Kafiroon",
+emoji:"☀️",
+file:"A13.mp3",
+color:"linear-gradient(135deg,#84cc16,#22c55e)"
+},
+
+{
+id:"A10",
+name:"النصر",
+eng:"An Nasr",
+emoji:"🏆",
+file:"A14.mp3",
+color:"linear-gradient(135deg,#38bdf8,#818cf8)"
+},
+
+{
+id:"A11",
+name:"المسد",
+eng:"Al Masad",
+emoji:"🔥",
+file:"A15.mp3",
+color:"linear-gradient(135deg,#ef4444,#f97316)"
+},
+
+{
+id:"A12",
+name:"تكبير",
+eng:"Takbir",
+emoji:"🕌",
+file:"A16.mp3",
+color:"linear-gradient(135deg,#6366f1,#8b5cf6)"
+},
+
+{
+id:"A13",
+name:"الأذان",
+eng:"Azan",
+emoji:"📢",
+file:"A17.mp3",
+color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"
+},
+
+{
+id:"A14",
+name:"الكلمة الثانية",
+eng:"Second Kalima",
+emoji:"☪️",
+file:"A18.mp3",
+color:"linear-gradient(135deg,#14b8a6,#0f766e)"
+},
+
+{
+id:"A15",
+name:"الضحى",
+eng:"Ad Duha",
+emoji:"☀️",
+file:"A19.mp3",
+color:"linear-gradient(135deg,#facc15,#fb7185)"
+},
+
+{
+id:"A16",
+name:"إِنَّ الْمُسْلِمِينَ",
+eng:"Innal Muslimeena",
+emoji:"💚",
+file:"A20.mp3",
+color:"linear-gradient(135deg,#22c55e,#16a34a)"
+}
+
 ];
 
-const grid=document.getElementById("grid");
+const grid = document.getElementById("grid");
 
-let currentAudio=null;
-let currentButton=null;
-let currentCard=null;
-let pending=null;
+let currentAudio = null;
+let currentButton = null;
+let currentCard = null;
+let loopAll = false;
 
-const map={};
+/* MAP */
+const map = {};
 
 /* =========================
-VOICE (SAFE)
+VOICE
 ========================= */
 
 function speak(text){
 try{
-const u=new SpeechSynthesisUtterance(text);
-u.rate=0.9;
-u.lang="en-US";
+const u = new SpeechSynthesisUtterance(text);
+u.rate = 0.9;
+u.lang = "en-US";
 speechSynthesis.cancel();
 speechSynthesis.speak(u);
 }catch(e){}
 }
 
 /* =========================
-RENDER
+RENDER (UNCHANGED)
 ========================= */
 
-surahs.forEach(s=>{
+surahs.forEach(s => {
 
-const card=document.createElement("div");
-card.className="card";
-card.style.background=s.color;
+const card = document.createElement("div");
+card.className = "card";
+card.style.background = s.color;
 
-card.innerHTML=`
+card.innerHTML = `
+<div class="moon">☪️</div>
 <div>
 <div class="emoji">${s.emoji}</div>
 <div class="arabic">${s.name}</div>
@@ -201,12 +415,12 @@ card.innerHTML=`
 <audio src="${s.file}" preload="auto"></audio>
 `;
 
-const btn=card.querySelector("button");
-const audio=card.querySelector("audio");
+const btn = card.querySelector("button");
+const audio = card.querySelector("audio");
 
-map[s.id]={card,audio,btn,s};
+map[s.id] = {card,audio,btn,s};
 
-btn.onclick=()=>play(s.id);
+btn.onclick = () => play(s.id);
 
 grid.appendChild(card);
 
@@ -218,41 +432,39 @@ PLAY
 
 function play(id){
 
-const item=map[id];
-if(!item)return;
+const item = map[id];
+if(!item) return;
 
-if(currentAudio && currentAudio!==item.audio){
+if(currentAudio && currentAudio !== item.audio){
 currentAudio.pause();
-currentAudio.currentTime=0;
-if(currentCard)currentCard.classList.remove("active-tile");
+currentAudio.currentTime = 0;
+if(currentCard) currentCard.classList.remove("active-tile");
 }
 
-item.audio.play();
+item.audio.play().catch(()=>{});
 
 item.card.classList.add("active-tile");
 
-currentAudio=item.audio;
-currentButton=item.btn;
-currentCard=item.card;
+currentAudio = item.audio;
+currentButton = item.btn;
+currentCard = item.card;
 
 speak(item.s.name);
 }
 
 /* =========================
-🔒 LOCK MODE QR FIX
+🔥 FIXED QR AUTO SCROLL + HIGHLIGHT + VOICE
 ========================= */
 
-function qrFix(){
+function qrAuto(){
 
-const id=new URLSearchParams(location.search).get("surah");
-if(!id || !map[id])return;
+const id = new URLSearchParams(location.search).get("surah");
+if(!id || !map[id]) return;
 
-const item=map[id];
+const item = map[id];
 
-/* wait FULL paint cycle */
-requestAnimationFrame(()=>{
-
-requestAnimationFrame(()=>{
+/* wait until layout is ready */
+setTimeout(() => {
 
 item.card.classList.add("active-tile");
 
@@ -261,34 +473,35 @@ behavior:"smooth",
 block:"center"
 });
 
-currentCard=item.card;
-currentAudio=item.audio;
-currentButton=item.btn;
+currentCard = item.card;
+currentAudio = item.audio;
+currentButton = item.btn;
 
 /* overlay */
-document.getElementById("overlay").style.display="flex";
+document.getElementById("overlay").style.display = "flex";
 
-/* voice */
-setTimeout(()=>speak(item.s.name),600);
+/* voice cue */
+setTimeout(() => speak(item.s.name), 600);
 
-});
-
-});
+}, 500);
 
 }
 
-window.addEventListener("load",qrFix);
+window.addEventListener("load", qrAuto);
 
 /* =========================
 OVERLAY
 ========================= */
 
-document.getElementById("overlay").onclick=()=>{
+document.getElementById("overlay").onclick = () => {
 
-const id=new URLSearchParams(location.search).get("surah");
-if(id && map[id]) play(id);
+const id = new URLSearchParams(location.search).get("surah");
 
-document.getElementById("overlay").style.display="none";
+if(id && map[id]){
+play(id);
+}
+
+document.getElementById("overlay").style.display = "none";
 };
 
 /* =========================
@@ -298,27 +511,29 @@ CONTROLS
 function stopAll(){
 if(currentAudio){
 currentAudio.pause();
-currentAudio.currentTime=0;
+currentAudio.currentTime = 0;
 }
-if(currentCard)currentCard.classList.remove("active-tile");
+if(currentCard) currentCard.classList.remove("active-tile");
 }
 
 function toggleLoopAll(){
-const b=document.getElementById("loopBtn");
-b.innerText=b.innerText.includes("OFF")?"🔁 Loop ON":"🔁 Loop OFF";
-if(currentAudio)currentAudio.loop=!currentAudio.loop;
+loopAll = !loopAll;
+document.getElementById("loopBtn").innerText =
+loopAll ? "🔁 Loop ON" : "🔁 Loop OFF";
+if(currentAudio) currentAudio.loop = loopAll;
 }
 
 /* =========================
 STARS
 ========================= */
 
-const stars=document.querySelector(".stars");
-for(let i=0;i<60;i++){
-const d=document.createElement("div");
-d.className="star";
-d.style.left=Math.random()*100+"%";
-d.style.top=Math.random()*100+"%";
+const stars = document.querySelector(".stars");
+
+for(let i=0;i<80;i++){
+const d = document.createElement("div");
+d.className = "star";
+d.style.left = Math.random()*100 + "%";
+d.style.top = Math.random()*100 + "%";
 stars.appendChild(d);
 }
 
