@@ -106,6 +106,9 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 50%{transform:translateY(-6px);}
 }
 
+/* REMOVED ICON AS REQUESTED */
+
+/* TEXT */
 .emoji{font-size:2rem;margin-bottom:12px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
 .english{font-size:1rem;opacity:.95;}
@@ -172,6 +175,7 @@ padding:22px;
 border-radius:20px;
 font-size:1.2rem;
 font-weight:bold;
+text-align:center;
 }
 
 /* ACTIVE TILE */
@@ -208,14 +212,17 @@ audio{display:none;}
 <div class="grid" id="grid"></div>
 
 <div id="overlay">
-<div>▶ Tap Anywhere To Play</div>
+<div>▶ Tap Anywhere To Start</div>
 </div>
 
 <div class="footer">Made with 💖 for little Muslims</div>
 
 <script>
 
-/* SURAH DATA (UNCHANGED) */
+/* =========================
+DATA
+========================= */
+
 const surahs = [
 {id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
 {id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
@@ -235,16 +242,20 @@ const surahs = [
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-const grid = document.getElementById("grid");
+const grid=document.getElementById("grid");
 
 let currentAudio=null;
 let currentButton=null;
 let currentCard=null;
 let loopAll=false;
+let pendingSurah=null;
 
 const map={};
 
-/* RENDER */
+/* =========================
+RENDER
+========================= */
+
 surahs.forEach(s=>{
 
 const card=document.createElement("div");
@@ -269,9 +280,13 @@ map[s.id]={card,audio,button};
 button.addEventListener("click",()=>playSurah(s.id));
 
 grid.appendChild(card);
+
 });
 
-/* PLAY + HIGHLIGHT */
+/* =========================
+PLAY
+========================= */
+
 function playSurah(id){
 
 const item=map[id];
@@ -295,7 +310,6 @@ document.getElementById("overlay").style.display="flex";
 });
 
 button.innerHTML="⏸ Pause";
-
 card.classList.add("active-tile");
 
 currentAudio=audio;
@@ -310,16 +324,42 @@ card.classList.remove("active-tile");
 }
 }
 
-/* QR AUTO PLAY */
+/* =========================
+INSTANT START MODE (QR SAFE)
+========================= */
+
 window.addEventListener("load",()=>{
+
 const params=new URLSearchParams(window.location.search);
 const surah=params.get("surah");
+
 if(surah && map[surah]){
-setTimeout(()=>playSurah(surah),500);
+
+pendingSurah=surah;
+
+const item=map[surah];
+item.card.classList.add("active-tile");
+item.card.scrollIntoView({behavior:"smooth",block:"center"});
+
+document.getElementById("overlay").style.display="flex";
 }
 });
 
-/* LOOP */
+document.getElementById("overlay").addEventListener("click",()=>{
+
+if(pendingSurah){
+playSurah(pendingSurah);
+pendingSurah=null;
+}
+
+document.getElementById("overlay").style.display="none";
+
+});
+
+/* =========================
+LOOP + STOP
+========================= */
+
 function toggleLoopAll(){
 loopAll=!loopAll;
 document.getElementById("loopBtn").innerHTML=
@@ -327,7 +367,6 @@ loopAll?"🔁 Loop ON":"🔁 Loop OFF";
 if(currentAudio)currentAudio.loop=loopAll;
 }
 
-/* STOP */
 function stopAll(){
 if(currentAudio){
 currentAudio.pause();
@@ -337,15 +376,10 @@ if(currentButton)currentButton.innerHTML="▶ Play";
 if(currentCard)currentCard.classList.remove("active-tile");
 }
 
-/* OVERLAY */
-document.getElementById("overlay").addEventListener("click",()=>{
-if(currentAudio){
-currentAudio.play();
-document.getElementById("overlay").style.display="none";
-}
-});
+/* =========================
+STARS
+========================= */
 
-/* STARS */
 const stars=document.querySelector(".stars");
 
 for(let i=0;i<90;i++){
