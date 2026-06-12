@@ -30,7 +30,8 @@ padding:20px;
 position:fixed;
 inset:0;
 overflow:hidden;
-z-index:-1;
+pointer-events:none;
+z-index:0;
 }
 
 .star{
@@ -93,7 +94,8 @@ background:linear-gradient(90deg,#facc15,#fde68a);
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
 gap:18px;
-max-width:1300px;
+max-width:none;
+width:100%;
 margin:auto;
 }
 
@@ -124,13 +126,6 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 50%{transform:translateY(-6px);}
 }
 
-.moon{
-position:absolute;
-top:-12px;
-right:-5px;
-font-size:4rem;
-opacity:.15;
-}
 
 .emoji{font-size:2rem;margin-bottom:12px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
@@ -153,6 +148,13 @@ transition:.3s;
 .active-tile{
 box-shadow:0 0 25px 6px rgba(255,255,255,.7)!important;
 transform:scale(1.05);
+}
+
+.remote-focus{
+outline:4px solid #fff;
+outline-offset:4px;
+transform:scale(1.05);
+box-shadow:0 0 30px rgba(255,255,255,.9);
 }
 
 /* OVERLAY */
@@ -185,6 +187,71 @@ color:#94a3b8;
 font-size:.9rem;
 }
 
+
+body{
+padding-bottom:90px;
+}
+
+.credits{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+padding:8px;
+text-align:center;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(8px);
+z-index:1000;
+}
+
+.amtun{
+font-family:cursive;
+font-size:1.4rem;
+font-weight:900;
+letter-spacing:3px;
+text-transform:uppercase;
+background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
+background-size:400% 100%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:rainbowSparkle 5s linear infinite;
+}
+
+@keyframes rainbowSparkle{
+0%{background-position:0% 50%;filter:drop-shadow(0 0 4px white);}
+100%{background-position:400% 50%;filter:drop-shadow(0 0 10px white);}
+}
+
+
+body>*{
+position:relative;
+z-index:1;
+}
+
+.star{
+animation:twinkle 3s infinite alternate, drift 25s linear infinite;
+}
+
+@keyframes drift{
+from{transform:translateY(0px);}
+to{transform:translateY(-120px);}
+}
+
+.sparkle{
+position:absolute;
+width:2px;
+height:2px;
+border-radius:50%;
+background:white;
+opacity:.8;
+animation:sparkleFloat 12s linear infinite;
+}
+
+@keyframes sparkleFloat{
+0%{transform:translateY(40px);opacity:0;}
+20%{opacity:1;}
+100%{transform:translateY(-140px);opacity:0;}
+}
 </style>
 </head>
 
@@ -203,7 +270,7 @@ font-size:.9rem;
 <select id="mode">
 <option value="listen" selected>🎧 Listen Mode</option>
 <option value="learn">📖 Learn Mode</option>
-<option value="silent">🔇 Silent Mode</option>
+
 </select>
 
 </div>
@@ -214,7 +281,11 @@ font-size:.9rem;
 <div>▶ Tap Anywhere To Start</div>
 </div>
 
-<div class="footer">Made with 💖 for little Muslims</div>
+<div class="credits">
+<div>Created by</div>
+<div class="amtun">AMTUN NOOR</div>
+<div>May 2026</div>
+</div>
 
 <script>
 
@@ -274,13 +345,13 @@ card.className="card";
 card.style.background=s.color;
 
 card.innerHTML=`
-<div class="moon">☪️</div>
+
 <div>
 <div class="emoji">${s.emoji}</div>
 <div class="arabic">${s.name}</div>
 <div class="english">${s.eng}</div>
 </div>
-<button class="play-btn">▶ Play</button>
+<button class="play-btn">⏸ Pause</button>
 <audio src="${s.file}" preload="auto"></audio>
 `;
 
@@ -289,7 +360,8 @@ const audio=card.querySelector("audio");
 
 map[s.id]={card,audio,btn,s};
 
-btn.onclick=()=>play(s.id);
+card.onclick=()=>play(s.id);
+btn.onclick=(e)=>{e.stopPropagation();pauseCurrent();};
 
 grid.appendChild(card);
 
@@ -409,6 +481,56 @@ loopAll?"🔁 Loop ON":"🔁 Loop OFF";
 if(currentAudio)currentAudio.loop=loopAll;
 }
 
+
+function pauseCurrent(){
+if(currentAudio){
+currentAudio.pause();
+}
+}
+
+let focusedIndex=0;
+
+function updateFocus(){
+const cards=[...document.querySelectorAll(".card")];
+cards.forEach(c=>c.classList.remove("remote-focus"));
+if(cards[focusedIndex]){
+cards[focusedIndex].classList.add("remote-focus");
+cards[focusedIndex].scrollIntoView({block:"nearest",behavior:"smooth"});
+}
+}
+
+window.addEventListener("load",()=>{
+updateFocus();
+});
+
+document.addEventListener("keydown",(e)=>{
+const cards=[...document.querySelectorAll(".card")];
+if(!cards.length)return;
+const cols=Math.max(1,Math.round(grid.offsetWidth/cards[0].offsetWidth));
+
+switch(e.key){
+case "ArrowRight":
+focusedIndex=Math.min(cards.length-1,focusedIndex+1);
+updateFocus();
+break;
+case "ArrowLeft":
+focusedIndex=Math.max(0,focusedIndex-1);
+updateFocus();
+break;
+case "ArrowDown":
+focusedIndex=Math.min(cards.length-1,focusedIndex+cols);
+updateFocus();
+break;
+case "ArrowUp":
+focusedIndex=Math.max(0,focusedIndex-cols);
+updateFocus();
+break;
+case "Enter":
+play(surahs[focusedIndex].id);
+break;
+}
+});
+
 /* =========================
 STARS
 ========================= */
@@ -421,6 +543,25 @@ d.style.left=Math.random()*100+"%";
 d.style.top=Math.random()*100+"%";
 stars.appendChild(d);
 }
+
+
+for(let i=0;i<40;i++){
+const s=document.createElement("div");
+s.className="sparkle";
+s.style.left=Math.random()*100+"%";
+s.style.top=Math.random()*100+"%";
+stars.appendChild(s);
+}
+
+document.addEventListener("keyup",(e)=>{
+const okKeys=["Enter","NumpadEnter"," ","OK","Select"];
+if(okKeys.includes(e.key)){
+const cards=[...document.querySelectorAll(".card")];
+if(cards[focusedIndex]){
+play(surahs[focusedIndex].id);
+}
+}
+});
 
 </script>
 
