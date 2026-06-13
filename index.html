@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
 <title>My Little Quran Corner!</title>
 
 <meta name="theme-color" content="#0f172a"/>
@@ -21,23 +22,25 @@ user-select: none;
 body{
 background:radial-gradient(circle at top,#172554,#020617 70%);
 min-height:100vh;
+overflow-x:hidden;
 color:white;
-display:flex;
-flex-direction:column;
-cursor:none;
-overflow-x: hidden;
+padding:20px;
+display: flex;
+flex-direction: column;
 }
 
-/* TV specific clamping rules - only applied if device is TV/Laptop */
+/* Intelligent TV Clamping Override rules */
 body.tv-mode {
 height: 100vh;
 overflow: hidden;
+padding: 15px;
 }
 
-/* ================= ORIGINAL BACKGROUND STARS ANIMATION ================= */
+/* ================= STARS & BACKGROUND ANIMATIONS ================= */
 .stars{
 position:fixed;
 inset:0;
+overflow:hidden;
 pointer-events:none;
 z-index:0;
 }
@@ -52,19 +55,36 @@ animation:twinkle 3s infinite alternate, drift 25s linear infinite;
 }
 
 @keyframes twinkle{
-0%{opacity:.2;transform:scale(.5);}
-100%{opacity:1;transform:scale(1.5);}
+from{opacity:.2;transform:scale(.5);}
+to{opacity:1;transform:scale(1.5);}
 }
 
 @keyframes drift{
-from{transform:translateY(0);}
+from{transform:translateY(0px);}
 to{transform:translateY(-120px);}
 }
 
-/* ================= TITLE ================= */
+.sparkle{
+position:absolute;
+width:2px;
+height:2px;
+border-radius:50%;
+background:white;
+opacity:.8;
+animation:sparkleFloat 12s linear infinite;
+}
+
+@keyframes sparkleFloat{
+0%{transform:translateY(40px);opacity:0;}
+20%{opacity:1;}
+100%{transform:translateY(-140px);opacity:0;}
+}
+
+/* ================= TITLE HEADER STYLING ================= */
 h1{
 text-align:center;
-font-size:clamp(1.5rem,3vh,3rem);
+font-size:2.5rem;
+margin-bottom:8px;
 background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
@@ -78,169 +98,238 @@ to{filter:drop-shadow(0 0 18px #f472b6);}
 
 .subtitle{
 text-align:center;
+margin-bottom:28px;
 color:#cbd5e1;
-font-size:clamp(.8rem,1.4vh,1.2rem);
-margin-bottom:1vh;
 }
 
-/* ================= TOPBAR ================= */
+/* ================= CONTROL TOPBAR ================= */
 .topbar{
 display:flex;
 justify-content:center;
 gap:12px;
+margin-bottom:25px;
 flex-wrap:wrap;
-margin-bottom:10px;
 z-index: 10;
 }
 
 .topbar button,
 .topbar select{
 border:none;
-padding:10px 14px;
-border-radius:16px;
+padding:12px 16px;
+border-radius:18px;
 font-weight:bold;
+cursor:pointer;
 background:linear-gradient(90deg,#facc15,#fde68a);
-cursor: pointer;
 }
 
 /* ================= GRID ENGINE ================= */
 .grid{
 display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:1.5vh;
+grid-template-columns:repeat(4, 1fr);
+gap:18px;
+max-width:none;
 width:100%;
-padding: 25px 15px 15px 15px; /* Prevents top white outline clipping on TV */
+margin:auto;
+flex: 1;
 }
 
-body.tv-mode .grid {
-flex:1;
-grid-template-rows:repeat(4,1fr);
-gap:1vh;
-padding: 25px 15px;
-}
-
+/* Responsive columns handling for small phone screens */
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, 1fr) !important;
-    grid-template-rows: auto !important;
   }
 }
 
-/* ================= CARD (RESTORED EXACT TEXT/EMOJI FILL UTILIZATION) ================= */
+body.tv-mode .grid {
+  grid-template-rows: repeat(4, 1fr);
+  gap: 12px;
+  padding-top: 5px;
+}
+
+/* ================= CARD DESIGN & MAX-SPACE UTILIZATION ================= */
 .card{
 position:relative;
-border-radius:24px;
-padding:12px;
+overflow:hidden;
+border-radius:28px;
+padding:18px;
+min-height:210px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
+cursor:pointer;
+transition:.3s;
 backdrop-filter:blur(10px);
-box-shadow:0 0 15px rgba(255,255,255,.1);
-transition:.2s;
-aspect-ratio:1/1;
-cursor: pointer;
+box-shadow:0 0 20px rgba(255,255,255,.1);
+animation:float 4s ease-in-out infinite;
 height: 100%;
 width: 100%;
 }
 
-.card:active{
-transform:scale(.98);
+.card:hover{
+transform:translateY(-8px) scale(1.03);
+box-shadow:0 0 30px rgba(255,255,255,.35);
 }
 
-.emoji{font-size:clamp(1.2rem,2.2vh,2.4rem);}
-.arabic{font-size:clamp(1rem,2.2vh,1.8rem);font-weight:bold;}
-.english{font-size:clamp(.7rem,1.4vh,1rem);opacity:.9;}
-
-/* ================= RESTORED CARD PLAYING STATE (YELLOW GRADIENT PAUSE FALLBACK) ================= */
-.card.active-tile {
-  background: linear-gradient(135deg, #facc15, #fde68a) !important;
-  animation:playPulse 1.5s infinite;
-  box-shadow:0 0 25px white;
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
 }
 
-/* Inverse card content color to dark only when playing so text remains perfectly readable */
-.card.active-tile .emoji,
-.card.active-tile .arabic,
-.card.active-tile .english {
+/* Restored proportional layouts filling whole layout tiles */
+.card-info-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.emoji{font-size:2.2rem; margin-bottom:8px;}
+.arabic{font-size:1.8rem;font-weight:bold;margin-bottom:4px;}
+.english{font-size:1.05rem;opacity:.95;}
+
+/* ================= BUTTONS & SPECIFIC PAUSE PLAY GRADIENT ================= */
+.play-btn{
+margin-top:14px;
+border:none;
+border-radius:18px;
+padding:12px;
+font-size:1rem;
+font-weight:bold;
+cursor:pointer;
+background:white;
+color:black;
+transition:.3s;
+position: relative;
+z-index: 5;
+width: 100%;
+}
+
+/* Yellow gradient background selectively maps onto active button only */
+.active-tile .play-btn {
+  background: linear-gradient(90deg, #facc15, #fde68a) !important;
   color: #020617 !important;
-  opacity: 1;
 }
 
-/* ================= FOCUS AND ACTIONS ================= */
+.active-tile{
+box-shadow:0 0 25px 6px rgba(255,255,255,.7)!important;
+transform:scale(1.04);
+}
+
 .remote-focus{
-outline:5px solid white;
+outline:5px solid #fff;
 outline-offset:4px;
-z-index:10;
-transform:scale(1.05);
+transform:scale(1.04);
+box-shadow:0 0 30px rgba(255,255,255,.9);
+z-index: 10;
 }
 
-@keyframes playPulse{
-0%,100%{transform:scale(1.03);}
-50%{transform:scale(1.08);}
+/* ================= OVERLAY BLANKET ================= */
+#overlay{
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.8);
+z-index:999;
 }
 
-/* ================= CREDITS (3 LINES - ALWAYS VISIBLE) ================= */
+#overlay div{
+background:white;
+color:black;
+padding:22px;
+border-radius:20px;
+font-size:1.2rem;
+font-weight:bold;
+text-align:center;
+}
+
+audio{display:none;}
+
+body{
+padding-bottom:90px;
+}
+
+/* ================= CREDITS STACK ================= */
 .credits{
 position:relative;
+margin-top: 25px;
+padding:12px 8px;
 text-align:center;
-padding:12px 6px;
-font-size:0.95rem;
-background:rgba(0,0,0,.4);
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(8px);
 z-index: 10;
-margin-top: auto;
-line-height: 1.5;
+width: 100%;
+line-height: 1.4;
 font-weight: bold;
+}
+
+body.tv-mode .credits {
+  position: relative;
+  margin-top: auto;
+  padding: 6px;
+  bottom: unset;
 }
 
 .amtun{
 display: inline-block;
-font-family: cursive;
-font-weight: 900;
-font-size: 1.6rem;
-letter-spacing: 1px;
-background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet, red);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-animation: rainbow 4s linear infinite;
-background-size: 400% auto;
-filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
+font-family:cursive;
+font-size:1.5rem;
+font-weight:900;
+letter-spacing:3px;
+text-transform:uppercase;
+background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
+background-size:400% 100%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:rainbowSparkle 5s linear infinite;
 }
 
-@keyframes rainbow{
-0%{background-position:0% 50%;}
-100%{background-position:400% 50%;}
+@keyframes rainbowSparkle{
+0%{background-position:0% 50%;filter:drop-shadow(0 0 4px white);}
+100%{background-position:400% 50%;filter:drop-shadow(0 0 10px white);}
+}
+
+body>*{
+position:relative;
+z-index:1;
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars" id="starField"></div>
+<div class="stars"></div>
 
-<h1>🌙 Mariam & Hamza's 🌙</h1>
-<div class="subtitle">✨ Quran Adventures ✨</div>
+<h1>🌙 Mariam & Hamza's 🌙 </h1>
+<p class="subtitle">✨Quran Adventures with Mom!✨</p>
 
 <div class="topbar">
-<button onclick="stopAll()">Stop</button>
-<button onclick="toggleLoop()">Loop</button>
+<button onclick="stopAll()">⏹ Stop</button>
+<button onclick="toggleLoopAll()" id="loopBtn">🔁 Loop OFF</button>
+
 <select id="mode">
-<option value="listen">Listen</option>
-<option value="learn">Learn</option>
+<option value="listen" selected>🎧 Listen Mode</option>
+<option value="learn">📖 Learn Mode</option>
 </select>
 </div>
 
 <div class="grid" id="grid"></div>
 
+<div id="overlay">
+<div>▶ Tap Anywhere To Start</div>
+</div>
+
 <div class="credits">
-Created By:<br/>
-<span class="amtun">AMTUN NOOR</span><br/>
-May 2026
+<div>Created by</div>
+<div class="amtun">AMTUN NOOR</div>
+<div>May 2026</div>
 </div>
 
 <script>
 /* ================= DATA ENGINE ================= */
-
-const surahs=[
+const surahs = [
 {id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
 {id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
 {id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
@@ -259,14 +348,15 @@ const surahs=[
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-/* ================= ADAPTIVE ENGINE MODE DETECTOR ================= */
+/* ================= STATE & AUTOMATED DETECTOR ================= */
 const TV = {
   cols: window.innerWidth <= 768 ? 2 : 4,
   focused: 0,
   isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
 };
 
-if (TV.isTV && window.innerWidth > 768) {
+// Apply layout view constraints immediately if system scales into TV criteria
+if(TV.isTV && window.innerWidth > 768) {
   document.body.classList.add("tv-mode");
 }
 
@@ -279,83 +369,106 @@ window.addEventListener("resize", () => {
   }
 });
 
+const grid = document.getElementById("grid");
 let currentAudio = null;
-let loop = false;
+let currentButton = null;
+let currentCard = null;
+let loopAll = false;
+const map = {};
 
-/* ================= RENDER STAR GENERATOR FOR ORIGINAL BACKGROUND ================= */
-const starField = document.getElementById("starField");
-for(let i=0; i<35; i++){
-  const star = document.createElement("div");
-  star.className = "star";
-  star.style.left = Math.random() * 100 + "vw";
-  star.style.top = Math.random() * 100 + "vh";
-  star.style.animationDelay = Math.random() * 3 + "s";
-  starField.appendChild(star);
+/* ================= AUDIO VOICE GENERATOR ================= */
+function speak(text){
+try{
+const u=new SpeechSynthesisUtterance(text);
+u.rate=0.9;
+speechSynthesis.cancel();
+speechSynthesis.speak(u);
+}catch(e){}
 }
 
-/* ================= RENDER CARDS ================= */
-const grid = document.getElementById("grid");
+/* ================= GENERATE TILES ================= */
+surahs.forEach((s, idx) => {
+const card = document.createElement("div");
+card.className = "card";
+card.style.background = s.color;
 
-surahs.forEach((s, i) => {
-  const c = document.createElement("div");
-  c.className = "card";
-  c.style.background = s.color;
+card.innerHTML = `
+<div class="card-info-box">
+  <div class="emoji">${s.emoji}</div>
+  <div class="arabic">${s.name}</div>
+  <div class="english">${s.eng}</div>
+</div>
+<button class="play-btn">⏸ Pause</button>
+<audio src="${s.file}" preload="auto"></audio>
+`;
 
-  c.innerHTML = `
-    <div class="emoji">${s.emoji}</div>
-    <div class="arabic">${s.name}</div>
-    <div class="english">${s.eng}</div>
-    <audio src="${s.file}" preload="none"></audio>
-  `;
+const btn = card.querySelector("button");
+const audio = card.querySelector("audio");
 
-  c.onclick = () => {
-    TV.focused = i;
-    updateFocus();
-    play(i);
-  };
-  grid.appendChild(c);
+map[s.id] = {card, audio, btn, s, index: idx};
+
+card.onclick = () => {
+  TV.focused = idx;
+  updateFocus();
+  play(s.id);
+};
+
+btn.onclick = (e) => {
+  e.stopPropagation();
+  pauseCurrent();
+};
+
+grid.appendChild(card);
 });
 
-/* ================= PRELOAD SYSTEM BUFFER ================= */
-function preloadBuffer(currentIndex) {
-  const lookAhead = 2; 
-  for (let i = 1; i <= lookAhead; i++) {
-    let nextIndex = (currentIndex + i) % surahs.length;
-    const cards = document.querySelectorAll(".card");
-    if(cards[nextIndex]) {
-      const audio = cards[nextIndex].querySelector("audio");
-      if (audio && audio.preload !== "auto") audio.preload = "auto";
-    }
-  }
+function getMode(){
+return document.getElementById("mode").value;
 }
 
-/* ================= AUDIO CONTROLS ================= */
-function play(i) {
-  const cards = [...document.querySelectorAll(".card")];
-  cards.forEach(c => c.classList.remove("active-tile"));
-  
-  const item = cards[i].querySelector("audio");
+/* ================= CONTROL METHODS ================= */
+function play(id){
+const item = map[id];
+if(!item)return;
 
-  if (currentAudio) {
-    currentAudio.pause();
-  }
-
-  currentAudio = item;
-  if(currentAudio) {
-    currentAudio.loop = loop;
-    currentAudio.play().then(() => {
-      cards[i].classList.add("active-tile");
-    }).catch(e => console.log("Media channel verified:", e));
-  }
-
-  const mode = document.getElementById("mode").value;
-  if (mode === "learn") {
-    speechSynthesis.cancel();
-    speechSynthesis.speak(new SpeechSynthesisUtterance(surahs[i].name));
-  }
+if(currentAudio && currentAudio !== item.audio){
+  currentAudio.pause();
+  currentAudio.currentTime = 0;
+  if(currentCard) currentCard.classList.remove("active-tile");
 }
 
-/* ================= D-PAD MOTIONS ================= */
+item.audio.play().catch(()=>{});
+item.card.classList.add("active-tile");
+
+currentAudio = item.audio;
+currentButton = item.btn;
+currentCard = item.card;
+
+if(getMode() !== "silent"){
+  speak(item.s.name);
+}
+}
+
+function pauseCurrent(){
+if(currentAudio){
+  currentAudio.pause();
+}
+}
+
+function stopAll(){
+if(currentAudio){
+  currentAudio.pause();
+  currentAudio.currentTime = 0;
+}
+if(currentCard) currentCard.classList.remove("active-tile");
+}
+
+function toggleLoopAll(){
+loopAll = !loopAll;
+document.getElementById("loopBtn").innerText = loopAll ? "🔁 Loop ON" : "🔁 Loop OFF";
+if(currentAudio) currentAudio.loop = loopAll;
+}
+
+/* ================= GRID D-PAD NAVIGATION ENGINE ================= */
 function move(dir){
   const max = surahs.length - 1;
 
@@ -375,9 +488,8 @@ function updateFocus(){
   if(!el) return;
 
   el.classList.add("remote-focus");
-  preloadBuffer(TV.focused);
 
-  if (TV.isTV) {
+  if(TV.isTV){
     el.scrollIntoView({
       block: "center",
       behavior: "smooth"
@@ -385,43 +497,83 @@ function updateFocus(){
   }
 }
 
-function stopAll(){
-  if(currentAudio){
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-  }
-  document.querySelectorAll(".card").forEach(c => c.classList.remove("active-tile"));
-}
-
-function toggleLoop(){
-  loop = !loop;
-  if(currentAudio) currentAudio.loop = loop;
-}
-
-/* ================= REMOTE RECEIVER DELEGATES ================= */
-document.addEventListener("keydown",(e)=>{
+/* ================= SYSTEM CONTROL EVENT RECEPTORS ================= */
+document.addEventListener("keydown", (e) => {
   const k = e.keyCode;
 
-  if(k === 21 || e.key === "ArrowLeft") move("left");
-  if(k === 22 || e.key === "ArrowRight") move("right");
-  if(k === 19 || e.key === "ArrowUp") move("up");
-  if(k === 20 || e.key === "ArrowDown") move("down");
+  if(k === 21 || e.key === "ArrowLeft") { e.preventDefault(); move("left"); }
+  if(k === 22 || e.key === "ArrowRight") { e.preventDefault(); move("right"); }
+  if(k === 19 || e.key === "ArrowUp") { e.preventDefault(); move("up"); }
+  if(k === 20 || e.key === "ArrowDown") { e.preventDefault(); move("down"); }
 
-  if(k === 23 || k === 66 || e.key === "Enter"){
-    play(TV.focused);
+  const okKeys = ["Enter", "NumpadEnter", " ", "OK", "Select"];
+  if(k === 23 || k === 66 || okKeys.includes(e.key)){
+    e.preventDefault();
+    if(surahs[TV.focused]) {
+      play(surahs[TV.focused].id);
+    }
   }
 });
 
-window.onload = () => {
-  const id = new URLSearchParams(location.search).get("id");
-  if(id){
-    const index = surahs.findIndex(s => s.id === id);
-    if(index >= 0) {
-      TV.focused = index;
-      play(index);
-    }
+/* ================= BACKGROUND PARTICLES BUILDER ================= */
+const starsContainer = document.querySelector(".stars");
+for(let i=0; i<80; i++){
+  const d = document.createElement("div");
+  d.className = "star";
+  d.style.left = Math.random() * 100 + "%";
+  d.style.top = Math.random() * 100 + "%";
+  starsContainer.appendChild(d);
+}
+
+for(let i=0; i<40; i++){
+  const s = document.createElement("div");
+  s.className = "sparkle";
+  s.style.left = Math.random() * 100 + "%";
+  s.style.top = Math.random() * 100 + "%";
+  starsContainer.appendChild(s);
+}
+
+/* ================= QR LINK ALLOCATION HANDLING ================= */
+function qrFix(){
+  const params = new URLSearchParams(location.search);
+  const id = params.get("id") || params.get("surah");
+
+  if(!id || !map[id]) {
+    updateFocus();
+    return;
   }
-  updateFocus();
+
+  const item = map[id];
+  TV.focused = item.index;
+
+  setTimeout(() => {
+    item.card.classList.add("active-tile");
+    item.card.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    currentCard = item.card;
+    currentAudio = item.audio;
+    currentButton = item.btn;
+
+    document.getElementById("overlay").style.display = "flex";
+
+    if(getMode() !== "silent"){
+      setTimeout(() => speak(item.s.name), 600);
+    }
+    updateFocus();
+  }, 500);
+}
+
+window.addEventListener("load", qrFix);
+
+document.getElementById("overlay").onclick = () => {
+  const id = new URLSearchParams(location.search).get("id") || new URLSearchParams(location.search).get("surah");
+  if(id && map[id]){
+    play(id);
+  }
+  document.getElementById("overlay").style.display = "none";
 };
 </script>
 
