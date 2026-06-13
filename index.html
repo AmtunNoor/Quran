@@ -244,7 +244,7 @@ inset:0;
 display:none;
 align-items:center;
 justify-content:center;
-background:rgba(0,0,0,.8);
+background:rgba(0,0,0,.85);
 z-index:999;
 }
 
@@ -256,6 +256,8 @@ border-radius:20px;
 font-size:1.2rem;
 font-weight:bold;
 text-align:center;
+cursor: pointer;
+box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 }
 
 audio{display:none;}
@@ -287,13 +289,6 @@ font-weight: bold;
 box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
 }
 
-body.tv-mode .credits {
-  position: relative;
-  margin-top: auto;
-  padding: 6px;
-  bottom: unset;
-}
-
 .amtun{
 display: inline-block;
 font-family:cursive;
@@ -316,6 +311,26 @@ animation:rainbowSparkle 5s linear infinite;
 body>*{
 position:relative;
 z-index:1;
+}
+
+/* =======================================================
+   ISOLATED TV LAYOUT ADJUSTMENTS (LEAVES SMARTPHONES PERFECT)
+   ======================================================= */
+body.tv-mode h1 {
+  margin-top: 25px !important; /* Added safe head clearance padding */
+  font-size: 2.8rem !important;
+}
+
+body.tv-mode .subtitle {
+  margin-bottom: 30px !important; /* Elegant spacing allocation down to grid */
+}
+
+body.tv-mode .credits {
+  position: fixed !important; /* Forces layout credit strip to sit pinned on TV viewports */
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: rgba(15, 23, 42, 0.85) !important; /* Higher contrast visibility */
 }
 </style>
 </head>
@@ -340,7 +355,7 @@ z-index:1;
 <div class="grid" id="grid"></div>
 
 <div id="overlay">
-<div>▶ Tap Anywhere To Start</div>
+<div>▶ Tap Anywhere / Press OK To Start</div>
 </div>
 
 <div class="credits">
@@ -519,9 +534,33 @@ function updateFocus(){
   }
 }
 
+/* ================= INTERACTIVE OVERLAY DISMISSAL ================= */
+function handleOverlayDismissal() {
+  const overlay = document.getElementById("overlay");
+  if (overlay && overlay.style.display !== "none") {
+    const id = new URLSearchParams(location.search).get("id") || new URLSearchParams(location.search).get("surah");
+    if(id && map[id]){
+      play(id);
+    }
+    overlay.style.display = "none";
+    return true;
+  }
+  return false;
+}
+
 /* ================= SYSTEM CONTROL EVENT RECEPTORS ================= */
 document.addEventListener("keydown", (e) => {
   const k = e.keyCode;
+
+  // If overlay is up, any direction or OK input clears it instantly
+  if (document.getElementById("overlay").style.display === "flex") {
+    const okKeys = ["Enter", "NumpadEnter", " ", "OK", "Select"];
+    if (k === 23 || k === 66 || okKeys.includes(e.key) || k === 19 || k === 20 || k === 21 || k === 22 || e.key.startsWith("Arrow")) {
+      e.preventDefault();
+      handleOverlayDismissal();
+      return;
+    }
+  }
 
   if(k === 21 || e.key === "ArrowLeft") { e.preventDefault(); move("left"); }
   if(k === 22 || e.key === "ArrowRight") { e.preventDefault(); move("right"); }
@@ -591,11 +630,7 @@ function qrFix(){
 window.addEventListener("load", qrFix);
 
 document.getElementById("overlay").onclick = () => {
-  const id = new URLSearchParams(location.search).get("id") || new URLSearchParams(location.search).get("surah");
-  if(id && map[id]){
-    play(id);
-  }
-  document.getElementById("overlay").style.display = "none";
+  handleOverlayDismissal();
 };
 </script>
 
