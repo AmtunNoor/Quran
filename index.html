@@ -28,7 +28,40 @@ cursor:none;
 overflow-x: hidden;
 }
 
-/* ================= TITLE ANIMATIONS ================= */
+/* TV specific clamping rules - only applied if device is TV/Laptop */
+body.tv-mode {
+height: 100vh;
+overflow: hidden;
+}
+
+/* ================= ORIGINAL BACKGROUND STARS ANIMATION ================= */
+.stars{
+position:fixed;
+inset:0;
+pointer-events:none;
+z-index:0;
+}
+
+.star{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite alternate, drift 25s linear infinite;
+}
+
+@keyframes twinkle{
+0%{opacity:.2;transform:scale(.5);}
+100%{opacity:1;transform:scale(1.5);}
+}
+
+@keyframes drift{
+from{transform:translateY(0);}
+to{transform:translateY(-120px);}
+}
+
+/* ================= TITLE ================= */
 h1{
 text-align:center;
 font-size:clamp(1.5rem,3vh,3rem);
@@ -36,7 +69,6 @@ background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:glow 3s infinite alternate;
-margin-top: 15px;
 }
 
 @keyframes glow{
@@ -76,22 +108,29 @@ cursor: pointer;
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:1.5vh;
-flex:1;
 width:100%;
-padding: 20px 15px;
+padding: 25px 15px 15px 15px; /* Prevents top white outline clipping on TV */
+}
+
+body.tv-mode .grid {
+flex:1;
+grid-template-rows:repeat(4,1fr);
+gap:1vh;
+padding: 25px 15px;
 }
 
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: auto !important;
   }
 }
 
-/* ================= CARD PROPORTIONS ================= */
+/* ================= CARD (RESTORED EXACT TEXT/EMOJI FILL UTILIZATION) ================= */
 .card{
 position:relative;
 border-radius:24px;
-padding:14px;
+padding:12px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -100,6 +139,8 @@ box-shadow:0 0 15px rgba(255,255,255,.1);
 transition:.2s;
 aspect-ratio:1/1;
 cursor: pointer;
+height: 100%;
+width: 100%;
 }
 
 .card:active{
@@ -110,36 +151,22 @@ transform:scale(.98);
 .arabic{font-size:clamp(1rem,2.2vh,1.8rem);font-weight:bold;}
 .english{font-size:clamp(.7rem,1.4vh,1rem);opacity:.9;}
 
-/* ================= GIANT PAUSE OVERLAY ================= */
-.pause-overlay {
-  position: absolute;
-  inset: 0;
-  border-radius: 24px;
-  background: linear-gradient(135deg, rgba(250, 204, 21, 0.9), rgba(253, 230, 138, 0.95));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 2;
+/* ================= RESTORED CARD PLAYING STATE (YELLOW GRADIENT PAUSE FALLBACK) ================= */
+.card.active-tile {
+  background: linear-gradient(135deg, #facc15, #fde68a) !important;
+  animation:playPulse 1.5s infinite;
+  box-shadow:0 0 25px white;
 }
 
-.pause-overlay::before,
-.pause-overlay::after {
-  content: '';
-  width: clamp(10px, 2vh, 16px);
-  height: clamp(35px, 6vh, 55px);
-  background: #020617;
-  border-radius: 4px;
-  margin: 0 5px;
-}
-
-.active-tile .pause-overlay {
+/* Inverse card content color to dark only when playing so text remains perfectly readable */
+.card.active-tile .emoji,
+.card.active-tile .arabic,
+.card.active-tile .english {
+  color: #020617 !important;
   opacity: 1;
 }
 
-/* ================= FOCUS EFFECTS ================= */
+/* ================= FOCUS AND ACTIONS ================= */
 .remote-focus{
 outline:5px solid white;
 outline-offset:4px;
@@ -147,17 +174,12 @@ z-index:10;
 transform:scale(1.05);
 }
 
-.active-tile{
-animation:playPulse 1.5s infinite;
-box-shadow:0 0 25px white;
-}
-
 @keyframes playPulse{
 0%,100%{transform:scale(1.03);}
 50%{transform:scale(1.08);}
 }
 
-/* ================= CREDITS (3-LINER RAINBOW BACKGROUND ANIMATION) ================= */
+/* ================= CREDITS (3 LINES - ALWAYS VISIBLE) ================= */
 .credits{
 position:relative;
 text-align:center;
@@ -192,6 +214,8 @@ filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
 </head>
 
 <body>
+
+<div class="stars" id="starField"></div>
 
 <h1>🌙 Mariam & Hamza's 🌙</h1>
 <div class="subtitle">✨ Quran Adventures ✨</div>
@@ -235,21 +259,41 @@ const surahs=[
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-/* ================= STATE & ADAPTIVE TV ENGINE ================= */
+/* ================= ADAPTIVE ENGINE MODE DETECTOR ================= */
 const TV = {
   cols: window.innerWidth <= 768 ? 2 : 4,
   focused: 0,
   isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
 };
 
-let currentAudio = null;
-let loop = false;
+if (TV.isTV && window.innerWidth > 768) {
+  document.body.classList.add("tv-mode");
+}
 
 window.addEventListener("resize", () => {
   TV.cols = window.innerWidth <= 768 ? 2 : 4;
+  if (TV.isTV && window.innerWidth > 768) {
+    document.body.classList.add("tv-mode");
+  } else {
+    document.body.classList.remove("tv-mode");
+  }
 });
 
-/* ================= RENDER ================= */
+let currentAudio = null;
+let loop = false;
+
+/* ================= RENDER STAR GENERATOR FOR ORIGINAL BACKGROUND ================= */
+const starField = document.getElementById("starField");
+for(let i=0; i<35; i++){
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.top = Math.random() * 100 + "vh";
+  star.style.animationDelay = Math.random() * 3 + "s";
+  starField.appendChild(star);
+}
+
+/* ================= RENDER CARDS ================= */
 const grid = document.getElementById("grid");
 
 surahs.forEach((s, i) => {
@@ -258,12 +302,9 @@ surahs.forEach((s, i) => {
   c.style.background = s.color;
 
   c.innerHTML = `
-    <div>
-      <div class="emoji">${s.emoji}</div>
-      <div class="arabic">${s.name}</div>
-      <div class="english">${s.eng}</div>
-    </div>
-    <div class="pause-overlay"></div>
+    <div class="emoji">${s.emoji}</div>
+    <div class="arabic">${s.name}</div>
+    <div class="english">${s.eng}</div>
     <audio src="${s.file}" preload="none"></audio>
   `;
 
@@ -275,7 +316,7 @@ surahs.forEach((s, i) => {
   grid.appendChild(c);
 });
 
-/* ================= PRELOAD BUFFER SYSTEM ================= */
+/* ================= PRELOAD SYSTEM BUFFER ================= */
 function preloadBuffer(currentIndex) {
   const lookAhead = 2; 
   for (let i = 1; i <= lookAhead; i++) {
@@ -288,7 +329,7 @@ function preloadBuffer(currentIndex) {
   }
 }
 
-/* ================= PLAY AUDIO ENGINE ================= */
+/* ================= AUDIO CONTROLS ================= */
 function play(i) {
   const cards = [...document.querySelectorAll(".card")];
   cards.forEach(c => c.classList.remove("active-tile"));
@@ -304,7 +345,7 @@ function play(i) {
     currentAudio.loop = loop;
     currentAudio.play().then(() => {
       cards[i].classList.add("active-tile");
-    }).catch(e => console.log("Playback initialized safely:", e));
+    }).catch(e => console.log("Media channel verified:", e));
   }
 
   const mode = document.getElementById("mode").value;
@@ -314,7 +355,7 @@ function play(i) {
   }
 }
 
-/* ================= FOCUS MOVEMENT CONTROLLERS ================= */
+/* ================= D-PAD MOTIONS ================= */
 function move(dir){
   const max = surahs.length - 1;
 
@@ -336,10 +377,12 @@ function updateFocus(){
   el.classList.add("remote-focus");
   preloadBuffer(TV.focused);
 
-  el.scrollIntoView({
-    block: "center",
-    behavior: "smooth"
-  });
+  if (TV.isTV) {
+    el.scrollIntoView({
+      block: "center",
+      behavior: "smooth"
+    });
+  }
 }
 
 function stopAll(){
@@ -355,7 +398,7 @@ function toggleLoop(){
   if(currentAudio) currentAudio.loop = loop;
 }
 
-/* ================= REMOTE & KEYBOARD CONTROLS ================= */
+/* ================= REMOTE RECEIVER DELEGATES ================= */
 document.addEventListener("keydown",(e)=>{
   const k = e.keyCode;
 
