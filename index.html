@@ -21,7 +21,6 @@ user-select: none;
 body{
 background:radial-gradient(circle at top,#172554,#020617 70%);
 height:100vh;
-width: 100vw;
 overflow:hidden;
 color:white;
 display:flex;
@@ -29,12 +28,12 @@ flex-direction:column;
 cursor:none;
 }
 
-/* ================= STARS ================= */
+
 .stars{
 position:fixed;
 inset:0;
 pointer-events:none;
-z-index:0;
+z-index: 0; /* Keep strictly below everything */
 }
 
 .star{
@@ -64,7 +63,6 @@ background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:glow 3s infinite alternate;
-margin-top: 10px;
 }
 
 @keyframes glow{
@@ -99,86 +97,105 @@ background:linear-gradient(90deg,#facc15,#fde68a);
 cursor: pointer;
 }
 
-/* ================= GRID ENGINE (KINETIC VIEWPORT) ================= */
+/* ================= GRID SCROLL CONTAINER ================= */
 .grid-container {
 flex: 1;
 width: 100%;
 overflow-y: auto;
 scroll-behavior: smooth;
-padding: 10px 20px 40px 20px;
+/* Added padding-top to stop the top selection border from getting cut off */
+padding: 15px 10px 20px 10px;
 -webkit-overflow-scrolling: touch;
-scrollbar-width: none; /* Hide scrollbar Firefox */
+scrollbar-width: none;
+z-index: 5;
 }
 
 .grid-container::-webkit-scrollbar {
-display: none; /* Hide scrollbar Chrome/Safari */
+display: none;
 }
 
 .grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:2vh;
+grid-template-rows:repeat(4,1fr);
+gap:1vh;
 width:100%;
-max-width: 1400px;
-margin: 0 auto;
+height: 100%;
 }
 
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* ================= CARD ================= */
+/* ================= CARD (RESTORED EXACT ASPECT & RATIOS) ================= */
 .card{
 position:relative;
 border-radius:24px;
-padding:16px;
+padding:12px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
 backdrop-filter:blur(10px);
 box-shadow:0 0 15px rgba(255,255,255,.1);
-transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, filter 0.3s ease;
+transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
 aspect-ratio:1/1;
 cursor: pointer;
-will-change: transform;
 }
 
 .card:active{
-transform:scale(.95);
+transform:scale(.98);
 }
 
-.emoji{font-size:clamp(1.5rem,3.5vh,3rem); transition: transform 0.3s ease;}
-.arabic{font-size:clamp(1.1rem,2.5vh,2rem);font-weight:bold; margin-top: 8px;}
-.english{font-size:clamp(.75rem,1.6vh,1.1rem);opacity:.9; margin-top: 4px;}
+/* RESTORED MAXIMIZED TEXT UTILIZATION PER TILE */
+.emoji{font-size:clamp(1.2rem,2.2vh,2.4rem);}
+.arabic{font-size:clamp(1rem,2.2vh,1.8rem);font-weight:bold;}
+.english{font-size:clamp(.7rem,1.4vh,1rem);opacity:.9;}
+
+/* ================= DYNAMIC PLAY / PAUSE HUD ICON ================= */
+.card-status {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: clamp(24px, 4vh, 40px);
+  height: clamp(24px, 4vh, 40px);
+  border-radius: 50%;
+  background: linear-gradient(90deg, #facc15, #fde68a); /* Match stop/loop buttons */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.card-status svg {
+  width: 50%;
+  height: 50%;
+  fill: #020617;
+}
+
+/* Show when actively playing */
+.active-tile .card-status {
+  opacity: 1;
+  transform: scale(1);
+}
 
 /* ================= ANIMATED FOCUS TRANSITIONS ================= */
 .remote-focus{
-outline:5px solid white;
-outline-offset:4px;
+outline: 5px solid white;
+outline-offset: 4px;
 z-index:10;
-transform: scale(1.06) translateY(-4px);
-box-shadow: 0 15px 30px rgba(255, 255, 255, 0.25), 0 0 15px rgba(255, 255, 255, 0.2);
-filter: brightness(1.1);
-}
-
-.remote-focus .emoji {
-transform: scale(1.15);
+transform:scale(1.05);
 }
 
 .active-tile{
 animation:playPulse 1.5s infinite;
-box-shadow:0 0 30px #facc15;
-border: 2px solid #facc15;
+box-shadow:0 0 25px white;
 }
 
 @keyframes playPulse{
-0%,100%{transform:scale(1.04);}
+0%,100%{transform:scale(1.03);}
 50%{transform:scale(1.08);}
 }
 
-/* ================= MAGIC ICONS ================= */
+/* ================= MAGIC FLOATING ICONS ================= */
 .magic{
 position:fixed;
 font-size:20px;
@@ -189,12 +206,12 @@ z-index: 1;
 }
 
 @keyframes floatMagic{
-0%{transform:translateY(0) scale(1);opacity:.2;}
-50%{opacity:1;transform:translateY(-15px) scale(1.2);}
-100%{transform:translateY(-30px) scale(1);opacity:.2;}
+0%{transform:translateY(0);opacity:.2;}
+50%{opacity:1;}
+100%{transform:translateY(-30px);opacity:.2;}
 }
 
-/* ================= CREDITS ================= */
+/* ================= CREDITS (RAINBOW RESTORED) ================= */
 .credits{
 position:relative;
 text-align:center;
@@ -212,6 +229,7 @@ background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:rainbow 4s linear infinite;
+background-size: 400% 100%;
 }
 
 @keyframes rainbow{
@@ -223,9 +241,9 @@ animation:rainbow 4s linear infinite;
 
 <body>
 
-<div class="stars"></div>
+<div class="stars" id="starField"></div>
 
-<h1 onclick="toggleKiosk()">🌙 Mariam & Hamza's 🌙</h1>
+<h1>🌙 Mariam & Hamza's 🌙</h1>
 <div class="subtitle">✨ Quran Adventures ✨</div>
 
 <div class="topbar">
@@ -237,7 +255,7 @@ animation:rainbow 4s linear infinite;
 </select>
 </div>
 
-<div class="grid-container" id="scrollViewport">
+<div class="grid-container">
   <div class="grid" id="grid"></div>
 </div>
 
@@ -268,20 +286,16 @@ const surahs=[
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-/* ================= UNIFIED STATE ENGINE & TV CONFIG ================= */
+
+/* ================= STATE & CONFIG ENGINE ================= */
 const TV = {
-  cols: window.innerWidth <= 768 ? 2 : 4,
+  cols: 4,
   focused: 0,
   isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
 };
 
 let currentAudio = null;
 let loop = false;
-
-// Dynamic grid column layout handling on resize
-window.addEventListener('resize', () => {
-  TV.cols = window.innerWidth <= 768 ? 2 : 4;
-});
 
 /* ================= RENDER ENGINE ================= */
 const grid = document.getElementById("grid");
@@ -297,10 +311,12 @@ surahs.forEach((s, i) => {
       <div class="arabic">${s.name}</div>
       <div class="english">${s.eng}</div>
     </div>
+    <div class="card-status">
+      <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </div>
     <audio src="${s.file}" preload="none"></audio>
   `;
 
-  // Combined touch/mouse and focus mapping
   c.onclick = () => {
     TV.focused = i;
     updateFocus();
@@ -309,36 +325,33 @@ surahs.forEach((s, i) => {
   grid.appendChild(c);
 });
 
-/* ================= HIGH PERFORMANCE PRELOADER BUFFER ================= */
-function preloadBuffer(currentIndex) {
-  const lookAhead = 2; 
-  const lookBehind = 1;
-  
-  for (let i = 1; i <= lookAhead; i++) {
-    let nextIndex = (currentIndex + i) % surahs.length;
-    preloadAudioElement(nextIndex);
-  }
-  for (let i = 1; i <= lookBehind; i++) {
-    let prevIndex = (currentIndex - i + surahs.length) % surahs.length;
-    preloadAudioElement(prevIndex);
-  }
+/* ================= BACKGROUND TWINKLING STARS ENGINE (REDUCED & CLEAN) ================= */
+const starField = document.getElementById("starField");
+for(let i=0; i<15; i++) { // Kept light and clean so it doesn't look messy
+  const star = document.createElement("div");
+  star.className = "star";
+  star.style.left = Math.random() * 100 + "vw";
+  star.style.top = Math.random() * 100 + "vh";
+  star.style.animationDelay = Math.random() * 3 + "s";
+  starField.appendChild(star);
 }
 
-function preloadAudioElement(index) {
-  const cards = document.querySelectorAll(".card");
-  if(cards[index]) {
-    const audio = cards[index].querySelector("audio");
-    if (audio && audio.preload !== "auto") {
-      audio.preload = "auto"; 
+/* ================= PRELOAD BUFFER STRATEGY ================= */
+function preloadBuffer(currentIndex) {
+  const lookAhead = 2; 
+  for (let i = 1; i <= lookAhead; i++) {
+    let nextIndex = (currentIndex + i) % surahs.length;
+    const cards = document.querySelectorAll(".card");
+    if(cards[nextIndex]) {
+      const audio = cards[nextIndex].querySelector("audio");
+      if (audio && audio.preload !== "auto") audio.preload = "auto";
     }
   }
 }
 
-/* ================= AUDIO PLAYBACK CONTROL ================= */
+/* ================= AUDIO CONTROLS ================= */
 function play(i) {
   const cards = [...document.querySelectorAll(".card")];
-  
-  // Clean up active-tile styling
   cards.forEach(c => c.classList.remove("active-tile"));
   
   const item = cards[i].querySelector("audio");
@@ -350,14 +363,9 @@ function play(i) {
   currentAudio = item;
   if(currentAudio) {
     currentAudio.loop = loop;
-    
-    // Fallback play initialization to handle web policies safely
-    const playPromise = currentAudio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        cards[i].classList.add("active-tile");
-      }).catch(error => console.log("Audio trigger context preserved:", error));
-    }
+    currentAudio.play().then(() => {
+      cards[i].classList.add("active-tile");
+    }).catch(e => console.log("Playback interaction registered:", e));
   }
 
   const mode = document.getElementById("mode").value;
@@ -367,7 +375,7 @@ function play(i) {
   }
 }
 
-/* ================= KINETIC SCROLL & FOCUS ANIMATION ================= */
+/* ================= FOCUS INTERFACES ================= */
 function move(dir){
   const max = surahs.length - 1;
 
@@ -387,18 +395,14 @@ function updateFocus(){
   if(!el) return;
 
   el.classList.add("remote-focus");
-  
-  // Trigger proactive adjacent buffer preloads instantly
   preloadBuffer(TV.focused);
 
-  // YouTube TV Fluid Kinetic Snap Alignment Engine
   el.scrollIntoView({
     block: "center",
     behavior: "smooth"
   });
 }
 
-/* ================= CONTROL DELEGATES ================= */
 function stopAll(){
   if(currentAudio){
     currentAudio.pause();
@@ -412,7 +416,7 @@ function toggleLoop(){
   if(currentAudio) currentAudio.loop = loop;
 }
 
-/* ================= KEYBOARD & SMART REMOTE INTERCEPTOR ================= */
+/* ================= EVENTS REGISTER ================= */
 document.addEventListener("keydown",(e)=>{
   const k = e.keyCode;
 
@@ -426,22 +430,6 @@ document.addEventListener("keydown",(e)=>{
   }
 });
 
-/* ================= IN-CONTAINER KIOSK SECURE MODE ================= */
-function toggleKiosk() {
-  const doc = window.document;
-  const docEl = doc.documentElement;
-
-  const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-  const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-    requestFullScreen.call(docEl);
-  } else {
-    cancelFullScreen.call(doc);
-  }
-}
-
-/* ================= ROUTER INIT ================= */
 window.onload = () => {
   const id = new URLSearchParams(location.search).get("id");
   if(id){
@@ -454,9 +442,9 @@ window.onload = () => {
   updateFocus();
 };
 
-/* ================= BACKGROUND PARTICLES ================= */
+/* ================= MAGIC FLOATER DELEGATE ================= */
 const icons = ["✨","⭐","🌟"];
-for(let i=0; i<25; i++){
+for(let i=0; i<15; i++){
   const d = document.createElement("div");
   d.className = "magic";
   d.innerText = icons[Math.floor(Math.random()*3)];
@@ -469,3 +457,4 @@ for(let i=0; i<25; i++){
 
 </body>
 </html>
+
