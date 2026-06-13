@@ -36,6 +36,10 @@ overflow: hidden;
 padding: 15px;
 }
 
+body.tv-mode h1 {
+margin-top: 5px;
+}
+
 /* ================= STARS & BACKGROUND ANIMATIONS ================= */
 .stars{
 position:fixed;
@@ -80,7 +84,7 @@ animation:sparkleFloat 12s linear infinite;
 100%{transform:translateY(-140px);opacity:0;}
 }
 
-/* ================= TITLE HEADER STYLING ================= */
+/* ================= TITLE HEADER STYLING & ANIMATIONS ================= */
 h1{
 text-align:center;
 font-size:2.5rem;
@@ -88,7 +92,9 @@ margin-bottom:8px;
 background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-animation:glow 3s infinite alternate;
+animation:glow 3s infinite alternate, headerFloat 4s ease-in-out infinite;
+display: block;
+width: 100%;
 }
 
 @keyframes glow{
@@ -96,10 +102,17 @@ from{filter:drop-shadow(0 0 5px #38bdf8);}
 to{filter:drop-shadow(0 0 18px #f472b6);}
 }
 
+@keyframes headerFloat {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-6px); }
+}
+
 .subtitle{
 text-align:center;
-margin-bottom:28px;
+margin-bottom:24px;
 color:#cbd5e1;
+animation: headerFloat 4s ease-in-out infinite;
+animation-delay: 0.5s;
 }
 
 /* ================= CONTROL TOPBAR ================= */
@@ -248,21 +261,30 @@ text-align:center;
 audio{display:none;}
 
 body{
-padding-bottom:90px;
+padding-bottom:110px;
 }
 
-/* ================= CREDITS STACK ================= */
+body.tv-mode {
+padding-bottom: 90px;
+}
+
+/* ================= PREMIUM GLASSMORPHISM CREDITS STRIP ================= */
 .credits{
-position:relative;
-margin-top: 25px;
+position:fixed;
+bottom:0;
+left:0;
+right:0;
 padding:12px 8px;
 text-align:center;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(8px);
-z-index: 10;
+background:rgba(15, 23, 42, 0.25);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+border-top: 1px solid rgba(255, 255, 255, 0.08);
+z-index: 1000;
 width: 100%;
 line-height: 1.4;
 font-weight: bold;
+box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
 }
 
 body.tv-mode .credits {
@@ -287,8 +309,8 @@ animation:rainbowSparkle 5s linear infinite;
 }
 
 @keyframes rainbowSparkle{
-0%{background-position:0% 50%;filter:drop-shadow(0 0 4px white);}
-100%{background-position:400% 50%;filter:drop-shadow(0 0 10px white);}
+0%{background-position:0% 50%;filter:drop-shadow(0 0 4px rgba(255,255,255,0.3));}
+100%{background-position:400% 50%;filter:drop-shadow(0 0 10px rgba(255,255,255,0.6));}
 }
 
 body>*{
