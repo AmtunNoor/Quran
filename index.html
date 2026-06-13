@@ -20,42 +20,15 @@ user-select: none;
 
 body{
 background:radial-gradient(circle at top,#172554,#020617 70%);
-height:100vh;
-overflow:hidden;
+min-height:100vh;
 color:white;
 display:flex;
 flex-direction:column;
 cursor:none;
+overflow-x: hidden;
 }
 
-
-.stars{
-position:fixed;
-inset:0;
-pointer-events:none;
-z-index: 0; /* Keep strictly below everything */
-}
-
-.star{
-position:absolute;
-width:3px;
-height:3px;
-background:white;
-border-radius:50%;
-animation:twinkle 3s infinite alternate, drift 25s linear infinite;
-}
-
-@keyframes twinkle{
-0%{opacity:.2;transform:scale(.5);}
-100%{opacity:1;transform:scale(1.5);}
-}
-
-@keyframes drift{
-from{transform:translateY(0);}
-to{transform:translateY(-120px);}
-}
-
-/* ================= TITLE ================= */
+/* ================= TITLE ANIMATIONS ================= */
 h1{
 text-align:center;
 font-size:clamp(1.5rem,3vh,3rem);
@@ -63,6 +36,7 @@ background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:glow 3s infinite alternate;
+margin-top: 15px;
 }
 
 @keyframes glow{
@@ -97,43 +71,33 @@ background:linear-gradient(90deg,#facc15,#fde68a);
 cursor: pointer;
 }
 
-/* ================= GRID SCROLL CONTAINER ================= */
-.grid-container {
-flex: 1;
-width: 100%;
-overflow-y: auto;
-scroll-behavior: smooth;
-/* Added padding-top to stop the top selection border from getting cut off */
-padding: 15px 10px 20px 10px;
--webkit-overflow-scrolling: touch;
-scrollbar-width: none;
-z-index: 5;
-}
-
-.grid-container::-webkit-scrollbar {
-display: none;
-}
-
+/* ================= GRID ENGINE ================= */
 .grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-grid-template-rows:repeat(4,1fr);
-gap:1vh;
+gap:1.5vh;
+flex:1;
 width:100%;
-height: 100%;
+padding: 20px 15px;
 }
 
-/* ================= CARD (RESTORED EXACT ASPECT & RATIOS) ================= */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ================= CARD PROPORTIONS ================= */
 .card{
 position:relative;
 border-radius:24px;
-padding:12px;
+padding:14px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
 backdrop-filter:blur(10px);
 box-shadow:0 0 15px rgba(255,255,255,.1);
-transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+transition:.2s;
 aspect-ratio:1/1;
 cursor: pointer;
 }
@@ -142,45 +106,43 @@ cursor: pointer;
 transform:scale(.98);
 }
 
-/* RESTORED MAXIMIZED TEXT UTILIZATION PER TILE */
 .emoji{font-size:clamp(1.2rem,2.2vh,2.4rem);}
 .arabic{font-size:clamp(1rem,2.2vh,1.8rem);font-weight:bold;}
 .english{font-size:clamp(.7rem,1.4vh,1rem);opacity:.9;}
 
-/* ================= DYNAMIC PLAY / PAUSE HUD ICON ================= */
-.card-status {
+/* ================= GIANT PAUSE OVERLAY ================= */
+.pause-overlay {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
-  width: clamp(24px, 4vh, 40px);
-  height: clamp(24px, 4vh, 40px);
-  border-radius: 50%;
-  background: linear-gradient(90deg, #facc15, #fde68a); /* Match stop/loop buttons */
+  inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(250, 204, 21, 0.9), rgba(253, 230, 138, 0.95));
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
   opacity: 0;
-  transform: scale(0.6);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 2;
 }
 
-.card-status svg {
-  width: 50%;
-  height: 50%;
-  fill: #020617;
+.pause-overlay::before,
+.pause-overlay::after {
+  content: '';
+  width: clamp(10px, 2vh, 16px);
+  height: clamp(35px, 6vh, 55px);
+  background: #020617;
+  border-radius: 4px;
+  margin: 0 5px;
 }
 
-/* Show when actively playing */
-.active-tile .card-status {
+.active-tile .pause-overlay {
   opacity: 1;
-  transform: scale(1);
 }
 
-/* ================= ANIMATED FOCUS TRANSITIONS ================= */
+/* ================= FOCUS EFFECTS ================= */
 .remote-focus{
-outline: 5px solid white;
-outline-offset: 4px;
+outline:5px solid white;
+outline-offset:4px;
 z-index:10;
 transform:scale(1.05);
 }
@@ -195,53 +157,41 @@ box-shadow:0 0 25px white;
 50%{transform:scale(1.08);}
 }
 
-/* ================= MAGIC FLOATING ICONS ================= */
-.magic{
-position:fixed;
-font-size:20px;
-animation:floatMagic 4s infinite ease-in-out;
-opacity:.7;
-pointer-events:none;
-z-index: 1;
-}
-
-@keyframes floatMagic{
-0%{transform:translateY(0);opacity:.2;}
-50%{opacity:1;}
-100%{transform:translateY(-30px);opacity:.2;}
-}
-
-/* ================= CREDITS (RAINBOW RESTORED) ================= */
+/* ================= CREDITS (3-LINER RAINBOW BACKGROUND ANIMATION) ================= */
 .credits{
 position:relative;
 text-align:center;
-padding:6px;
-font-size:0.9rem;
-background:rgba(0,0,0,.3);
+padding:12px 6px;
+font-size:0.95rem;
+background:rgba(0,0,0,.4);
 z-index: 10;
+margin-top: auto;
+line-height: 1.5;
+font-weight: bold;
 }
 
 .amtun{
-font-family:cursive;
-font-weight:900;
-font-size:1.3rem;
-background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:rainbow 4s linear infinite;
-background-size: 400% 100%;
+display: inline-block;
+font-family: cursive;
+font-weight: 900;
+font-size: 1.6rem;
+letter-spacing: 1px;
+background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet, red);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+animation: rainbow 4s linear infinite;
+background-size: 400% auto;
+filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
 }
 
 @keyframes rainbow{
-0%{background-position:0%;}
-100%{background-position:400%;}
+0%{background-position:0% 50%;}
+100%{background-position:400% 50%;}
 }
 </style>
 </head>
 
 <body>
-
-<div class="stars" id="starField"></div>
 
 <h1>🌙 Mariam & Hamza's 🌙</h1>
 <div class="subtitle">✨ Quran Adventures ✨</div>
@@ -255,12 +205,11 @@ background-size: 400% 100%;
 </select>
 </div>
 
-<div class="grid-container">
-  <div class="grid" id="grid"></div>
-</div>
+<div class="grid" id="grid"></div>
 
 <div class="credits">
-Created by <span class="amtun">AMTUN NOOR</span><br/>
+Created By:<br/>
+<span class="amtun">AMTUN NOOR</span><br/>
 May 2026
 </div>
 
@@ -286,10 +235,9 @@ const surahs=[
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-
-/* ================= STATE & CONFIG ENGINE ================= */
+/* ================= STATE & ADAPTIVE TV ENGINE ================= */
 const TV = {
-  cols: 4,
+  cols: window.innerWidth <= 768 ? 2 : 4,
   focused: 0,
   isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
 };
@@ -297,7 +245,11 @@ const TV = {
 let currentAudio = null;
 let loop = false;
 
-/* ================= RENDER ENGINE ================= */
+window.addEventListener("resize", () => {
+  TV.cols = window.innerWidth <= 768 ? 2 : 4;
+});
+
+/* ================= RENDER ================= */
 const grid = document.getElementById("grid");
 
 surahs.forEach((s, i) => {
@@ -311,9 +263,7 @@ surahs.forEach((s, i) => {
       <div class="arabic">${s.name}</div>
       <div class="english">${s.eng}</div>
     </div>
-    <div class="card-status">
-      <svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </div>
+    <div class="pause-overlay"></div>
     <audio src="${s.file}" preload="none"></audio>
   `;
 
@@ -325,18 +275,7 @@ surahs.forEach((s, i) => {
   grid.appendChild(c);
 });
 
-/* ================= BACKGROUND TWINKLING STARS ENGINE (REDUCED & CLEAN) ================= */
-const starField = document.getElementById("starField");
-for(let i=0; i<15; i++) { // Kept light and clean so it doesn't look messy
-  const star = document.createElement("div");
-  star.className = "star";
-  star.style.left = Math.random() * 100 + "vw";
-  star.style.top = Math.random() * 100 + "vh";
-  star.style.animationDelay = Math.random() * 3 + "s";
-  starField.appendChild(star);
-}
-
-/* ================= PRELOAD BUFFER STRATEGY ================= */
+/* ================= PRELOAD BUFFER SYSTEM ================= */
 function preloadBuffer(currentIndex) {
   const lookAhead = 2; 
   for (let i = 1; i <= lookAhead; i++) {
@@ -349,7 +288,7 @@ function preloadBuffer(currentIndex) {
   }
 }
 
-/* ================= AUDIO CONTROLS ================= */
+/* ================= PLAY AUDIO ENGINE ================= */
 function play(i) {
   const cards = [...document.querySelectorAll(".card")];
   cards.forEach(c => c.classList.remove("active-tile"));
@@ -365,7 +304,7 @@ function play(i) {
     currentAudio.loop = loop;
     currentAudio.play().then(() => {
       cards[i].classList.add("active-tile");
-    }).catch(e => console.log("Playback interaction registered:", e));
+    }).catch(e => console.log("Playback initialized safely:", e));
   }
 
   const mode = document.getElementById("mode").value;
@@ -375,7 +314,7 @@ function play(i) {
   }
 }
 
-/* ================= FOCUS INTERFACES ================= */
+/* ================= FOCUS MOVEMENT CONTROLLERS ================= */
 function move(dir){
   const max = surahs.length - 1;
 
@@ -416,7 +355,7 @@ function toggleLoop(){
   if(currentAudio) currentAudio.loop = loop;
 }
 
-/* ================= EVENTS REGISTER ================= */
+/* ================= REMOTE & KEYBOARD CONTROLS ================= */
 document.addEventListener("keydown",(e)=>{
   const k = e.keyCode;
 
@@ -441,20 +380,7 @@ window.onload = () => {
   }
   updateFocus();
 };
-
-/* ================= MAGIC FLOATER DELEGATE ================= */
-const icons = ["✨","⭐","🌟"];
-for(let i=0; i<15; i++){
-  const d = document.createElement("div");
-  d.className = "magic";
-  d.innerText = icons[Math.floor(Math.random()*3)];
-  d.style.left = Math.random()*100+"vw";
-  d.style.top = Math.random()*90+"vh";
-  d.style.animationDelay = Math.random()*3+"s";
-  document.body.appendChild(d);
-}
 </script>
 
 </body>
 </html>
-
