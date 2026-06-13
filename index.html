@@ -1,35 +1,38 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>My Little Quran Corner!</title>
 
 <meta name="theme-color" content="#0f172a"/>
 
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
 font-family:Arial,sans-serif;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+user-select: none;
 }
 
 body{
 background:radial-gradient(circle at top,#172554,#020617 70%);
-min-height:100vh;
-overflow-x:hidden;
+height:100vh;
+width: 100vw;
+overflow:hidden;
 color:white;
-padding:20px;
+display:flex;
+flex-direction:column;
+cursor:none;
 }
 
-/* STARS */
+/* ================= STARS ================= */
 .stars{
 position:fixed;
 inset:0;
-overflow:hidden;
 pointer-events:none;
 z-index:0;
 }
@@ -40,23 +43,28 @@ width:3px;
 height:3px;
 background:white;
 border-radius:50%;
-animation:twinkle 3s infinite alternate;
+animation:twinkle 3s infinite alternate, drift 25s linear infinite;
 }
 
 @keyframes twinkle{
-from{opacity:.2;transform:scale(.5);}
-to{opacity:1;transform:scale(1.5);}
+0%{opacity:.2;transform:scale(.5);}
+100%{opacity:1;transform:scale(1.5);}
 }
 
-/* TITLE */
+@keyframes drift{
+from{transform:translateY(0);}
+to{transform:translateY(-120px);}
+}
+
+/* ================= TITLE ================= */
 h1{
 text-align:center;
-font-size:2.5rem;
-margin-bottom:8px;
+font-size:clamp(1.5rem,3vh,3rem);
 background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:glow 3s infinite alternate;
+margin-top: 10px;
 }
 
 @keyframes glow{
@@ -66,191 +74,149 @@ to{filter:drop-shadow(0 0 18px #f472b6);}
 
 .subtitle{
 text-align:center;
-margin-bottom:28px;
 color:#cbd5e1;
+font-size:clamp(.8rem,1.4vh,1.2rem);
+margin-bottom:1vh;
 }
 
-/* TOPBAR (UNCHANGED + ADD DROPDOWN ONLY) */
+/* ================= TOPBAR ================= */
 .topbar{
 display:flex;
 justify-content:center;
 gap:12px;
-margin-bottom:25px;
 flex-wrap:wrap;
+margin-bottom:10px;
+z-index: 10;
 }
 
 .topbar button,
 .topbar select{
 border:none;
-padding:12px 16px;
-border-radius:18px;
+padding:10px 14px;
+border-radius:16px;
 font-weight:bold;
-cursor:pointer;
 background:linear-gradient(90deg,#facc15,#fde68a);
+cursor: pointer;
 }
 
-/* GRID */
+/* ================= GRID ENGINE (KINETIC VIEWPORT) ================= */
+.grid-container {
+flex: 1;
+width: 100%;
+overflow-y: auto;
+scroll-behavior: smooth;
+padding: 10px 20px 40px 20px;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none; /* Hide scrollbar Firefox */
+}
+
+.grid-container::-webkit-scrollbar {
+display: none; /* Hide scrollbar Chrome/Safari */
+}
+
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
-gap:18px;
-max-width:none;
+grid-template-columns:repeat(4,1fr);
+gap:2vh;
 width:100%;
-margin:auto;
+max-width: 1400px;
+margin: 0 auto;
 }
 
-/* CARD */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ================= CARD ================= */
 .card{
 position:relative;
-overflow:hidden;
-border-radius:28px;
-padding:18px;
-min-height:210px;
+border-radius:24px;
+padding:16px;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
-cursor:pointer;
-transition:.3s;
 backdrop-filter:blur(10px);
-box-shadow:0 0 20px rgba(255,255,255,.1);
-animation:float 4s ease-in-out infinite;
+box-shadow:0 0 15px rgba(255,255,255,.1);
+transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease, filter 0.3s ease;
+aspect-ratio:1/1;
+cursor: pointer;
+will-change: transform;
 }
 
-.card:hover{
-transform:translateY(-8px) scale(1.03);
-box-shadow:0 0 30px rgba(255,255,255,.35);
+.card:active{
+transform:scale(.95);
 }
 
-@keyframes float{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-6px);}
+.emoji{font-size:clamp(1.5rem,3.5vh,3rem); transition: transform 0.3s ease;}
+.arabic{font-size:clamp(1.1rem,2.5vh,2rem);font-weight:bold; margin-top: 8px;}
+.english{font-size:clamp(.75rem,1.6vh,1.1rem);opacity:.9; margin-top: 4px;}
+
+/* ================= ANIMATED FOCUS TRANSITIONS ================= */
+.remote-focus{
+outline:5px solid white;
+outline-offset:4px;
+z-index:10;
+transform: scale(1.06) translateY(-4px);
+box-shadow: 0 15px 30px rgba(255, 255, 255, 0.25), 0 0 15px rgba(255, 255, 255, 0.2);
+filter: brightness(1.1);
 }
 
-
-.emoji{font-size:2rem;margin-bottom:12px;}
-.arabic{font-size:1.8rem;font-weight:bold;margin-bottom:6px;}
-.english{font-size:1rem;opacity:.95;}
-
-/* BUTTONS */
-.play-btn{
-margin-top:18px;
-border:none;
-border-radius:18px;
-padding:12px;
-font-size:1rem;
-font-weight:bold;
-cursor:pointer;
-background:white;
-color:black;
-transition:.3s;
+.remote-focus .emoji {
+transform: scale(1.15);
 }
 
 .active-tile{
-box-shadow:0 0 25px 6px rgba(255,255,255,.7)!important;
-transform:scale(1.05);
+animation:playPulse 1.5s infinite;
+box-shadow:0 0 30px #facc15;
+border: 2px solid #facc15;
 }
 
-.remote-focus{
-outline:4px solid #fff;
-outline-offset:4px;
-transform:scale(1.05);
-box-shadow:0 0 30px rgba(255,255,255,.9);
+@keyframes playPulse{
+0%,100%{transform:scale(1.04);}
+50%{transform:scale(1.08);}
 }
 
-/* OVERLAY */
-#overlay{
+/* ================= MAGIC ICONS ================= */
+.magic{
 position:fixed;
-inset:0;
-display:none;
-align-items:center;
-justify-content:center;
-background:rgba(0,0,0,.8);
-z-index:999;
+font-size:20px;
+animation:floatMagic 4s infinite ease-in-out;
+opacity:.7;
+pointer-events:none;
+z-index: 1;
 }
 
-#overlay div{
-background:white;
-color:black;
-padding:22px;
-border-radius:20px;
-font-size:1.2rem;
-font-weight:bold;
-text-align:center;
+@keyframes floatMagic{
+0%{transform:translateY(0) scale(1);opacity:.2;}
+50%{opacity:1;transform:translateY(-15px) scale(1.2);}
+100%{transform:translateY(-30px) scale(1);opacity:.2;}
 }
 
-audio{display:none;}
-
-.footer{
-margin-top:35px;
-text-align:center;
-color:#94a3b8;
-font-size:.9rem;
-}
-
-
-body{
-padding-bottom:90px;
-}
-
+/* ================= CREDITS ================= */
 .credits{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-padding:8px;
+position:relative;
 text-align:center;
-background:rgba(0,0,0,.45);
-backdrop-filter:blur(8px);
-z-index:1000;
+padding:6px;
+font-size:0.9rem;
+background:rgba(0,0,0,.3);
+z-index: 10;
 }
 
 .amtun{
 font-family:cursive;
-font-size:1.4rem;
 font-weight:900;
-letter-spacing:3px;
-text-transform:uppercase;
-background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
-background-size:400% 100%;
+font-size:1.3rem;
+background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-animation:rainbowSparkle 5s linear infinite;
+animation:rainbow 4s linear infinite;
 }
 
-@keyframes rainbowSparkle{
-0%{background-position:0% 50%;filter:drop-shadow(0 0 4px white);}
-100%{background-position:400% 50%;filter:drop-shadow(0 0 10px white);}
-}
-
-
-body>*{
-position:relative;
-z-index:1;
-}
-
-.star{
-animation:twinkle 3s infinite alternate, drift 25s linear infinite;
-}
-
-@keyframes drift{
-from{transform:translateY(0px);}
-to{transform:translateY(-120px);}
-}
-
-.sparkle{
-position:absolute;
-width:2px;
-height:2px;
-border-radius:50%;
-background:white;
-opacity:.8;
-animation:sparkleFloat 12s linear infinite;
-}
-
-@keyframes sparkleFloat{
-0%{transform:translateY(40px);opacity:0;}
-20%{opacity:1;}
-100%{transform:translateY(-140px);opacity:0;}
+@keyframes rainbow{
+0%{background-position:0%;}
+100%{background-position:400%;}
 }
 </style>
 </head>
@@ -259,39 +225,29 @@ animation:sparkleFloat 12s linear infinite;
 
 <div class="stars"></div>
 
-<h1>🌙 Mariam & Hamza's 🌙 </h1>
-<p class="subtitle">✨Quran Adventures with Mom!✨</p>
+<h1 onclick="toggleKiosk()">🌙 Mariam & Hamza's 🌙</h1>
+<div class="subtitle">✨ Quran Adventures ✨</div>
 
-<!-- TOPBAR + MODE DROPDOWN (ADDED ONLY HERE) -->
 <div class="topbar">
-<button onclick="stopAll()">⏹ Stop</button>
-<button onclick="toggleLoopAll()" id="loopBtn">🔁 Loop OFF</button>
-
+<button onclick="stopAll()">Stop</button>
+<button onclick="toggleLoop()">Loop</button>
 <select id="mode">
-<option value="listen" selected>🎧 Listen Mode</option>
-<option value="learn">📖 Learn Mode</option>
-
+<option value="listen">Listen</option>
+<option value="learn">Learn</option>
 </select>
-
 </div>
 
-<div class="grid" id="grid"></div>
-
-<div id="overlay">
-<div>▶ Tap Anywhere To Start</div>
+<div class="grid-container" id="scrollViewport">
+  <div class="grid" id="grid"></div>
 </div>
 
 <div class="credits">
-<div>Created by</div>
-<div class="amtun">AMTUN NOOR</div>
-<div>May 2026</div>
+Created by <span class="amtun">AMTUN NOOR</span><br/>
+May 2026
 </div>
 
 <script>
-
-/* =========================
-DATA (UNCHANGED)
-========================= */
+/* ================= DATA ENGINE ================= */
 
 const surahs=[
 {id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
@@ -312,257 +268,203 @@ const surahs=[
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
-const grid=document.getElementById("grid");
-
-let currentAudio=null;
-let currentButton=null;
-let currentCard=null;
-let loopAll=false;
-
-const map={};
-
-/* =========================
-VOICE
-========================= */
-
-function speak(text){
-try{
-const u=new SpeechSynthesisUtterance(text);
-u.rate=0.9;
-speechSynthesis.cancel();
-speechSynthesis.speak(u);
-}catch(e){}
-}
-
-/* =========================
-RENDER
-========================= */
-
-surahs.forEach(s=>{
-
-const card=document.createElement("div");
-card.className="card";
-card.style.background=s.color;
-
-card.innerHTML=`
-
-<div>
-<div class="emoji">${s.emoji}</div>
-<div class="arabic">${s.name}</div>
-<div class="english">${s.eng}</div>
-</div>
-<button class="play-btn">⏸ Pause</button>
-<audio src="${s.file}" preload="auto"></audio>
-`;
-
-const btn=card.querySelector("button");
-const audio=card.querySelector("audio");
-
-map[s.id]={card,audio,btn,s};
-
-card.onclick=()=>play(s.id);
-btn.onclick=(e)=>{e.stopPropagation();pauseCurrent();};
-
-grid.appendChild(card);
-
-});
-
-/* =========================
-PLAY MODE LOGIC
-========================= */
-
-function getMode(){
-return document.getElementById("mode").value;
-}
-
-/* =========================
-PLAY
-========================= */
-
-function play(id){
-
-const item=map[id];
-if(!item)return;
-
-if(currentAudio && currentAudio!==item.audio){
-currentAudio.pause();
-currentAudio.currentTime=0;
-if(currentCard)currentCard.classList.remove("active-tile");
-}
-
-item.audio.play().catch(()=>{});
-
-item.card.classList.add("active-tile");
-
-currentAudio=item.audio;
-currentButton=item.btn;
-currentCard=item.card;
-
-const mode=getMode();
-
-if(mode!=="silent"){
-speak(item.s.name);
-}
-}
-
-/* =========================
-QR FIX (STABLE + MODE SUPPORT)
-========================= */
-
-function qrFix(){
-
-const params=new URLSearchParams(location.search);
-const id=params.get("id")||params.get("surah");
-
-if(!id||!map[id])return;
-
-const item=map[id];
-
-setTimeout(()=>{
-
-item.card.classList.add("active-tile");
-
-item.card.scrollIntoView({
-behavior:"smooth",
-block:"center"
-});
-
-currentCard=item.card;
-currentAudio=item.audio;
-currentButton=item.btn;
-
-/* overlay */
-document.getElementById("overlay").style.display="flex";
-
-const mode=getMode();
-
-if(mode!=="silent"){
-setTimeout(()=>speak(item.s.name),600);
-}
-
-},500);
-
-}
-
-window.addEventListener("load",qrFix);
-
-/* =========================
-OVERLAY
-========================= */
-
-document.getElementById("overlay").onclick=()=>{
-
-const id=new URLSearchParams(location.search).get("id")||
-new URLSearchParams(location.search).get("surah");
-
-if(id&&map[id]){
-play(id);
-}
-
-document.getElementById("overlay").style.display="none";
+/* ================= UNIFIED STATE ENGINE & TV CONFIG ================= */
+const TV = {
+  cols: window.innerWidth <= 768 ? 2 : 4,
+  focused: 0,
+  isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
 };
 
-/* =========================
-CONTROLS
-========================= */
+let currentAudio = null;
+let loop = false;
 
-function stopAll(){
-if(currentAudio){
-currentAudio.pause();
-currentAudio.currentTime=0;
-}
-if(currentCard)currentCard.classList.remove("active-tile");
+// Dynamic grid column layout handling on resize
+window.addEventListener('resize', () => {
+  TV.cols = window.innerWidth <= 768 ? 2 : 4;
+});
+
+/* ================= RENDER ENGINE ================= */
+const grid = document.getElementById("grid");
+
+surahs.forEach((s, i) => {
+  const c = document.createElement("div");
+  c.className = "card";
+  c.style.background = s.color;
+
+  c.innerHTML = `
+    <div>
+      <div class="emoji">${s.emoji}</div>
+      <div class="arabic">${s.name}</div>
+      <div class="english">${s.eng}</div>
+    </div>
+    <audio src="${s.file}" preload="none"></audio>
+  `;
+
+  // Combined touch/mouse and focus mapping
+  c.onclick = () => {
+    TV.focused = i;
+    updateFocus();
+    play(i);
+  };
+  grid.appendChild(c);
+});
+
+/* ================= HIGH PERFORMANCE PRELOADER BUFFER ================= */
+function preloadBuffer(currentIndex) {
+  const lookAhead = 2; 
+  const lookBehind = 1;
+  
+  for (let i = 1; i <= lookAhead; i++) {
+    let nextIndex = (currentIndex + i) % surahs.length;
+    preloadAudioElement(nextIndex);
+  }
+  for (let i = 1; i <= lookBehind; i++) {
+    let prevIndex = (currentIndex - i + surahs.length) % surahs.length;
+    preloadAudioElement(prevIndex);
+  }
 }
 
-function toggleLoopAll(){
-loopAll=!loopAll;
-document.getElementById("loopBtn").innerText=
-loopAll?"🔁 Loop ON":"🔁 Loop OFF";
-if(currentAudio)currentAudio.loop=loopAll;
+function preloadAudioElement(index) {
+  const cards = document.querySelectorAll(".card");
+  if(cards[index]) {
+    const audio = cards[index].querySelector("audio");
+    if (audio && audio.preload !== "auto") {
+      audio.preload = "auto"; 
+    }
+  }
 }
 
+/* ================= AUDIO PLAYBACK CONTROL ================= */
+function play(i) {
+  const cards = [...document.querySelectorAll(".card")];
+  
+  // Clean up active-tile styling
+  cards.forEach(c => c.classList.remove("active-tile"));
+  
+  const item = cards[i].querySelector("audio");
 
-function pauseCurrent(){
-if(currentAudio){
-currentAudio.pause();
-}
+  if (currentAudio) {
+    currentAudio.pause();
+  }
+
+  currentAudio = item;
+  if(currentAudio) {
+    currentAudio.loop = loop;
+    
+    // Fallback play initialization to handle web policies safely
+    const playPromise = currentAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        cards[i].classList.add("active-tile");
+      }).catch(error => console.log("Audio trigger context preserved:", error));
+    }
+  }
+
+  const mode = document.getElementById("mode").value;
+  if (mode === "learn") {
+    speechSynthesis.cancel();
+    speechSynthesis.speak(new SpeechSynthesisUtterance(surahs[i].name));
+  }
 }
 
-let focusedIndex=0;
+/* ================= KINETIC SCROLL & FOCUS ANIMATION ================= */
+function move(dir){
+  const max = surahs.length - 1;
+
+  if(dir === "right") TV.focused = Math.min(max, TV.focused + 1);
+  if(dir === "left")  TV.focused = Math.max(0, TV.focused - 1);
+  if(dir === "down")  TV.focused = Math.min(max, TV.focused + TV.cols);
+  if(dir === "up")    TV.focused = Math.max(0, TV.focused - TV.cols);
+
+  updateFocus();
+}
 
 function updateFocus(){
-const cards=[...document.querySelectorAll(".card")];
-cards.forEach(c=>c.classList.remove("remote-focus"));
-if(cards[focusedIndex]){
-cards[focusedIndex].classList.add("remote-focus");
-cards[focusedIndex].scrollIntoView({block:"nearest",behavior:"smooth"});
-}
+  const cards = document.querySelectorAll(".card");
+  cards.forEach(c => c.classList.remove("remote-focus"));
+
+  const el = cards[TV.focused];
+  if(!el) return;
+
+  el.classList.add("remote-focus");
+  
+  // Trigger proactive adjacent buffer preloads instantly
+  preloadBuffer(TV.focused);
+
+  // YouTube TV Fluid Kinetic Snap Alignment Engine
+  el.scrollIntoView({
+    block: "center",
+    behavior: "smooth"
+  });
 }
 
-window.addEventListener("load",()=>{
-updateFocus();
-});
+/* ================= CONTROL DELEGATES ================= */
+function stopAll(){
+  if(currentAudio){
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+  }
+  document.querySelectorAll(".card").forEach(c => c.classList.remove("active-tile"));
+}
 
+function toggleLoop(){
+  loop = !loop;
+  if(currentAudio) currentAudio.loop = loop;
+}
+
+/* ================= KEYBOARD & SMART REMOTE INTERCEPTOR ================= */
 document.addEventListener("keydown",(e)=>{
-const cards=[...document.querySelectorAll(".card")];
-if(!cards.length)return;
-const cols=Math.max(1,Math.round(grid.offsetWidth/cards[0].offsetWidth));
+  const k = e.keyCode;
 
-switch(e.key){
-case "ArrowRight":
-focusedIndex=Math.min(cards.length-1,focusedIndex+1);
-updateFocus();
-break;
-case "ArrowLeft":
-focusedIndex=Math.max(0,focusedIndex-1);
-updateFocus();
-break;
-case "ArrowDown":
-focusedIndex=Math.min(cards.length-1,focusedIndex+cols);
-updateFocus();
-break;
-case "ArrowUp":
-focusedIndex=Math.max(0,focusedIndex-cols);
-updateFocus();
-break;
-case "Enter":
-play(surahs[focusedIndex].id);
-break;
-}
+  if(k === 21 || e.key === "ArrowLeft") move("left");
+  if(k === 22 || e.key === "ArrowRight") move("right");
+  if(k === 19 || e.key === "ArrowUp") move("up");
+  if(k === 20 || e.key === "ArrowDown") move("down");
+
+  if(k === 23 || k === 66 || e.key === "Enter"){
+    play(TV.focused);
+  }
 });
 
-/* =========================
-STARS
-========================= */
+/* ================= IN-CONTAINER KIOSK SECURE MODE ================= */
+function toggleKiosk() {
+  const doc = window.document;
+  const docEl = doc.documentElement;
 
-const stars=document.querySelector(".stars");
-for(let i=0;i<80;i++){
-const d=document.createElement("div");
-d.className="star";
-d.style.left=Math.random()*100+"%";
-d.style.top=Math.random()*100+"%";
-stars.appendChild(d);
+  const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+  const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+  if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+    requestFullScreen.call(docEl);
+  } else {
+    cancelFullScreen.call(doc);
+  }
 }
 
+/* ================= ROUTER INIT ================= */
+window.onload = () => {
+  const id = new URLSearchParams(location.search).get("id");
+  if(id){
+    const index = surahs.findIndex(s => s.id === id);
+    if(index >= 0) {
+      TV.focused = index;
+      play(index);
+    }
+  }
+  updateFocus();
+};
 
-for(let i=0;i<40;i++){
-const s=document.createElement("div");
-s.className="sparkle";
-s.style.left=Math.random()*100+"%";
-s.style.top=Math.random()*100+"%";
-stars.appendChild(s);
+/* ================= BACKGROUND PARTICLES ================= */
+const icons = ["✨","⭐","🌟"];
+for(let i=0; i<25; i++){
+  const d = document.createElement("div");
+  d.className = "magic";
+  d.innerText = icons[Math.floor(Math.random()*3)];
+  d.style.left = Math.random()*100+"vw";
+  d.style.top = Math.random()*90+"vh";
+  d.style.animationDelay = Math.random()*3+"s";
+  document.body.appendChild(d);
 }
-
-document.addEventListener("keyup",(e)=>{
-const okKeys=["Enter","NumpadEnter"," ","OK","Select"];
-if(okKeys.includes(e.key)){
-const cards=[...document.querySelectorAll(".card")];
-if(cards[focusedIndex]){
-play(surahs[focusedIndex].id);
-}
-}
-});
-
 </script>
 
 </body>
