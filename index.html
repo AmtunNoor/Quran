@@ -34,6 +34,7 @@ body.tv-mode {
 height: 100vh;
 overflow: hidden;
 padding: 15px;
+padding-bottom: 95px; /* Pushes the TV layout up dynamically so the last row clears the credit strip */
 }
 
 body.tv-mode h1 {
@@ -157,6 +158,7 @@ body.tv-mode .grid {
   grid-template-rows: repeat(4, 1fr);
   gap: 12px;
   padding-top: 5px;
+  margin-bottom: 15px; /* Structural spacing layout exclusively on TV views */
 }
 
 /* ================= CARD DESIGN & MAX-SPACE UTILIZATION ================= */
@@ -264,10 +266,6 @@ audio{display:none;}
 
 body{
 padding-bottom:110px;
-}
-
-body.tv-mode {
-padding-bottom: 90px;
 }
 
 /* ================= PREMIUM GLASSMORPHISM CREDITS STRIP ================= */
@@ -403,7 +401,6 @@ const TV = {
   isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
 };
 
-// Apply layout view constraints immediately if system scales into TV criteria
 if(TV.isTV && window.innerWidth > 768) {
   document.body.classList.add("tv-mode");
 }
@@ -423,6 +420,28 @@ let currentButton = null;
 let currentCard = null;
 let loopAll = false;
 const map = {};
+
+/* ================= HARDWARE NATIVE CODENAME EQUALIZER ================= */
+let audioCtx = null;
+const gainNodesMap = new Map();
+
+function getAmplifiedElement(audioNode, shouldBoost) {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  
+  if (!gainNodesMap.has(audioNode)) {
+    const source = audioCtx.createMediaElementSource(audioNode);
+    const gainNode = audioCtx.createGain();
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    gainNodesMap.set(audioNode, gainNode);
+  }
+  
+  const targetGainNode = gainNodesMap.get(audioNode);
+  // Targets 2.5 amplification boost exclusively on active matches
+  targetGainNode.gain.value = shouldBoost ? 2.5 : 1.0;
+}
 
 /* ================= AUDIO VOICE GENERATOR ================= */
 function speak(text){
@@ -447,7 +466,7 @@ card.innerHTML = `
   <div class="english">${s.eng}</div>
 </div>
 <button class="play-btn">⏸ Pause</button>
-<audio src="${s.file}" preload="auto"></audio>
+<audio src="${s.file}" preload="auto" crossorigin="anonymous"></audio>
 `;
 
 const btn = card.querySelector("button");
@@ -482,6 +501,16 @@ if(currentAudio && currentAudio !== item.audio){
   currentAudio.pause();
   currentAudio.currentTime = 0;
   if(currentCard) currentCard.classList.remove("active-tile");
+}
+
+// Target the ID matching A12 for the dynamic volume multiplier boost
+try {
+  getAmplifiedElement(item.audio, id === "A12");
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+} catch(err) {
+  console.log("Audio node configuration bypassed.");
 }
 
 item.audio.play().catch(()=>{});
@@ -564,7 +593,6 @@ document.addEventListener("keydown", (e) => {
   const k = e.keyCode;
   const activeEl = document.activeElement;
 
-  // If overlay is up, any direction or OK input clears it instantly
   if (document.getElementById("overlay").style.display === "flex") {
     const okKeys = ["Enter", "NumpadEnter", " ", "OK", "Select"];
     if (k === 23 || k === 66 || okKeys.includes(e.key) || k === 19 || k === 20 || k === 21 || k === 22 || e.key.startsWith("Arrow")) {
@@ -588,10 +616,10 @@ document.addEventListener("keydown", (e) => {
     }
     if (k === 20 || e.key === "ArrowDown") {
       e.preventDefault();
-      activeEl.blur(); // Drop out of active header bar elements
-      updateFocus();   // Highlight the current grid card index
+      activeEl.blur(); 
+      updateFocus();   
     }
-    return; // Fast escape routing while within header context rules
+    return; 
   }
 
   // ---- STANDARD GRID TRACKS ----
@@ -611,7 +639,6 @@ document.addEventListener("keydown", (e) => {
   }
   if (k === 19 || e.key === "ArrowUp") { 
     e.preventDefault(); 
-    // Jumping UP from the topmost card row shifts focus cleanly to the Stop button
     if (TV.focused < TV.cols) {
       const cards = document.querySelectorAll(".card");
       cards.forEach(c => c.classList.remove("remote-focus"));
@@ -623,7 +650,6 @@ document.addEventListener("keydown", (e) => {
 
   const okKeys = ["Enter", "NumpadEnter", " ", "OK", "Select"];
   if (k === 23 || k === 66 || okKeys.includes(e.key)){
-    // Standard link intercept actions are skipped if explicitly modifying the header fields
     if (activeEl && !activeEl.closest(".topbar")) {
       e.preventDefault();
       if(surahs[TV.focused]) {
