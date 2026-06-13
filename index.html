@@ -316,21 +316,32 @@ z-index:1;
 /* =======================================================
    ISOLATED TV LAYOUT ADJUSTMENTS (LEAVES SMARTPHONES PERFECT)
    ======================================================= */
+body.tv-mode {
+  padding-top: 45px !important; /* Safely moves everything down past the TV bezel frame layout */
+}
+
 body.tv-mode h1 {
-  margin-top: 25px !important; /* Added safe head clearance padding */
+  margin-top: 0px !important; 
   font-size: 2.8rem !important;
 }
 
 body.tv-mode .subtitle {
-  margin-bottom: 30px !important; /* Elegant spacing allocation down to grid */
+  margin-bottom: 20px !important; 
 }
 
 body.tv-mode .credits {
-  position: fixed !important; /* Forces layout credit strip to sit pinned on TV viewports */
+  position: fixed !important; 
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  background: rgba(15, 23, 42, 0.85) !important; /* Higher contrast visibility */
+  background: rgba(15, 23, 42, 0.85) !important; 
+}
+
+/* Visual selection outline indicator for the topbar controls on TV */
+.topbar button:focus, .topbar select:focus {
+  outline: 5px solid #fff !important;
+  outline-offset: 2px;
+  transform: scale(1.05);
 }
 </style>
 </head>
@@ -343,10 +354,10 @@ body.tv-mode .credits {
 <p class="subtitle">✨Quran Adventures with Mom!✨</p>
 
 <div class="topbar">
-<button onclick="stopAll()">⏹ Stop</button>
-<button onclick="toggleLoopAll()" id="loopBtn">🔁 Loop OFF</button>
+<button id="btnStop" tabindex="0" onclick="stopAll()">⏹ Stop</button>
+<button id="loopBtn" tabindex="0" onclick="toggleLoopAll()">🔁 Loop OFF</button>
 
-<select id="mode">
+<select id="mode" tabindex="0">
 <option value="listen" selected>🎧 Listen Mode</option>
 <option value="learn">📖 Learn Mode</option>
 </select>
@@ -551,6 +562,7 @@ function handleOverlayDismissal() {
 /* ================= SYSTEM CONTROL EVENT RECEPTORS ================= */
 document.addEventListener("keydown", (e) => {
   const k = e.keyCode;
+  const activeEl = document.activeElement;
 
   // If overlay is up, any direction or OK input clears it instantly
   if (document.getElementById("overlay").style.display === "flex") {
@@ -562,16 +574,61 @@ document.addEventListener("keydown", (e) => {
     }
   }
 
-  if(k === 21 || e.key === "ArrowLeft") { e.preventDefault(); move("left"); }
-  if(k === 22 || e.key === "ArrowRight") { e.preventDefault(); move("right"); }
-  if(k === 19 || e.key === "ArrowUp") { e.preventDefault(); move("up"); }
-  if(k === 20 || e.key === "ArrowDown") { e.preventDefault(); move("down"); }
+  // ---- D-PAD TOPBAR NAV TARGETS ----
+  if (activeEl && (activeEl.id === "btnStop" || activeEl.id === "loopBtn" || activeEl.id === "mode")) {
+    if (k === 22 || e.key === "ArrowRight") {
+      e.preventDefault();
+      if (activeEl.id === "btnStop") document.getElementById("loopBtn").focus();
+      if (activeEl.id === "loopBtn") document.getElementById("mode").focus();
+    }
+    if (k === 21 || e.key === "ArrowLeft") {
+      e.preventDefault();
+      if (activeEl.id === "loopBtn") document.getElementById("btnStop").focus();
+      if (activeEl.id === "mode") document.getElementById("loopBtn").focus();
+    }
+    if (k === 20 || e.key === "ArrowDown") {
+      e.preventDefault();
+      activeEl.blur(); // Drop out of active header bar elements
+      updateFocus();   // Highlight the current grid card index
+    }
+    return; // Fast escape routing while within header context rules
+  }
+
+  // ---- STANDARD GRID TRACKS ----
+  if (k === 21 || e.key === "ArrowLeft") { 
+    e.preventDefault(); 
+    if (TV.focused % TV.cols === 0) return; 
+    move("left"); 
+  }
+  if (k === 22 || e.key === "ArrowRight") { 
+    e.preventDefault(); 
+    if ((TV.focused + 1) % TV.cols === 0) return; 
+    move("right"); 
+  }
+  if (k === 20 || e.key === "ArrowDown") { 
+    e.preventDefault(); 
+    move("down"); 
+  }
+  if (k === 19 || e.key === "ArrowUp") { 
+    e.preventDefault(); 
+    // Jumping UP from the topmost card row shifts focus cleanly to the Stop button
+    if (TV.focused < TV.cols) {
+      const cards = document.querySelectorAll(".card");
+      cards.forEach(c => c.classList.remove("remote-focus"));
+      document.getElementById("btnStop").focus();
+    } else {
+      move("up");
+    }
+  }
 
   const okKeys = ["Enter", "NumpadEnter", " ", "OK", "Select"];
-  if(k === 23 || k === 66 || okKeys.includes(e.key)){
-    e.preventDefault();
-    if(surahs[TV.focused]) {
-      play(surahs[TV.focused].id);
+  if (k === 23 || k === 66 || okKeys.includes(e.key)){
+    // Standard link intercept actions are skipped if explicitly modifying the header fields
+    if (activeEl && !activeEl.closest(".topbar")) {
+      e.preventDefault();
+      if(surahs[TV.focused]) {
+        play(surahs[TV.focused].id);
+      }
     }
   }
 });
