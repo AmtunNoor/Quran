@@ -421,28 +421,6 @@ let currentCard = null;
 let loopAll = false;
 const map = {};
 
-/* ================= HARDWARE NATIVE CODENAME EQUALIZER ================= */
-let audioCtx = null;
-const gainNodesMap = new Map();
-
-function getAmplifiedElement(audioNode, shouldBoost) {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  
-  if (!gainNodesMap.has(audioNode)) {
-    const source = audioCtx.createMediaElementSource(audioNode);
-    const gainNode = audioCtx.createGain();
-    source.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    gainNodesMap.set(audioNode, gainNode);
-  }
-  
-  const targetGainNode = gainNodesMap.get(audioNode);
-  // Targets 2.5 amplification boost exclusively on active matches
-  targetGainNode.gain.value = shouldBoost ? 2.5 : 1.0;
-}
-
 /* ================= AUDIO VOICE GENERATOR ================= */
 function speak(text){
 try{
@@ -466,7 +444,7 @@ card.innerHTML = `
   <div class="english">${s.eng}</div>
 </div>
 <button class="play-btn">⏸ Pause</button>
-<audio src="${s.file}" preload="auto" crossorigin="anonymous"></audio>
+<audio src="${s.file}" preload="auto"></audio>
 `;
 
 const btn = card.querySelector("button");
@@ -501,16 +479,6 @@ if(currentAudio && currentAudio !== item.audio){
   currentAudio.pause();
   currentAudio.currentTime = 0;
   if(currentCard) currentCard.classList.remove("active-tile");
-}
-
-// Target the ID matching A12 for the dynamic volume multiplier boost
-try {
-  getAmplifiedElement(item.audio, id === "A12");
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-} catch(err) {
-  console.log("Audio node configuration bypassed.");
 }
 
 item.audio.play().catch(()=>{});
@@ -719,4 +687,3 @@ document.getElementById("overlay").onclick = () => {
 
 </body>
 </html>
-
