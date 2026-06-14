@@ -34,7 +34,6 @@ body.tv-mode {
 height: 100vh;
 overflow: hidden;
 padding: 15px;
-padding-bottom: 95px; /* Pushes the TV layout up dynamically so the last row clears the credit strip */
 }
 
 body.tv-mode h1 {
@@ -156,9 +155,10 @@ flex: 1;
 
 body.tv-mode .grid {
   grid-template-rows: repeat(4, 1fr);
-  gap: 12px;
+  gap: 10px;
   padding-top: 5px;
-  margin-bottom: 15px; /* Structural spacing layout exclusively on TV views */
+  height: calc(100vh - 210px) !important; /* Forces layout to scale perfectly above credits strip */
+  max-height: calc(100vh - 210px) !important;
 }
 
 /* ================= CARD DESIGN & MAX-SPACE UTILIZATION ================= */
@@ -178,6 +178,11 @@ box-shadow:0 0 20px rgba(255,255,255,.1);
 animation:float 4s ease-in-out infinite;
 height: 100%;
 width: 100%;
+}
+
+body.tv-mode .card {
+min-height: 0px !important; /* Removes structural clamping so cards flex into the view area smoothly */
+padding: 12px;
 }
 
 .card:hover{
@@ -203,6 +208,10 @@ box-shadow:0 0 30px rgba(255,255,255,.35);
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:4px;}
 .english{font-size:1.05rem;opacity:.95;}
 
+body.tv-mode .emoji { font-size: 1.6rem; margin-bottom: 2px; }
+body.tv-mode .arabic { font-size: 1.4rem; margin-bottom: 2px; }
+body.tv-mode .english { font-size: 0.9rem; }
+
 /* ================= BUTTONS & SPECIFIC PAUSE PLAY GRADIENT ================= */
 .play-btn{
 margin-top:14px;
@@ -218,6 +227,12 @@ transition:.3s;
 position: relative;
 z-index: 5;
 width: 100%;
+}
+
+body.tv-mode .play-btn {
+margin-top: 6px;
+padding: 8px;
+font-size: 0.85rem;
 }
 
 /* Yellow gradient background selectively maps onto active button only */
@@ -287,6 +302,11 @@ font-weight: bold;
 box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
 }
 
+body.tv-mode .credits {
+padding: 6px 8px;
+font-size: 0.9rem;
+}
+
 .amtun{
 display: inline-block;
 font-family:cursive;
@@ -299,6 +319,10 @@ background-size:400% 100%;
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
 animation:rainbowSparkle 5s linear infinite;
+}
+
+body.tv-mode .amtun {
+font-size: 1.2rem;
 }
 
 @keyframes rainbowSparkle{
@@ -320,11 +344,11 @@ body.tv-mode {
 
 body.tv-mode h1 {
   margin-top: 0px !important; 
-  font-size: 2.8rem !important;
+  font-size: 2.5rem !important;
 }
 
 body.tv-mode .subtitle {
-  margin-bottom: 20px !important; 
+  margin-bottom: 15px !important; 
 }
 
 body.tv-mode .credits {
@@ -332,7 +356,7 @@ body.tv-mode .credits {
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  background: rgba(15, 23, 42, 0.85) !important; 
+  background: rgba(15, 23, 42, 0.9) !important; 
 }
 
 /* Visual selection outline indicator for the topbar controls on TV */
@@ -421,28 +445,6 @@ let currentCard = null;
 let loopAll = false;
 const map = {};
 
-/* ================= HARDWARE NATIVE CODENAME EQUALIZER ================= */
-let audioCtx = null;
-const gainNodesMap = new Map();
-
-function getAmplifiedElement(audioNode, shouldBoost) {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  
-  if (!gainNodesMap.has(audioNode)) {
-    const source = audioCtx.createMediaElementSource(audioNode);
-    const gainNode = audioCtx.createGain();
-    source.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    gainNodesMap.set(audioNode, gainNode);
-  }
-  
-  const targetGainNode = gainNodesMap.get(audioNode);
-  // Targets 2.5 amplification boost exclusively on active matches
-  targetGainNode.gain.value = shouldBoost ? 2.5 : 1.0;
-}
-
 /* ================= AUDIO VOICE GENERATOR ================= */
 function speak(text){
 try{
@@ -466,11 +468,14 @@ card.innerHTML = `
   <div class="english">${s.eng}</div>
 </div>
 <button class="play-btn">⏸ Pause</button>
-<audio src="${s.file}" preload="auto" crossorigin="anonymous"></audio>
+<audio src="${s.file}" preload="auto"></audio>
 `;
 
 const btn = card.querySelector("button");
 const audio = card.querySelector("audio");
+
+// HARDWARE NATIVE MIXER: Set Takbir (A12) to full power (1.0) and lower everything else to 0.4
+audio.volume = (s.id === "A12") ? 1.0 : 0.4;
 
 map[s.id] = {card, audio, btn, s, index: idx};
 
@@ -501,16 +506,6 @@ if(currentAudio && currentAudio !== item.audio){
   currentAudio.pause();
   currentAudio.currentTime = 0;
   if(currentCard) currentCard.classList.remove("active-tile");
-}
-
-// Target the ID matching A12 for the dynamic volume multiplier boost
-try {
-  getAmplifiedElement(item.audio, id === "A12");
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-} catch(err) {
-  console.log("Audio node configuration bypassed.");
 }
 
 item.audio.play().catch(()=>{});
