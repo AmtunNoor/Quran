@@ -445,6 +445,28 @@ let currentCard = null;
 let loopAll = false;
 const map = {};
 
+/* ================= PREMIUM CROSS-ORIGIN AUDIO AMPLIFIER ================= */
+let audioCtx = null;
+const gainNodesMap = new Map();
+
+function getAmplifiedElement(audioNode, shouldBoost) {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  
+  if (!gainNodesMap.has(audioNode)) {
+    const source = audioCtx.createMediaElementSource(audioNode);
+    const gainNode = audioCtx.createGain();
+    source.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    gainNodesMap.set(audioNode, gainNode);
+  }
+  
+  const targetGainNode = gainNodesMap.get(audioNode);
+  // Give Takbir a powerful pristine software volume boost while others remain completely pristine
+  targetGainNode.gain.value = shouldBoost ? 3.0 : 1.0;
+}
+
 /* ================= AUDIO VOICE GENERATOR ================= */
 function speak(text){
 try{
@@ -461,6 +483,7 @@ const card = document.createElement("div");
 card.className = "card";
 card.style.background = s.color;
 
+// Crucial: added crossorigin="anonymous" to safely allow high-fidelity browser stream modulation
 card.innerHTML = `
 <div class="card-info-box">
   <div class="emoji">${s.emoji}</div>
@@ -468,14 +491,11 @@ card.innerHTML = `
   <div class="english">${s.eng}</div>
 </div>
 <button class="play-btn">⏸ Pause</button>
-<audio src="${s.file}" preload="auto"></audio>
+<audio src="${s.file}" preload="auto" crossorigin="anonymous"></audio>
 `;
 
 const btn = card.querySelector("button");
 const audio = card.querySelector("audio");
-
-// HARDWARE NATIVE MIXER: Set Takbir (A12) to full power (1.0) and lower everything else to 0.4
-audio.volume = (s.id === "A12") ? 1.0 : 0.4;
 
 map[s.id] = {card, audio, btn, s, index: idx};
 
@@ -506,6 +526,16 @@ if(currentAudio && currentAudio !== item.audio){
   currentAudio.pause();
   currentAudio.currentTime = 0;
   if(currentCard) currentCard.classList.remove("active-tile");
+}
+
+// Amplify Takbir (A12) with full mathematical clarity via the dynamic Web Audio architecture
+try {
+  getAmplifiedElement(item.audio, id === "A12");
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+} catch(err) {
+  console.log("Audio pipeline routing bypassed.");
 }
 
 item.audio.play().catch(()=>{});
