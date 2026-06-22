@@ -5,85 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Islamic Months</title>
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
+*{ margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; user-select: none; }
 body {
-  background: radial-gradient(circle at top, #1e3a8a, #030712 90%);
-  min-height: 100vh; color: white; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; overflow: hidden; padding: 20px;
+  background: radial-gradient(circle at top, #1e3a8a, #030712 95%);
+  min-height: 100vh; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 4vh;
 }
-/* Drifting Dust Particle Mechanics */
-.dust-field { position: fixed; inset: 0; z-index: 0; }
-.particle {
-  position: absolute; background: rgba(56, 189, 248, 0.4); border-radius: 50%;
-  animation: drift 12s linear infinite;
-}
-@keyframes drift {
-  0% { transform: translateX(-10vw) translateY(0px); opacity: 0; }
-  50% { opacity: 0.8; }
-  100% { transform: translateX(110vw) translateY(-60px); opacity: 0; }
-}
+.bg-image { position: fixed; inset: 0; background: url('months.jpeg') center/cover no-repeat; opacity: 0.35; z-index: 0; }
+canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
 .back-btn {
-  position: absolute; top: 30px; left: 30px; background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 20px;
-  border-radius: 12px; cursor: pointer; font-weight: bold; z-index: 10;
+  position: absolute; top: 4vh; left: 4vw; background: rgba(239, 68, 68, 0.95);
+  border: 4px solid white; color: white; padding: 2vh 4vw; font-size: 3.5vh;
+  border-radius: 2vh; cursor: pointer; font-weight: 900; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
-.container { position: relative; z-index: 5; text-align: center; }
-h1 { font-size: 3.2rem; margin-bottom: 40px; color: #38bdf8; text-shadow: 0 0 25px rgba(56,189,248,0.5); }
+.container { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; }
+h1 { font-size: 6vh; margin-bottom: 5vh; color: #38bdf8; text-shadow: 0 0 25px rgba(56,189,248,0.6); }
 
 .showcase-card {
-  width: 320px; height: 420px; background: rgba(15, 23, 42, 0.7);
-  border: 3px solid #38bdf8; border-radius: 32px; padding: 40px;
-  display: flex; flex-direction: column; justify-content: space-between;
-  align-items: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-  transition: transform 0.3s ease; cursor: pointer;
+  width: 50vw; max-width: 600px; height: 45vh; background: rgba(15, 23, 42, 0.85);
+  border: 5px solid #38bdf8; border-radius: 4vh; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; padding: 4vh; box-shadow: 0 30px 60px rgba(0,0,0,0.7);
 }
-.showcase-card:hover { transform: scale(1.03); }
-.icon { font-size: 5rem; animation: float 3s ease-in-out infinite; }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
-.title { font-size: 2.2rem; font-weight: 800; color: white; }
-.action-tag { font-size: 1rem; color: #38bdf8; font-weight: bold; letter-spacing: 1px; }
+.icon { font-size: 16vh; display: flex; align-items: center; justify-content: center; flex: 1; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2vh); } }
+.title { font-size: 5vh; font-weight: 900; color: white; margin-top: auto; }
 </style>
 </head>
 <body>
 
-<div class="dust-field" id="dust"></div>
-<button class="back-btn" onclick="window.location.href='../index.html'">← Portal Hub</button>
+<div class="bg-image"></div>
+<canvas id="dustCanvas"></canvas>
+<button class="back-btn" onclick="window.location.href='../index.html'">← BACK</button>
 
 <div class="container">
   <h1>Islamic Months</h1>
   <div class="showcase-card" onclick="togglePlay()">
     <div class="icon">📅</div>
     <div class="title">12 Months</div>
-    <div class="action-tag" id="statusLabel">▶ PRESS OK TO LISTEN</div>
   </div>
 </div>
 
 <script>
 let audio = null;
 function togglePlay() {
-  if(!audio) {
-    audio = new Audio("months.mp3");
-    audio.onended = () => { document.getElementById("statusLabel").textContent = "▶ PRESS OK TO LISTEN"; };
-  }
-  if(audio.paused) {
-    audio.play(); document.getElementById("statusLabel").textContent = "⏸ TRACK PLAYING";
-  } else {
-    audio.pause(); document.getElementById("statusLabel").textContent = "▶ TRACK PAUSED";
-  }
+  if(!audio) { audio = new Audio("months.mp3"); audio.loop = true; }
+  if(audio.paused) { audio.play(); } else { audio.pause(); }
 }
 document.addEventListener("keydown", (e) => {
   if(e.key === "Enter" || e.key === " ") { togglePlay(); }
   else if(e.key === "Backspace" || e.key === "Escape") { window.location.href="../index.html"; }
 });
 
-const df = document.getElementById("dust");
-for(let i=0; i<15; i++) {
-  const p = document.createElement("div"); p.className = "particle";
-  p.style.width = p.style.height = (Math.random() * 4 + 3) + "px";
-  p.style.top = (Math.random() * 90) + "vh"; p.style.animationDelay = (Math.random() * 8) + "s";
-  df.appendChild(p);
+const canvas = document.getElementById('dustCanvas');
+const ctx = canvas.getContext('2d');
+let pts = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+
+for(let i=0; i<60; i++) {
+  pts.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*7+4, s: Math.random()*2+1 });
 }
+function anim() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = 'rgba(56, 189, 248, 0.5)';
+  pts.forEach(p => {
+    p.x += p.s; if(p.x > canvas.width + 10) p.x = -10;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+  });
+  requestAnimationFrame(anim);
+}
+anim();
 </script>
 </body>
 </html>
