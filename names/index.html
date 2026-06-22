@@ -3,53 +3,65 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Asma-ul-Husna Portal</title>
+<title>Asma-ul-Husna</title>
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
+*{ margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; user-select: none; }
 body {
-  background: radial-gradient(circle at center, #2e1065, #090514 90%);
-  min-height: 100vh; color: white; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; overflow: hidden; padding: 20px;
+  background: radial-gradient(circle at center, #2e1065, #090514 95%);
+  min-height: 100vh; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 4vh;
 }
-/* Pulsing Golden Rings Background */
-.pulsar-bg { position: fixed; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; }
-.ring {
-  position: absolute; width: 200px; height: 200px; border: 2px solid rgba(245, 158, 11, 0.15);
-  border-radius: 50%; animation: pulseRing 6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
-}
-.ring:nth-child(2) { animation-delay: -2s; }
-.ring:nth-child(3) { animation-delay: -4s; }
-@keyframes pulseRing { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(3.5); opacity: 0; } }
+.bg-image { position: fixed; inset:0; background: url('names.jpeg') center/cover no-repeat; opacity: 0.25; z-index: 0; }
+canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
 .back-btn {
-  position: absolute; top: 30px; left: 30px; background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 20px;
-  border-radius: 12px; cursor: pointer; font-weight: bold; z-index: 10;
+  position: absolute; top: 4vh; left: 4vw; background: rgba(239, 68, 68, 0.95);
+  border: 4px solid white; color: white; padding: 2vh 4vw; font-size: 3.5vh;
+  border-radius: 2vh; cursor: pointer; font-weight: 900; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
-.container { position: relative; z-index: 5; text-align: center; width: 100%; max-width: 800px; }
-h1 { font-size: 3.2rem; margin-bottom: 40px; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
 
-.deck-view { display: flex; gap: 20px; justify-content: center; align-items: center; min-height: 380px; }
+/* Control Panel Grid for Toddler Modes */
+.control-panel {
+  position: absolute; top: 4vh; right: 4vw; display: flex; gap: 2vw; z-index: 100;
+}
+.mode-btn {
+  background: rgba(15, 23, 42, 0.85); border: 3px solid rgba(255,255,255,0.2);
+  color: white; padding: 1.5vh 2.5vw; font-size: 2.5vh; font-weight: bold; border-radius: 1.5vh; cursor: pointer;
+}
+.mode-btn.active {
+  background: #fbbf24; color: #020617; border-color: white; box-shadow: 0 0 20px #fbbf24;
+}
+
+.container { position: relative; z-index: 10; text-align: center; width: 95vw; display: flex; flex-direction: column; align-items: center; }
+h1 { font-size: 6vh; margin-bottom: 4vh; color: #fbbf24; text-shadow: 0 0 25px rgba(251,191,36,0.6); }
+
+/* Horizontal Strip showing all cards simultaneously */
+.deck-view {
+  display: flex; gap: 1.5vw; justify-content: center; align-items: center; width: 100%; height: 50vh; overflow-x: auto; padding: 2vh;
+}
 .name-card {
-  width: 250px; height: 360px; background: rgba(15, 23, 42, 0.6);
-  border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 30px;
-  display: flex; flex-direction: column; justify-content: space-between; align-items: center;
-  backdrop-filter: blur(10px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  flex: 1; min-width: 13vw; max-width: 15vw; height: 40vh; background: rgba(15, 23, 42, 0.8);
+  border: 4px solid rgba(245, 158, 11, 0.4); border-radius: 3vh; padding: 2vh;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2); opacity: 0.35; transform: scale(0.85);
 }
 .name-card.active {
-  transform: scale(1.08); border-color: #fbbf24;
-  box-shadow: 0 0 40px rgba(251, 191, 36, 0.4); background: rgba(30, 27, 75, 0.8);
+  opacity: 1; transform: scale(1.15); border-color: #fbbf24;
+  box-shadow: 0 0 50px rgba(251, 191, 36, 0.6); background: rgba(30, 27, 75, 0.95);
 }
-.badge { background: #7c3aed; padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; }
-.arabic { font-size: 3.8rem; font-weight: bold; color: #fef08a; }
-.range { font-size: 1.4rem; color: #94a3b8; font-weight: bold; }
+.arabic { font-size: 6.5vh; font-weight: bold; color: #fef08a; display: flex; align-items: center; justify-content: center; flex: 1; }
+.card-label { font-size: 3.5vh; font-weight: 900; color: white; }
 </style>
 </head>
 <body>
 
-<div class="pulsar-bg"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
-<button class="back-btn" onclick="window.location.href='../index.html'">← Portal Hub</button>
+<div class="bg-image"></div>
+<canvas id="particleCanvas"></canvas>
+<button class="back-btn" onclick="window.location.href='../index.html'">← BACK</button>
+
+<div class="control-panel">
+  <button class="mode-btn active" id="btnLoop" onclick="setMode('loop')">🔄 LOOP ON</button>
+  <button class="mode-btn" id="btnHifz" onclick="setMode('hifz')">🎓 HIFZ MODE</button>
+</div>
 
 <div class="container">
   <h1>الأسماء الحسنى</h1>
@@ -58,45 +70,107 @@ h1 { font-size: 3.2rem; margin-bottom: 40px; color: #fbbf24; text-shadow: 0 0 20
 
 <script>
 const data = [
-  { g: 1, r: "1-27", a: "ٱلرَّحْمَٰنُ", f: "1_27.mp3" },
-  { g: 2, r: "28-36", a: "الْعَلِيمُ", f: "28_36.mp3" },
-  { g: 3, r: "37-45", a: "الْكَبِيرُ", f: "37_45.mp3" },
-  { g: 4, r: "46-60", a: "الْحَكِيمُ", f: "46_60.mp3" },
-  { g: 5, r: "61-76", a: "الْأَوَّلُ", f: "61_76.mp3" },
-  { g: 6, r: "77-99", a: "الرَّؤُوفُ", f: "77_99.mp3" }
+  { a: "ٱلرَّحْمَٰنُ", r: "1-27", f: "1_27.mp3", count: 27 },
+  { a: "الْعَلِيمُ", r: "28-36", f: "28_36.mp3", count: 9 },
+  { a: "الْكَبِيرُ", r: "37-45", f: "37_45.mp3", count: 9 },
+  { a: "الْحَكِيمُ", r: "46-60", f: "46_60.mp3", count: 15 },
+  { a: "الْأَوَّلُ", r: "61-76", f: "61_76.mp3", count: 16 },
+  { a: "الرَّؤُوفُ", r: "77-99", f: "77_99.mp3", count: 23 }
 ];
-let idx = 0; let audio = null;
-const view = document.getElementById("deckView");
+
+let idx = 0; 
+let audio = null;
+let currentMode = 'loop'; // 'loop' or 'hifz'
+let currentChunk = 0;
+let loopCount = 0;
+let hifzInterval = null;
+
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('btnLoop').classList.toggle('active', mode === 'loop');
+  document.getElementById('btnHifz').classList.toggle('active', mode === 'hifz');
+  play(data[idx].f);
+}
 
 function render() {
   view.innerHTML = "";
-  [-1, 0, 1].forEach(offset => {
-    let target = idx + offset;
-    if(target >= 0 && target < data.length) {
-      const item = data[target];
-      const card = document.createElement("div");
-      card.className = `name-card ${offset === 0 ? 'active' : ''}`;
-      card.innerHTML = `
-        <div class="badge">Section 0${item.g}</div>
-        <div class="arabic">${item.a}</div>
-        <div class="range">${item.r}</div>
-      `;
-      card.onclick = () => { if(offset === 0) play(item.f); else { idx = target; render(); } };
-      view.appendChild(card);
-    }
+  data.forEach((item, i) => {
+    const card = document.createElement("div");
+    card.className = `name-card ${i === idx ? 'active' : ''}`;
+    card.innerHTML = `
+      <div class="arabic">${item.a}</div>
+      <div class="card-label">${item.r}</div>
+    `;
+    card.onclick = () => { idx = i; render(); play(item.f); };
+    view.appendChild(card);
   });
 }
+
 function play(file) {
-  if(audio) { audio.pause(); }
-  audio = new Audio(file); audio.play();
+  if(audio) { audio.pause(); audio.currentTime = 0; }
+  clearInterval(hifzInterval);
+  
+  audio = new Audio(file);
+  audio.play().then(() => {
+    if (currentMode === 'hifz') {
+      runHifzEngine();
+    } else {
+      audio.loop = true;
+    }
+  }).catch(e => console.log("Audio waiting for interaction"));
 }
+
+function runHifzEngine() {
+  audio.loop = false;
+  const totalNames = data[idx].count;
+  
+  audio.addEventListener('loadedmetadata', () => {
+    const chunkSize = audio.duration / totalNames; 
+    currentChunk = 0;
+    loopCount = 0;
+    
+    hifzInterval = setInterval(() => {
+      let start = currentChunk * chunkSize;
+      let end = start + chunkSize;
+      
+      if (audio.currentTime >= end || audio.currentTime < start) {
+        loopCount++;
+        if (loopCount >= 5) {
+          loopCount = 0;
+          currentChunk++;
+          if (currentChunk >= totalNames) {
+            currentChunk = 0; // Wrap around to the beginning of the block
+          }
+          start = currentChunk * chunkSize;
+        }
+        audio.currentTime = start;
+        audio.play();
+      }
+    }, 100);
+  });
+}
+
 document.addEventListener("keydown", (e) => {
-  if(e.key === "ArrowLeft") { idx = Math.max(0, idx - 1); render(); }
-  else if(e.key === "ArrowRight") { idx = Math.min(data.length - 1, idx + 1); render(); }
+  if(e.key === "ArrowLeft") { idx = (idx === 0) ? data.length - 1 : idx - 1; render(); play(data[idx].f); }
+  else if(e.key === "ArrowRight") { idx = (idx === data.length - 1) ? 0 : idx + 1; render(); play(data[idx].f); }
   else if(e.key === "Enter") { play(data[idx].f); }
   else if(e.key === "Backspace" || e.key === "Escape") { window.location.href="../index.html"; }
 });
-render();
+
+// Dynamic canvas background engine
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let pts = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize); resize();
+for(let i=0; i<40; i++) { pts.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, r: Math.random()*5+4, s: Math.random()*1+0.5 }); }
+function anim() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = 'rgba(251, 191, 36, 0.4)';
+  pts.forEach(p => { p.y -= p.s; if(p.y < -10) p.y = canvas.height + 10; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill(); });
+  requestAnimationFrame(anim);
+}
+anim(); render();
 </script>
 </body>
 </html>
