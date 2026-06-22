@@ -65,16 +65,18 @@
   },
   {
     "title": "Months",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/months/months.mp3",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/months/index.html",
     "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/index.html", "path": "months/index.html" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.jpeg", "path": "months/months.jpeg" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.mp3", "path": "months/months.mp3" }
     ]
   },
   {
     "title": "Duas",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/duas/",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/duas/index.html",
     "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/duas/index.html", "path": "duas/index.html" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/duas/duas.jpeg", "path": "duas/duas.jpeg" }
     ]
   },
@@ -82,7 +84,7 @@
     "title": "Asma-ul-Husna",
     "mainUrl": "file:///data/user/0/com.noor.prism/files/names/index.html",
     "syncFiles": [
-      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html", "path": "names/index.html" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/index.html", "path": "names/index.html" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/names.jpeg", "path": "names/names.jpeg" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/1_27.mp3", "path": "names/1_27.mp3" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/28_36.mp3", "path": "names/28_36.mp3" },
