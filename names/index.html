@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Asma-ul-Husna Portal</title>
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
+body {
+  background: radial-gradient(circle at center, #2e1065, #090514 90%);
+  min-height: 100vh; color: white; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; overflow: hidden; padding: 20px;
+}
+/* Pulsing Golden Rings Background */
+.pulsar-bg { position: fixed; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; }
+.ring {
+  position: absolute; width: 200px; height: 200px; border: 2px solid rgba(245, 158, 11, 0.15);
+  border-radius: 50%; animation: pulseRing 6s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+}
+.ring:nth-child(2) { animation-delay: -2s; }
+.ring:nth-child(3) { animation-delay: -4s; }
+@keyframes pulseRing { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(3.5); opacity: 0; } }
+
+.back-btn {
+  position: absolute; top: 30px; left: 30px; background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 20px;
+  border-radius: 12px; cursor: pointer; font-weight: bold; z-index: 10;
+}
+.container { position: relative; z-index: 5; text-align: center; width: 100%; max-width: 800px; }
+h1 { font-size: 3.2rem; margin-bottom: 40px; color: #fbbf24; text-shadow: 0 0 20px rgba(251,191,36,0.4); }
+
+.deck-view { display: flex; gap: 20px; justify-content: center; align-items: center; min-height: 380px; }
+.name-card {
+  width: 250px; height: 360px; background: rgba(15, 23, 42, 0.6);
+  border: 2px solid rgba(245, 158, 11, 0.3); border-radius: 24px; padding: 30px;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+  backdrop-filter: blur(10px); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+.name-card.active {
+  transform: scale(1.08); border-color: #fbbf24;
+  box-shadow: 0 0 40px rgba(251, 191, 36, 0.4); background: rgba(30, 27, 75, 0.8);
+}
+.badge { background: #7c3aed; padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: bold; }
+.arabic { font-size: 3.8rem; font-weight: bold; color: #fef08a; }
+.range { font-size: 1.4rem; color: #94a3b8; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<div class="pulsar-bg"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+<button class="back-btn" onclick="window.location.href='../index.html'">← Portal Hub</button>
+
+<div class="container">
+  <h1>الأسماء الحسنى</h1>
+  <div class="deck-view" id="deckView"></div>
+</div>
+
+<script>
+const data = [
+  { g: 1, r: "1-27", a: "ٱلرَّحْمَٰنُ", f: "1_27.mp3" },
+  { g: 2, r: "28-36", a: "الْعَلِيمُ", f: "28_36.mp3" },
+  { g: 3, r: "37-45", a: "الْكَبِيرُ", f: "37_45.mp3" },
+  { g: 4, r: "46-60", a: "الْحَكِيمُ", f: "46_60.mp3" },
+  { g: 5, r: "61-76", a: "الْأَوَّلُ", f: "61_76.mp3" },
+  { g: 6, r: "77-99", a: "الرَّؤُوفُ", f: "77_99.mp3" }
+];
+let idx = 0; let audio = null;
+const view = document.getElementById("deckView");
+
+function render() {
+  view.innerHTML = "";
+  [-1, 0, 1].forEach(offset => {
+    let target = idx + offset;
+    if(target >= 0 && target < data.length) {
+      const item = data[target];
+      const card = document.createElement("div");
+      card.className = `name-card ${offset === 0 ? 'active' : ''}`;
+      card.innerHTML = `
+        <div class="badge">Section 0${item.g}</div>
+        <div class="arabic">${item.a}</div>
+        <div class="range">${item.r}</div>
+      `;
+      card.onclick = () => { if(offset === 0) play(item.f); else { idx = target; render(); } };
+      view.appendChild(card);
+    }
+  });
+}
+function play(file) {
+  if(audio) { audio.pause(); }
+  audio = new Audio(file); audio.play();
+}
+document.addEventListener("keydown", (e) => {
+  if(e.key === "ArrowLeft") { idx = Math.max(0, idx - 1); render(); }
+  else if(e.key === "ArrowRight") { idx = Math.min(data.length - 1, idx + 1); render(); }
+  else if(e.key === "Enter") { play(data[idx].f); }
+  else if(e.key === "Backspace" || e.key === "Escape") { window.location.href="../index.html"; }
+});
+render();
+</script>
+</body>
+</html>
