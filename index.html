@@ -1,685 +1,183 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>My Little Quran Corner!</title>
-<meta name="theme-color" content="#0f172a"/>
+<title>Mariam & Hamza's Quran Corner</title>
 <style>
+:root {
+  --neon-quran: #ef4444;
+  --neon-salah: #a855f7;
+  --neon-months: #3b82f6;
+  --neon-duas: #10b981;
+  --neon-names: #f59e0b;
+}
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial,sans-serif;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  user-select: none;
+  margin:0; padding:0; box-sizing:border-box;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
 }
-
-body{
-  background:radial-gradient(circle at top,#172554,#020617 70%);
-  min-height:100vh;
-  overflow-x:hidden;
-  color:white;
-  padding:20px;
-  display: flex;
-  flex-direction: column;
-  padding-bottom:110px;
+body {
+  background: radial-gradient(circle at top, #0f172a, #020617 80%);
+  min-height: 100vh; color: white; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 40px 20px;
 }
-
-body.tv-mode {
-  height: 100vh;
-  overflow: hidden;
-  padding: 15px;
-  padding-bottom: 95px;
+.star-field { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+.star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.3; }
+header { text-align: center; margin-bottom: 50px; z-index: 10; }
+h1 {
+  font-size: 2.8rem; font-weight: 800;
+  background: linear-gradient(to right, #facc15, #38bdf8, #f472b6);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
-
-body.tv-mode h1 {
-  margin-top: 5px;
+.subtitle { color: #94a3b8; margin-top: 8px; font-size: 1.1rem; }
+.dashboard-grid {
+  display: flex; gap: 24px; justify-content: center; align-items: center;
+  flex-wrap: wrap; max-width: 1200px; width: 100%; z-index: 10; margin: auto;
 }
-
-/* ================= STARS BACKGROUND ENV ================= */
-.stars{
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index:0;
+.app-card {
+  position: relative; width: 210px; height: 310px; border-radius: 24px;
+  cursor: pointer; overflow: hidden; background-size: cover; background-position: center;
+  border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s;
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 25px 20px;
 }
+.app-card[data-module="quran"] { border-bottom: 5px solid var(--neon-quran); background-image: url('quran/quran.jpeg'); }
+.app-card[data-module="salah"] { border-bottom: 5px solid var(--neon-salah); background-image: url('salah/salah.jpeg'); }
+.app-card[data-module="months"] { border-bottom: 5px solid var(--neon-months); background-image: url('months/months.jpeg'); }
+.app-card[data-module="duas"] { border-bottom: 5px solid var(--neon-duas); background-image: url('duas/duas.jpeg'); }
+.app-card[data-module="names"] { border-bottom: 5px solid var(--neon-names); background-image: url('names/names.jpeg'); }
 
-.star{
-  position:absolute;
-  width:3px;
-  height:3px;
-  background:white;
-  border-radius:50%;
-  animation:twinkle 3s infinite alternate, drift 25s linear infinite;
-}
-
-@keyframes twinkle{
-  from{opacity:.2;transform:scale(.5);}
-  to{opacity:1;transform:scale(1.5);}
-}
-
-@keyframes drift{
-  from{transform:translateY(0px);}
-  to{transform:translateY(-120px);}
-}
-
-/* ================= TITLE HEADERS ================= */
-h1{
-  text-align:center;
-  font-size:2.5rem;
-  margin-bottom:8px;
-  background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:glow 3s infinite alternate, headerFloat 4s ease-in-out infinite;
-  display: block;
-  width: 100%;
-}
-
-@keyframes glow{
-  from{filter:drop-shadow(0 0 5px #38bdf8);}
-  to{filter:drop-shadow(0 0 18px #f472b6);}
-}
-
-@keyframes headerFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.subtitle{
-  text-align:center;
-  margin-bottom:24px;
-  color:#cbd5e1;
-  animation: headerFloat 4s ease-in-out infinite;
-  animation-delay: 0.5s;
-}
-
-/* ================= 3D VIEWPORT LAYER MANAGEMENT ================= */
-.viewport-container {
-  position: relative;
-  width: 100%;
-  height: 440px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  margin: auto;
-}
-
-.view-window {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform-style: preserve-3d;
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), visibility 0.6s;
-  visibility: hidden;
-  opacity: 0;
-}
-
-.view-window.active-view {
-  visibility: visible;
-  opacity: 1;
-  transform: translateZ(0) scale(1);
-}
-
-.homepage-deck-rig {
-  position: relative;
-  width: 300px;
-  height: 400px;
-  transform-style: preserve-3d;
-  perspective: 1200px;
-}
-
-.names-fan-rig {
-  position: relative;
-  width: 250px;
-  height: 360px;
-  transform-style: preserve-3d;
-  perspective: 1400px;
-}
-
-/* ================= MAIN LANDING PAGE SPATIAL CARDS ================= */
-.homepage-tile {
-  position: absolute;
-  width: 300px;
-  height: 400px;
-  border-radius: 32px;
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
-  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), filter 0.6s ease, opacity 0.6s ease;
-  transform-origin: center center;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-}
-
-.homepage-tile::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 31px;
-  background: linear-gradient(to bottom, rgba(2, 6, 23, 0.2), rgba(2, 6, 23, 0.85));
+.app-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(2, 6, 23, 0.95) 20%, rgba(2, 6, 23, 0.2) 70%);
   z-index: 1;
 }
-
-.homepage-tile > * {
-  position: relative;
-  z-index: 2;
+.app-card:hover, .app-card.focused {
+  transform: translateY(-12px) scale(1.05); border-color: rgba(255, 255, 255, 0.4);
 }
+.app-card[data-module="quran"]:hover, .app-card[data-module="quran"].focused { box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4); }
+.app-card[data-module="salah"]:hover, .app-card[data-module="salah"].focused { box-shadow: 0 15px 35px rgba(168, 85, 247, 0.4); }
+.app-card[data-module="months"]:hover, .app-card[data-module="months"].focused { box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4); }
+.app-card[data-module="duas"]:hover, .app-card[data-module="duas"].focused { box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4); }
+.app-card[data-module="names"]:hover, .app-card[data-module="names"].focused { box-shadow: 0 15px 35px rgba(245, 158, 11, 0.4); }
 
-.homepage-tile.focus-center {
-  filter: blur(0px) brightness(1.1);
-  opacity: 1;
-  z-index: 100;
-  box-shadow: 0 0 50px rgba(56, 189, 248, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.2);
+.card-content { position: relative; z-index: 2; }
+.card-icon { font-size: 2.8rem; margin-bottom: 12px; }
+.card-title { font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 4px; }
+.card-status { font-size: 0.85rem; color: #94a3b8; }
+
+.indicator-bar { display: flex; gap: 10px; margin-top: 40px; z-index: 10; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s; }
+.dot.active { background: #38bdf8; transform: scale(1.2); box-shadow: 0 0 8px #38bdf8; }
+.footer-credits {
+  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; text-align: center;
+  background: rgba(2, 6, 23, 0.9); border-top: 1px solid rgba(255,255,255,0.05); z-index: 100;
 }
-
-.homepage-tile.back-stacked {
-  opacity: 0.4;
-  filter: blur(5px) brightness(0.35);
+.designer-tag {
+  font-family: 'Courier New', monospace; font-weight: 900; font-size: 1.2rem;
+  background: linear-gradient(90deg, #ff0055, #00ffcc, #ffcc00, #ff0055);
+  background-size: 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
 }
-
-.remote-focus {
-  outline: 5px solid #fff !important;
-  outline-offset: 4px;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.9) !important;
-}
-
-/* ================= NAMES CASCADING FAN CARDS ================= */
-.fan-tile {
-  position: absolute;
-  width: 250px;
-  height: 360px;
-  border-radius: 26px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.65);
-  transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1), filter 0.7s ease, opacity 0.7s ease;
-}
-
-.fan-tile.active-focus {
-  filter: blur(0px) drop-shadow(0 0 35px rgba(251, 191, 36, 0.35));
-  opacity: 1;
-}
-
-.fan-tile.dimmed-cascade {
-  opacity: 0.45;
-  filter: blur(3px) brightness(0.45);
-}
-
-/* ================= TYPOGRAPHY & INNER DATA STYLINGS ================= */
-.tile-emoji {
-  font-size: 3.5rem;
-  margin-top: 15px;
-}
-
-.tile-caption {
-  font-size: 1.9rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 25px;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.7);
-}
-
-.fan-badge {
-  font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.18);
-  padding: 4px 14px;
-  border-radius: 20px;
-  font-weight: bold;
-}
-
-.fan-arabic {
-  font-size: 3.2rem;
-  font-weight: bold;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-.fan-range {
-  font-size: 1.5rem;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-
-/* ================= CONTROL SYSTEMS & NAV MATRIX ================= */
-.dots-indicator {
-  display: flex;
-  gap: 12px;
-  margin-top: 35px;
-  z-index: 100;
-  justify-content: center;
-  width: 100%;
-}
-
-.indicator-pip {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.indicator-pip.active {
-  background: #38bdf8;
-  transform: scale(1.3);
-  box-shadow: 0 0 10px #38bdf8;
-}
-
-.names-active .indicator-pip.active {
-  background: #fbbf24;
-  box-shadow: 0 0 10px #fbbf24;
-}
-
-.back-portal-btn {
-  position: absolute;
-  top: 30px;
-  left: 30px;
-  background: linear-gradient(90deg,#facc15,#fde68a);
-  border: none;
-  color: #020617;
-  padding: 12px 24px;
-  border-radius: 18px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-20px);
-  z-index: 200;
-}
-
-.back-portal-btn.show-btn {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
-}
-
-#overlay {
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.85);
-  z-index:999;
-}
-
-#overlay div {
-  background:white;
-  color:black;
-  padding:22px;
-  border-radius:20px;
-  font-size:1.2rem;
-  font-weight:bold;
-  text-align:center;
-  cursor: pointer;
-}
-
-.credits{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:12px 8px;
-  text-align:center;
-  background:rgba(15, 23, 42, 0.25);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  z-index: 1000;
-  width: 100%;
-  line-height: 1.4;
-  font-weight: bold;
-}
-
-.amtun{
-  display: inline-block;
-  font-family:cursive;
-  font-size:1.5rem;
-  font-weight:900;
-  letter-spacing:3px;
-  text-transform:uppercase;
-  background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
-  background-size:400% 100%;
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  animation:rainbowSparkle 5s linear infinite;
-}
-
-@keyframes rainbowSparkle{
-  0%{background-position:0% 50%;}
-  100%{background-position:400% 50%;}
-}
-
-body>*{ position:relative; z-index:1; }
-body.tv-mode .credits { background: rgba(15, 23, 42, 0.85) !important; }
+@keyframes shine { 0% { background-position: 0%; } 100% { background-position: 300%; } }
 </style>
 </head>
-
 <body>
-
-<div class="stars"></div>
-
-<button class="back-portal-btn" id="globalBackBtn" onclick="switchToMainDashboard()">← Back to Portal</button>
-
-<header id="appHeader">
-  <h1 id="mainTitle">🌙 Mariam & Hamza's 🌙</h1>
-  <p class="subtitle" id="mainSubtitle">✨Quran Adventures with Mom!✨</p>
+<div class="star-field" id="stars"></div>
+<header>
+  <h1>🌙 Quran Corner 🌙</h1>
+  <p class="subtitle">Mariam & Hamza's Learning Platform</p>
 </header>
 
-<div class="viewport-container">
-  
-  <!-- VIEW 1: EXPANDED 5-TILE HOMEPAGE DISPLAY DECK -->
-  <div class="view-window active-view" id="homepageViewport">
-    <div class="homepage-deck-rig" id="homepageDeckContainer">
-      
-      <div class="homepage-tile" style="background: linear-gradient(135deg, #ef4444, #b91c1c);" data-action="quran">
-        <div class="tile-emoji">📖</div>
-        <div class="tile-caption">Quran</div>
-      </div>
-      
-      <div class="homepage-tile" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);" data-action="salah">
-        <div class="tile-emoji">🕌</div>
-        <div class="tile-caption">Salah</div>
-      </div>
-      
-      <div class="homepage-tile" style="background: url('months/months.jpeg');" data-action="months-audio">
-        <div></div>
-        <div class="tile-caption">Months</div>
-      </div>
-      
-      <!-- Duas Tile: Hooked into your repository's background asset -->
-      <div class="homepage-tile" style="background: url('duas/duas.jpeg');" data-action="duas-menu">
-        <div class="tile-emoji">🤲</div>
-        <div class="tile-caption">Duas</div>
-      </div>
-      
-      <div class="homepage-tile" style="background: url('names/names.jpeg');" data-action="names-menu">
-        <div class="tile-emoji">✨</div>
-        <div class="tile-caption">Asma-ul-Husna</div>
-      </div>
-
+<main class="dashboard-grid" id="deckContainer">
+  <div class="app-card" data-module="quran" data-url="quran/index.html">
+    <div class="card-content">
+      <div class="card-icon">📖</div>
+      <div class="card-title">Quran</div>
+      <div class="card-status">Listen & Learn Surahs</div>
     </div>
   </div>
-
-  <!-- VIEW 2: SPLIT AUDIO RANGE CARDS VIEWPORT -->
-  <div class="view-window" id="namesViewport">
-    <div class="names-fan-rig" id="namesFanContainer"></div>
+  <div class="app-card" data-module="salah" data-url="salah/SalahStepsIndex.html">
+    <div class="card-content">
+      <div class="card-icon">🕌</div>
+      <div class="card-title">Salah</div>
+      <div class="card-status">Interactive Prayer Steps</div>
+    </div>
   </div>
+  <div class="app-card" data-module="months" data-url="months/index.html">
+    <div class="card-content">
+      <div class="card-icon">📅</div>
+      <div class="card-title">Months</div>
+      <div class="card-status">Islamic Calendar Hub</div>
+    </div>
+  </div>
+  <div class="app-card" data-module="duas" data-url="duas/index.html">
+    <div class="card-content">
+      <div class="card-icon">🤲</div>
+      <div class="card-title">Duas</div>
+      <div class="card-status">Daily Supplications</div>
+    </div>
+  </div>
+  <div class="app-card" data-module="names" data-url="names/index.html">
+    <div class="card-content">
+      <div class="card-icon">✨</div>
+      <div class="card-title">Asma-ul-Husna</div>
+      <div class="card-status">99 Names Learning Deck</div>
+    </div>
+  </div>
+</main>
 
-</div>
-
-<div class="dots-indicator" id="globalTrackPips"></div>
-
-<div id="overlay">
-  <div>▶ Tap Anywhere / Press OK To Start Audio</div>
-</div>
-
-<div class="credits">
-  <div>Created by</div>
-  <div class="amtun">AMTUN NOOR</div>
-  <div>May 2026</div>
-</div>
+<div class="indicator-bar" id="indicatorBar"></div>
+<footer class="footer-credits"><div class="designer-tag">AMTUN NOOR</div></footer>
 
 <script>
-let currentViewMode = "homepage"; 
-let homeFocusIdx = 0;
-let namesFocusIdx = 0;
-let currentAudio = null;
+let focusIdx = 0;
+const cards = document.querySelectorAll('.app-card');
+const indicatorBar = document.getElementById('indicatorBar');
 
-const TV = {
-  isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
-};
-if(TV.isTV) document.body.classList.add("tv-mode");
-
-const appHeader = document.getElementById("appHeader");
-const mainTitle = document.getElementById("mainTitle");
-const mainSubtitle = document.getElementById("mainSubtitle");
-const globalBackBtn = document.getElementById("globalBackBtn");
-const globalTrackPips = document.getElementById("globalTrackPips");
-
-const homepageViewport = document.getElementById("homepageViewport");
-const namesViewport = document.getElementById("namesViewport");
-const homepageDeckContainer = document.getElementById("homepageDeckContainer");
-const namesFanContainer = document.getElementById("namesFanContainer");
-
-const namesGroupData = [
-  { group: 1, range: "1-27", arabic: "ٱرَّحْمَٰنُ", color: "linear-gradient(135deg, #dc2626, #581c87)", file: "names/1_27.mp3" },
-  { group: 2, range: "28-36", arabic: "الْعَلِيمُ", color: "linear-gradient(135deg, #d97706, #7c2d12)", file: "names/28_36.mp3" },
-  { group: 3, range: "37-45", arabic: "الْكَبِيرُ", color: "linear-gradient(135deg, #059669, #064e3b)", file: "names/37_45.mp3" },
-  { group: 4, range: "46-60", arabic: "الْحَكِيمُ", color: "linear-gradient(135deg, #2563eb, #1e3a8a)", file: "names/46_60.mp3" },
-  { group: 5, range: "61-76", arabic: "الْأَوَّلُ", color: "linear-gradient(135deg, #7c3aed, #4c1d95)", file: "names/61_76.mp3" },
-  { group: 6, range: "77-99", arabic: "الرَّؤُوفُ", color: "linear-gradient(135deg, #db2777, #4d0728)", file: "names/77_99.mp3" }
-];
-
-function initApplicationLifecycle() {
-  buildHomepagePipeline();
-  buildNamesFanPipeline();
-  renderCurrentViewState();
-}
-
-function buildHomepagePipeline() {
-  const tiles = homepageDeckContainer.querySelectorAll(".homepage-tile");
-  tiles.forEach((tile, index) => {
-    tile.addEventListener("click", (e) => {
-      if (homeFocusIdx !== index) {
-        e.preventDefault();
-        e.stopPropagation();
-        homeFocusIdx = index;
-        renderCurrentViewState();
-      } else {
-        handleTileNavigation(tile.getAttribute("data-action"));
-      }
-    });
+function setupDashboard() {
+  cards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    if(i === 0) dot.classList.add('active');
+    indicatorBar.appendChild(dot);
+  });
+  updateFocusState();
+  cards.forEach((card) => {
+    card.addEventListener('click', () => { window.location.href = card.getAttribute('data-url'); });
   });
 }
-
-function handleTileNavigation(actionTarget) {
-  if (actionTarget === "names-menu") {
-    switchToNamesSubmodule();
-  } else if (actionTarget === "months-audio") {
-    playDirectAudio("months/months.mp3", "Islamic Months Track");
-  } else if (actionTarget === "duas-menu") {
-    // Scaffolded alert ready for future audio implementation
-    alert("Duas audio features are being recorded by Mom and will be available soon!");
-  } else if (actionTarget === "quran") {
-    window.location.href = "QuranQRgenerator.html"; 
-  } else if (actionTarget === "salah") {
-    window.location.href = "file:///data/user/0/com.noor.prism/files/salah/SalahStepsIndex.html";
-  }
-}
-
-function buildNamesFanPipeline() {
-  namesFanContainer.innerHTML = ""; 
-  namesGroupData.forEach((item, index) => {
-    const card = document.createElement("div");
-    card.className = "fan-tile";
-    card.style.background = item.color;
-    card.innerHTML = `
-      <div class="fan-badge">Section 0${item.group}</div>
-      <div class="fan-arabic">${item.arabic}</div>
-      <div class="fan-range">${item.range}</div>
-    `;
-    card.addEventListener("click", () => {
-      if (namesFocusIdx !== index) {
-        namesFocusIdx = index;
-        renderCurrentViewState();
-      } else {
-        playDirectAudio(item.file, item.arabic);
-      }
-    });
-    namesFanContainer.appendChild(card);
+function updateFocusState() {
+  cards.forEach((card, i) => {
+    card.classList.remove('focused');
+    if(i === focusIdx) card.classList.add('focused');
+  });
+  const dots = document.querySelectorAll('.dot');
+  dots.forEach((dot, i) => {
+    dot.classList.remove('active');
+    if(i === focusIdx) dot.classList.add('active');
   });
 }
-
-function playDirectAudio(audioPath, TTS_Label) {
-  if (currentAudio && currentAudio.src.includes(audioPath)) {
-    if (!currentAudio.paused) { currentAudio.pause(); return; } 
-    else { currentAudio.play().catch(() => {}); return; }
-  }
-  if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
-
-  try {
-    const u = new SpeechSynthesisUtterance(TTS_Label);
-    u.rate = 0.85; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
-  } catch(e) {}
-
-  currentAudio = new Audio(audioPath);
-  currentAudio.play().catch(() => {
-    document.getElementById("overlay").style.display = "flex";
-  });
-}
-
-function switchToNamesSubmodule() {
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  currentViewMode = "names";
-  document.body.classList.add("names-active");
-  homepageViewport.classList.remove("active-view");
-  
-  setTimeout(() => {
-    namesViewport.classList.add("active-view");
-    globalBackBtn.classList.add("show-btn");
-    mainTitle.textContent = "Asma-ul-Husna";
-    mainSubtitle.textContent = "Select name range grouping to stream audio tracks";
-    renderCurrentViewState();
-  }, 150);
-}
-
-function switchToMainDashboard() {
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  currentViewMode = "homepage";
-  document.body.classList.remove("names-active");
-  namesViewport.classList.remove("active-view");
-  globalBackBtn.classList.remove("show-btn");
-  
-  setTimeout(() => {
-    homepageViewport.classList.add("active-view");
-    mainTitle.textContent = "🌙 Mariam & Hamza's 🌙";
-    mainSubtitle.textContent = "✨Quran Adventures with Mom!✨";
-    renderCurrentViewState();
-  }, 150);
-}
-
-function renderCurrentViewState() {
-  globalTrackPips.innerHTML = "";
-
-  if (currentViewMode === "homepage") {
-    const tiles = homepageDeckContainer.querySelectorAll(".homepage-tile");
-    tiles.forEach((tile, i) => {
-      let offset = i - homeFocusIdx;
-      buildGlobalPipsTrack(i, homeFocusIdx, (targetIdx) => { homeFocusIdx = targetIdx; renderCurrentViewState(); });
-      tile.classList.remove("remote-focus");
-      if (offset === 0) {
-        tile.className = "homepage-tile focus-center";
-        tile.style.transform = `translateX(0px) translateZ(140px) rotateY(0deg) scale(1.05)`;
-        tile.style.opacity = "1";
-        tile.style.pointerEvents = "auto";
-        if (TV.isTV) tile.classList.add("remote-focus");
-      } else {
-        tile.className = "homepage-tile back-stacked";
-        let directionSign = offset > 0 ? 1 : -1;
-        let depthSteps = Math.abs(offset);
-        let moveX = offset * 155 - (directionSign * 30 * depthSteps);
-        let moveZ = -120 * depthSteps;
-        let rotateY = -25 * directionSign;
-        let scale = Math.max(0.55, 1 - (0.12 * depthSteps));
-        tile.style.opacity = depthSteps > 2 ? "0" : "0.55";
-        tile.style.pointerEvents = depthSteps > 2 ? "none" : "auto";
-        tile.style.transform = `translateX(${moveX}px) translateZ(${moveZ}px) rotateY(${rotateY}deg) scale(${scale})`;
-      }
-    });
-
-  } else if (currentViewMode === "names") {
-    const tiles = namesFanContainer.querySelectorAll(".fan-tile");
-    tiles.forEach((tile, i) => {
-      let offset = i - namesFocusIdx;
-      buildGlobalPipsTrack(i, namesFocusIdx, (targetIdx) => { namesFocusIdx = targetIdx; renderCurrentViewState(); });
-      tile.classList.remove("remote-focus");
-      if (offset === 0) {
-        tile.className = "fan-tile active-focus";
-        tile.style.transform = `translateX(0px) translateZ(160px) rotateY(0deg) scale(1.05)`;
-        tile.style.opacity = "1";
-        tile.style.zIndex = "50";
-        tile.style.pointerEvents = "auto";
-        if (TV.isTV) tile.classList.add("remote-focus");
-      } else {
-        tile.className = "fan-tile dimmed-cascade";
-        let directionSign = offset > 0 ? 1 : -1;
-        let depthSteps = Math.abs(offset);
-        let moveX = offset * 135 - (directionSign * 20 * depthSteps);
-        let moveZ = -140 * depthSteps;
-        let rotateY = -35 * directionSign;
-        tile.style.transform = `translateX(${moveX}px) translateZ(${moveZ}px) rotateY(${rotateY}deg) scale(${1 - (0.08 * depthSteps)})`;
-        tile.style.zIndex = (50 - depthSteps).toString();
-        tile.style.opacity = depthSteps > 2 ? "0.15" : "0.55";
-        tile.style.pointerEvents = depthSteps > 2 ? "none" : "auto";
-      }
-    });
-  }
-}
-
-function buildGlobalPipsTrack(currentIndex, activeTrackingIndex, interactionCallback) {
-  const pip = document.createElement("div");
-  pip.className = "indicator-pip";
-  if (currentIndex === activeTrackingIndex) pip.classList.add("active");
-  pip.addEventListener("click", () => interactionCallback(currentIndex));
-  globalTrackPips.appendChild(pip);
-}
-
-function handleOverlayDismissal() {
-  document.getElementById("overlay").style.display = "none";
-  if (currentAudio) currentAudio.play().catch(() => {});
-}
-
-document.addEventListener("keydown", (e) => {
-  const k = e.keyCode;
-  if (document.getElementById("overlay").style.display === "flex") { handleOverlayDismissal(); return; }
-
-  if (currentViewMode === "homepage") {
-    const tiles = homepageDeckContainer.querySelectorAll(".homepage-tile");
-    if (k === 21 || e.key === "ArrowLeft") { e.preventDefault(); homeFocusIdx = Math.max(0, homeFocusIdx - 1); renderCurrentViewState(); }
-    if (k === 22 || e.key === "ArrowRight") { e.preventDefault(); homeFocusIdx = Math.min(tiles.length - 1, homeFocusIdx + 1); renderCurrentViewState(); }
-    if (k === 23 || k === 66 || e.key === "Enter" || e.key === " ") { e.preventDefault(); tiles[homeFocusIdx].click(); }
-  } else if (currentViewMode === "names") {
-    const tiles = namesFanContainer.querySelectorAll(".fan-tile");
-    if (k === 21 || e.key === "ArrowLeft") { e.preventDefault(); namesFocusIdx = Math.max(0, namesFocusIdx - 1); renderCurrentViewState(); }
-    if (k === 22 || e.key === "ArrowRight") { e.preventDefault(); namesFocusIdx = Math.min(tiles.length - 1, namesFocusIdx + 1); renderCurrentViewState(); }
-    if (k === 4 || e.key === "Escape" || e.key === "BackSpace") { e.preventDefault(); switchToMainDashboard(); }
-    if (k === 23 || k === 66 || e.key === "Enter" || e.key === " ") { e.preventDefault(); tiles[namesFocusIdx].click(); }
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') {
+    focusIdx = (focusIdx === 0) ? cards.length - 1 : focusIdx - 1;
+    updateFocusState();
+  } else if (e.key === 'ArrowRight') {
+    focusIdx = (focusIdx === cards.length - 1) ? 0 : focusIdx + 1;
+    updateFocusState();
+  } else if (e.key === 'Enter') {
+    window.location.href = cards[focusIdx].getAttribute('data-url');
   }
 });
-
-const starsContainer = document.querySelector(".stars");
-for(let i=0; i<60; i++){
-  const d = document.createElement("div");
-  d.className = "star"; d.style.left = Math.random() * 100 + "%"; d.style.top = Math.random() * 100 + "%";
-  starsContainer.appendChild(d);
+const stars = document.getElementById('stars');
+for(let i=0; i<30; i++) {
+  const s = document.createElement('div');
+  s.className = 'star'; s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
+  stars.appendChild(s);
 }
-
-window.addEventListener("DOMContentLoaded", initApplicationLifecycle);
-document.getElementById("overlay").onclick = handleOverlayDismissal;
+window.addEventListener('DOMContentLoaded', setupDashboard);
 </script>
 </body>
 </html>
