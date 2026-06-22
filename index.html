@@ -3,139 +3,107 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Mariam & Hamza's Quran Corner</title>
+<title>Quran Corner</title>
 <style>
 :root {
-  --neon-quran: #ef4444;
-  --neon-salah: #a855f7;
-  --neon-months: #3b82f6;
-  --neon-duas: #10b981;
-  --neon-names: #f59e0b;
+  --neon-quran: #ef4444; --neon-salah: #a855f7; --neon-months: #3b82f6; --neon-duas: #10b981; --neon-names: #f59e0b;
 }
-*{
-  margin:0; padding:0; box-sizing:border-box;
-  font-family: 'Segoe UI', Arial, sans-serif;
-  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
-}
+*{ margin:0; padding:0; box-sizing:border-box; font-family: system-ui, sans-serif; user-select: none; }
 body {
-  background: radial-gradient(circle at top, #0f172a, #020617 80%);
+  background: radial-gradient(circle at top, #0f172a, #020617 90%);
   min-height: 100vh; color: white; overflow: hidden;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 40px 20px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2vh 2vw;
 }
-.star-field { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-.star { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.3; }
-header { text-align: center; margin-bottom: 50px; z-index: 10; }
-h1 {
-  font-size: 2.8rem; font-weight: 800;
-  background: linear-gradient(to right, #facc15, #38bdf8, #f472b6);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-}
-.subtitle { color: #94a3b8; margin-top: 8px; font-size: 1.1rem; }
-.dashboard-grid {
-  display: flex; gap: 24px; justify-content: center; align-items: center;
-  flex-wrap: wrap; max-width: 1200px; width: 100%; z-index: 10; margin: auto;
-}
+header { text-align: center; margin-bottom: 4vh; z-index: 10; }
+h1 { font-size: 5vh; font-weight: 900; background: linear-gradient(to right, #facc15, #38bdf8, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { color: #94a3b8; margin-top: 1vh; font-size: 2vh; }
+
+.dashboard-grid { display: flex; gap: 3vw; justify-content: center; align-items: center; width: 95vw; max-width: 1400px; z-index: 10; }
 .app-card {
-  position: relative; width: 210px; height: 310px; border-radius: 24px;
+  position: relative; flex: 1; height: 55vh; min-height: 300px; border-radius: 3vh;
   cursor: pointer; overflow: hidden; background-size: cover; background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  border: 3px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s;
-  display: flex; flex-direction: column; justify-content: flex-end; padding: 25px 20px;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: center; padding: 3vh;
 }
-.app-card[data-module="quran"] { border-bottom: 5px solid var(--neon-quran); background-image: url('quran/quran.jpeg'); }
-.app-card[data-module="salah"] { border-bottom: 5px solid var(--neon-salah); background-image: url('salah/salah.jpeg'); }
-.app-card[data-module="months"] { border-bottom: 5px solid var(--neon-months); background-image: url('months/months.jpeg'); }
-.app-card[data-module="duas"] { border-bottom: 5px solid var(--neon-duas); background-image: url('duas/duas.jpeg'); }
-.app-card[data-module="names"] { border-bottom: 5px solid var(--neon-names); background-image: url('names/names.jpeg'); }
+.app-card[data-module="quran"] { border-bottom: 8px solid var(--neon-quran); background-image: url('quran.jpeg'); }
+.app-card[data-module="salah"] { border-bottom: 8px solid var(--neon-salah); background-image: url('salah.jpeg'); }
+.app-card[data-module="months"] { border-bottom: 8px solid var(--neon-months); background-image: url('months/months.jpeg'); }
+.app-card[data-module="duas"] { border-bottom: 8px solid var(--neon-duas); background-image: url('duas/duas.jpeg'); }
+.app-card[data-module="names"] { border-bottom: 8px solid var(--neon-names); background-image: url('names/names.jpeg'); }
 
-.app-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(2, 6, 23, 0.95) 20%, rgba(2, 6, 23, 0.2) 70%);
-  z-index: 1;
-}
-.app-card:hover, .app-card.focused {
-  transform: translateY(-12px) scale(1.05); border-color: rgba(255, 255, 255, 0.4);
-}
-.app-card[data-module="quran"]:hover, .app-card[data-module="quran"].focused { box-shadow: 0 15px 35px rgba(239, 68, 68, 0.4); }
-.app-card[data-module="salah"]:hover, .app-card[data-module="salah"].focused { box-shadow: 0 15px 35px rgba(168, 85, 247, 0.4); }
-.app-card[data-module="months"]:hover, .app-card[data-module="months"].focused { box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4); }
-.app-card[data-module="duas"]:hover, .app-card[data-module="duas"].focused { box-shadow: 0 15px 35px rgba(16, 185, 129, 0.4); }
-.app-card[data-module="names"]:hover, .app-card[data-module="names"].focused { box-shadow: 0 15px 35px rgba(245, 158, 11, 0.4); }
+.app-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(2, 6, 23, 0.9) 30%, transparent 80%); z-index: 1; }
+.app-card:hover, .app-card.focused { transform: translateY(-2vh) scale(1.06); border-color: rgba(255, 255, 255, 0.6); }
 
-.card-content { position: relative; z-index: 2; }
-.card-icon { font-size: 2.8rem; margin-bottom: 12px; }
-.card-title { font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 4px; }
-.card-status { font-size: 0.85rem; color: #94a3b8; }
+/* High-visibility Hifz Badge Layer */
+.hifz-badge {
+  position: absolute; top: 2vh; right: 2vw; background: #eab308; color: #0f172a;
+  font-size: 3vh; padding: 1vh 1.5vw; border-radius: 1.5vh; font-weight: 900; z-index: 5;
+  box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4); animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
-.indicator-bar { display: flex; gap: 10px; margin-top: 40px; z-index: 10; }
-.dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s; }
-.dot.active { background: #38bdf8; transform: scale(1.2); box-shadow: 0 0 8px #38bdf8; }
-.footer-credits {
-  position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; text-align: center;
-  background: rgba(2, 6, 23, 0.9); border-top: 1px solid rgba(255,255,255,0.05); z-index: 100;
-}
-.designer-tag {
-  font-family: 'Courier New', monospace; font-weight: 900; font-size: 1.2rem;
-  background: linear-gradient(90deg, #ff0055, #00ffcc, #ffcc00, #ff0055);
-  background-size: 300%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  animation: shine 4s linear infinite;
-}
-@keyframes shine { 0% { background-position: 0%; } 100% { background-position: 300%; } }
+.card-img-fallback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 14vh; z-index: 0; background: #1e293b; }
+.card-content { position: relative; z-index: 2; text-align: center; width: 100%; margin-top: auto; }
+.card-title { font-size: 4vh; font-weight: 800; color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+.indicator-bar { display: flex; gap: 15px; margin-top: 4vh; z-index: 10; }
+.dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s; }
+.dot.active { background: #38bdf8; transform: scale(1.3); box-shadow: 0 0 10px #38bdf8; }
 </style>
 </head>
 <body>
-<div class="star-field" id="stars"></div>
 <header>
   <h1>🌙 Quran Corner 🌙</h1>
-  <p class="subtitle">Mariam & Hamza's Learning Platform</p>
+  <p class="subtitle">Mariam & Hamza</p>
 </header>
 
 <main class="dashboard-grid" id="deckContainer">
-  <div class="app-card" data-module="quran" data-url="quran/index.html">
-    <div class="card-content">
-      <div class="card-icon">📖</div>
-      <div class="card-title">Quran</div>
-      <div class="card-status">Listen & Learn Surahs</div>
-    </div>
+  <div class="app-card" data-module="quran" data-url="index.html?id=A1">
+    <div class="hifz-badge">🎓 </div>
+    <div class="card-img-fallback">📖</div>
+    <div class="card-content"><div class="card-title">Quran</div></div>
   </div>
-  <div class="app-card" data-module="salah" data-url="salah/SalahStepsIndex.html">
-    <div class="card-content">
-      <div class="card-icon">🕌</div>
-      <div class="card-title">Salah</div>
-      <div class="card-status">Interactive Prayer Steps</div>
-    </div>
+  <div class="app-card" data-module="salah" data-url="SalahStepsIndex.html">
+    <div class="card-img-fallback">🕌</div>
+    <div class="card-content"><div class="card-title">Salah</div></div>
   </div>
   <div class="app-card" data-module="months" data-url="months/index.html">
-    <div class="card-content">
-      <div class="card-icon">📅</div>
-      <div class="card-title">Months</div>
-      <div class="card-status">Islamic Calendar Hub</div>
-    </div>
+    <div class="card-img-fallback">📅</div>
+    <div class="card-content"><div class="card-title">Months</div></div>
   </div>
   <div class="app-card" data-module="duas" data-url="duas/index.html">
-    <div class="card-content">
-      <div class="card-icon">🤲</div>
-      <div class="card-title">Duas</div>
-      <div class="card-status">Daily Supplications</div>
-    </div>
+    <div class="card-img-fallback">🤲</div>
+    <div class="card-content"><div class="card-title">Dua</div></div>
   </div>
   <div class="app-card" data-module="names" data-url="names/index.html">
-    <div class="card-content">
-      <div class="card-icon">✨</div>
-      <div class="card-title">Asma-ul-Husna</div>
-      <div class="card-status">99 Names Learning Deck</div>
-    </div>
+    <div class="hifz-badge">🎓 </div>
+    <div class="card-img-fallback">✨</div>
+    <div class="card-content"><div class="card-title">Asma-ul-Husna</div></div>
   </div>
 </main>
 
 <div class="indicator-bar" id="indicatorBar"></div>
-<footer class="footer-credits"><div class="designer-tag">AMTUN NOOR</div></footer>
 
 <script>
 let focusIdx = 0;
 const cards = document.querySelectorAll('.app-card');
 const indicatorBar = document.getElementById('indicatorBar');
+
+cards.forEach(card => {
+  const bgUrl = window.getComputedStyle(card).backgroundImage;
+  if(bgUrl && bgUrl !== 'none') {
+    const img = new Image();
+    const urlMatches = bgUrl.match(/url\((['"]?)(.*?)\1\)/);
+    if(urlMatches && urlMatches[2]) {
+      img.src = urlMatches[2];
+      img.onload = () => {
+        const fallback = card.querySelector('.card-img-fallback');
+        if(fallback) fallback.style.display = 'none';
+      };
+    }
+  }
+});
 
 function setupDashboard() {
   cards.forEach((_, i) => {
@@ -171,12 +139,6 @@ document.addEventListener('keydown', (e) => {
     window.location.href = cards[focusIdx].getAttribute('data-url');
   }
 });
-const stars = document.getElementById('stars');
-for(let i=0; i<30; i++) {
-  const s = document.createElement('div');
-  s.className = 'star'; s.style.left = Math.random() * 100 + '%'; s.style.top = Math.random() * 100 + '%';
-  stars.appendChild(s);
-}
 window.addEventListener('DOMContentLoaded', setupDashboard);
 </script>
 </body>
