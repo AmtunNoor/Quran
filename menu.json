@@ -19,8 +19,31 @@
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A17.mp3", "path": "quran/A17.mp3" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A18.mp3", "path": "quran/A18.mp3" },
       { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A19.mp3", "path": "quran/A19.mp3" },
-      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A20.mp3", "path": "quran/A20.mp3" }
-    ]
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A20.mp3", "path": "quran/A20.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/QuranQRgenerator.html", "path": "quran/QuranQRgenerator.html" }
+    ],
+    "meta": {
+      "97": {
+        "listenAudio": "listen/97.mp3",
+        "learnAudio": "learn/97.mp3",
+        "ayahStarts": [0.0, 4.545, 9.404, 15.647, 24.946, 32.783]
+      },
+      "103": {
+        "listenAudio": "listen/103.mp3",
+        "learnAudio": "learn/103.mp3",
+        "ayahStarts": [0.0, 3.764, 7.502, 11.598]
+      },
+      "108": {
+        "listenAudio": "listen/108.mp3",
+        "learnAudio": "learn/108.mp3",
+        "ayahStarts": [0.0, 4.2, 8.5, 13.0, 18.5]
+      },
+      "102": {
+        "listenAudio": "listen/102.mp3",
+        "learnAudio": "learn/102.mp3",
+        "ayahStarts": [0.0, 3.804, 7.530, 10.821, 14.745, 20.335, 26.163, 32.030, 39.680]
+      }
+    }
   },
   {
     "title": "Salah",
@@ -29,11 +52,44 @@
       { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/SalahStepsIndex.html", "path": "salah/SalahStepsIndex.html" },
       { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/SalahStepsTinyQR.html", "path": "salah/SalahStepsTinyQR.html" },
       { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/01_takbeer.mp3", "path": "salah/01_takbeer.mp3" },
-      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/02_ruku.mp3", "path": "salah/02_ruku.mp3" },
-      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/03_sajda.mp3", "path": "salah/03_sajda.mp3" },
-      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/04_tashahhud.mp3", "path": "salah/04_tashahhud.mp3" },
-      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/05_salam.mp3", "path": "salah/05_salam.mp3" },
-      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/06_dua.mp3", "path": "salah/06_dua.mp3" }
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/02_sana.mp3", "path": "salah/02_sana.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/03_fatiha.mp3", "path": "salah/03_fatiha.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/04_ikhlas.mp3", "path": "salah/04_ikhlas.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/05_ruku.mp3", "path": "salah/05_ruku.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/06_tasmee.mp3", "path": "salah/06_tasmee.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/07_sajdah.mp3", "path": "salah/07_sajdah.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/08_attahiyat.mp3", "path": "salah/08_attahiyat.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/09_duajameela.mp3", "path": "salah/09_duajameela.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/10_salam.mp3", "path": "salah/10_salam.mp3" }
+    ]
+  },
+  {
+    "title": "Months",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/months/months.mp3",
+    "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.jpeg", "path": "months/months.jpeg" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.mp3", "path": "months/months.mp3" }
+    ]
+  },
+  {
+    "title": "Duas",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/duas/",
+    "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/duas/duas.jpeg", "path": "duas/duas.jpeg" }
+    ]
+  },
+  {
+    "title": "Asma-ul-Husna",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/names/index.html",
+    "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html", "path": "names/index.html" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/names.jpeg", "path": "names/names.jpeg" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/1_27.mp3", "path": "names/1_27.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/28_36.mp3", "path": "names/28_36.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/37_45.mp3", "path": "names/37_45.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/46_60.mp3", "path": "names/46_60.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/61_76.mp3", "path": "names/61_76.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/77_99.mp3", "path": "names/77_99.mp3" }
     ]
   }
 ]
