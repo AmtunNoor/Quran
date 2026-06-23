@@ -1,56 +1,39 @@
 [
   {
     "title": "Quran",
-    "meta": {
-      "A1": { "englishName": "Al Fatiha", "arabicName": "الفاتحة", "emoji": "🌟", "listenAudio": "A5.mp3", "color": "linear-gradient(135deg,#f59e0b,#ef4444)" },
-      "A2": { "englishName": "Al Ikhlas", "arabicName": "الإخلاص", "emoji": "💖", "listenAudio": "A6.mp3", "color": "linear-gradient(135deg,#ec4899,#8b5cf6)" },
-      "A3": { "englishName": "Al Falaq", "arabicName": "الفلق", "emoji": "🌙", "listenAudio": "A7.mp3", "color": "linear-gradient(135deg,#06b6d4,#3b82f6)" },
-      "A4": { "englishName": "An Naas", "arabicName": "الناس", "emoji": "⭐", "listenAudio": "A8.mp3", "color": "linear-gradient(135deg,#10b981,#14b8a6)" },
-      "A5": { "englishName": "Al Feel", "arabicName": "الفيل", "emoji": "🐘", "listenAudio": "A9.mp3", "color": "linear-gradient(135deg,#8b5cf6,#6366f1)" },
-      "A6": { "englishName": "Quraish", "arabicName": "قريش", "emoji": "🕋", "listenAudio": "A10.mp3", "color": "linear-gradient(135deg,#0ea5e9,#2563eb)" },
-      "A7": { "englishName": "Al Ma'un", "arabicName": "الماعون", "emoji": "🤲", "listenAudio": "A11.mp3", "color": "linear-gradient(135deg,#14b8a6,#22c55e)" },
-      "A8": { "englishName": "Al Kawther", "arabicName": "الكوثر", "emoji": "💧", "listenAudio": "A12.mp3", "color": "linear-gradient(135deg,#f97316,#fb7185)" },
-      "A9": { "englishName": "Al Kafiroon", "arabicName": "الكافرون", "emoji": "☀️", "listenAudio": "A13.mp3", "color": "linear-gradient(135deg,#84cc16,#22c55e)" },
-      "A10": { "englishName": "An Nasr", "arabicName": "النصر", "emoji": "🏆", "listenAudio": "A14.mp3", "color": "linear-gradient(135deg,#38bdf8,#818cf8)" },
-      "A11": { "englishName": "Al Masad", "arabicName": "المسد", "emoji": "🔥", "listenAudio": "A15.mp3", "color": "linear-gradient(135deg,#ef4444,#f97316)" },
-      "A12": { "englishName": "Takbir", "arabicName": "تكبير", "emoji": "🕌", "listenAudio": "A16.mp3", "color": "linear-gradient(135deg,#6366f1,#8b5cf6)" },
-      "A13": { "englishName": "Azan", "arabicName": "الأذان", "emoji": "📢", "listenAudio": "A17.mp3", "color": "linear-gradient(135deg,#06b6d4,#0ea5e9)" },
-      "A14": { "englishName": "Second Kalima", "arabicName": "الكلمة الثانية", "emoji": "🌹", "listenAudio": "A18.mp3", "color": "linear-gradient(135deg,#14b8a6,#0f766e)" },
-      "A15": { "englishName": "Ad Duha", "arabicName": "الضحى", "emoji": "☀️", "listenAudio": "A19.mp3", "color": "linear-gradient(135deg,#facc15,#fb7185)" },
-      "A16": { "englishName": "Innal Muslimeena", "arabicName": "إِنَّ الْمُسْلِمِينَ", "emoji": "💚", "listenAudio": "A20.mp3", "color": "linear-gradient(135deg,#22c55e,#16a34a)" },
-      "2": { "englishName": "Al-Baqarah", "arabicName": "البقرة", "emoji": "🐄", "listenAudio": "listen/02.mp3", "color": "linear-gradient(135deg,#1e3a8a,#3b82f6)" },
-      "2_1": { "englishName": "Al-Baqarah (Pt. 2)", "arabicName": "البقرة ٢", "emoji": "📖", "listenAudio": "listen/02_1.mp3", "color": "linear-gradient(135deg,#2563eb,#60a5fa)" },
-      "55": { "englishName": "Ar-Rahman", "arabicName": "الرحمن", "emoji": "🌴", "listenAudio": "listen/55.mp3", "color": "linear-gradient(135deg,#059669,#34d399)" },
-      "94": { "englishName": "Ash-Sharh", "arabicName": "الشرح", "emoji": "🔓", "listenAudio": "listen/94.mp3", "color": "linear-gradient(135deg,#7c3aed,#a78bfa)" },
-      "95": { "englishName": "At-Tin", "arabicName": "التين", "emoji": "🌱", "listenAudio": "listen/95.mp3", "color": "linear-gradient(135deg,#b45309,#f59e0b)" },
-      "96": { "englishName": "Al-Alaq", "arabicName": "العلق", "emoji": "🖋️", "listenAudio": "listen/96.mp3", "color": "linear-gradient(135deg,#db2777,#f472b6)" },
-      "97": { "englishName": "Al-Qadr", "arabicName": "القدر", "emoji": "✨", "listenAudio": "listen/97.mp3", "color": "linear-gradient(135deg,#ec4899,#f43f5e)" },
-      "98": { "englishName": "Al-Bayyinah", "arabicName": "البينة", "emoji": "📜", "listenAudio": "listen/98.mp3", "color": "linear-gradient(135deg,#0d9488,#2dd4bf)" },
-      "99": { "englishName": "Az-Zalzalah", "arabicName": "الزلزلة", "emoji": "🌍", "listenAudio": "listen/99.mp3", "color": "linear-gradient(135deg,#ea580c,#fb923c)" },
-      "100": { "englishName": "Al-Adiyat", "arabicName": "العاديات", "emoji": "🐎", "listenAudio": "listen/100.mp3", "color": "linear-gradient(135deg,#4b5563,#9ca3af)" },
-      "101": { "englishName": "Al-Qari'ah", "arabicName": "القارعة", "emoji": "🔔", "listenAudio": "listen/101.mp3", "color": "linear-gradient(135deg,#e11d48,#fda4af)" },
-      "102": {
-        "englishName": "At-Takathur",
-        "arabicName": "التكاثر",
-        "emoji": "📈",
-        "listenAudio": "listen/102.mp3",
-        "learnAudio": "learn/102.mp3",
-        "color": "linear-gradient(135deg,#8b5cf6,#d946ef)",
-        "ayahStarts": [0.0, 3.804, 7.530, 10.821, 14.745, 20.335, 26.163, 32.030, 39.680]
-      },
-      "103": { "englishName": "Al-Asr", "arabicName": "العصر", "emoji": "⏳", "listenAudio": "listen/103.mp3", "color": "linear-gradient(135deg,#06b6d4,#0ea5e9)" },
-      "104": { "englishName": "Al-Humazah", "arabicName": "الهمزة", "emoji": "🗣️", "listenAudio": "listen/104.mp3", "color": "linear-gradient(135deg,#dc2626,#f87171)" }
-    }
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",
+    "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html", "path": "quran/index.html" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A5.mp3", "path": "quran/A5.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A6.mp3", "path": "quran/A6.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A7.mp3", "path": "quran/A7.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A8.mp3", "path": "quran/A8.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A9.mp3", "path": "quran/A9.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A10.mp3", "path": "quran/A10.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A11.mp3", "path": "quran/A11.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A12.mp3", "path": "quran/A12.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A13.mp3", "path": "quran/A13.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A14.mp3", "path": "quran/A14.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A15.mp3", "path": "quran/A15.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A16.mp3", "path": "quran/A16.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A17.mp3", "path": "quran/A17.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A18.mp3", "path": "quran/A18.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A19.mp3", "path": "quran/A19.mp3" },
+      { "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A20.mp3", "path": "quran/A20.mp3" }
+    ]
   },
   {
-    "title": "Asma-ul-Husna",
-    "meta": {
-      "N1": { "englishName": "1-27", "arabicName": "الرَّحْمَنُ", "emoji": "✨", "listenAudio": "names/1_27.mp3", "totalSegments": 27, "color": "linear-gradient(135deg,#f59e0b,#d97706)" },
-      "N2": { "englishName": "28-36", "arabicName": "الْعَلِيمُ", "emoji": "✨", "listenAudio": "names/28_36.mp3", "totalSegments": 9, "color": "linear-gradient(135deg,#3b82f6,#2563eb)" },
-      "N3": { "englishName": "37-45", "arabicName": "الْكَبِيرُ", "emoji": "✨", "listenAudio": "names/37_45.mp3", "totalSegments": 9, "color": "linear-gradient(135deg,#10b981,#059669)" },
-      "N4": { "englishName": "46-60", "arabicName": "الْحَكِيمُ", "emoji": "✨", "listenAudio": "names/46_60.mp3", "totalSegments": 15, "color": "linear-gradient(135deg,#8b5cf6,#6d28d9)" },
-      "N5": { "englishName": "61-76", "arabicName": "الْأَوَّلُ", "emoji": "✨", "listenAudio": "names/61_76.mp3", "totalSegments": 16, "color": "linear-gradient(135deg,#0ea5e9,#0369a1)" },
-      "N6": { "englishName": "77-99", "arabicName": "الرَّؤُوفُ", "emoji": "✨", "listenAudio": "names/77_99.mp3", "totalSegments": 23, "color": "linear-gradient(135deg,#ec4899,#be185d)" }
-    }
+    "title": "Salah",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/salah/SalahStepsIndex.html",
+    "syncFiles": [
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/SalahStepsIndex.html", "path": "salah/SalahStepsIndex.html" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/SalahStepsTinyQR.html", "path": "salah/SalahStepsTinyQR.html" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/01_takbeer.mp3", "path": "salah/01_takbeer.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/02_ruku.mp3", "path": "salah/02_ruku.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/03_sajda.mp3", "path": "salah/03_sajda.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/04_tashahhud.mp3", "path": "salah/04_tashahhud.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/05_salam.mp3", "path": "salah/05_salam.mp3" },
+      { "url": "https://raw.githubusercontent.com/BusyMomMH/SalahSteps/main/06_dua.mp3", "path": "salah/06_dua.mp3" }
+    ]
   }
 ]
