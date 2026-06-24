@@ -1,0 +1,14 @@
+{
+  "id": "salah",
+  "title": "Salah",
+  "type": "core",
+  "priority": 2,
+
+  "mainUrl": "file:///data/user/0/com.noor.prism/files/salah/index.html",
+
+  "supports": [
+    "listen"
+  ],
+
+  "theme": "salah"
+}
