@@ -1,0 +1,20 @@
+{
+  "id": "months",
+  "title": "Islamic Months",
+  "type": "plugin",
+  "priority": 4,
+
+  "folder": "months",
+
+  "tileImage": "months/tile.png",
+  "backgroundImage": "months/background.png",
+
+  "supports": [
+    "listen"
+  ],
+
+  "theme": "months",
+
+  "cardAnimation": "carousel",
+  "backgroundEffect": "stars"
+}
