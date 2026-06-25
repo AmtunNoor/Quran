@@ -737,26 +737,23 @@ speechSynthesis.speak(u);
 }catch(e){}
 }
 
-async async function fetchJson(url,fallback){
-const candidates = [url];
 
-// When this same index.html is copied to quran/index.html inside Prism,
-// relative "menu.json" would point to quran/menu.json. Try parent folder too.
-if(!url.startsWith("../")) candidates.push("../" + url);
-
-// GitHub Pages root fallback for browser testing.
-if(location.protocol.startsWith("http") && !url.startsWith("/")){
-  candidates.push("/Quran/" + url);
-}
-
-for(const candidate of candidates){
+async function fetchFirstJson(urls, fallback){
+for(const url of urls){
   try{
-    const res = await fetch(candidate,{cache:"no-store"});
-    if(!res.ok) throw new Error("not found");
-    return await res.json();
+    const res = await fetch(url,{cache:"no-store"});
+    if(res.ok) return await res.json();
   }catch(e){}
 }
 return fallback;
+}
+
+async function fetchJson(url,fallback){
+try{
+const res = await fetch(url,{cache:"no-store"});
+if(!res.ok) throw new Error("not found");
+return await res.json();
+}catch(e){return fallback;}
 }
 
 function gradientFor(theme){
@@ -1432,73 +1429,6 @@ const step = duration / chunks;
 return Array.from({length:chunks},(_,i)=>Math.min(duration, step*(i+1)));
 }
 
-async function getChunkEndsAsync(item){
-if(Array.isArray(item.s.slices) && item.s.slices.length) return item.s.slices.map(toSeconds);
-
-if(item.s.learningMode === "silence"){
-  const detected = await detectSilenceChunkEnds(item);
-  if(detected && detected.length) return detected;
-}
-
-return getChunkEnds(item);
-}
-
-async function detectSilenceChunkEnds(item){
-try{
-  const audio = item.audio;
-  const src = audio.currentSrc || audio.src;
-  if(!src) return [];
-
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  if(!AudioCtx) return [];
-
-  const res = await fetch(src);
-  const arr = await res.arrayBuffer();
-  const ctx = new AudioCtx();
-  const buffer = await ctx.decodeAudioData(arr);
-  const data = buffer.getChannelData(0);
-  const rate = buffer.sampleRate;
-  const duration = buffer.duration;
-
-  const plugin = item.s.plugin || currentPlugin || {};
-  const expected = Array.isArray(plugin.spotlight?.items) ? plugin.spotlight.items.length :
-                   Array.isArray(plugin.sequence) ? plugin.sequence.length : 0;
-
-  const windowSec = 0.06;
-  const minSilenceSec = 0.32;
-  const threshold = plugin.silenceThreshold || 0.018;
-  const step = Math.max(1, Math.floor(rate * windowSec));
-  const minSilentWindows = Math.max(2, Math.ceil(minSilenceSec / windowSec));
-
-  let silentRun = 0;
-  const cuts = [];
-
-  for(let i=0;i<data.length;i+=step){
-    let sum = 0;
-    const end = Math.min(data.length, i + step);
-    for(let j=i;j<end;j++) sum += data[j] * data[j];
-    const rms = Math.sqrt(sum / Math.max(1,end-i));
-    if(rms < threshold){
-      silentRun++;
-    } else {
-      if(silentRun >= minSilentWindows){
-        const cutTime = ((i - silentRun * step) / rate);
-        if(cutTime > 0.4 && cutTime < duration - 0.2){
-          if(!cuts.length || cutTime - cuts[cuts.length-1] > 0.5) cuts.push(cutTime);
-        }
-      }
-      silentRun = 0;
-    }
-  }
-
-  let ends = cuts.concat([duration]).filter(t => t > 0.2);
-  if(expected && ends.length > expected) ends = ends.slice(0, expected - 1).concat([duration]);
-  return ends;
-}catch(e){
-  return [];
-}
-}
-
 function playSegment(audio,start,end,token){
 return new Promise(resolve=>{
 if(token !== sequenceCancelToken) return resolve();
@@ -1530,7 +1460,7 @@ audio.load();
 });
 }
 
-const ends = await getChunkEndsAsync(item);
+const ends = getChunkEnds(item);
 if(!ends.length){
 audio.play().catch(()=>{});
 return;
@@ -1761,8 +1691,15 @@ document.getElementById("overlay").onclick = ()=>handleOverlayDismissal();
 window.addEventListener("popstate",()=>route());
 
 async function route(){
-menuData = await fetchJson("menu.json", FALLBACK_MENU);
-slicesData = await fetchJson("slices.json", {});
+menuData = await fetchFirstJson(["menu.json","../menu.json"], FALLBACK_MENU);
+slicesData = await fetchFirstJson(["slices.json","../slices.json","learn.master.slices.json","../learn.master.slices.json"], {});
+if(slicesData && slicesData.QURAN){
+  const flat = {};
+  Object.values(slicesData.QURAN).forEach(entry=>{
+    if(entry && entry.file && Array.isArray(entry.slices)) flat[entry.file] = entry.slices;
+  });
+  slicesData = flat;
+}
 
 const p = params();
 const id = p.get("id") || p.get("surah");
