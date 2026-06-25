@@ -152,6 +152,7 @@ function buildQuran(plugin){
   addFolder(syncFiles, "learn");
   addFolder(syncFiles, "listen");
   addRepoFile(syncFiles, "slices.json", "slices.json");
+  addRepoFile(syncFiles, "menu.json", "menu.json");
 
   return {
     title: plugin.title || "Quran",
@@ -171,7 +172,7 @@ function buildQuran(plugin){
 function buildSalah(plugin){
   return {
     title: plugin.title || "Salah",
-    mainUrl: plugin.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
+    mainUrl: "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
     plugin: {
       id: "salah",
       title: plugin.title || "Salah",
@@ -191,6 +192,7 @@ function buildPlugin(plugin, slices){
   addFolder(syncFiles, folder);
   addRepoFile(syncFiles, `plugins/${plugin.id}.plugin.json`, `plugins/${plugin.id}.plugin.json`);
   addRepoFile(syncFiles, "slices.json", "slices.json");
+  addRepoFile(syncFiles, "menu.json", "menu.json");
 
   const engine = normalizeEngine(plugin);
   const playFromLanding = engine === "directAudio" || plugin.playFromLanding === true;
@@ -216,6 +218,9 @@ function buildPlugin(plugin, slices){
 
     cardAnimation: plugin.cardAnimation || "living-tile",
     backgroundEffect: plugin.backgroundEffect || "soft",
+    effect: plugin.effect || null,
+    audioMode: plugin.audioMode || null,
+    segmentDetection: plugin.segmentDetection || null,
     tilePalette: plugin.tilePalette || DEFAULT_TILE_PALETTE,
 
     chunkMode: plugin.chunkMode || null,
