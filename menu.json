@@ -498,7 +498,8 @@
       "engine": "spotlight",
       "supports": [
         "listen",
-        "5x"
+        "5x",
+        "hifz"
       ],
       "audioMode": "multiple-files",
       "theme": "names",
