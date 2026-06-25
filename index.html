@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -90,7 +90,7 @@ animation:sparkleFloat 12s linear infinite;
 100%{transform:translateY(-140px);opacity:0;}
 }
 
-/* ================= TITLE HEADER STYLING & ANIMATIONS ================= */
+/* ================= TITLE HEADER ================= */
 h1{
 text-align:center;
 font-size:2.5rem;
@@ -148,9 +148,7 @@ outline-offset:2px;
 transform:scale(1.05);
 }
 
-#btnBack{
-display:none;
-}
+#btnBack{display:none;}
 
 /* ================= GRID ENGINE ================= */
 .grid{
@@ -172,6 +170,47 @@ grid-template-rows:repeat(4,1fr);
 gap:12px;
 padding-top:5px;
 margin-bottom:15px;
+}
+
+/* Landing Living Tiles: carousel feel without hiding cards */
+body.landing-mode .grid{
+perspective:1200px;
+align-items:stretch;
+}
+
+body.landing-mode .card{
+animation:livingFloat 5s ease-in-out infinite;
+transform-style:preserve-3d;
+}
+
+body.landing-mode .card:nth-child(2n){animation-delay:.35s;}
+body.landing-mode .card:nth-child(3n){animation-delay:.7s;}
+
+@keyframes livingFloat{
+0%,100%{transform:translateY(0) rotateX(0deg);}
+50%{transform:translateY(-7px) rotateX(2deg);}
+}
+
+body.landing-mode .remote-focus{
+transform:translateY(-10px) scale(1.08) rotateX(4deg)!important;
+box-shadow:0 0 38px rgba(255,255,255,.95), 0 18px 35px rgba(0,0,0,.35);
+}
+
+body.landing-mode .remote-focus:after{
+content:"";
+position:absolute;
+inset:-3px;
+border-radius:30px;
+background:linear-gradient(120deg,rgba(255,255,255,.45),transparent,rgba(250,204,21,.45));
+z-index:0;
+animation:focusShimmer 1.8s linear infinite;
+pointer-events:none;
+}
+
+@keyframes focusShimmer{
+0%{opacity:.25;transform:translateX(-8px);}
+50%{opacity:.8;}
+100%{opacity:.25;transform:translateX(8px);}
 }
 
 /* ================= CARD DESIGN ================= */
@@ -204,10 +243,7 @@ z-index:0;
 pointer-events:none;
 }
 
-.card>*{
-position:relative;
-z-index:1;
-}
+.card>*{position:relative;z-index:1;}
 
 .card:hover{
 transform:translateY(-8px) scale(1.03);
@@ -230,6 +266,7 @@ width:100%;
 .emoji{font-size:2.2rem;margin-bottom:8px;}
 .arabic{font-size:1.8rem;font-weight:bold;margin-bottom:4px;}
 .english{font-size:1.05rem;opacity:.95;}
+
 .badge{
 position:absolute;
 top:12px;
@@ -243,7 +280,6 @@ font-weight:900;
 z-index:3;
 }
 
-/* ================= BUTTONS ================= */
 .play-btn{
 margin-top:14px;
 border:none;
@@ -276,6 +312,112 @@ outline-offset:4px;
 transform:scale(1.04);
 box-shadow:0 0 30px rgba(255,255,255,.9);
 z-index:10;
+}
+
+/* ================= ENGINE STAGES ================= */
+.stage{
+position:relative;
+width:100%;
+min-height:62vh;
+border-radius:32px;
+overflow:hidden;
+background-size:cover!important;
+background-position:center!important;
+box-shadow:0 0 35px rgba(255,255,255,.18);
+display:flex;
+align-items:flex-end;
+justify-content:center;
+padding:24px;
+}
+
+.stage-content{
+width:min(900px,100%);
+text-align:center;
+padding:22px;
+border-radius:26px;
+background:rgba(15,23,42,.45);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+box-shadow:0 0 25px rgba(255,255,255,.18);
+}
+
+.stage-title{
+font-size:clamp(2rem,5vw,4.5rem);
+font-weight:900;
+margin-bottom:8px;
+}
+
+.stage-sub{
+font-size:clamp(1.1rem,2.5vw,2rem);
+opacity:.95;
+}
+
+.stage-badges{
+margin-top:18px;
+display:flex;
+gap:12px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.rakah-badge{
+padding:12px 16px;
+border-radius:999px;
+background:linear-gradient(135deg,#fff7ed,#fde68a);
+color:#111827;
+font-weight:900;
+font-size:clamp(1rem,2vw,1.4rem);
+box-shadow:0 0 15px rgba(255,255,255,.4);
+animation:badgePop .8s ease;
+}
+
+@keyframes badgePop{
+0%{transform:scale(.2);opacity:0;}
+65%{transform:scale(1.1);opacity:1;}
+100%{transform:scale(1);}
+}
+
+.story-dawn{background:linear-gradient(rgba(255,182,193,.28),rgba(15,23,42,.35));}
+.story-bright-day{background:linear-gradient(rgba(250,204,21,.25),rgba(14,165,233,.18));}
+.story-afternoon{background:linear-gradient(rgba(251,146,60,.22),rgba(15,23,42,.28));}
+.story-sunset{background:linear-gradient(rgba(249,115,22,.38),rgba(124,45,18,.28));}
+.story-night{background:linear-gradient(rgba(30,64,175,.42),rgba(2,6,23,.55));}
+
+.story-overlay{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:0;
+transition:background 1s ease;
+}
+
+.spotlight-wrap{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:62vh;
+border-radius:32px;
+overflow:hidden;
+background-size:contain!important;
+background-position:center!important;
+background-repeat:no-repeat!important;
+background-color:rgba(15,23,42,.55);
+box-shadow:0 0 35px rgba(255,255,255,.18);
+}
+
+.spotlight-number{
+position:absolute;
+font-size:clamp(4rem,15vw,11rem);
+font-weight:900;
+text-shadow:0 0 22px rgba(250,204,21,.9);
+animation:spotlightPop 1.2s ease;
+}
+
+@keyframes spotlightPop{
+0%{transform:scale(.35);opacity:0;}
+50%{transform:scale(1.25);opacity:1;}
+100%{transform:scale(1);opacity:1;}
 }
 
 /* ================= OVERLAY ================= */
@@ -348,9 +490,13 @@ animation:rainbowSparkle 5s linear infinite;
 100%{background-position:400% 50%;filter:drop-shadow(0 0 10px rgba(255,255,255,.6));}
 }
 
-body>*{
-position:relative;
-z-index:1;
+body>*{position:relative;z-index:1;}
+
+@media(max-width:768px){
+.stage{min-height:58vh;padding:14px;border-radius:24px;}
+.stage-content{padding:16px;border-radius:20px;}
+.stage-badges{flex-direction:column;align-items:center;}
+.rakah-badge{width:100%;max-width:260px;}
 }
 </style>
 </head>
@@ -386,10 +532,10 @@ z-index:1;
 
 <script>
 /* =========================================================
-   PRISM PLUGIN-ENABLED ENGINE
+   PRISM V3.4 LOCKABLE INDEX ENGINE
+   - Quran/Salah protected
+   - Plugin engines reusable: directAudio, spotlight, story, gallery
    ========================================================= */
-
-const LOCAL_BASE = "file:///data/user/0/com.noor.prism/files";
 
 const surahs = [
 {id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
@@ -411,11 +557,11 @@ const surahs = [
 ];
 
 const FALLBACK_MENU = [
-{title:"Quran",mainUrl:"index.html?plugin=quran",plugin:{id:"quran",title:"Quran",theme:"quran"}},
-{title:"Salah",mainUrl:"salah/index.html",plugin:{id:"salah",title:"Salah",theme:"salah"}},
-{title:"Dua",mainUrl:"index.html?plugin=dua",plugin:{id:"dua",title:"Dua",folder:"dua",theme:"dua",supports:["listen"]}},
-{title:"Islamic Months",mainUrl:"index.html?plugin=months",plugin:{id:"months",title:"Islamic Months",folder:"months",theme:"months",supports:["listen"]}},
-{title:"Allah Names",mainUrl:"index.html?plugin=names",plugin:{id:"names",title:"Allah Names",folder:"names",theme:"names",supports:["listen","repeat5"],chunkMode:{enabled:true,namesPerChunk:4,repeatCount:5}}}
+{title:"Quran",mainUrl:"file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",plugin:{id:"quran",title:"Quran",theme:"quran",engine:"learning"}},
+{title:"Salah",mainUrl:"https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",plugin:{id:"salah",title:"Salah",theme:"salah",engine:"external"}},
+{title:"Dua",mainUrl:"index.html?plugin=dua",plugin:{id:"dua",title:"Dua",folder:"dua",theme:"dua",engine:"gallery",supports:["listen"]}},
+{title:"Islamic Months",mainUrl:"index.html?plugin=months&autoplay=1",plugin:{id:"months",title:"Islamic Months",folder:"months",theme:"months",engine:"directAudio",playFromLanding:true,supports:["listen"]}},
+{title:"Allah Names",mainUrl:"index.html?plugin=names",plugin:{id:"names",title:"Allah Names",folder:"names",theme:"names",engine:"spotlight",supports:["listen","repeat5"],chunkMode:{enabled:true,namesPerChunk:4,repeatCount:5}}}
 ];
 
 const THEME = {
@@ -423,9 +569,24 @@ quran:["#f59e0b","#ef4444","📖"],
 salah:["#22c55e","#0ea5e9","🕌"],
 dua:["#f472b6","#8b5cf6","🤲"],
 months:["#38bdf8","#6366f1","🗓"],
-names:["#facc15","#fb7185","ﷲ "],
+names:["#facc15","#fb7185","ﷲ"],
+numbers:["#f97316","#22c55e","🔢"],
+"allah-names":["#facc15","#fb7185","ﷲ"],
+"salah-names":["#fb923c","#1d4ed8","🌙"],
+angels:["#e0f2fe","#a78bfa","🕊"],
 default:["#a78bfa","#22d3ee","✨"]
 };
+
+const DEFAULT_PALETTE = [
+"linear-gradient(135deg,#f97316,#facc15)",
+"linear-gradient(135deg,#22c55e,#14b8a6)",
+"linear-gradient(135deg,#38bdf8,#6366f1)",
+"linear-gradient(135deg,#ec4899,#8b5cf6)",
+"linear-gradient(135deg,#ef4444,#fb7185)",
+"linear-gradient(135deg,#84cc16,#06b6d4)",
+"linear-gradient(135deg,#a855f7,#f472b6)",
+"linear-gradient(135deg,#0ea5e9,#22c55e)"
+];
 
 const TV = {
 cols: window.innerWidth <= 768 ? 2 : 4,
@@ -454,6 +615,7 @@ let loopAll = false;
 let currentView = "landing";
 let currentPlugin = null;
 let sequenceCancelToken = 0;
+let storyTimer = null;
 
 function params(){return new URLSearchParams(location.search);}
 function getMode(){return document.getElementById("mode").value;}
@@ -484,10 +646,17 @@ function iconFor(theme){
 return (THEME[theme] || THEME.default)[2];
 }
 
+function assetUrl(path){
+if(!path || typeof path !== "string") return "";
+return path;
+}
+
 function applyImageOrGradient(card, image, theme){
 if(typeof image === "string" && image.trim()){
-card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${image}')`;
+card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${assetUrl(image)}')`;
 card.style.backgroundColor = "transparent";
+} else if(image && image.type === "gradient" && Array.isArray(image.colors)){
+card.style.background = `linear-gradient(135deg,${image.colors.join(",")})`;
 } else {
 card.style.background = gradientFor(theme);
 }
@@ -503,15 +672,26 @@ document.getElementById("topbar").style.display = show ? "flex" : "none";
 document.getElementById("btnBack").style.display = showHome ? "inline-block" : "none";
 }
 
+function clearGrid(){
+Object.keys(map).forEach(k=>delete map[k]);
+items = [];
+grid.innerHTML = "";
+TV.focused = 0;
+clearTimers();
+}
+
+function clearTimers(){
+sequenceCancelToken++;
+if(storyTimer){ clearTimeout(storyTimer); storyTimer = null; }
+}
+
 /* ================= LANDING PAGE ================= */
 function buildLanding(){
 currentView = "landing";
 currentPlugin = null;
-items = [];
-Object.keys(map).forEach(k=>delete map[k]);
-grid.innerHTML = "";
-TV.focused = 0;
-stopAll();
+document.body.classList.add("landing-mode");
+clearGrid();
+stopAll(false);
 setHeader("🌙 Mariam & Hamza's 🌙","✨Choose Your Prism Adventure!✨");
 setTopbar(false,false);
 
@@ -524,22 +704,34 @@ const theme = plugin.theme || id || "default";
 const card = document.createElement("div");
 card.className = "card";
 applyImageOrGradient(card, plugin.tileImage, theme);
+
+const buttonText = plugin.playFromLanding || plugin.engine === "directAudio" ? "▶ Play" : "▶ Open";
 card.innerHTML = `
 <div class="card-info-box">
   <div class="emoji">${iconFor(theme)}</div>
   <div class="arabic">${entry.title}</div>
-  <div class="english">${plugin.id ? "Open " + entry.title : "Open"}</div>
+  <div class="english">${engineLabel(plugin)}</div>
 </div>
-<button class="play-btn">▶ Open</button>
+<button class="play-btn">${buttonText}</button>
 `;
 card.onclick = ()=>openMenuEntry(entry);
 card.querySelector("button").onclick = (e)=>{e.stopPropagation();openMenuEntry(entry);};
 grid.appendChild(card);
-items.push({id,entry,card,index:idx,type:"landing"});
-map[id] = items[items.length-1];
+const item = {id,entry,card,index:idx,type:"landing"};
+items.push(item);
+map[id] = item;
 });
-
 updateFocus();
+}
+
+function engineLabel(plugin){
+if(plugin.engine === "directAudio") return "Tap to play";
+if(plugin.engine === "spotlight") return "Spotlight Learning";
+if(plugin.engine === "story") return "Story Mode";
+if(plugin.engine === "gallery") return "Gallery";
+if(plugin.engine === "learning") return "Learning";
+if(plugin.engine === "external") return "Open Salah";
+return "Open";
 }
 
 function openMenuEntry(entry){
@@ -557,9 +749,15 @@ if(entry.mainUrl){ location.href = entry.mainUrl; }
 return;
 }
 
+if(plugin.playFromLanding || plugin.engine === "directAudio"){
+history.pushState(null,"",`?plugin=${encodeURIComponent(id)}&autoplay=1`);
+buildPlugin(plugin,true);
+return;
+}
+
 if(id){
 history.pushState(null,"",`?plugin=${encodeURIComponent(id)}`);
-buildPlugin(plugin);
+buildPlugin(plugin,false);
 return;
 }
 
@@ -574,7 +772,8 @@ buildLanding();
 /* ================= QURAN VIEW ================= */
 function buildQuran(){
 currentView = "quran";
-currentPlugin = {id:"quran",title:"Quran",theme:"quran"};
+currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
+document.body.classList.remove("landing-mode");
 setHeader("🌙 Mariam & Hamza's 🌙","✨Quran Adventures with Mom!✨");
 setTopbar(true,true);
 renderQuranItems();
@@ -582,11 +781,8 @@ renderQuranItems();
 
 function renderQuranItems(){
 const mode = getMode();
-Object.keys(map).forEach(k=>delete map[k]);
-items = [];
-grid.innerHTML = "";
-stopAll();
-sequenceCancelToken++;
+clearGrid();
+stopAll(false);
 
 let source = surahs;
 
@@ -607,11 +803,11 @@ index:idx
 };
 });
 if(!source.length){
-source = surahs.map(s=>({...s, badge:"Listen only"}));
+source = surahs;
 }
 }
 
-source.forEach((s,idx)=>createAudioCard(s,idx,"quran"));
+source.forEach((s,idx)=>createAudioCard(s,idx,"quran", false));
 updateFocus();
 
 const requested = params().get("id") || params().get("surah");
@@ -621,70 +817,221 @@ qrFix();
 }
 }
 
-/* ================= GENERIC PLUGIN VIEW ================= */
-function buildPlugin(plugin){
+/* ================= PLUGIN ROUTER ================= */
+function buildPlugin(plugin, autoplay){
 currentView = "plugin";
 currentPlugin = plugin;
+document.body.classList.remove("landing-mode");
 const title = plugin.title || plugin.id || "Prism";
-setHeader(`✨ ${title} ✨`,`Listen, learn and enjoy!`);
+setHeader(`✨ ${title} ✨`, subtitleForEngine(plugin));
 setTopbar(true,true);
 
-Object.keys(map).forEach(k=>delete map[k]);
-items = [];
-grid.innerHTML = "";
-stopAll();
-sequenceCancelToken++;
+const engine = plugin.engine || "gallery";
+if(engine === "directAudio") return buildDirectAudio(plugin, autoplay);
+if(engine === "spotlight") return buildSpotlight(plugin, autoplay);
+if(engine === "story") return buildStory(plugin, autoplay);
+return buildGallery(plugin, autoplay);
+}
 
+function subtitleForEngine(plugin){
+if(plugin.engine === "directAudio") return "Tap once and listen!";
+if(plugin.engine === "spotlight") return "Watch the focus glow and learn!";
+if(plugin.engine === "story") return "A gentle story through the day!";
+return "Listen, learn and enjoy!";
+}
+
+function pluginEntry(plugin){
+return menuData.find(m => (m.plugin||{}).id === plugin.id) || {};
+}
+
+function pluginMp3s(plugin){
 const folder = plugin.folder || plugin.id;
-const syncFiles = (menuData.find(m => (m.plugin||{}).id === plugin.id) || {}).syncFiles || [];
-let mp3s = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.mp3$/i.test(p));
+const syncFiles = pluginEntry(plugin).syncFiles || [];
+let mp3s = [];
+if(Array.isArray(plugin.audios) && plugin.audios.length) mp3s = plugin.audios;
+else mp3s = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.mp3$/i.test(p));
+if(!mp3s.length && plugin.primaryAudio) mp3s = [plugin.primaryAudio];
+return [...new Set(mp3s)];
+}
 
-if(!mp3s.length && plugin.audioFiles){ mp3s = plugin.audioFiles; }
+function pluginImages(plugin){
+const folder = plugin.folder || plugin.id;
+const syncFiles = pluginEntry(plugin).syncFiles || [];
+let imgs = [];
+if(Array.isArray(plugin.images) && plugin.images.length) imgs = plugin.images;
+else imgs = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(p));
+if(plugin.backgroundImage && typeof plugin.backgroundImage === "string") imgs.unshift(plugin.backgroundImage);
+if(plugin.tileImage && typeof plugin.tileImage === "string") imgs.unshift(plugin.tileImage);
+return [...new Set(imgs)];
+}
 
-if(!mp3s.length){
+/* ================= DIRECT AUDIO ENGINE ================= */
+function buildDirectAudio(plugin, autoplay){
+clearGrid();
+const mp3s = pluginMp3s(plugin);
+const audioFile = plugin.primaryAudio || mp3s[0];
 const theme = plugin.theme || plugin.id;
-const card = document.createElement("div");
-card.className = "card";
-applyImageOrGradient(card, plugin.tileImage, theme);
-card.innerHTML = `
-<div class="card-info-box">
-  <div class="emoji">${iconFor(theme)}</div>
-  <div class="arabic">${title}</div>
-  <div class="english">Add audio files in ${folder}/</div>
-</div>
-<button class="play-btn">✨ Coming Soon</button>
-`;
-grid.appendChild(card);
-items.push({id:plugin.id,card,index:0,type:"empty"});
-map[plugin.id]=items[0];
+if(!audioFile) return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
+
+const item = {
+id:plugin.id,
+name:plugin.title,
+eng:"Playing directly",
+emoji:iconFor(theme),
+file:audioFile,
+color:gradientFor(theme),
+plugin
+};
+createAudioCard(item,0,theme,false);
+updateFocus();
+if(autoplay || params().get("autoplay") === "1"){
+setTimeout(()=>play(plugin.id),400);
+}
+}
+
+/* ================= GALLERY ENGINE ================= */
+function buildGallery(plugin, autoplay){
+clearGrid();
+const mp3s = pluginMp3s(plugin);
+if(!mp3s.length) return renderComingSoon(plugin, `Add audio files in ${plugin.folder || plugin.id}/`);
+
+mp3s.forEach((file,idx)=>{
+const clean = file.split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"").replace(/[-_]/g," ");
+const item = {
+id:`${plugin.id}-${idx}`,
+name:plugin.title,
+eng:clean,
+emoji:iconFor(plugin.theme || plugin.id),
+file,
+color:(plugin.tilePalette || DEFAULT_PALETTE)[idx % (plugin.tilePalette || DEFAULT_PALETTE).length],
+slices:slicesData[file] || null,
+plugin
+};
+createAudioCard(item,idx,plugin.theme || plugin.id,false);
+});
+updateFocus();
+if(autoplay && items[0]) setTimeout(()=>play(items[0].id),400);
+}
+
+/* ================= SPOTLIGHT ENGINE ================= */
+function buildSpotlight(plugin, autoplay){
+clearGrid();
+const mp3s = pluginMp3s(plugin);
+const theme = plugin.theme || plugin.id;
+
+if(plugin.id === "names" && mp3s.length){
+mp3s.forEach((file,idx)=>{
+const label = file.split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"").replace("_","–");
+const item = {
+id:`${plugin.id}-${idx}`,
+name:"ﷲ",
+eng:label,
+emoji:"✨",
+file,
+color:(plugin.tilePalette || DEFAULT_PALETTE)[idx % (plugin.tilePalette || DEFAULT_PALETTE).length],
+slices:slicesData[file] || null,
+plugin
+};
+createAudioCard(item,idx,theme,false);
+});
 updateFocus();
 return;
 }
 
-mp3s.forEach((file,idx)=>{
-const clean = file.split("/").pop().replace(/\.mp3$/i,"").replace(/[-_]/g," ");
-const item = {
-id:`${plugin.id}-${idx}`,
-name:title,
-eng:clean,
-emoji:iconFor(plugin.theme || plugin.id),
-file,
-color:gradientFor(plugin.theme || plugin.id),
-slices:slicesData[file] || null,
-plugin
-};
-createAudioCard(item,idx,plugin.id);
-});
+const audioFile = plugin.primaryAudio || mp3s[0];
+if(!audioFile) return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
+
+const wrap = document.createElement("div");
+wrap.className = "spotlight-wrap";
+const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+wrap.style.background = bg ? `url('${bg}')` : gradientFor(theme);
+wrap.innerHTML = `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div><audio id="spotlightAudio" src="${audioFile}" preload="auto"></audio>`;
+grid.appendChild(wrap);
+
+const fakeCard = wrap;
+const audio = wrap.querySelector("audio");
+const item = {id:plugin.id,card:fakeCard,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight"},index:0,type:"audio"};
+items.push(item);
+map[plugin.id] = item;
+
+fakeCard.onclick = ()=>play(plugin.id);
 updateFocus();
+if(autoplay) setTimeout(()=>play(plugin.id),400);
+}
+
+/* ================= STORY ENGINE ================= */
+function buildStory(plugin, autoplay){
+clearGrid();
+const theme = plugin.theme || plugin.id;
+const mp3s = pluginMp3s(plugin);
+const audioFile = plugin.primaryAudio || mp3s[0] || "";
+const seq = Array.isArray(plugin.sequence) && plugin.sequence.length ? plugin.sequence : defaultSalahNamesSequence();
+
+const stage = document.createElement("div");
+stage.className = "stage";
+const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+stage.style.background = bg ? `url('${bg}')` : gradientFor(theme);
+stage.innerHTML = `
+<div class="story-overlay story-dawn" id="storyOverlay"></div>
+<div class="stage-content">
+  <div class="stage-title" id="storyArabic">${seq[0].arabic || ""}</div>
+  <div class="stage-sub" id="storyName">${seq[0].name || plugin.title}</div>
+  <div class="stage-badges" id="storyBadges"></div>
+</div>
+${audioFile ? `<audio id="storyAudio" src="${audioFile}" preload="auto"></audio>` : ""}
+`;
+grid.appendChild(stage);
+
+const audio = stage.querySelector("audio");
+const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Story"},index:0,type:audio ? "audio" : "story"};
+items.push(item);
+map[plugin.id] = item;
+stage.onclick = ()=>{ if(audio) play(plugin.id); runStorySequence(seq); };
+updateFocus();
+renderStoryStep(seq[0]);
+if(autoplay){ setTimeout(()=>{ if(audio) play(plugin.id); runStorySequence(seq); },400); }
+}
+
+function defaultSalahNamesSequence(){
+return [
+{name:"Fajr",arabic:"الفجر",effect:"dawn",rakah:["2 Sunnah","2 Fard"]},
+{name:"Dhuhr",arabic:"الظهر",effect:"bright-day",rakah:["4 Sunnah","4 Fard","2 Sunnah"]},
+{name:"Asr",arabic:"العصر",effect:"afternoon",rakah:["4 Fard"]},
+{name:"Maghrib",arabic:"المغرب",effect:"sunset",rakah:["3 Fard","2 Sunnah"]},
+{name:"Isha",arabic:"العشاء",effect:"night",rakah:["4 Fard","2 Sunnah","Witr"]}
+];
+}
+
+function runStorySequence(seq){
+clearTimeout(storyTimer);
+let i=0;
+const step=()=>{
+renderStoryStep(seq[i % seq.length]);
+i++;
+storyTimer = setTimeout(step,4200);
+};
+step();
+}
+
+function renderStoryStep(step){
+const overlay = document.getElementById("storyOverlay");
+const arabic = document.getElementById("storyArabic");
+const name = document.getElementById("storyName");
+const badges = document.getElementById("storyBadges");
+if(!overlay || !arabic || !name || !badges) return;
+overlay.className = "story-overlay story-" + (step.effect || "dawn");
+arabic.innerText = step.arabic || "";
+name.innerText = step.name || "";
+badges.innerHTML = (step.rakah || []).map(r=>`<div class="rakah-badge">${r}</div>`).join("");
 }
 
 /* ================= CARD RENDERER ================= */
-function createAudioCard(s, idx, theme){
+function createAudioCard(s, idx, theme, showLearnBadge){
 const card = document.createElement("div");
 card.className = "card";
 card.style.background = s.color || gradientFor(theme);
 
-const badge = s.slices ? `<div class="badge">🎓 Learn</div>` : (s.badge ? `<div class="badge">${s.badge}</div>` : "");
+const badge = showLearnBadge && s.slices ? `<div class="badge">🎓 Learn</div>` : "";
 
 card.innerHTML = `
 ${badge}
@@ -716,6 +1063,27 @@ pauseCurrent();
 };
 
 grid.appendChild(card);
+}
+
+function renderComingSoon(plugin,msg){
+clearGrid();
+const theme = plugin.theme || plugin.id;
+const card = document.createElement("div");
+card.className = "card";
+applyImageOrGradient(card, plugin.tileImage, theme);
+card.innerHTML = `
+<div class="card-info-box">
+  <div class="emoji">${iconFor(theme)}</div>
+  <div class="arabic">${plugin.title || plugin.id}</div>
+  <div class="english">${msg}</div>
+</div>
+<button class="play-btn">✨ Coming Soon</button>
+`;
+grid.appendChild(card);
+const item = {id:plugin.id,card,index:0,type:"empty"};
+items.push(item);
+map[plugin.id]=item;
+updateFocus();
 }
 
 /* ================= AUDIO + LEARN/HIFZ ================= */
@@ -822,7 +1190,7 @@ sequenceCancelToken++;
 if(currentAudio){ currentAudio.pause(); }
 }
 
-function stopAll(){
+function stopAll(clearFocus=true){
 sequenceCancelToken++;
 if(currentAudio){
 currentAudio.pause();
@@ -833,6 +1201,7 @@ currentAudio = null;
 currentButton = null;
 currentCard = null;
 currentItem = null;
+if(clearFocus) updateFocus();
 }
 
 function toggleLoopAll(){
@@ -859,7 +1228,7 @@ updateFocus();
 }
 
 function updateFocus(){
-const cards = document.querySelectorAll(".card");
+const cards = document.querySelectorAll(".card,.stage,.spotlight-wrap");
 cards.forEach(c=>c.classList.remove("remote-focus"));
 
 const el = cards[TV.focused];
@@ -939,7 +1308,7 @@ move("down");
 if(k===19 || e.key==="ArrowUp"){
 e.preventDefault();
 if(TV.focused < TV.cols && currentView !== "landing"){
-const cards = document.querySelectorAll(".card");
+const cards = document.querySelectorAll(".card,.stage,.spotlight-wrap");
 cards.forEach(c=>c.classList.remove("remote-focus"));
 const first = document.getElementById("btnBack").style.display !== "none" ? "btnBack" : "btnStop";
 document.getElementById(first).focus();
@@ -956,6 +1325,7 @@ const item = items[TV.focused];
 if(!item) return;
 if(item.type === "landing") openMenuEntry(item.entry);
 else if(item.type === "audio") play(item.id);
+else if(item.type === "story") runStorySequence(defaultSalahNamesSequence());
 }
 }
 });
@@ -1022,9 +1392,11 @@ return;
 }
 
 if(pluginId && pluginId !== "landing"){
-const found = (menuData.find(m => (m.plugin||{}).id === pluginId) || {}).plugin;
+const foundEntry = menuData.find(m => (m.plugin||{}).id === pluginId);
+const found = foundEntry ? foundEntry.plugin : null;
 if(pluginId === "quran") buildQuran();
-else if(found) buildPlugin(found);
+else if(pluginId === "salah" && foundEntry && foundEntry.mainUrl) location.href = foundEntry.mainUrl;
+else if(found) buildPlugin(found, p.get("autoplay") === "1");
 else buildLanding();
 return;
 }
