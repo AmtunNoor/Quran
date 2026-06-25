@@ -299,42 +299,33 @@
     ]
   },
   {
-    "title": "Arabic Numbers",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers",
+    "title": "Allah Names",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=names",
     "plugin": {
-      "id": "numbers",
-      "title": "Arabic Numbers",
+      "id": "names",
+      "title": "Allah Names",
       "type": "plugin",
-      "folder": "numbers",
+      "folder": "names",
       "engine": "spotlight",
       "supports": [
-        "listen"
+        "listen",
+        "5x"
       ],
-      "theme": "numbers",
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Arabic Numbers"
-      },
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
-      "primaryAudio": null,
-      "audios": [],
-      "images": [],
+      "theme": "names",
+      "tileImage": "names/names.jpeg",
+      "backgroundImage": "names/names.jpeg",
+      "primaryAudio": "names/1_27.mp3",
+      "audios": [
+        "names/1_27.mp3",
+        "names/28_36.mp3",
+        "names/37_45.mp3",
+        "names/46_60.mp3",
+        "names/61_76.mp3",
+        "names/77_99.mp3"
+      ],
+      "images": [
+        "names/names.jpeg"
+      ],
       "action": "open-plugin",
       "directAudio": false,
       "playFromLanding": false,
@@ -350,23 +341,13 @@
         "linear-gradient(135deg,#a855f7,#f472b6)",
         "linear-gradient(135deg,#0ea5e9,#22c55e)"
       ],
-      "chunkMode": null,
-      "sequence": [],
-      "spotlight": {
-        "items": [
-          "١",
-          "٢",
-          "٣",
-          "٤",
-          "٥",
-          "٦",
-          "٧",
-          "٨",
-          "٩",
-          "١٠"
-        ],
-        "effect": "scale-glow-sparkle"
+      "chunkMode": {
+        "enabled": true,
+        "namesPerChunk": 4,
+        "repeatCount": 5
       },
+      "sequence": [],
+      "spotlight": null,
       "displayMode": null,
       "slices": [],
       "lockedDesign": true
@@ -375,6 +356,42 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/1_27.mp3",
+        "path": "names/1_27.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/28_36.mp3",
+        "path": "names/28_36.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/37_45.mp3",
+        "path": "names/37_45.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/46_60.mp3",
+        "path": "names/46_60.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/61_76.mp3",
+        "path": "names/61_76.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/77_99.mp3",
+        "path": "names/77_99.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/index.html",
+        "path": "names/index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/names.jpeg",
+        "path": "names/names.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/names.plugin.json",
+        "path": "plugins/names.plugin.json"
       }
     ]
   }
