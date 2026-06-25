@@ -1,27 +1,16 @@
 {
-  "id": "names",
-  "title": "Allah Names",
+  "id": "numbers",
+  "title": "Arabic Numbers",
   "type": "plugin",
-  "priority": 5,
-
-  "folder": "names",
-
-  "tileImage": "names/tile.png",
-  "backgroundImage": "names/background.png",
-
-  "supports": [
-    "listen",
-    "5x"
-  ],
-
-  "theme": "names",
-
-  "chunkMode": {
-    "enabled": true,
-    "namesPerChunk": 4,
-    "repeatCount": 5
-  },
-
-  "cardAnimation": "sparkle",
-  "backgroundEffect": "glow"
+  "priority": 7,
+  "folder": "numbers",
+  "engine": "spotlight",
+  "supports": ["listen"],
+  "audioMode": "single-file-pauses",
+  "segmentDetection": "silence",
+  "theme": "numbers",
+  "spotlight": {
+    "items": ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "١٠"],
+    "effect": "scale-glow-sparkle"
+  }
 }
