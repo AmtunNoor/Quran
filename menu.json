@@ -197,8 +197,8 @@
       "action": "open-plugin",
       "directAudio": false,
       "playFromLanding": false,
-      "cardAnimation": "float",
-      "backgroundEffect": "particles",
+      "cardAnimation": "living-tile",
+      "backgroundEffect": "soft",
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
