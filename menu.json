@@ -2,10 +2,42 @@
   {
     "title": "Quran",
     "mainUrl": "file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",
+    "plugin": {
+      "id": "quran",
+      "title": "Quran",
+      "type": "core",
+      "engine": "learning",
+      "supports": [
+        "listen",
+        "5x",
+        "hifz"
+      ],
+      "locked": true
+    },
     "syncFiles": [
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "quran/index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A5.mp3",
+        "path": "quran/A5.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A6.mp3",
+        "path": "quran/A6.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A7.mp3",
+        "path": "quran/A7.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A8.mp3",
+        "path": "quran/A8.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A9.mp3",
+        "path": "quran/A9.mp3"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A10.mp3",
@@ -52,34 +84,77 @@
         "path": "quran/A20.mp3"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A5.mp3",
-        "path": "quran/A5.mp3"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A6.mp3",
-        "path": "quran/A6.mp3"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A7.mp3",
-        "path": "quran/A7.mp3"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A8.mp3",
-        "path": "quran/A8.mp3"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A9.mp3",
-        "path": "quran/A9.mp3"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn/102.mp3",
         "path": "learn/102.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/02_1.mp3",
+        "path": "listen/02_1.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/02.mp3",
+        "path": "listen/02.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/55.mp3",
+        "path": "listen/55.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/94.mp3",
+        "path": "listen/94.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/95.mp3",
+        "path": "listen/95.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/96.mp3",
+        "path": "listen/96.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/97.mp3",
+        "path": "listen/97.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/98.mp3",
+        "path": "listen/98.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/99.mp3",
+        "path": "listen/99.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/100.mp3",
+        "path": "listen/100.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/101.mp3",
+        "path": "listen/101.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/102.mp3",
+        "path": "listen/102.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/103.mp3",
+        "path": "listen/103.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/104.mp3",
+        "path": "listen/104.mp3"
       }
     ]
   },
   {
     "title": "Salah",
     "mainUrl": "file:///data/user/0/com.noor.prism/files/salah/index.html",
+    "plugin": {
+      "id": "salah",
+      "title": "Salah",
+      "type": "core",
+      "engine": "external",
+      "locked": true
+    },
     "syncFiles": []
   },
   {
@@ -90,6 +165,7 @@
       "title": "Dua",
       "type": "plugin",
       "folder": "dua",
+      "engine": "gallery",
       "supports": [
         "listen"
       ],
@@ -115,12 +191,36 @@
           "#fbc2eb"
         ]
       },
+      "primaryAudio": null,
+      "audios": [],
+      "images": [],
+      "action": "open-plugin",
+      "directAudio": false,
+      "playFromLanding": false,
       "cardAnimation": "float",
       "backgroundEffect": "particles",
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
       "chunkMode": null,
-      "slices": []
+      "sequence": [],
+      "spotlight": null,
+      "displayMode": null,
+      "slices": [],
+      "lockedDesign": true
     },
     "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/dua.plugin.json",
         "path": "plugins/dua.plugin.json"
@@ -129,43 +229,53 @@
   },
   {
     "title": "Islamic Months",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=months",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=months&autoplay=1",
     "plugin": {
       "id": "months",
       "title": "Islamic Months",
       "type": "plugin",
       "folder": "months",
+      "engine": "directAudio",
       "supports": [
         "listen"
       ],
       "theme": "months",
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Islamic Months"
-      },
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
+      "tileImage": "months/months.jpeg",
+      "backgroundImage": "months/months.jpeg",
+      "primaryAudio": "months/months.mp3",
+      "audios": [
+        "months/months.mp3"
+      ],
+      "images": [
+        "months/months.jpeg"
+      ],
+      "action": "direct-audio",
+      "directAudio": true,
+      "playFromLanding": true,
       "cardAnimation": "carousel",
       "backgroundEffect": "stars",
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
       "chunkMode": null,
-      "slices": []
+      "sequence": [],
+      "spotlight": null,
+      "displayMode": null,
+      "slices": [],
+      "lockedDesign": true
     },
     "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/a",
         "path": "months/a"
@@ -196,42 +306,57 @@
       "title": "Allah Names",
       "type": "plugin",
       "folder": "names",
+      "engine": "spotlight",
       "supports": [
         "listen",
         "5x"
       ],
       "theme": "names",
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Allah Names"
-      },
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
+      "tileImage": "names/names.jpeg",
+      "backgroundImage": "names/names.jpeg",
+      "primaryAudio": "names/1_27.mp3",
+      "audios": [
+        "names/1_27.mp3",
+        "names/28_36.mp3",
+        "names/37_45.mp3",
+        "names/46_60.mp3",
+        "names/61_76.mp3",
+        "names/77_99.mp3"
+      ],
+      "images": [
+        "names/names.jpeg"
+      ],
+      "action": "open-plugin",
+      "directAudio": false,
+      "playFromLanding": false,
       "cardAnimation": "sparkle",
       "backgroundEffect": "glow",
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
       "chunkMode": {
         "enabled": true,
         "namesPerChunk": 4,
         "repeatCount": 5
       },
-      "slices": []
+      "sequence": [],
+      "spotlight": null,
+      "displayMode": null,
+      "slices": [],
+      "lockedDesign": true
     },
     "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/1_27.mp3",
         "path": "names/1_27.mp3"
