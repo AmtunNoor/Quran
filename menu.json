@@ -408,30 +408,13 @@
         "listen"
       ],
       "theme": "numbers",
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Arabic Numbers"
-      },
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
+      "tileImage": "numbers/numbers.jpeg",
+      "backgroundImage": "numbers/numbers.jpeg",
       "primaryAudio": null,
       "audios": [],
-      "images": [],
+      "images": [
+        "numbers/numbers.jpeg"
+      ],
       "action": "open-plugin",
       "directAudio": false,
       "playFromLanding": false,
@@ -472,6 +455,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/a",
+        "path": "numbers/a"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.jpeg",
+        "path": "numbers/numbers.jpeg"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
