@@ -240,14 +240,15 @@
         "listen"
       ],
       "theme": "months",
-      "tileImage": "months/months.jpeg",
-      "backgroundImage": "months/months.jpeg",
+      "tileImage": "months/months_background.jpeg",
+      "backgroundImage": "months/months_background.jpeg",
       "primaryAudio": "months/months.mp3",
       "audios": [
         "months/months.mp3"
       ],
       "images": [
-        "months/months.jpeg"
+        "months/months_background.jpeg",
+        "months/months_icon.jpeg"
       ],
       "action": "direct-audio",
       "directAudio": true,
@@ -277,16 +278,16 @@
         "path": "index.html"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/a",
-        "path": "months/a"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/index.html",
         "path": "months/index.html"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.jpeg",
-        "path": "months/months.jpeg"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months_background.jpeg",
+        "path": "months/months_background.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months_icon.jpeg",
+        "path": "months/months_icon.jpeg"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.mp3",
