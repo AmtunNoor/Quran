@@ -1,0 +1,16 @@
+{
+  "id": "numbers",
+  "title": "Arabic Numbers",
+  "type": "plugin",
+  "priority": 7,
+  "folder": "numbers",
+  "engine": "spotlight",
+  "supports": ["listen"],
+  "audioMode": "single-file-pauses",
+  "segmentDetection": "silence",
+  "theme": "numbers",
+  "spotlight": {
+    "items": ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "١٠"],
+    "effect": "scale-glow-sparkle"
+  }
+}
