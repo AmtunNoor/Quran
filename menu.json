@@ -7,11 +7,13 @@
       "title": "Quran",
       "type": "core",
       "engine": "learning",
+      "theme": "quran",
       "supports": [
         "listen",
         "5x",
         "hifz"
       ],
+      "slicesFile": "learn.master.slices.json",
       "locked": true
     },
     "syncFiles": [
@@ -84,10 +86,6 @@
         "path": "quran/A20.mp3"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn/102.mp3",
-        "path": "learn/102.mp3"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/02_1.mp3",
         "path": "listen/02_1.mp3"
       },
@@ -144,12 +142,12 @@
         "path": "listen/104.mp3"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
-        "path": "learn.master.slices.json"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn/102.mp3",
+        "path": "learn/102.mp3"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
+        "path": "learn.master.slices.json"
       }
     ]
   },
@@ -161,8 +159,8 @@
       "title": "Salah",
       "type": "core",
       "engine": "external",
-      "locked": true,
-      "theme": "salah"
+      "theme": "salah",
+      "locked": true
     },
     "syncFiles": []
   },
@@ -173,11 +171,13 @@
       "id": "dua",
       "title": "Dua",
       "type": "plugin",
+      "priority": 3,
       "folder": "duas",
       "engine": "gallery",
       "supports": [
         "listen"
       ],
+      "audioMode": "multiple-files",
       "theme": "dua",
       "tileImage": {
         "type": "gradient",
@@ -203,11 +203,13 @@
       "primaryAudio": null,
       "audios": [],
       "images": [],
-      "action": "open-plugin",
-      "directAudio": false,
       "playFromLanding": false,
-      "cardAnimation": "living-tile",
-      "backgroundEffect": "soft",
+      "directAudio": false,
+      "action": "open-plugin",
+      "effect": null,
+      "segmentDetection": "silence",
+      "fallback": "duration",
+      "learningMode": null,
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -218,14 +220,14 @@
         "linear-gradient(135deg,#a855f7,#f472b6)",
         "linear-gradient(135deg,#0ea5e9,#22c55e)"
       ],
-      "chunkMode": null,
       "sequence": [],
+      "coordinates": {},
+      "numbers": {},
       "spotlight": null,
       "displayMode": null,
-      "effect": null,
-      "audioMode": "multiple-files",
-      "segmentDetection": null,
+      "chunkMode": null,
       "slices": [],
+      "slicesFile": "learn.master.slices.json",
       "lockedDesign": true
     },
     "syncFiles": [
@@ -244,10 +246,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
       }
     ]
   },
@@ -258,42 +256,16 @@
       "id": "months",
       "title": "Islamic Months",
       "type": "plugin",
+      "priority": 4,
       "folder": "months",
       "engine": "directAudio",
       "supports": [
         "listen"
       ],
-      "theme": "months",
-      "tileImage": "months/months_icon.jpeg",
-      "backgroundImage": "months/months_background.jpeg",
-      "primaryAudio": "months/months.mp3",
-      "audios": [
-        "months/months.mp3"
-      ],
-      "images": [
-        "months/months_background.jpeg",
-        "months/months_icon.jpeg",
-        "months/months.jpeg"
-      ],
-      "action": "direct-audio",
-      "directAudio": true,
+      "audioMode": "normal",
+      "segmentDetection": "normal",
       "playFromLanding": true,
-      "cardAnimation": "living-tile",
-      "backgroundEffect": "soft",
-      "tilePalette": [
-        "linear-gradient(135deg,#f97316,#facc15)",
-        "linear-gradient(135deg,#22c55e,#14b8a6)",
-        "linear-gradient(135deg,#38bdf8,#6366f1)",
-        "linear-gradient(135deg,#ec4899,#8b5cf6)",
-        "linear-gradient(135deg,#ef4444,#fb7185)",
-        "linear-gradient(135deg,#84cc16,#06b6d4)",
-        "linear-gradient(135deg,#a855f7,#f472b6)",
-        "linear-gradient(135deg,#0ea5e9,#22c55e)"
-      ],
-      "chunkMode": null,
-      "sequence": [],
-      "spotlight": null,
-      "displayMode": null,
+      "theme": "months",
       "effect": {
         "type": "aquarium",
         "waterRays": true,
@@ -449,9 +421,38 @@
           }
         ]
       },
-      "audioMode": "normal",
-      "segmentDetection": "normal",
+      "tileImage": "months/months_icon.jpeg",
+      "backgroundImage": "months/months_background.jpeg",
+      "primaryAudio": "months/months.mp3",
+      "audios": [
+        "months/months.mp3"
+      ],
+      "images": [
+        "months/months_background.jpeg",
+        "months/months_icon.jpeg"
+      ],
+      "directAudio": true,
+      "action": "direct-audio",
+      "fallback": "duration",
+      "learningMode": null,
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "sequence": [],
+      "coordinates": {},
+      "numbers": {},
+      "spotlight": null,
+      "displayMode": null,
+      "chunkMode": null,
       "slices": [],
+      "slicesFile": "learn.master.slices.json",
       "lockedDesign": true
     },
     "syncFiles": [
@@ -472,10 +473,6 @@
         "path": "months/months_icon.jpeg"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.jpeg",
-        "path": "months/months.jpeg"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.mp3",
         "path": "months/months.mp3"
       },
@@ -486,10 +483,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
       }
     ]
   },
@@ -500,6 +493,7 @@
       "id": "names",
       "title": "Allah Names",
       "type": "plugin",
+      "priority": 5,
       "folder": "names",
       "engine": "spotlight",
       "supports": [
@@ -507,7 +501,13 @@
         "5x",
         "hifz"
       ],
+      "audioMode": "multiple-files",
       "theme": "names",
+      "chunkMode": {
+        "enabled": true,
+        "namesPerChunk": 4,
+        "repeatCount": 5
+      },
       "tileImage": "names/names.jpeg",
       "backgroundImage": "names/names.jpeg",
       "primaryAudio": "names/1_27.mp3",
@@ -522,11 +522,19 @@
       "images": [
         "names/names.jpeg"
       ],
-      "action": "open-plugin",
-      "directAudio": false,
       "playFromLanding": false,
-      "cardAnimation": "living-tile",
-      "backgroundEffect": "soft",
+      "directAudio": false,
+      "action": "open-plugin",
+      "effect": {
+        "type": "spotlight",
+        "backgroundStatic": true,
+        "focusOneItem": true,
+        "glow": true,
+        "sparkles": true
+      },
+      "segmentDetection": "silence",
+      "fallback": "duration",
+      "learningMode": null,
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -537,18 +545,13 @@
         "linear-gradient(135deg,#a855f7,#f472b6)",
         "linear-gradient(135deg,#0ea5e9,#22c55e)"
       ],
-      "chunkMode": {
-        "enabled": true,
-        "namesPerChunk": 4,
-        "repeatCount": 5
-      },
       "sequence": [],
+      "coordinates": {},
+      "numbers": {},
       "spotlight": null,
       "displayMode": null,
-      "effect": null,
-      "audioMode": "multiple-files",
-      "segmentDetection": null,
       "slices": [],
+      "slicesFile": "learn.master.slices.json",
       "lockedDesign": true
     },
     "syncFiles": [
@@ -595,92 +598,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
-      }
-    ]
-  },
-  {
-    "title": "Arabic Numbers",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers",
-    "plugin": {
-      "id": "numbers",
-      "title": "Arabic Numbers",
-      "type": "plugin",
-      "folder": "numbers",
-      "engine": "spotlight",
-      "supports": [
-        "listen"
-      ],
-      "theme": "numbers",
-      "tileImage": "numbers/numbers.jpeg",
-      "backgroundImage": "numbers/numbers.jpeg",
-      "primaryAudio": null,
-      "audios": [],
-      "images": [
-        "numbers/numbers.jpeg"
-      ],
-      "action": "open-plugin",
-      "directAudio": false,
-      "playFromLanding": false,
-      "cardAnimation": "living-tile",
-      "backgroundEffect": "soft",
-      "tilePalette": [
-        "linear-gradient(135deg,#f97316,#facc15)",
-        "linear-gradient(135deg,#22c55e,#14b8a6)",
-        "linear-gradient(135deg,#38bdf8,#6366f1)",
-        "linear-gradient(135deg,#ec4899,#8b5cf6)",
-        "linear-gradient(135deg,#ef4444,#fb7185)",
-        "linear-gradient(135deg,#84cc16,#06b6d4)",
-        "linear-gradient(135deg,#a855f7,#f472b6)",
-        "linear-gradient(135deg,#0ea5e9,#22c55e)"
-      ],
-      "chunkMode": null,
-      "sequence": [],
-      "spotlight": {
-        "items": [
-          "١",
-          "٢",
-          "٣",
-          "٤",
-          "٥",
-          "٦",
-          "٧",
-          "٨",
-          "٩",
-          "١٠"
-        ],
-        "effect": "scale-glow-sparkle"
-      },
-      "displayMode": null,
-      "effect": null,
-      "audioMode": "single-file-pauses",
-      "segmentDetection": "silence",
-      "slices": [],
-      "lockedDesign": true
-    },
-    "syncFiles": [
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
-        "path": "index.html"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.jpeg",
-        "path": "numbers/numbers.jpeg"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
-        "path": "plugins/numbers.plugin.json"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
-        "path": "learn.master.slices.json"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
       }
     ]
   },
@@ -691,35 +608,15 @@
       "id": "salah-names",
       "title": "Salah Names",
       "type": "plugin",
+      "priority": 8,
       "folder": "salahnames",
       "engine": "story",
       "supports": [
         "listen"
       ],
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
       "theme": "salah-names",
-      "tileImage": "salahnames/salahnames.jpeg",
-      "backgroundImage": "salahnames/salahnames.jpeg",
-      "primaryAudio": null,
-      "audios": [],
-      "images": [
-        "salahnames/salahnames.jpeg"
-      ],
-      "action": "open-plugin",
-      "directAudio": false,
-      "playFromLanding": false,
-      "cardAnimation": "living-tile",
-      "backgroundEffect": "soft",
-      "tilePalette": [
-        "linear-gradient(135deg,#f97316,#facc15)",
-        "linear-gradient(135deg,#22c55e,#14b8a6)",
-        "linear-gradient(135deg,#38bdf8,#6366f1)",
-        "linear-gradient(135deg,#ec4899,#8b5cf6)",
-        "linear-gradient(135deg,#ef4444,#fb7185)",
-        "linear-gradient(135deg,#84cc16,#06b6d4)",
-        "linear-gradient(135deg,#a855f7,#f472b6)",
-        "linear-gradient(135deg,#0ea5e9,#22c55e)"
-      ],
-      "chunkMode": null,
       "sequence": [
         {
           "name": "Fajr",
@@ -768,12 +665,40 @@
           ]
         }
       ],
+      "tileImage": "salahnames/salahnames.jpeg",
+      "backgroundImage": "salahnames/salahnames.jpeg",
+      "primaryAudio": null,
+      "audios": [],
+      "images": [
+        "salahnames/salahnames.jpeg"
+      ],
+      "playFromLanding": false,
+      "directAudio": false,
+      "action": "open-plugin",
+      "effect": {
+        "type": "timeStory",
+        "skyOverlay": true,
+        "badges": true
+      },
+      "fallback": "duration",
+      "learningMode": null,
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "coordinates": {},
+      "numbers": {},
       "spotlight": null,
       "displayMode": null,
-      "effect": null,
-      "audioMode": "single-file-pauses",
-      "segmentDetection": "silence",
+      "chunkMode": null,
       "slices": [],
+      "slicesFile": "learn.master.slices.json",
       "lockedDesign": true
     },
     "syncFiles": [
@@ -792,10 +717,171 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      }
+    ]
+  },
+  {
+    "title": "Arabic Numbers",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers&autoplay=1",
+    "plugin": {
+      "id": "numbers",
+      "title": "Arabic Numbers",
+      "folder": "numbers",
+      "engine": "directAudio",
+      "theme": "numbers",
+      "playFromLanding": true,
+      "supports": [
+        "listen",
+        "repeat5",
+        "hifz"
+      ],
+      "audio": {
+        "mode": "single-file-pauses",
+        "segmentDetection": "silence",
+        "fallback": "duration"
+      },
+      "effect": {
+        "type": "numberSpotlight",
+        "backgroundStatic": true,
+        "focusOneNumber": true,
+        "followAudio": true,
+        "activeScale": 1.25,
+        "glow": true,
+        "sparkles": true,
+        "float": true
+      },
+      "coordinates": {
+        "1": {
+          "x": 14.6,
+          "y": 32.7
+        },
+        "2": {
+          "x": 32.2,
+          "y": 32.2
+        },
+        "3": {
+          "x": 51.1,
+          "y": 31.7
+        },
+        "4": {
+          "x": 69.3,
+          "y": 30.8
+        },
+        "5": {
+          "x": 86.9,
+          "y": 32.7
+        },
+        "6": {
+          "x": 14.3,
+          "y": 65.9
+        },
+        "7": {
+          "x": 32.6,
+          "y": 66.4
+        },
+        "8": {
+          "x": 51.4,
+          "y": 66.4
+        },
+        "9": {
+          "x": 71.3,
+          "y": 66.4
+        },
+        "10": {
+          "x": 90.2,
+          "y": 65.9
+        }
+      },
+      "numbers": {
+        "1": {
+          "pulse": true,
+          "float": true
+        },
+        "2": {
+          "pulse": true,
+          "float": true
+        },
+        "3": {
+          "pulse": true,
+          "float": true
+        },
+        "4": {
+          "pulse": true,
+          "float": true
+        },
+        "5": {
+          "pulse": true,
+          "float": true
+        },
+        "6": {
+          "pulse": true,
+          "float": true
+        },
+        "7": {
+          "pulse": true,
+          "float": true
+        },
+        "8": {
+          "pulse": true,
+          "float": true
+        },
+        "9": {
+          "pulse": true,
+          "float": true
+        },
+        "10": {
+          "pulse": true,
+          "float": true
+        }
+      },
+      "type": "plugin",
+      "tileImage": "numbers/numbers.jpeg",
+      "backgroundImage": "numbers/numbers.jpeg",
+      "primaryAudio": null,
+      "audios": [],
+      "images": [
+        "numbers/numbers.jpeg"
+      ],
+      "directAudio": true,
+      "action": "direct-audio",
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
+      "fallback": "duration",
+      "learningMode": null,
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "sequence": [],
+      "spotlight": null,
+      "displayMode": null,
+      "chunkMode": null,
+      "slices": [],
+      "slicesFile": "learn.master.slices.json",
+      "lockedDesign": true
+    },
+    "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.jpeg",
+        "path": "numbers/numbers.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
+        "path": "plugins/numbers.plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
+        "path": "learn.master.slices.json"
       }
     ]
   }
