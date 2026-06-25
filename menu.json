@@ -394,5 +394,89 @@
         "path": "plugins/names.plugin.json"
       }
     ]
+  },
+  {
+    "title": "Arabic Numbers",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers",
+    "plugin": {
+      "id": "numbers",
+      "title": "Arabic Numbers",
+      "type": "plugin",
+      "folder": "numbers",
+      "engine": "spotlight",
+      "supports": [
+        "listen"
+      ],
+      "theme": "numbers",
+      "tileImage": {
+        "type": "gradient",
+        "style": "colorful",
+        "colors": [
+          "#ff9a9e",
+          "#fad0c4",
+          "#fbc2eb",
+          "#a18cd1"
+        ],
+        "icon": "✨",
+        "label": "Arabic Numbers"
+      },
+      "backgroundImage": {
+        "type": "gradient",
+        "style": "soft",
+        "colors": [
+          "#fff1eb",
+          "#ace0f9",
+          "#fbc2eb"
+        ]
+      },
+      "primaryAudio": null,
+      "audios": [],
+      "images": [],
+      "action": "open-plugin",
+      "directAudio": false,
+      "playFromLanding": false,
+      "cardAnimation": "living-tile",
+      "backgroundEffect": "soft",
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "chunkMode": null,
+      "sequence": [],
+      "spotlight": {
+        "items": [
+          "١",
+          "٢",
+          "٣",
+          "٤",
+          "٥",
+          "٦",
+          "٧",
+          "٨",
+          "٩",
+          "١٠"
+        ],
+        "effect": "scale-glow-sparkle"
+      },
+      "displayMode": null,
+      "slices": [],
+      "lockedDesign": true
+    },
+    "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
+        "path": "plugins/numbers.plugin.json"
+      }
+    ]
   }
 ]
