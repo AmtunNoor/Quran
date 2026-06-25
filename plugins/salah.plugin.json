@@ -1,14 +1,10 @@
 {
   "id": "salah",
   "title": "Salah",
-  "type": "core",
+  "type": "core-salah",
   "priority": 2,
-
-  "mainUrl": "file:///data/user/0/com.noor.prism/files/salah/index.html",
-
-  "supports": [
-    "listen"
-  ],
-
-  "theme": "salah"
+  "engine": "external",
+  "mainUrl": "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
+  "theme": "salah",
+  "locked": true
 }
