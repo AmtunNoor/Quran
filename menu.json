@@ -478,5 +478,118 @@
         "path": "plugins/numbers.plugin.json"
       }
     ]
+  },
+  {
+    "title": "Salah Names",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names",
+    "plugin": {
+      "id": "salah-names",
+      "title": "Salah Names",
+      "type": "plugin",
+      "folder": "salah-names",
+      "engine": "story",
+      "supports": [
+        "listen"
+      ],
+      "theme": "salah-names",
+      "tileImage": {
+        "type": "gradient",
+        "style": "colorful",
+        "colors": [
+          "#ff9a9e",
+          "#fad0c4",
+          "#fbc2eb",
+          "#a18cd1"
+        ],
+        "icon": "✨",
+        "label": "Salah Names"
+      },
+      "backgroundImage": {
+        "type": "gradient",
+        "style": "soft",
+        "colors": [
+          "#fff1eb",
+          "#ace0f9",
+          "#fbc2eb"
+        ]
+      },
+      "primaryAudio": null,
+      "audios": [],
+      "images": [],
+      "action": "open-plugin",
+      "directAudio": false,
+      "playFromLanding": false,
+      "cardAnimation": "living-tile",
+      "backgroundEffect": "soft",
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "chunkMode": null,
+      "sequence": [
+        {
+          "name": "Fajr",
+          "arabic": "الفجر",
+          "effect": "dawn",
+          "rakah": [
+            "2 Sunnah",
+            "2 Fard"
+          ]
+        },
+        {
+          "name": "Dhuhr",
+          "arabic": "الظهر",
+          "effect": "bright-day",
+          "rakah": [
+            "4 Sunnah",
+            "4 Fard",
+            "2 Sunnah"
+          ]
+        },
+        {
+          "name": "Asr",
+          "arabic": "العصر",
+          "effect": "afternoon",
+          "rakah": [
+            "4 Fard"
+          ]
+        },
+        {
+          "name": "Maghrib",
+          "arabic": "المغرب",
+          "effect": "sunset",
+          "rakah": [
+            "3 Fard",
+            "2 Sunnah"
+          ]
+        },
+        {
+          "name": "Isha",
+          "arabic": "العشاء",
+          "effect": "night",
+          "rakah": [
+            "4 Fard",
+            "2 Sunnah",
+            "Witr"
+          ]
+        }
+      ],
+      "spotlight": null,
+      "displayMode": null,
+      "slices": [],
+      "lockedDesign": true
+    },
+    "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      }
+    ]
   }
 ]
