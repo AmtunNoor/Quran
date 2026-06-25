@@ -142,12 +142,16 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/104.mp3",
         "path": "listen/104.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
+        "path": "menu.json"
       }
     ]
   },
   {
     "title": "Salah",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/salah/index.html",
+    "mainUrl": "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
     "plugin": {
       "id": "salah",
       "title": "Salah",
@@ -199,6 +203,9 @@
       "playFromLanding": false,
       "cardAnimation": "living-tile",
       "backgroundEffect": "soft",
+      "effect": null,
+      "audioMode": "multiple-files",
+      "segmentDetection": null,
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -224,6 +231,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/dua.plugin.json",
         "path": "plugins/dua.plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
+        "path": "menu.json"
       }
     ]
   },
@@ -255,6 +266,9 @@
       "playFromLanding": true,
       "cardAnimation": "living-tile",
       "backgroundEffect": "soft",
+      "effect": null,
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -296,6 +310,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/months.plugin.json",
         "path": "plugins/months.plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
+        "path": "menu.json"
       }
     ]
   },
@@ -332,6 +350,9 @@
       "playFromLanding": false,
       "cardAnimation": "living-tile",
       "backgroundEffect": "soft",
+      "effect": null,
+      "audioMode": "multiple-files",
+      "segmentDetection": null,
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -393,6 +414,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/names.plugin.json",
         "path": "plugins/names.plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
+        "path": "menu.json"
       }
     ]
   },
@@ -421,6 +446,9 @@
       "playFromLanding": false,
       "cardAnimation": "living-tile",
       "backgroundEffect": "soft",
+      "effect": null,
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -464,6 +492,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
         "path": "plugins/numbers.plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
+        "path": "menu.json"
       }
     ]
   },
@@ -509,6 +541,9 @@
       "playFromLanding": false,
       "cardAnimation": "living-tile",
       "backgroundEffect": "soft",
+      "effect": null,
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -577,6 +612,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
+        "path": "menu.json"
       }
     ]
   }
