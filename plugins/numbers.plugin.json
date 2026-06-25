@@ -1,16 +1,52 @@
 {
   "id": "numbers",
   "title": "Arabic Numbers",
-  "type": "plugin",
-  "priority": 7,
   "folder": "numbers",
   "engine": "spotlight",
-  "supports": ["listen"],
-  "audioMode": "single-file-pauses",
-  "segmentDetection": "silence",
   "theme": "numbers",
-  "spotlight": {
-    "items": ["١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩", "١٠"],
-    "effect": "scale-glow-sparkle"
+  "playFromLanding": true,
+  "supports": ["listen", "repeat5", "hifz"],
+
+  "audio": {
+    "mode": "single-file-pauses",
+    "segmentDetection": "silence",
+    "fallback": "duration"
+  },
+
+  "effect": {
+    "type": "numberSpotlight",
+    "backgroundStatic": true,
+    "focusOneNumber": true,
+    "followAudio": true,
+    "activeScale": 1.25,
+    "glow": true,
+    "sparkles": true,
+    "float": true
+  },
+
+  "coordinates": {
+    "1":  { "x": 14.6, "y": 32.7 },
+    "2":  { "x": 32.2, "y": 32.2 },
+    "3":  { "x": 51.1, "y": 31.7 },
+    "4":  { "x": 69.3, "y": 30.8 },
+    "5":  { "x": 86.9, "y": 32.7 },
+    "6":  { "x": 14.3, "y": 65.9 },
+    "7":  { "x": 32.6, "y": 66.4 },
+    "8":  { "x": 51.4, "y": 66.4 },
+    "9":  { "x": 71.3, "y": 66.4 },
+    "10": { "x": 90.2, "y": 65.9 }
+  },
+
+  "numbers": {
+    "1":  { "pulse": true, "float": true },
+    "2":  { "pulse": true, "float": true },
+    "3":  { "pulse": true, "float": true },
+    "4":  { "pulse": true, "float": true },
+    "5":  { "pulse": true, "float": true },
+    "6":  { "pulse": true, "float": true },
+    "7":  { "pulse": true, "float": true },
+    "8":  { "pulse": true, "float": true },
+    "9":  { "pulse": true, "float": true },
+    "10": { "pulse": true, "float": true }
   }
 }
