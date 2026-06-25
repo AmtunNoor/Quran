@@ -601,6 +601,169 @@ animation-delay:var(--d);
 50%{transform:rotate(5deg) scale(1.08);opacity:.22;}
 }
 
+
+/* ================= V3.4 FIX: FULLSCREEN PLUGIN STAGES ================= */
+body.plugin-stage-mode .grid{
+  display:block;
+  width:100%;
+  max-width:none;
+  margin:0 auto;
+  flex:1;
+}
+
+body.plugin-stage-mode .stage,
+body.plugin-stage-mode .spotlight-wrap{
+  width:100%;
+  min-height:calc(100vh - 245px);
+  height:calc(100vh - 245px);
+  border-radius:28px;
+}
+
+body.tv-mode.plugin-stage-mode .stage,
+body.tv-mode.plugin-stage-mode .spotlight-wrap{
+  min-height:calc(100vh - 220px);
+  height:calc(100vh - 220px);
+}
+
+/* Salah Names: keep teaching panel narrow so mosque/time effects remain visible */
+.story-stage{
+  align-items:center!important;
+  justify-content:flex-end!important;
+}
+
+.story-stage .stage-content{
+  position:absolute;
+  right:18px;
+  top:18px;
+  bottom:18px;
+  width:min(30vw,310px);
+  min-width:210px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:rgba(15,23,42,.32);
+  border:1px solid rgba(255,255,255,.14);
+}
+
+.story-stage .stage-title{
+  font-size:clamp(1.6rem,3.2vw,3.4rem);
+}
+
+.story-stage .stage-sub{
+  font-size:clamp(1rem,1.8vw,1.5rem);
+}
+
+.story-stage .stage-badges{
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
+}
+
+.story-stage .rakah-badge{
+  font-size:clamp(.9rem,1.4vw,1.15rem);
+  padding:9px 12px;
+}
+
+.story-night{
+  background:linear-gradient(rgba(3,7,18,.78),rgba(2,6,23,.88))!important;
+}
+
+.story-sunset{
+  background:linear-gradient(rgba(249,115,22,.45),rgba(88,28,12,.42))!important;
+}
+
+.story-bright-day{
+  background:linear-gradient(rgba(250,204,21,.22),rgba(14,165,233,.10))!important;
+}
+
+.story-dawn{
+  background:linear-gradient(rgba(255,182,193,.30),rgba(59,130,246,.16))!important;
+}
+
+/* Numbers spotlight overlay: no text tile, only active number glow at coordinates */
+.number-focus-dot{
+  position:absolute;
+  width:clamp(54px,8vw,105px);
+  height:clamp(54px,8vw,105px);
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(1);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,213,74,.55),rgba(255,213,74,.18) 45%,rgba(255,213,74,0) 72%);
+  box-shadow:0 0 28px rgba(255,213,74,.75),0 0 55px rgba(255,255,255,.35);
+  pointer-events:none;
+  z-index:4;
+  animation:numberPulse 1.15s ease-in-out infinite;
+}
+
+.number-focus-dot::before,
+.number-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff7ad;
+  font-size:clamp(16px,2vw,30px);
+  text-shadow:0 0 12px white;
+  animation:numberSparkle 1.4s ease-in-out infinite;
+}
+
+.number-focus-dot::before{left:-10%;top:8%;}
+.number-focus-dot::after{right:-8%;bottom:6%;animation-delay:.45s;}
+
+@keyframes numberPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(.88);opacity:.65;}
+  50%{transform:translate(-50%,-50%) scale(1.22);opacity:1;}
+}
+
+@keyframes numberSparkle{
+  0%,100%{transform:scale(.65) rotate(0deg);opacity:.35;}
+  50%{transform:scale(1.2) rotate(15deg);opacity:1;}
+}
+
+/* External bridge */
+.external-bridge{
+  width:100%;
+  height:calc(100vh - 245px);
+  min-height:520px;
+  border-radius:28px;
+  overflow:hidden;
+  background:rgba(15,23,42,.65);
+  box-shadow:0 0 35px rgba(255,255,255,.18);
+}
+
+.external-bridge iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  background:white;
+}
+
+@media(max-width:768px){
+  body.plugin-stage-mode .stage,
+  body.plugin-stage-mode .spotlight-wrap,
+  .external-bridge{
+    min-height:calc(100vh - 230px);
+    height:calc(100vh - 230px);
+    border-radius:22px;
+  }
+
+  .story-stage .stage-content{
+    left:12px;
+    right:12px;
+    top:auto;
+    bottom:12px;
+    width:auto;
+    min-width:0;
+    max-height:38%;
+  }
+
+  .story-stage .stage-badges{
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+}
+
 </style>
 </head>
 
@@ -664,6 +827,34 @@ const surahs = [
 {id:"A15",name:"الضحى",eng:"Ad Duha",emoji:"☀️",file:"A19.mp3",color:"linear-gradient(135deg,#facc15,#fb7185)",surahNo:"93"},
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
+
+
+const SURAH_META = {
+"2":   {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"},
+"55":  {name:"الرحمن", eng:"Ar Rahman", emoji:"🌿", color:"linear-gradient(135deg,#22c55e,#14b8a6)"},
+"93":  {name:"الضحى", eng:"Ad Duha", emoji:"☀️", color:"linear-gradient(135deg,#facc15,#fb7185)"},
+"94":  {name:"الشرح", eng:"Ash Sharh", emoji:"🌸", color:"linear-gradient(135deg,#f9a8d4,#a78bfa)"},
+"95":  {name:"التين", eng:"At Teen", emoji:"🫒", color:"linear-gradient(135deg,#84cc16,#22c55e)"},
+"96":  {name:"العلق", eng:"Al Alaq", emoji:"📜", color:"linear-gradient(135deg,#f97316,#facc15)"},
+"97":  {name:"القدر", eng:"Al Qadr", emoji:"🌌", color:"linear-gradient(135deg,#312e81,#8b5cf6)"},
+"98":  {name:"البينة", eng:"Al Bayyinah", emoji:"📖", color:"linear-gradient(135deg,#0ea5e9,#6366f1)"},
+"99":  {name:"الزلزلة", eng:"Az Zalzalah", emoji:"🌍", color:"linear-gradient(135deg,#92400e,#f97316)"},
+"100": {name:"العاديات", eng:"Al Adiyat", emoji:"🐎", color:"linear-gradient(135deg,#ef4444,#f97316)"},
+"101": {name:"القارعة", eng:"Al Qariah", emoji:"⚡", color:"linear-gradient(135deg,#facc15,#ef4444)"},
+"102": {name:"التكاثر", eng:"At Takathur", emoji:"🏆", color:"linear-gradient(135deg,#f59e0b,#f97316)"},
+"103": {name:"العصر", eng:"Al Asr", emoji:"⏳", color:"linear-gradient(135deg,#38bdf8,#6366f1)"},
+"104": {name:"الهمزة", eng:"Al Humazah", emoji:"🛡️", color:"linear-gradient(135deg,#8b5cf6,#ec4899)"},
+"105": {name:"الفيل", eng:"Al Feel", emoji:"🐘", color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
+"106": {name:"قريش", eng:"Quraish", emoji:"🕋", color:"linear-gradient(135deg,#0ea5e9,#2563eb)"},
+"107": {name:"الماعون", eng:"Al Ma'un", emoji:"🤲", color:"linear-gradient(135deg,#14b8a6,#22c55e)"},
+"108": {name:"الكوثر", eng:"Al Kawther", emoji:"💧", color:"linear-gradient(135deg,#f97316,#fb7185)"},
+"109": {name:"الكافرون", eng:"Al Kafiroon", emoji:"☀️", color:"linear-gradient(135deg,#84cc16,#22c55e)"},
+"110": {name:"النصر", eng:"An Nasr", emoji:"🏆", color:"linear-gradient(135deg,#38bdf8,#818cf8)"},
+"111": {name:"المسد", eng:"Al Masad", emoji:"🔥", color:"linear-gradient(135deg,#ef4444,#f97316)"},
+"112": {name:"الإخلاص", eng:"Al Ikhlas", emoji:"💖", color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
+"113": {name:"الفلق", eng:"Al Falaq", emoji:"🌙", color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
+"114": {name:"الناس", eng:"An Naas", emoji:"⭐", color:"linear-gradient(135deg,#10b981,#14b8a6)"}
+};
 
 const FALLBACK_MENU = [
 {title:"Quran",mainUrl:"file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",plugin:{id:"quran",title:"Quran",theme:"quran",engine:"learning"}},
@@ -817,6 +1008,7 @@ function buildLanding(){
 currentView = "landing";
 currentPlugin = null;
 document.body.classList.add("landing-mode");
+document.body.classList.remove("plugin-stage-mode");
 clearGrid();
 stopAll(false);
 setHeader("🌙 Mariam & Hamza's 🌙","✨Choose Your Prism Adventure!✨");
@@ -859,8 +1051,9 @@ buildQuran();
 return;
 }
 
-if(id === "salah" || entry.title === "Salah"){
-location.href = entry.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html";
+if(id === "salah" || plugin.engine === "external" || entry.title === "Salah"){
+history.pushState(null,"",`?plugin=${encodeURIComponent(id || "salah")}`);
+buildExternalBridge(entry);
 return;
 }
 
@@ -884,11 +1077,39 @@ history.pushState(null,"","index.html");
 buildLanding();
 }
 
+
+/* ================= EXTERNAL URL BRIDGE ================= */
+function buildExternalBridge(entry){
+currentView = "external";
+currentPlugin = entry.plugin || {id:"salah",title:"Salah"};
+document.body.classList.remove("landing-mode");
+document.body.classList.add("plugin-stage-mode");
+clearGrid();
+stopAll(false);
+setHeader("🕌 Salah"," ");
+setTopbar(true,true);
+
+const url = (entry.plugin && entry.plugin.externalUrl) || entry.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html";
+
+const wrap = document.createElement("div");
+wrap.className = "external-bridge remote-focus";
+wrap.innerHTML = `<iframe src="${url}" allow="autoplay; fullscreen"></iframe>`;
+grid.appendChild(wrap);
+
+const item = {id:"salah-bridge",card:wrap,index:0,type:"external"};
+items.push(item);
+map[item.id]=item;
+TV.focused=0;
+updateFocus();
+}
+
+
 /* ================= QURAN VIEW ================= */
 function buildQuran(){
 currentView = "quran";
 currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
 document.body.classList.remove("landing-mode");
+document.body.classList.remove("plugin-stage-mode");
 setHeader("🌙 Mariam & Hamza's 🌙","✨Quran Adventures with Mom!✨");
 setTopbar(true,true);
 renderQuranItems();
@@ -899,12 +1120,39 @@ return String(path).split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"");
 }
 
 function surahNumberFromPath(path){
-return normalizeFileName(path).replace(/[^\d]/g,"");
+const raw = normalizeFileName(path);
+const first = raw.split(/[_-]/)[0];
+const m = first.match(/\d+/);
+if(!m) return "";
+return String(Number(m[0]));
 }
 
 function titleFromPath(path){
+const no = surahNumberFromPath(path);
+const meta = SURAH_META[no];
+if(meta) return meta.eng;
 const raw = normalizeFileName(path);
 return raw.replace(/[-_]/g," ").replace(/\b\w/g,m=>m.toUpperCase());
+}
+
+function metaForSurahNumber(no){
+return SURAH_META[String(Number(no))] || null;
+}
+
+function metaForPath(path){
+return metaForSurahNumber(surahNumberFromPath(path));
+}
+
+function makeSurahDisplayFromPath(path, fallbackIndex){
+const no = surahNumberFromPath(path);
+const meta = metaForSurahNumber(no);
+return {
+  name: meta?.name || `سورة ${no || fallbackIndex + 1}`,
+  eng: meta?.eng || `Surah ${no || titleFromPath(path)}`,
+  emoji: meta?.emoji || "📖",
+  color: meta?.color || DEFAULT_PALETTE[fallbackIndex % DEFAULT_PALETTE.length],
+  surahNo: no
+};
 }
 
 function getListenFiles(){
@@ -944,35 +1192,38 @@ hasLearn:!!learn
 const usedNums = new Set(base.map(s=>s.surahNo).filter(Boolean));
 const extraListen = getListenFiles()
 .filter(p => !usedNums.has(surahNumberFromPath(p)))
-.map((p,idx)=>({
-id:`listen-${idx}`,
-name:titleFromPath(p),
-eng:titleFromPath(p),
-emoji:"📖",
+.map((p,idx)=>{
+const display = makeSurahDisplayFromPath(p, idx);
+const learnMatch = getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p));
+return {
+id:`listen-${display.surahNo || idx}`,
+...display,
 file:p,
 listenFile:p,
-color:DEFAULT_PALETTE[idx % DEFAULT_PALETTE.length],
-surahNo:surahNumberFromPath(p),
-learnFile:getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p)),
-hasLearn:!!getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p))
-}));
+learnFile:learnMatch,
+slices:learnMatch ? slicesData[learnMatch] : null,
+hasLearn:!!learnMatch
+};
+});
 
 return [...base,...extraListen];
 }
 
 function buildQuranLearnSource(){
 const learns = getLearnFiles();
-return learns.map((p,idx)=>({
-id:surahNumberFromPath(p) || `learn-${idx}`,
-name:`سورة ${surahNumberFromPath(p) || idx+1}`,
-eng:`Surah ${surahNumberFromPath(p) || titleFromPath(p)}`,
-emoji:"🎓",
+return learns.map((p,idx)=>{
+const display = makeSurahDisplayFromPath(p, idx);
+return {
+id:display.surahNo || `learn-${idx}`,
+...display,
+emoji:display.emoji || "🎓",
 file:p,
 learnFile:p,
-color:"linear-gradient(135deg,#facc15,#fb7185)",
 slices:slicesData[p] || null,
-learningMode:slicesData[p] ? "slices" : "durationChunks"
-}));
+learningMode:slicesData[p] ? "slices" : "durationChunks",
+hasLearn:true
+};
+});
 }
 
 function renderQuranItems(){
@@ -1005,6 +1256,7 @@ function buildPlugin(plugin, autoplay){
 currentView = "plugin";
 currentPlugin = plugin;
 document.body.classList.remove("landing-mode");
+document.body.classList.add("plugin-stage-mode");
 const title = plugin.title || plugin.id || "Prism";
 setHeader(`✨ ${title} ✨`, subtitleForEngine(plugin));
 setTopbar(true,true);
@@ -1134,7 +1386,7 @@ stage.className = "stage";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
 stage.style.background = bg ? `url('${bg}')` : gradientFor(theme);
 
-const hidePanel = plugin.effect && plugin.effect.type === "aquarium";
+const hidePanel = true; // direct-audio modules should use full-screen visual stage, not inner tile panel.
 
 stage.innerHTML = `
 <div class="story-overlay"></div>
@@ -1220,7 +1472,12 @@ const wrap = document.createElement("div");
 wrap.className = "spotlight-wrap";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
 wrap.style.background = bg ? `url('${bg}')` : gradientFor(theme);
-wrap.innerHTML = `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div><audio src="${audioFile}" preload="auto"></audio>`;
+
+const isNumberSpotlight = plugin.effect && plugin.effect.type === "numberSpotlight";
+wrap.innerHTML = `
+${isNumberSpotlight ? `<div class="number-focus-dot" id="numberFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
+<audio src="${audioFile}" preload="auto"></audio>
+`;
 grid.appendChild(wrap);
 
 const audio = wrap.querySelector("audio");
@@ -1229,7 +1486,63 @@ items.push(item);
 map[plugin.id] = item;
 wrap.onclick = ()=>play(plugin.id);
 updateFocus();
+
+if(isNumberSpotlight){
+positionNumberFocus(plugin, 0);
+audio.addEventListener("play",()=>startNumberSpotlight(plugin,audio));
+audio.addEventListener("pause",()=>stopNumberSpotlight());
+audio.addEventListener("ended",()=>stopNumberSpotlight());
+}
+
 if(autoplay) setTimeout(()=>play(plugin.id),400);
+}
+
+let numberSpotlightTimer = null;
+
+function stopNumberSpotlight(){
+if(numberSpotlightTimer){
+clearInterval(numberSpotlightTimer);
+numberSpotlightTimer = null;
+}
+}
+
+function orderedNumberKeys(plugin){
+const coords = plugin.coordinates || {};
+return Object.keys(coords).sort((a,b)=>Number(a)-Number(b));
+}
+
+function positionNumberFocus(plugin, index){
+const dot = document.getElementById("numberFocusDot");
+if(!dot) return;
+const keys = orderedNumberKeys(plugin);
+if(!keys.length) return;
+const key = keys[index % keys.length];
+const p = plugin.coordinates[key];
+if(!p) return;
+dot.style.left = p.x + "%";
+dot.style.top = p.y + "%";
+dot.dataset.number = key;
+}
+
+function startNumberSpotlight(plugin,audio){
+stopNumberSpotlight();
+const keys = orderedNumberKeys(plugin);
+if(!keys.length) return;
+
+let i = 0;
+positionNumberFocus(plugin,i);
+
+const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
+const stepMs = duration ? Math.max(650,(duration * 1000) / keys.length) : 1800;
+
+numberSpotlightTimer = setInterval(()=>{
+if(!audio || audio.paused || audio.ended){
+stopNumberSpotlight();
+return;
+}
+i = Math.min(keys.length-1, Math.floor((audio.currentTime / Math.max(audio.duration || 1,1)) * keys.length));
+positionNumberFocus(plugin,i);
+},250);
 }
 
 /* ================= STORY ENGINE ================= */
@@ -1241,7 +1554,7 @@ const audioFile = plugin.primaryAudio || mp3s[0] || "";
 const seq = Array.isArray(plugin.sequence) && plugin.sequence.length ? plugin.sequence : defaultSalahNamesSequence();
 
 const stage = document.createElement("div");
-stage.className = "stage";
+stage.className = "stage story-stage";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
 stage.style.background = bg ? `url('${bg}')` : gradientFor(theme);
 stage.innerHTML = `
@@ -1714,7 +2027,7 @@ if(pluginId && pluginId !== "landing"){
 const foundEntry = menuData.find(m => (m.plugin||{}).id === pluginId);
 const found = foundEntry ? foundEntry.plugin : null;
 if(pluginId === "quran") buildQuran();
-else if(pluginId === "salah" && foundEntry && foundEntry.mainUrl) location.href = foundEntry.mainUrl;
+else if(pluginId === "salah" && foundEntry) buildExternalBridge(foundEntry);
 else if(found) buildPlugin(found, p.get("autoplay") === "1");
 else buildLanding();
 return;
