@@ -252,8 +252,8 @@
       "action": "direct-audio",
       "directAudio": true,
       "playFromLanding": true,
-      "cardAnimation": "carousel",
-      "backgroundEffect": "stars",
+      "cardAnimation": "living-tile",
+      "backgroundEffect": "soft",
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
