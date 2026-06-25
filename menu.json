@@ -144,10 +144,6 @@
         "path": "listen/104.mp3"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
         "path": "menu.json"
       }
@@ -237,10 +233,6 @@
         "path": "plugins/dua.plugin.json"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
         "path": "menu.json"
       }
@@ -259,31 +251,24 @@
         "listen"
       ],
       "theme": "months",
-      "tileImage": "months/months.jpeg",
-      "backgroundImage": "months/months.jpeg",
+      "tileImage": "months/months_background.jpeg",
+      "backgroundImage": "months/months_background.jpeg",
       "primaryAudio": "months/months.mp3",
       "audios": [
         "months/months.mp3"
       ],
       "images": [
-        "months/months.jpeg"
+        "months/months_background.jpeg",
+        "months/months_icon.jpeg"
       ],
       "action": "direct-audio",
       "directAudio": true,
       "playFromLanding": true,
       "cardAnimation": "living-tile",
       "backgroundEffect": "soft",
-      "effect": {
-        "type": "aquarium",
-        "waterRays": true,
-        "bubbles": true,
-        "fishZones": true,
-        "mouthMove": true,
-        "tailGlow": true,
-        "bubbleCount": 16
-      },
+      "effect": null,
       "audioMode": "single-file-pauses",
-      "segmentDetection": "normal",
+      "segmentDetection": "silence",
       "tilePalette": [
         "linear-gradient(135deg,#f97316,#facc15)",
         "linear-gradient(135deg,#22c55e,#14b8a6)",
@@ -307,16 +292,16 @@
         "path": "index.html"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/a",
-        "path": "months/a"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/index.html",
         "path": "months/index.html"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.jpeg",
-        "path": "months/months.jpeg"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months_background.jpeg",
+        "path": "months/months_background.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months_icon.jpeg",
+        "path": "months/months_icon.jpeg"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/months/months.mp3",
@@ -325,10 +310,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/months.plugin.json",
         "path": "plugins/months.plugin.json"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
@@ -347,8 +328,7 @@
       "engine": "spotlight",
       "supports": [
         "listen",
-        "5x",
-        "hifz"
+        "5x"
       ],
       "theme": "names",
       "tileImage": "names/names.jpeg",
@@ -436,10 +416,6 @@
         "path": "plugins/names.plugin.json"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
-      },
-      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
         "path": "menu.json"
       }
@@ -458,30 +434,13 @@
         "listen"
       ],
       "theme": "numbers",
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Arabic Numbers"
-      },
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
+      "tileImage": "numbers/numbers.jpeg",
+      "backgroundImage": "numbers/numbers.jpeg",
       "primaryAudio": null,
       "audios": [],
-      "images": [],
+      "images": [
+        "numbers/numbers.jpeg"
+      ],
       "action": "open-plugin",
       "directAudio": false,
       "playFromLanding": false,
@@ -527,12 +486,12 @@
         "path": "index.html"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
-        "path": "plugins/numbers.plugin.json"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.jpeg",
+        "path": "numbers/numbers.jpeg"
       },
       {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
+        "path": "plugins/numbers.plugin.json"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
@@ -653,10 +612,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/slices.json",
-        "path": "slices.json"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
