@@ -3,18 +3,9 @@
   "title": "Dua",
   "type": "plugin",
   "priority": 3,
-
   "folder": "dua",
-
-  "tileImage": "dua/tile.png",
-  "backgroundImage": "dua/background.png",
-
-  "supports": [
-    "listen"
-  ],
-
-  "theme": "dua",
-
-  "cardAnimation": "float",
-  "backgroundEffect": "particles"
+  "engine": "gallery",
+  "supports": ["listen"],
+  "audioMode": "multiple-files",
+  "theme": "dua"
 }
