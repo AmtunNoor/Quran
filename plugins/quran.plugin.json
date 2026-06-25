@@ -1,24 +1,11 @@
 {
   "id": "quran",
   "title": "Quran",
-  "type": "core",
+  "type": "core-quran",
   "priority": 1,
-
-  "mainUrl": "file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",
-
-  "supports": [
-    "listen",
-    "5x",
-    "hifz"
-  ],
-
-  "audioRoot": "/",
-  "learnRoot": "learn/",
-
+  "engine": "learning",
+  "supports": ["listen", "5x", "hifz"],
+  "audioMode": "single-file-or-sliced",
   "useSlices": true,
-
-  "keepExistingQrIds": true,
-  "keepExistingAudioPaths": true,
-
-  "theme": "quran"
+  "locked": true
 }
