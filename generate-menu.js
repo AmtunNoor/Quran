@@ -8,7 +8,7 @@
  * - Preserve existing Quran root audio + QR behavior.
  * - Keep Salah opening external SalahSteps URL.
  * - Support existing repo naming AND future standard names.
-
+ 
  */
 
 const fs = require("fs");
@@ -390,18 +390,27 @@ function buildQuran(plugin, slicesInfo) {
 }
 
 function buildSalah(plugin) {
+  const externalUrl = plugin.externalUrl || plugin.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html";
+
   return {
     title: plugin.title || "Salah",
-    mainUrl: plugin.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
+    // Local bridge gives Home button and keeps Prism navigation instead of trapping user on external page.
+    mainUrl: `${LOCAL_BASE}/index.html?plugin=salah`,
     plugin: {
       id: "salah",
       title: plugin.title || "Salah",
       type: "core",
       engine: "external",
       theme: "salah",
+      externalUrl,
       locked: true
     },
-    syncFiles: []
+    syncFiles: [
+      {
+        url: repoUrl("index.html"),
+        path: "index.html"
+      }
+    ]
   };
 }
 
