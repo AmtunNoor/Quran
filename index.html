@@ -8,11 +8,17 @@
 <meta name="theme-color" content="#0f172a"/>
 
 <style>
+@font-face{
+  font-family:"Baloo Bhaijaan 2";
+  src:url("BalooBhaijaan2-ExtraBold.ttf");
+  font-display:swap;
+}
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:"Baloo Bhaijaan 2","Comic Sans MS","Trebuchet MS",Arial,sans-serif;
 -webkit-touch-callout:none;
 -webkit-user-select:none;
 user-select:none;
@@ -46,7 +52,6 @@ body.tv-mode .subtitle{
 margin-bottom:20px!important;
 }
 
-/* ================= STARS & BACKGROUND ANIMATIONS ================= */
 .stars{
 position:fixed;
 inset:0;
@@ -90,7 +95,6 @@ animation:sparkleFloat 12s linear infinite;
 100%{transform:translateY(-140px);opacity:0;}
 }
 
-/* ================= TITLE HEADER ================= */
 h1{
 text-align:center;
 font-size:2.5rem;
@@ -121,7 +125,6 @@ animation:headerFloat 4s ease-in-out infinite;
 animation-delay:.5s;
 }
 
-/* ================= CONTROL TOPBAR ================= */
 .topbar{
 display:flex;
 justify-content:center;
@@ -150,7 +153,6 @@ transform:scale(1.05);
 
 #btnBack{display:none;}
 
-/* ================= GRID ENGINE ================= */
 .grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
@@ -172,7 +174,6 @@ padding-top:5px;
 margin-bottom:15px;
 }
 
-/* Landing Living Tiles: carousel feel without hiding cards */
 body.landing-mode .grid{
 perspective:1200px;
 align-items:stretch;
@@ -193,7 +194,7 @@ body.landing-mode .card:nth-child(3n){animation-delay:.7s;}
 
 body.landing-mode .remote-focus{
 transform:translateY(-10px) scale(1.08) rotateX(4deg)!important;
-box-shadow:0 0 38px rgba(255,255,255,.95), 0 18px 35px rgba(0,0,0,.35);
+box-shadow:0 0 38px rgba(255,255,255,.95),0 18px 35px rgba(0,0,0,.35);
 }
 
 body.landing-mode .remote-focus:after{
@@ -213,7 +214,6 @@ pointer-events:none;
 100%{opacity:.25;transform:translateX(8px);}
 }
 
-/* ================= CARD DESIGN ================= */
 .card{
 position:relative;
 overflow:hidden;
@@ -263,9 +263,25 @@ height:100%;
 width:100%;
 }
 
-.emoji{font-size:2.2rem;margin-bottom:8px;}
-.arabic{font-size:1.8rem;font-weight:bold;margin-bottom:4px;}
+.emoji{font-size:2.4rem;margin-bottom:8px;}
+.arabic{font-size:1.9rem;font-weight:bold;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,.25);}
 .english{font-size:1.05rem;opacity:.95;}
+
+body.landing-mode .card{
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+body.landing-mode .card-info-box{
+height:auto;
+justify-content:center;
+align-items:center;
+gap:12px;
+}
+
+body.landing-mode .emoji{font-size:3.2rem;}
+body.landing-mode .english{display:none;}
 
 .badge{
 position:absolute;
@@ -296,6 +312,8 @@ z-index:5;
 width:100%;
 }
 
+body.landing-mode .play-btn{display:none;}
+
 .active-tile .play-btn{
 background:linear-gradient(90deg,#facc15,#fde68a)!important;
 color:#020617!important;
@@ -314,7 +332,6 @@ box-shadow:0 0 30px rgba(255,255,255,.9);
 z-index:10;
 }
 
-/* ================= ENGINE STAGES ================= */
 .stage{
 position:relative;
 width:100%;
@@ -420,7 +437,22 @@ animation:spotlightPop 1.2s ease;
 100%{transform:scale(1);opacity:1;}
 }
 
-/* ================= OVERLAY ================= */
+.bubble{
+position:absolute;
+width:44px;
+height:44px;
+border-radius:50%;
+background:rgba(255,255,255,.22);
+box-shadow:inset 0 0 12px rgba(255,255,255,.35),0 0 18px rgba(255,255,255,.2);
+animation:bubbleFloat 8s ease-in-out infinite;
+pointer-events:none;
+}
+
+@keyframes bubbleFloat{
+0%,100%{transform:translateY(0) scale(.85);opacity:.45;}
+50%{transform:translateY(-60px) scale(1.15);opacity:.85;}
+}
+
 #overlay{
 position:fixed;
 inset:0;
@@ -498,6 +530,77 @@ body>*{position:relative;z-index:1;}
 .stage-badges{flex-direction:column;align-items:center;}
 .rakah-badge{width:100%;max-width:260px;}
 }
+
+/* ================= PLUGIN EFFECT: AQUARIUM ================= */
+.aquarium-layer{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:1;
+overflow:hidden;
+}
+
+.aquarium-water-rays{
+position:absolute;
+inset:0;
+pointer-events:none;
+background:linear-gradient(
+  110deg,
+  transparent 0%,
+  rgba(255,255,255,0.10) 35%,
+  transparent 60%
+);
+animation:waterRayMove 9s ease-in-out infinite;
+mix-blend-mode:screen;
+}
+
+@keyframes waterRayMove{
+0%,100%{transform:translateX(-8%);opacity:.35;}
+50%{transform:translateX(8%);opacity:.55;}
+}
+
+.fish-zone{
+position:absolute;
+pointer-events:none;
+}
+
+.fish-zone::before{
+content:"";
+position:absolute;
+left:var(--mouthLeft);
+top:var(--mouthTop);
+width:4%;
+height:5%;
+border-radius:50%;
+background:rgba(60,25,15,.25);
+animation:mouthSing 3.8s ease-in-out infinite;
+animation-delay:var(--d);
+}
+
+.fish-zone::after{
+content:"";
+position:absolute;
+left:var(--tailLeft);
+top:var(--tailTop);
+width:18%;
+height:35%;
+border-radius:50%;
+background:rgba(255,255,255,.16);
+filter:blur(6px);
+animation:tailWag 3.2s ease-in-out infinite;
+animation-delay:var(--d);
+}
+
+@keyframes mouthSing{
+0%,70%,100%{transform:scaleY(.35);opacity:.15;}
+82%{transform:scaleY(1.25);opacity:.38;}
+}
+
+@keyframes tailWag{
+0%,100%{transform:rotate(-4deg) scale(.9);opacity:.08;}
+50%{transform:rotate(5deg) scale(1.08);opacity:.22;}
+}
+
 </style>
 </head>
 
@@ -532,27 +635,33 @@ body>*{position:relative;z-index:1;}
 
 <script>
 /* =========================================================
-   PRISM V3.4 LOCKABLE INDEX ENGINE
-   - Quran/Salah protected
-   - Plugin engines reusable: directAudio, spotlight, story, gallery
+   PRISM V3.4 CORRECTED INDEX ENGINE
+   Fixes:
+   - Quran listen/learn folders merge
+   - Learn badge on Quran listen tiles
+   - Quran 5x/Hifz from slices.json
+   - Allah Names 5x/Hifz chunk fallback by duration
+   - Landing tiles uncluttered
+   - Salah external URL
+   - Months full-screen direct audio, no inner tile
    ========================================================= */
 
 const surahs = [
-{id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)"},
-{id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
-{id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
-{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)"},
-{id:"A5",name:"الفيل",eng:"Al Feel",emoji:"🐘",file:"A9.mp3",color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
-{id:"A6",name:"قريش",eng:"Quraish",emoji:"🕋",file:"A10.mp3",color:"linear-gradient(135deg,#0ea5e9,#2563eb)"},
-{id:"A7",name:"الماعون",eng:"Al Ma'un",emoji:"🤲",file:"A11.mp3",color:"linear-gradient(135deg,#14b8a6,#22c55e)"},
-{id:"A8",name:"الكوثر",eng:"Al Kawther",emoji:"💧",file:"A12.mp3",color:"linear-gradient(135deg,#f97316,#fb7185)"},
-{id:"A9",name:"الكافرون",eng:"Al Kafiroon",emoji:"☀️",file:"A13.mp3",color:"linear-gradient(135deg,#84cc16,#22c55e)"},
-{id:"A10",name:"النصر",eng:"An Nasr",emoji:"🏆",file:"A14.mp3",color:"linear-gradient(135deg,#38bdf8,#818cf8)"},
-{id:"A11",name:"المسد",eng:"Al Masad",emoji:"🔥",file:"A15.mp3",color:"linear-gradient(135deg,#ef4444,#f97316)"},
+{id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)",surahNo:"1"},
+{id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)",surahNo:"112"},
+{id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)",surahNo:"113"},
+{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)",surahNo:"114"},
+{id:"A5",name:"الفيل",eng:"Al Feel",emoji:"🐘",file:"A9.mp3",color:"linear-gradient(135deg,#8b5cf6,#6366f1)",surahNo:"105"},
+{id:"A6",name:"قريش",eng:"Quraish",emoji:"🕋",file:"A10.mp3",color:"linear-gradient(135deg,#0ea5e9,#2563eb)",surahNo:"106"},
+{id:"A7",name:"الماعون",eng:"Al Ma'un",emoji:"🤲",file:"A11.mp3",color:"linear-gradient(135deg,#14b8a6,#22c55e)",surahNo:"107"},
+{id:"A8",name:"الكوثر",eng:"Al Kawther",emoji:"💧",file:"A12.mp3",color:"linear-gradient(135deg,#f97316,#fb7185)",surahNo:"108"},
+{id:"A9",name:"الكافرون",eng:"Al Kafiroon",emoji:"☀️",file:"A13.mp3",color:"linear-gradient(135deg,#84cc16,#22c55e)",surahNo:"109"},
+{id:"A10",name:"النصر",eng:"An Nasr",emoji:"🏆",file:"A14.mp3",color:"linear-gradient(135deg,#38bdf8,#818cf8)",surahNo:"110"},
+{id:"A11",name:"المسد",eng:"Al Masad",emoji:"🔥",file:"A15.mp3",color:"linear-gradient(135deg,#ef4444,#f97316)",surahNo:"111"},
 {id:"A12",name:"تكبير",eng:"Takbir",emoji:"🕌",file:"A16.mp3",color:"linear-gradient(135deg,#6366f1,#8b5cf6)"},
 {id:"A13",name:"الأذان",eng:"Azan",emoji:"📢",file:"A17.mp3",color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"},
 {id:"A14",name:"الكلمة الثانية",eng:"Second Kalima",emoji:"🌹",file:"A18.mp3",color:"linear-gradient(135deg,#14b8a6,#0f766e)"},
-{id:"A15",name:"الضحى",eng:"Ad Duha",emoji:"☀️",file:"A19.mp3",color:"linear-gradient(135deg,#facc15,#fb7185)"},
+{id:"A15",name:"الضحى",eng:"Ad Duha",emoji:"☀️",file:"A19.mp3",color:"linear-gradient(135deg,#facc15,#fb7185)",surahNo:"93"},
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
@@ -560,8 +669,8 @@ const FALLBACK_MENU = [
 {title:"Quran",mainUrl:"file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",plugin:{id:"quran",title:"Quran",theme:"quran",engine:"learning"}},
 {title:"Salah",mainUrl:"https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",plugin:{id:"salah",title:"Salah",theme:"salah",engine:"external"}},
 {title:"Dua",mainUrl:"index.html?plugin=dua",plugin:{id:"dua",title:"Dua",folder:"dua",theme:"dua",engine:"gallery",supports:["listen"]}},
-{title:"Islamic Months",mainUrl:"index.html?plugin=months&autoplay=1",plugin:{id:"months",title:"Islamic Months",folder:"months",theme:"months",engine:"directAudio",playFromLanding:true,supports:["listen"]}},
-{title:"Allah Names",mainUrl:"index.html?plugin=names",plugin:{id:"names",title:"Allah Names",folder:"names",theme:"names",engine:"spotlight",supports:["listen","repeat5"],chunkMode:{enabled:true,namesPerChunk:4,repeatCount:5}}}
+{title:"Islamic Months",mainUrl:"index.html?plugin=months&autoplay=1",plugin:{id:"months",title:"Islamic Months",folder:"months",theme:"months",engine:"directAudio",playFromLanding:true,supports:["listen"],effect:{type:"aquarium",waterRays:true,bubbles:true,fishZones:true,mouthMove:true,tailGlow:true}}},
+{title:"Allah Names",mainUrl:"index.html?plugin=names",plugin:{id:"names",title:"Allah Names",folder:"names",theme:"names",engine:"spotlight",supports:["listen","repeat5","hifz"],chunkMode:{enabled:true,namesPerChunk:4,repeatCount:5}}}
 ];
 
 const THEME = {
@@ -571,7 +680,6 @@ dua:["#f472b6","#8b5cf6","🤲"],
 months:["#38bdf8","#6366f1","🗓"],
 names:["#facc15","#fb7185","ﷲ"],
 numbers:["#f97316","#22c55e","🔢"],
-"allah-names":["#facc15","#fb7185","ﷲ"],
 "salah-names":["#fb923c","#1d4ed8","🌙"],
 angels:["#e0f2fe","#a78bfa","🕊"],
 default:["#a78bfa","#22d3ee","✨"]
@@ -629,12 +737,26 @@ speechSynthesis.speak(u);
 }catch(e){}
 }
 
-async function fetchJson(url,fallback){
-try{
-const res = await fetch(url,{cache:"no-store"});
-if(!res.ok) throw new Error("not found");
-return await res.json();
-}catch(e){return fallback;}
+async async function fetchJson(url,fallback){
+const candidates = [url];
+
+// When this same index.html is copied to quran/index.html inside Prism,
+// relative "menu.json" would point to quran/menu.json. Try parent folder too.
+if(!url.startsWith("../")) candidates.push("../" + url);
+
+// GitHub Pages root fallback for browser testing.
+if(location.protocol.startsWith("http") && !url.startsWith("/")){
+  candidates.push("/Quran/" + url);
+}
+
+for(const candidate of candidates){
+  try{
+    const res = await fetch(candidate,{cache:"no-store"});
+    if(!res.ok) throw new Error("not found");
+    return await res.json();
+  }catch(e){}
+}
+return fallback;
 }
 
 function gradientFor(theme){
@@ -646,14 +768,9 @@ function iconFor(theme){
 return (THEME[theme] || THEME.default)[2];
 }
 
-function assetUrl(path){
-if(!path || typeof path !== "string") return "";
-return path;
-}
-
 function applyImageOrGradient(card, image, theme){
 if(typeof image === "string" && image.trim()){
-card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${assetUrl(image)}')`;
+card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${image}')`;
 card.style.backgroundColor = "transparent";
 } else if(image && image.type === "gradient" && Array.isArray(image.colors)){
 card.style.background = `linear-gradient(135deg,${image.colors.join(",")})`;
@@ -685,6 +802,19 @@ sequenceCancelToken++;
 if(storyTimer){ clearTimeout(storyTimer); storyTimer = null; }
 }
 
+function pluginEntry(pluginId){
+return menuData.find(m => (m.plugin||{}).id === pluginId) || {};
+}
+
+function quranSyncFiles(){
+const q = menuData.find(m => (m.plugin||{}).id === "quran" || m.title === "Quran");
+return (q && q.syncFiles) ? q.syncFiles : [];
+}
+
+function pluginSyncFiles(plugin){
+return (pluginEntry(plugin.id).syncFiles || []);
+}
+
 /* ================= LANDING PAGE ================= */
 function buildLanding(){
 currentView = "landing";
@@ -704,15 +834,13 @@ const theme = plugin.theme || id || "default";
 const card = document.createElement("div");
 card.className = "card";
 applyImageOrGradient(card, plugin.tileImage, theme);
-
-const buttonText = plugin.playFromLanding || plugin.engine === "directAudio" ? "▶ Play" : "▶ Open";
 card.innerHTML = `
 <div class="card-info-box">
   <div class="emoji">${iconFor(theme)}</div>
   <div class="arabic">${entry.title}</div>
-  <div class="english">${engineLabel(plugin)}</div>
+  <div class="english"></div>
 </div>
-<button class="play-btn">${buttonText}</button>
+<button class="play-btn">▶</button>
 `;
 card.onclick = ()=>openMenuEntry(entry);
 card.querySelector("button").onclick = (e)=>{e.stopPropagation();openMenuEntry(entry);};
@@ -722,16 +850,6 @@ items.push(item);
 map[id] = item;
 });
 updateFocus();
-}
-
-function engineLabel(plugin){
-if(plugin.engine === "directAudio") return "Tap to play";
-if(plugin.engine === "spotlight") return "Spotlight Learning";
-if(plugin.engine === "story") return "Story Mode";
-if(plugin.engine === "gallery") return "Gallery";
-if(plugin.engine === "learning") return "Learning";
-if(plugin.engine === "external") return "Open Salah";
-return "Open";
 }
 
 function openMenuEntry(entry){
@@ -745,7 +863,7 @@ return;
 }
 
 if(id === "salah" || entry.title === "Salah"){
-if(entry.mainUrl){ location.href = entry.mainUrl; }
+location.href = entry.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html";
 return;
 }
 
@@ -779,35 +897,103 @@ setTopbar(true,true);
 renderQuranItems();
 }
 
+function normalizeFileName(path){
+return String(path).split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"");
+}
+
+function surahNumberFromPath(path){
+return normalizeFileName(path).replace(/[^\d]/g,"");
+}
+
+function titleFromPath(path){
+const raw = normalizeFileName(path);
+return raw.replace(/[-_]/g," ").replace(/\b\w/g,m=>m.toUpperCase());
+}
+
+function getListenFiles(){
+return quranSyncFiles().map(f=>f.path).filter(p=>/^listen\/.+\.(mp3|m4a|wav|ogg)$/i.test(p));
+}
+
+function getLearnFiles(){
+const fromSync = quranSyncFiles().map(f=>f.path).filter(p=>/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(p));
+const fromSlices = Object.keys(slicesData || {}).filter(k=>/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(k));
+return [...new Set([...fromSync,...fromSlices])];
+}
+
+function findLearnForSurah(s){
+const learns = getLearnFiles();
+const candidates = [];
+if(s.surahNo) candidates.push(String(s.surahNo));
+candidates.push(String(s.id).replace(/[^\d]/g,""));
+for(const c of candidates){
+const hit = learns.find(p => surahNumberFromPath(p) === c);
+if(hit) return hit;
+}
+return null;
+}
+
+function buildQuranListenSource(){
+const base = surahs.map(s=>{
+const learn = findLearnForSurah(s);
+return {
+...s,
+listenFile:s.file,
+learnFile:learn,
+slices:learn ? slicesData[learn] : null,
+hasLearn:!!learn
+};
+});
+
+const usedNums = new Set(base.map(s=>s.surahNo).filter(Boolean));
+const extraListen = getListenFiles()
+.filter(p => !usedNums.has(surahNumberFromPath(p)))
+.map((p,idx)=>({
+id:`listen-${idx}`,
+name:titleFromPath(p),
+eng:titleFromPath(p),
+emoji:"📖",
+file:p,
+listenFile:p,
+color:DEFAULT_PALETTE[idx % DEFAULT_PALETTE.length],
+surahNo:surahNumberFromPath(p),
+learnFile:getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p)),
+hasLearn:!!getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p))
+}));
+
+return [...base,...extraListen];
+}
+
+function buildQuranLearnSource(){
+const learns = getLearnFiles();
+return learns.map((p,idx)=>({
+id:surahNumberFromPath(p) || `learn-${idx}`,
+name:`سورة ${surahNumberFromPath(p) || idx+1}`,
+eng:`Surah ${surahNumberFromPath(p) || titleFromPath(p)}`,
+emoji:"🎓",
+file:p,
+learnFile:p,
+color:"linear-gradient(135deg,#facc15,#fb7185)",
+slices:slicesData[p] || null,
+learningMode:slicesData[p] ? "slices" : "durationChunks"
+}));
+}
+
 function renderQuranItems(){
 const mode = getMode();
 clearGrid();
 stopAll(false);
 
-let source = surahs;
+let source = mode === "listen" ? buildQuranListenSource() : buildQuranLearnSource();
 
-if(mode === "repeat5" || mode === "hifz"){
-const learnKeys = Object.keys(slicesData || {}).filter(k=>k.startsWith("learn/") && k.endsWith(".mp3"));
-source = learnKeys.map((key,idx)=>{
-const num = key.split("/").pop().replace(".mp3","");
-return {
-id:num,
-name:`سورة ${num}`,
-eng:`Surah ${num}`,
-emoji:"🎓",
-file:key,
-color:"linear-gradient(135deg,#facc15,#fb7185)",
-learnKey:key,
-slices:slicesData[key],
-index:idx
-};
+if(!source.length) source = surahs;
+
+source.forEach((s,idx)=>{
+const item = {...s};
+if(mode !== "listen" && item.learnFile) item.file = item.learnFile;
+if(mode === "listen" && item.listenFile) item.file = item.listenFile;
+createAudioCard(item,idx,"quran", mode === "listen" && item.hasLearn);
 });
-if(!source.length){
-source = surahs;
-}
-}
 
-source.forEach((s,idx)=>createAudioCard(s,idx,"quran", false));
 updateFocus();
 
 const requested = params().get("id") || params().get("surah");
@@ -834,35 +1020,108 @@ return buildGallery(plugin, autoplay);
 }
 
 function subtitleForEngine(plugin){
-if(plugin.engine === "directAudio") return "Tap once and listen!";
-if(plugin.engine === "spotlight") return "Watch the focus glow and learn!";
-if(plugin.engine === "story") return "A gentle story through the day!";
-return "Listen, learn and enjoy!";
-}
-
-function pluginEntry(plugin){
-return menuData.find(m => (m.plugin||{}).id === plugin.id) || {};
+if(plugin.engine === "directAudio") return " ";
+if(plugin.engine === "spotlight") return " ";
+if(plugin.engine === "story") return " ";
+return " ";
 }
 
 function pluginMp3s(plugin){
 const folder = plugin.folder || plugin.id;
-const syncFiles = pluginEntry(plugin).syncFiles || [];
+const syncFiles = pluginSyncFiles(plugin);
 let mp3s = [];
 if(Array.isArray(plugin.audios) && plugin.audios.length) mp3s = plugin.audios;
-else mp3s = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.mp3$/i.test(p));
+else mp3s = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.(mp3|m4a|wav|ogg)$/i.test(p));
 if(!mp3s.length && plugin.primaryAudio) mp3s = [plugin.primaryAudio];
 return [...new Set(mp3s)];
 }
 
 function pluginImages(plugin){
 const folder = plugin.folder || plugin.id;
-const syncFiles = pluginEntry(plugin).syncFiles || [];
+const syncFiles = pluginSyncFiles(plugin);
 let imgs = [];
 if(Array.isArray(plugin.images) && plugin.images.length) imgs = plugin.images;
 else imgs = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(p));
 if(plugin.backgroundImage && typeof plugin.backgroundImage === "string") imgs.unshift(plugin.backgroundImage);
 if(plugin.tileImage && typeof plugin.tileImage === "string") imgs.unshift(plugin.tileImage);
 return [...new Set(imgs)];
+}
+
+
+/* ================= PLUGIN EFFECT SYSTEM ================= */
+const DEFAULT_MONTHS_FISH_ZONES = [
+{id:1,name:"محرّم",x:2.2,y:6.2,w:22.5,h:25.9,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:2,name:"صفر",x:26.1,y:8.4,w:21.8,h:24.0,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:3,name:"ربيع الأول",x:49.1,y:8.3,w:22.4,h:24.1,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:4,name:"ربيع الآخر",x:72.5,y:8.3,w:21.7,h:24.0,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:5,name:"جمادى الأولى",x:2.7,y:36.1,w:22.7,h:23.8,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:6,name:"جمادى الآخرة",x:25.9,y:37.4,w:22.4,h:22.9,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:7,name:"رجب",x:49.5,y:36.8,w:21.6,h:22.9,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:8,name:"شعبان",x:72.1,y:37.2,w:21.6,h:22.4,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:9,name:"رمضان",x:2.7,y:63.9,w:22.2,h:23.8,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:10,name:"شوّال",x:25.8,y:64.4,w:21.6,h:23.5,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:11,name:"ذو القعدة",x:49.1,y:64.3,w:22.5,h:23.1,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:12,name:"ذو الحجة",x:71.5,y:64.3,w:22.5,h:23.5,mouthX:90,mouthY:56,tailX:2,tailY:35}
+];
+
+function applyPluginEffect(stage, plugin){
+const effect = plugin.effect || {};
+if(!effect || !effect.type) return;
+
+if(effect.type === "aquarium"){
+applyAquariumEffect(stage, effect);
+}
+}
+
+function applyAquariumEffect(stage, effect){
+const layer = document.createElement("div");
+layer.className = "aquarium-layer";
+
+if(effect.waterRays !== false){
+const rays = document.createElement("div");
+rays.className = "aquarium-water-rays";
+layer.appendChild(rays);
+}
+
+if(effect.bubbles !== false){
+addBubblesToLayer(layer, effect.bubbleCount || 16);
+}
+
+if(effect.fishZones !== false){
+const zones = Array.isArray(effect.fishCoordinates) && effect.fishCoordinates.length
+  ? effect.fishCoordinates
+  : DEFAULT_MONTHS_FISH_ZONES;
+
+zones.forEach((fish,index)=>{
+const zone = document.createElement("div");
+zone.className = "fish-zone";
+zone.style.left = fish.x + "%";
+zone.style.top = fish.y + "%";
+zone.style.width = fish.w + "%";
+zone.style.height = fish.h + "%";
+zone.style.setProperty("--mouthLeft",(fish.mouthX ?? 90) + "%");
+zone.style.setProperty("--mouthTop",(fish.mouthY ?? 56) + "%");
+zone.style.setProperty("--tailLeft",(fish.tailX ?? 2) + "%");
+zone.style.setProperty("--tailTop",(fish.tailY ?? 35) + "%");
+zone.style.setProperty("--d",(index * .45) + "s");
+zone.dataset.month = fish.name || "";
+layer.appendChild(zone);
+});
+}
+
+stage.appendChild(layer);
+}
+
+function addBubblesToLayer(layer,count){
+for(let i=0;i<count;i++){
+const b=document.createElement("div");
+b.className="bubble";
+b.style.left=(5+Math.random()*90)+"%";
+b.style.bottom=(5+Math.random()*65)+"%";
+b.style.animationDelay=(Math.random()*5)+"s";
+b.style.width=b.style.height=(24+Math.random()*36)+"px";
+layer.appendChild(b);
+}
 }
 
 /* ================= DIRECT AUDIO ENGINE ================= */
@@ -873,20 +1132,38 @@ const audioFile = plugin.primaryAudio || mp3s[0];
 const theme = plugin.theme || plugin.id;
 if(!audioFile) return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
 
-const item = {
-id:plugin.id,
-name:plugin.title,
-eng:"Playing directly",
-emoji:iconFor(theme),
-file:audioFile,
-color:gradientFor(theme),
-plugin
-};
-createAudioCard(item,0,theme,false);
-updateFocus();
-if(autoplay || params().get("autoplay") === "1"){
-setTimeout(()=>play(plugin.id),400);
+const stage = document.createElement("div");
+stage.className = "stage";
+const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+stage.style.background = bg ? `url('${bg}')` : gradientFor(theme);
+
+const hidePanel = plugin.effect && plugin.effect.type === "aquarium";
+
+stage.innerHTML = `
+<div class="story-overlay"></div>
+${hidePanel ? "" : `
+<div class="stage-content">
+  <div class="stage-title">${plugin.title || ""}</div>
+  <div class="stage-sub"> </div>
+</div>`}
+<audio src="${audioFile}" preload="auto"></audio>
+`;
+
+if(plugin.effect && plugin.effect.type){
+applyPluginEffect(stage, plugin);
+} else {
+addBubbles(stage,10);
 }
+
+grid.appendChild(stage);
+
+const audio = stage.querySelector("audio");
+const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:""},index:0,type:"audio"};
+items.push(item);
+map[plugin.id]=item;
+stage.onclick = ()=>play(plugin.id);
+updateFocus();
+if(autoplay || params().get("autoplay")==="1") setTimeout(()=>play(plugin.id),400);
 }
 
 /* ================= GALLERY ENGINE ================= */
@@ -896,7 +1173,7 @@ const mp3s = pluginMp3s(plugin);
 if(!mp3s.length) return renderComingSoon(plugin, `Add audio files in ${plugin.folder || plugin.id}/`);
 
 mp3s.forEach((file,idx)=>{
-const clean = file.split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"").replace(/[-_]/g," ");
+const clean = normalizeFileName(file).replace(/[-_]/g," ");
 const item = {
 id:`${plugin.id}-${idx}`,
 name:plugin.title,
@@ -921,7 +1198,7 @@ const theme = plugin.theme || plugin.id;
 
 if(plugin.id === "names" && mp3s.length){
 mp3s.forEach((file,idx)=>{
-const label = file.split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"").replace("_","–");
+const label = normalizeFileName(file).replace("_","–");
 const item = {
 id:`${plugin.id}-${idx}`,
 name:"ﷲ",
@@ -930,7 +1207,8 @@ emoji:"✨",
 file,
 color:(plugin.tilePalette || DEFAULT_PALETTE)[idx % (plugin.tilePalette || DEFAULT_PALETTE).length],
 slices:slicesData[file] || null,
-plugin
+plugin,
+learningMode:slicesData[file] ? "slices" : "durationChunks"
 };
 createAudioCard(item,idx,theme,false);
 });
@@ -945,16 +1223,14 @@ const wrap = document.createElement("div");
 wrap.className = "spotlight-wrap";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
 wrap.style.background = bg ? `url('${bg}')` : gradientFor(theme);
-wrap.innerHTML = `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div><audio id="spotlightAudio" src="${audioFile}" preload="auto"></audio>`;
+wrap.innerHTML = `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div><audio src="${audioFile}" preload="auto"></audio>`;
 grid.appendChild(wrap);
 
-const fakeCard = wrap;
 const audio = wrap.querySelector("audio");
-const item = {id:plugin.id,card:fakeCard,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight"},index:0,type:"audio"};
+const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:"audio"};
 items.push(item);
 map[plugin.id] = item;
-
-fakeCard.onclick = ()=>play(plugin.id);
+wrap.onclick = ()=>play(plugin.id);
 updateFocus();
 if(autoplay) setTimeout(()=>play(plugin.id),400);
 }
@@ -978,12 +1254,12 @@ stage.innerHTML = `
   <div class="stage-sub" id="storyName">${seq[0].name || plugin.title}</div>
   <div class="stage-badges" id="storyBadges"></div>
 </div>
-${audioFile ? `<audio id="storyAudio" src="${audioFile}" preload="auto"></audio>` : ""}
+${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
 grid.appendChild(stage);
 
 const audio = stage.querySelector("audio");
-const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Story"},index:0,type:audio ? "audio" : "story"};
+const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Story",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "story"};
 items.push(item);
 map[plugin.id] = item;
 stage.onclick = ()=>{ if(audio) play(plugin.id); runStorySequence(seq); };
@@ -1031,7 +1307,7 @@ const card = document.createElement("div");
 card.className = "card";
 card.style.background = s.color || gradientFor(theme);
 
-const badge = showLearnBadge && s.slices ? `<div class="badge">🎓 Learn</div>` : "";
+const badge = showLearnBadge ? `<div class="badge">🎓</div>` : "";
 
 card.innerHTML = `
 ${badge}
@@ -1110,7 +1386,7 @@ item.card.classList.add("active-tile");
 const mode = getMode();
 const hasSlices = Array.isArray(item.s.slices) && item.s.slices.length;
 
-if((mode === "repeat5" || mode === "hifz") && hasSlices){
+if((mode === "repeat5" || mode === "hifz") && (hasSlices || item.s.learningMode === "durationChunks" || item.s.learningMode === "silence")){
 runLearningSequence(item, mode, token);
 } else {
 item.audio.loop = loopAll;
@@ -1126,6 +1402,101 @@ const parts = String(t).split(":").map(Number);
 if(parts.length === 2) return parts[0]*60 + parts[1];
 if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
 return Number(t) || 0;
+}
+
+function getChunkEnds(item){
+if(Array.isArray(item.s.slices) && item.s.slices.length) return item.s.slices.map(toSeconds);
+
+const audio = item.audio;
+const duration = audio.duration || 0;
+if(!duration || !isFinite(duration)) return [];
+
+const plugin = item.s.plugin || currentPlugin || {};
+const chunkMode = plugin.chunkMode || item.s.chunkMode || {};
+let chunks = chunkMode.chunkCount || 0;
+
+if(!chunks && plugin.id === "names"){
+const label = item.s.eng || "";
+const nums = label.match(/\d+/g) || [];
+if(nums.length >= 2){
+const count = Math.abs(Number(nums[1]) - Number(nums[0])) + 1;
+chunks = Math.max(1, Math.ceil(count / (chunkMode.namesPerChunk || 4)));
+}
+}
+
+if(!chunks && Array.isArray(plugin.spotlight?.items)) chunks = plugin.spotlight.items.length;
+if(!chunks && Array.isArray(plugin.sequence)) chunks = plugin.sequence.length;
+if(!chunks) chunks = 5;
+
+const step = duration / chunks;
+return Array.from({length:chunks},(_,i)=>Math.min(duration, step*(i+1)));
+}
+
+async function getChunkEndsAsync(item){
+if(Array.isArray(item.s.slices) && item.s.slices.length) return item.s.slices.map(toSeconds);
+
+if(item.s.learningMode === "silence"){
+  const detected = await detectSilenceChunkEnds(item);
+  if(detected && detected.length) return detected;
+}
+
+return getChunkEnds(item);
+}
+
+async function detectSilenceChunkEnds(item){
+try{
+  const audio = item.audio;
+  const src = audio.currentSrc || audio.src;
+  if(!src) return [];
+
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if(!AudioCtx) return [];
+
+  const res = await fetch(src);
+  const arr = await res.arrayBuffer();
+  const ctx = new AudioCtx();
+  const buffer = await ctx.decodeAudioData(arr);
+  const data = buffer.getChannelData(0);
+  const rate = buffer.sampleRate;
+  const duration = buffer.duration;
+
+  const plugin = item.s.plugin || currentPlugin || {};
+  const expected = Array.isArray(plugin.spotlight?.items) ? plugin.spotlight.items.length :
+                   Array.isArray(plugin.sequence) ? plugin.sequence.length : 0;
+
+  const windowSec = 0.06;
+  const minSilenceSec = 0.32;
+  const threshold = plugin.silenceThreshold || 0.018;
+  const step = Math.max(1, Math.floor(rate * windowSec));
+  const minSilentWindows = Math.max(2, Math.ceil(minSilenceSec / windowSec));
+
+  let silentRun = 0;
+  const cuts = [];
+
+  for(let i=0;i<data.length;i+=step){
+    let sum = 0;
+    const end = Math.min(data.length, i + step);
+    for(let j=i;j<end;j++) sum += data[j] * data[j];
+    const rms = Math.sqrt(sum / Math.max(1,end-i));
+    if(rms < threshold){
+      silentRun++;
+    } else {
+      if(silentRun >= minSilentWindows){
+        const cutTime = ((i - silentRun * step) / rate);
+        if(cutTime > 0.4 && cutTime < duration - 0.2){
+          if(!cuts.length || cutTime - cuts[cuts.length-1] > 0.5) cuts.push(cutTime);
+        }
+      }
+      silentRun = 0;
+    }
+  }
+
+  let ends = cuts.concat([duration]).filter(t => t > 0.2);
+  if(expected && ends.length > expected) ends = ends.slice(0, expected - 1).concat([duration]);
+  return ends;
+}catch(e){
+  return [];
+}
 }
 
 function playSegment(audio,start,end,token){
@@ -1151,9 +1522,22 @@ audio.addEventListener("timeupdate",tick);
 
 async function runLearningSequence(item, mode, token){
 const audio = item.audio;
-const ends = item.s.slices.map(toSeconds);
+
+if(!audio.duration || !isFinite(audio.duration)){
+await new Promise(resolve=>{
+audio.addEventListener("loadedmetadata",resolve,{once:true});
+audio.load();
+});
+}
+
+const ends = await getChunkEndsAsync(item);
+if(!ends.length){
+audio.play().catch(()=>{});
+return;
+}
+
 const starts = [0].concat(ends.slice(0,-1));
-const repeat = ((item.s.plugin || {}).chunkMode || {}).repeatCount || 5;
+const repeat = ((item.s.plugin || currentPlugin || {}).chunkMode || {}).repeatCount || 5;
 
 if(mode === "repeat5"){
 for(let i=0;i<ends.length;i++){
@@ -1214,7 +1598,7 @@ document.getElementById("mode").addEventListener("change",()=>{
 if(currentView === "quran") renderQuranItems();
 });
 
-/* ================= GRID D-PAD NAVIGATION ENGINE ================= */
+/* ================= NAVIGATION ================= */
 function move(dir){
 const max = items.length - 1;
 if(max < 0) return;
@@ -1241,7 +1625,6 @@ el.scrollIntoView({block:"center",behavior:"smooth"});
 }
 }
 
-/* ================= OVERLAY DISMISSAL ================= */
 function handleOverlayDismissal(){
 const overlay = document.getElementById("overlay");
 if(overlay && overlay.style.display !== "none"){
@@ -1253,7 +1636,6 @@ return true;
 return false;
 }
 
-/* ================= SYSTEM CONTROL EVENT RECEPTORS ================= */
 document.addEventListener("keydown",(e)=>{
 const k = e.keyCode;
 const activeEl = document.activeElement;
@@ -1330,7 +1712,7 @@ else if(item.type === "story") runStorySequence(defaultSalahNamesSequence());
 }
 });
 
-/* ================= BACKGROUND PARTICLES BUILDER ================= */
+/* ================= BACKGROUND PARTICLES ================= */
 const starsContainer = document.querySelector(".stars");
 for(let i=0;i<80;i++){
 const d = document.createElement("div");
