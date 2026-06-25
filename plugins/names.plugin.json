@@ -5,7 +5,7 @@
   "priority": 5,
   "folder": "names",
   "engine": "spotlight",
-  "supports": ["listen", "5x"],
+  "supports": ["listen", "5x", "hifz"],
   "audioMode": "multiple-files",
   "theme": "names",
   "chunkMode": {
