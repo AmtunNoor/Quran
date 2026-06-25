@@ -6,8 +6,31 @@
   "folder": "months",
   "engine": "directAudio",
   "supports": ["listen"],
-  "audioMode": "single-file-pauses",
-  "segmentDetection": "silence",
+  "audioMode": "normal",
+  "segmentDetection": "normal",
   "playFromLanding": true,
-  "theme": "months"
+  "theme": "months",
+  "effect": {
+    "type": "aquarium",
+    "waterRays": true,
+    "bubbles": true,
+    "bubbleCount": 16,
+    "fishZones": true,
+    "mouthMove": true,
+    "tailGlow": true,
+    "fishCoordinates": [
+      { "id": 1,  "name": "محرّم",        "x": 2.2,  "y": 6.2,  "w": 22.5, "h": 25.9, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 2,  "name": "صفر",         "x": 26.1, "y": 8.4,  "w": 21.8, "h": 24.0, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 3,  "name": "ربيع الأول",   "x": 49.1, "y": 8.3,  "w": 22.4, "h": 24.1, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 4,  "name": "ربيع الآخر",   "x": 72.5, "y": 8.3,  "w": 21.7, "h": 24.0, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 5,  "name": "جمادى الأولى", "x": 2.7,  "y": 36.1, "w": 22.7, "h": 23.8, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 6,  "name": "جمادى الآخرة", "x": 25.9, "y": 37.4, "w": 22.4, "h": 22.9, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 7,  "name": "رجب",         "x": 49.5, "y": 36.8, "w": 21.6, "h": 22.9, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 8,  "name": "شعبان",       "x": 72.1, "y": 37.2, "w": 21.6, "h": 22.4, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 9,  "name": "رمضان",       "x": 2.7,  "y": 63.9, "w": 22.2, "h": 23.8, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 10, "name": "شوّال",       "x": 25.8, "y": 64.4, "w": 21.6, "h": 23.5, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 11, "name": "ذو القعدة",    "x": 49.1, "y": 64.3, "w": 22.5, "h": 23.1, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 },
+      { "id": 12, "name": "ذو الحجة",     "x": 71.5, "y": 64.3, "w": 22.5, "h": 23.5, "mouthX": 90, "mouthY": 56, "tailX": 2, "tailY": 35 }
+    ]
+  }
 }
