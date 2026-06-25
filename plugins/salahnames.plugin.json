@@ -1,0 +1,44 @@
+{
+  "id": "salah-names",
+  "title": "Salah Names",
+  "type": "plugin",
+  "priority": 8,
+  "folder": "salah-names",
+  "engine": "story",
+  "supports": ["listen"],
+  "audioMode": "single-file-pauses",
+  "segmentDetection": "silence",
+  "theme": "salah-names",
+  "sequence": [
+    {
+      "name": "Fajr",
+      "arabic": "الفجر",
+      "effect": "dawn",
+      "rakah": ["2 Sunnah", "2 Fard"]
+    },
+    {
+      "name": "Dhuhr",
+      "arabic": "الظهر",
+      "effect": "bright-day",
+      "rakah": ["4 Sunnah", "4 Fard", "2 Sunnah"]
+    },
+    {
+      "name": "Asr",
+      "arabic": "العصر",
+      "effect": "afternoon",
+      "rakah": ["4 Fard"]
+    },
+    {
+      "name": "Maghrib",
+      "arabic": "المغرب",
+      "effect": "sunset",
+      "rakah": ["3 Fard", "2 Sunnah"]
+    },
+    {
+      "name": "Isha",
+      "arabic": "العشاء",
+      "effect": "night",
+      "rakah": ["4 Fard", "2 Sunnah", "Witr"]
+    }
+  ]
+}
