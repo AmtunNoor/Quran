@@ -265,168 +265,138 @@
       "type": "plugin",
       "priority": 4,
       "folder": "months",
-      "engine": "directAudio",
+      "engine": "spotlight",
       "supports": [
         "listen"
       ],
-      "audioMode": "normal",
-      "segmentDetection": "normal",
-      "playFromLanding": true,
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
+      "playFromLanding": false,
       "theme": "months",
       "effect": {
-        "type": "aquarium",
+        "type": "coordinateSpotlight",
+        "backgroundStatic": true,
+        "focusOneItem": true,
+        "followAudio": true,
+        "glow": true,
+        "sparkles": true,
+        "float": true,
         "waterRays": true,
         "bubbles": true,
-        "bubbleCount": 16,
-        "fishZones": true,
-        "mouthMove": true,
-        "tailGlow": true,
-        "fishCoordinates": [
-          {
-            "id": 1,
-            "name": "محرّم",
-            "x": 2.2,
-            "y": 6.2,
-            "w": 22.5,
-            "h": 25.9,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 2,
-            "name": "صفر",
-            "x": 26.1,
-            "y": 8.4,
-            "w": 21.8,
-            "h": 24,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 3,
-            "name": "ربيع الأول",
-            "x": 49.1,
-            "y": 8.3,
-            "w": 22.4,
-            "h": 24.1,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 4,
-            "name": "ربيع الآخر",
-            "x": 72.5,
-            "y": 8.3,
-            "w": 21.7,
-            "h": 24,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 5,
-            "name": "جمادى الأولى",
-            "x": 2.7,
-            "y": 36.1,
-            "w": 22.7,
-            "h": 23.8,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 6,
-            "name": "جمادى الآخرة",
-            "x": 25.9,
-            "y": 37.4,
-            "w": 22.4,
-            "h": 22.9,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 7,
-            "name": "رجب",
-            "x": 49.5,
-            "y": 36.8,
-            "w": 21.6,
-            "h": 22.9,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 8,
-            "name": "شعبان",
-            "x": 72.1,
-            "y": 37.2,
-            "w": 21.6,
-            "h": 22.4,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 9,
-            "name": "رمضان",
-            "x": 2.7,
-            "y": 63.9,
-            "w": 22.2,
-            "h": 23.8,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 10,
-            "name": "شوّال",
-            "x": 25.8,
-            "y": 64.4,
-            "w": 21.6,
-            "h": 23.5,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 11,
-            "name": "ذو القعدة",
-            "x": 49.1,
-            "y": 64.3,
-            "w": 22.5,
-            "h": 23.1,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          },
-          {
-            "id": 12,
-            "name": "ذو الحجة",
-            "x": 71.5,
-            "y": 64.3,
-            "w": 22.5,
-            "h": 23.5,
-            "mouthX": 90,
-            "mouthY": 56,
-            "tailX": 2,
-            "tailY": 35
-          }
-        ]
+        "bubbleCount": 16
+      },
+      "autoStart": true,
+      "coordinates": {
+        "1": {
+          "x": 13.45,
+          "y": 19.15
+        },
+        "2": {
+          "x": 37,
+          "y": 20.4
+        },
+        "3": {
+          "x": 60.3,
+          "y": 20.35
+        },
+        "4": {
+          "x": 83.35,
+          "y": 20.3
+        },
+        "5": {
+          "x": 14.05,
+          "y": 48
+        },
+        "6": {
+          "x": 37.1,
+          "y": 48.85
+        },
+        "7": {
+          "x": 60.3,
+          "y": 48.25
+        },
+        "8": {
+          "x": 82.9,
+          "y": 48.4
+        },
+        "9": {
+          "x": 13.8,
+          "y": 75.8
+        },
+        "10": {
+          "x": 36.6,
+          "y": 76.15
+        },
+        "11": {
+          "x": 60.35,
+          "y": 75.85
+        },
+        "12": {
+          "x": 82.75,
+          "y": 76.05
+        }
+      },
+      "items": {
+        "1": {
+          "name": "محرّم",
+          "pulse": true,
+          "float": true
+        },
+        "2": {
+          "name": "صفر",
+          "pulse": true,
+          "float": true
+        },
+        "3": {
+          "name": "ربيع الأول",
+          "pulse": true,
+          "float": true
+        },
+        "4": {
+          "name": "ربيع الآخر",
+          "pulse": true,
+          "float": true
+        },
+        "5": {
+          "name": "جمادى الأولى",
+          "pulse": true,
+          "float": true
+        },
+        "6": {
+          "name": "جمادى الآخرة",
+          "pulse": true,
+          "float": true
+        },
+        "7": {
+          "name": "رجب",
+          "pulse": true,
+          "float": true
+        },
+        "8": {
+          "name": "شعبان",
+          "pulse": true,
+          "float": true
+        },
+        "9": {
+          "name": "رمضان",
+          "pulse": true,
+          "float": true
+        },
+        "10": {
+          "name": "شوّال",
+          "pulse": true,
+          "float": true
+        },
+        "11": {
+          "name": "ذو القعدة",
+          "pulse": true,
+          "float": true
+        },
+        "12": {
+          "name": "ذو الحجة",
+          "pulse": true,
+          "float": true
+        }
       },
       "tileImage": "months/months_icon.jpeg",
       "backgroundImage": "months/months_background.jpeg",
@@ -438,9 +408,8 @@
         "months/months_background.jpeg",
         "months/months_icon.jpeg"
       ],
-      "autoStart": false,
-      "directAudio": true,
-      "action": "direct-audio",
+      "directAudio": false,
+      "action": "open-plugin",
       "fallback": "duration",
       "learningMode": null,
       "tilePalette": [
@@ -454,7 +423,6 @@
         "linear-gradient(135deg,#0ea5e9,#22c55e)"
       ],
       "sequence": [],
-      "coordinates": {},
       "numbers": {},
       "spotlight": null,
       "displayMode": null,
