@@ -673,8 +673,10 @@
       ],
       "tileImage": "salahnames/salahnames.jpeg",
       "backgroundImage": "salahnames/salahnames.jpeg",
-      "primaryAudio": null,
-      "audios": [],
+      "primaryAudio": "salahnames/salahnames.mp3",
+      "audios": [
+        "salahnames/salahnames.mp3"
+      ],
       "images": [
         "salahnames/salahnames.jpeg"
       ],
@@ -715,6 +717,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/salahnames/salahnames.jpeg",
         "path": "salahnames/salahnames.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/salahnames/salahnames.mp3",
+        "path": "salahnames/salahnames.mp3"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/salahnames.plugin.json",
