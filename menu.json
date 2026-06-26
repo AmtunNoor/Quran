@@ -210,6 +210,7 @@
       "audios": [],
       "images": [],
       "playFromLanding": false,
+      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "effect": null,
@@ -437,6 +438,7 @@
         "months/months_background.jpeg",
         "months/months_icon.jpeg"
       ],
+      "autoStart": false,
       "directAudio": true,
       "action": "direct-audio",
       "fallback": "duration",
@@ -529,6 +531,7 @@
         "names/names.jpeg"
       ],
       "playFromLanding": false,
+      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "effect": {
@@ -681,6 +684,7 @@
         "salahnames/salahnames.jpeg"
       ],
       "playFromLanding": false,
+      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "effect": {
@@ -734,14 +738,14 @@
   },
   {
     "title": "Arabic Numbers",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers&autoplay=1",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers",
     "plugin": {
       "id": "numbers",
       "title": "Arabic Numbers",
       "folder": "numbers",
-      "engine": "directAudio",
+      "engine": "spotlight",
       "theme": "numbers",
-      "playFromLanding": true,
+      "playFromLanding": false,
       "supports": [
         "listen",
         "repeat5",
@@ -854,8 +858,9 @@
       "images": [
         "numbers/numbers.jpeg"
       ],
-      "directAudio": true,
-      "action": "direct-audio",
+      "autoStart": false,
+      "directAudio": false,
+      "action": "open-plugin",
       "audioMode": "single-file-pauses",
       "segmentDetection": "silence",
       "fallback": "duration",
