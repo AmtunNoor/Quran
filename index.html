@@ -764,6 +764,245 @@ body.tv-mode.plugin-stage-mode .spotlight-wrap{
   }
 }
 
+
+/* ================= PRISM V3.4 UI FINAL OVERRIDES ================= */
+
+/* Keep big decorative header only for Landing + Quran.
+   Plugin/external screens use compact controls and full content stage. */
+body.plugin-ui-final #pageTitle,
+body.plugin-ui-final #pageSubtitle{
+  display:none!important;
+}
+
+body.plugin-ui-final{
+  padding:10px 14px 58px!important;
+  overflow:hidden;
+}
+
+body.plugin-ui-final .topbar{
+  margin:0 0 8px!important;
+  gap:8px!important;
+  align-items:center;
+}
+
+body.plugin-ui-final .topbar button,
+body.plugin-ui-final .topbar select{
+  padding:7px 11px!important;
+  border-radius:13px!important;
+  font-size:.86rem!important;
+}
+
+body.plugin-ui-final .grid{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  flex:1!important;
+}
+
+body.plugin-ui-final .stage,
+body.plugin-ui-final .spotlight-wrap,
+body.plugin-ui-final .external-bridge{
+  width:100%!important;
+  height:calc(100vh - 132px)!important;
+  min-height:0!important;
+  border-radius:22px!important;
+  margin:0!important;
+  background-size:contain!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-color:rgba(2,6,23,.45)!important;
+  box-shadow:0 0 22px rgba(255,255,255,.14)!important;
+}
+
+/* Months should fill more strongly because its poster already has full layout. */
+body.plugin-ui-final.plugin-months .stage{
+  background-size:contain!important;
+}
+
+/* Numbers image should be fully visible. */
+body.plugin-ui-final.plugin-numbers .spotlight-wrap{
+  background-size:contain!important;
+}
+
+/* Allah Names: restore a compact one-screen grid. */
+body.plugin-ui-final.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  grid-template-rows:repeat(2,1fr)!important;
+  gap:12px!important;
+  height:calc(100vh - 132px)!important;
+}
+
+body.plugin-ui-final.plugin-names .card{
+  min-height:0!important;
+  height:100%!important;
+  border-radius:22px!important;
+  padding:14px!important;
+  animation:none!important;
+}
+
+body.plugin-ui-final.plugin-names .emoji{
+  font-size:2rem!important;
+  margin-bottom:4px!important;
+}
+
+body.plugin-ui-final.plugin-names .arabic{
+  font-size:1.55rem!important;
+}
+
+body.plugin-ui-final.plugin-names .english{
+  font-size:.95rem!important;
+}
+
+body.plugin-ui-final.plugin-names .play-btn{
+  padding:8px!important;
+  border-radius:13px!important;
+  font-size:.9rem!important;
+  margin-top:8px!important;
+}
+
+/* Salah names: compact floating badge panel, does not cover credits. */
+body.plugin-ui-final .story-stage{
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+}
+
+body.plugin-ui-final .story-stage .stage-content{
+  position:absolute!important;
+  right:16px!important;
+  top:16px!important;
+  bottom:auto!important;
+  width:min(28vw,300px)!important;
+  min-width:210px!important;
+  max-height:calc(100% - 32px)!important;
+  padding:14px!important;
+  border-radius:20px!important;
+  background:rgba(15,23,42,.24)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+}
+
+body.plugin-ui-final .story-stage .stage-title{
+  font-size:clamp(1.6rem,3vw,3rem)!important;
+  margin-bottom:4px!important;
+}
+
+body.plugin-ui-final .story-stage .stage-sub{
+  font-size:clamp(1rem,1.7vw,1.35rem)!important;
+}
+
+body.plugin-ui-final .story-stage .stage-badges{
+  margin-top:10px!important;
+  gap:7px!important;
+  flex-direction:column!important;
+}
+
+body.plugin-ui-final .story-stage .rakah-badge{
+  font-size:clamp(.85rem,1.25vw,1.08rem)!important;
+  padding:7px 10px!important;
+}
+
+/* Stronger day/night story overlays */
+body.plugin-ui-final .story-dawn{background:linear-gradient(rgba(255,182,193,.28),rgba(59,130,246,.12))!important;}
+body.plugin-ui-final .story-bright-day{background:linear-gradient(rgba(250,204,21,.16),rgba(14,165,233,.06))!important;}
+body.plugin-ui-final .story-afternoon{background:linear-gradient(rgba(251,146,60,.22),rgba(15,23,42,.12))!important;}
+body.plugin-ui-final .story-sunset{background:linear-gradient(rgba(249,115,22,.38),rgba(88,28,12,.36))!important;}
+body.plugin-ui-final .story-night{background:linear-gradient(rgba(2,6,23,.76),rgba(0,0,0,.84))!important;}
+
+/* Numbers active glow must sit above full image. */
+body.plugin-ui-final .number-focus-dot{
+  z-index:8!important;
+  display:block!important;
+}
+
+/* Credits: visible but no longer a thick dark block */
+body.plugin-ui-final .credits{
+  padding:5px 8px!important;
+  background:rgba(15,23,42,.18)!important;
+  border-top:1px solid rgba(255,255,255,.05)!important;
+  backdrop-filter:blur(5px)!important;
+  -webkit-backdrop-filter:blur(5px)!important;
+  line-height:1.05!important;
+  box-shadow:none!important;
+}
+
+body.plugin-ui-final .amtun{
+  font-size:1.05rem!important;
+  letter-spacing:2px!important;
+}
+
+body.plugin-ui-final .credits div:first-child,
+body.plugin-ui-final .credits div:last-child{
+  font-size:.72rem!important;
+}
+
+/* Landing remains clean: no text clutter/buttons. */
+body.landing-mode .play-btn,
+body.landing-mode .english{
+  display:none!important;
+}
+
+/* External Salah iframe: full available space. */
+body.plugin-ui-final .external-bridge iframe{
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+}
+
+/* TV/laptop one-page behavior */
+body.plugin-ui-final.tv-mode{
+  height:100vh!important;
+  overflow:hidden!important;
+}
+
+@media(max-width:768px){
+  body.plugin-ui-final{
+    padding:8px 9px 54px!important;
+  }
+
+  body.plugin-ui-final .topbar button,
+  body.plugin-ui-final .topbar select{
+    padding:6px 9px!important;
+    font-size:.78rem!important;
+  }
+
+  body.plugin-ui-final .stage,
+  body.plugin-ui-final .spotlight-wrap,
+  body.plugin-ui-final .external-bridge{
+    height:calc(100vh - 126px)!important;
+    border-radius:18px!important;
+  }
+
+  body.plugin-ui-final.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-template-rows:repeat(3,1fr)!important;
+    gap:9px!important;
+    height:calc(100vh - 126px)!important;
+  }
+
+  body.plugin-ui-final.plugin-names .arabic{
+    font-size:1.25rem!important;
+  }
+
+  body.plugin-ui-final .story-stage .stage-content{
+    left:10px!important;
+    right:10px!important;
+    top:auto!important;
+    bottom:10px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-height:38%!important;
+  }
+
+  body.plugin-ui-final .story-stage .stage-badges{
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    justify-content:center!important;
+  }
+}
+
 </style>
 </head>
 
@@ -985,6 +1224,15 @@ TV.focused = 0;
 clearTimers();
 }
 
+
+function setScreenMode(mode, pluginId){
+document.body.classList.remove("plugin-ui-final","plugin-months","plugin-numbers","plugin-salahnames","plugin-names","plugin-external");
+if(mode === "plugin" || mode === "external"){
+  document.body.classList.add("plugin-ui-final");
+  if(pluginId) document.body.classList.add("plugin-" + String(pluginId).replace(/[^a-z0-9_-]/gi,"").toLowerCase());
+}
+}
+
 function clearTimers(){
 sequenceCancelToken++;
 if(storyTimer){ clearTimeout(storyTimer); storyTimer = null; }
@@ -1009,6 +1257,7 @@ currentView = "landing";
 currentPlugin = null;
 document.body.classList.add("landing-mode");
 document.body.classList.remove("plugin-stage-mode");
+setScreenMode("landing");
 clearGrid();
 stopAll(false);
 setHeader("🌙 Mariam & Hamza's 🌙","✨Choose Your Prism Adventure!✨");
@@ -1084,6 +1333,7 @@ currentView = "external";
 currentPlugin = entry.plugin || {id:"salah",title:"Salah"};
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
+setScreenMode("external","external");
 clearGrid();
 stopAll(false);
 setHeader("🕌 Salah"," ");
@@ -1110,6 +1360,7 @@ currentView = "quran";
 currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
 document.body.classList.remove("landing-mode");
 document.body.classList.remove("plugin-stage-mode");
+setScreenMode("quran");
 setHeader("🌙 Mariam & Hamza's 🌙","✨Quran Adventures with Mom!✨");
 setTopbar(true,true);
 renderQuranItems();
@@ -1257,6 +1508,7 @@ currentView = "plugin";
 currentPlugin = plugin;
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
+setScreenMode("plugin", plugin.id);
 const title = plugin.title || plugin.id || "Prism";
 setHeader(`✨ ${title} ✨`, subtitleForEngine(plugin));
 setTopbar(true,true);
@@ -1466,7 +1718,7 @@ return;
 }
 
 const audioFile = plugin.primaryAudio || mp3s[0];
-if(!audioFile) return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
+if(!audioFile && plugin.id !== "numbers") return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
 
 const wrap = document.createElement("div");
 wrap.className = "spotlight-wrap";
@@ -1476,12 +1728,12 @@ wrap.style.background = bg ? `url('${bg}')` : gradientFor(theme);
 const isNumberSpotlight = plugin.effect && plugin.effect.type === "numberSpotlight";
 wrap.innerHTML = `
 ${isNumberSpotlight ? `<div class="number-focus-dot" id="numberFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
-<audio src="${audioFile}" preload="auto"></audio>
+${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
 grid.appendChild(wrap);
 
 const audio = wrap.querySelector("audio");
-const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:"audio"};
+const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
 items.push(item);
 map[plugin.id] = item;
 wrap.onclick = ()=>play(plugin.id);
@@ -1489,9 +1741,15 @@ updateFocus();
 
 if(isNumberSpotlight){
 positionNumberFocus(plugin, 0);
+if(audio){
 audio.addEventListener("play",()=>startNumberSpotlight(plugin,audio));
 audio.addEventListener("pause",()=>stopNumberSpotlight());
 audio.addEventListener("ended",()=>stopNumberSpotlight());
+} else {
+let demoIndex = 0;
+stopNumberSpotlight();
+numberSpotlightTimer = setInterval(()=>{ demoIndex++; positionNumberFocus(plugin,demoIndex); }, 1400);
+}
 }
 
 if(autoplay) setTimeout(()=>play(plugin.id),400);
@@ -1950,6 +2208,7 @@ const item = items[TV.focused];
 if(!item) return;
 if(item.type === "landing") openMenuEntry(item.entry);
 else if(item.type === "audio") play(item.id);
+else if(item.type === "spotlight" && currentPlugin) { positionNumberFocus(currentPlugin, ((Number(document.getElementById("numberFocusDot")?.dataset.number)||0))); }
 else if(item.type === "story") runStorySequence(defaultSalahNamesSequence());
 }
 }
