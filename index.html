@@ -1003,6 +1003,195 @@ body.plugin-ui-final.tv-mode{
   }
 }
 
+
+/* ================= PRISM V3.4 FINAL RENDERER SPLIT ================= */
+
+/* Plugins use stage area, not card-within-stage. */
+body.plugin-ui-final .grid.stage-render{
+  display:block!important;
+  width:100%!important;
+  height:calc(100vh - 118px)!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final .stage.full-visual,
+body.plugin-ui-final .spotlight-wrap.full-visual{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  border:0!important;
+  border-radius:0!important;
+  margin:0!important;
+  padding:0!important;
+  box-shadow:none!important;
+  background:none!important;
+  overflow:hidden!important;
+}
+
+.stage-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* Keep no ugly white border/card look in stage modules */
+body.plugin-ui-final.plugin-months .stage,
+body.plugin-ui-final.plugin-numbers .spotlight-wrap,
+body.plugin-ui-final.plugin-salahnames .stage{
+  background:rgba(2,6,23,.15)!important;
+  border-radius:0!important;
+}
+
+/* Optional: months/numbers can preserve complete poster/image without crop */
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img,
+body.plugin-ui-final.plugin-salahnames .stage-img{
+  object-fit:contain!important;
+}
+
+/* Stage overlay layers above real image */
+.aquarium-layer,
+.number-overlay-layer,
+.story-overlay{
+  z-index:2!important;
+}
+
+/* Numbers spotlight, positioned by coordinates over the actual img */
+.number-focus-dot{
+  position:absolute!important;
+  width:clamp(48px,7vw,96px)!important;
+  height:clamp(48px,7vw,96px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.78),rgba(255,213,74,.28) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:5!important;
+  animation:numberPulse 1.05s ease-in-out infinite!important;
+}
+
+.number-focus-dot::before,
+.number-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(15px,2vw,28px);
+  text-shadow:0 0 10px white;
+  animation:numberSparkle 1.3s ease-in-out infinite;
+}
+.number-focus-dot::before{left:-12%;top:6%;}
+.number-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+
+@keyframes numberPulse{
+  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+}
+@keyframes numberSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+}
+
+/* Salah Names side panel: compact and above credits, not a tall blocking tile */
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-content{
+  position:absolute!important;
+  right:16px!important;
+  top:16px!important;
+  bottom:auto!important;
+  width:min(27vw,285px)!important;
+  min-width:210px!important;
+  max-height:calc(100% - 36px)!important;
+  padding:13px!important;
+  border-radius:19px!important;
+  background:rgba(15,23,42,.28)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  z-index:4!important;
+}
+
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-title{
+  font-size:clamp(1.55rem,3vw,2.8rem)!important;
+  margin:0 0 4px!important;
+}
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-sub{
+  font-size:clamp(.95rem,1.6vw,1.25rem)!important;
+}
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-badges{
+  margin-top:8px!important;
+  gap:6px!important;
+}
+body.plugin-ui-final.plugin-salahnames .story-stage .rakah-badge{
+  font-size:clamp(.8rem,1.2vw,1.02rem)!important;
+  padding:6px 9px!important;
+}
+
+/* Make credits less blocking over visual stage */
+body.plugin-ui-final .credits{
+  background:rgba(15,23,42,.12)!important;
+  padding:4px 8px!important;
+  line-height:1!important;
+}
+body.plugin-ui-final .amtun{font-size:.98rem!important;}
+body.plugin-ui-final .credits div:first-child,
+body.plugin-ui-final .credits div:last-child{font-size:.66rem!important;}
+
+/* Stage modules: tiny topbar only */
+body.plugin-ui-final .topbar{
+  margin-bottom:4px!important;
+}
+body.plugin-ui-final .topbar button,
+body.plugin-ui-final .topbar select{
+  padding:6px 10px!important;
+  font-size:.82rem!important;
+}
+
+/* Allah names must stay single page, not huge scrolling */
+body.plugin-ui-final.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  grid-template-rows:repeat(2,1fr)!important;
+  gap:10px!important;
+  height:calc(100vh - 118px)!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final.plugin-names .card{
+  min-height:0!important;
+  height:100%!important;
+  padding:12px!important;
+  border-radius:20px!important;
+}
+
+@media(max-width:768px){
+  body.plugin-ui-final .grid.stage-render{
+    height:calc(100vh - 112px)!important;
+  }
+
+  body.plugin-ui-final.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-template-rows:repeat(3,1fr)!important;
+    height:calc(100vh - 112px)!important;
+  }
+
+  body.plugin-ui-final.plugin-salahnames .story-stage .stage-content{
+    left:10px!important;
+    right:10px!important;
+    top:auto!important;
+    bottom:8px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-height:34%!important;
+  }
+}
+
 </style>
 </head>
 
@@ -1258,6 +1447,7 @@ currentPlugin = null;
 document.body.classList.add("landing-mode");
 document.body.classList.remove("plugin-stage-mode");
 setScreenMode("landing");
+setStageGridMode(false);
 clearGrid();
 stopAll(false);
 setHeader("🌙 Mariam & Hamza's 🌙","✨Choose Your Prism Adventure!✨");
@@ -1334,6 +1524,7 @@ currentPlugin = entry.plugin || {id:"salah",title:"Salah"};
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
 setScreenMode("external","external");
+setStageGridMode(true);
 clearGrid();
 stopAll(false);
 setHeader("🕌 Salah"," ");
@@ -1361,6 +1552,7 @@ currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
 document.body.classList.remove("landing-mode");
 document.body.classList.remove("plugin-stage-mode");
 setScreenMode("quran");
+setStageGridMode(false);
 setHeader("🌙 Mariam & Hamza's 🌙","✨Quran Adventures with Mom!✨");
 setTopbar(true,true);
 renderQuranItems();
@@ -1509,6 +1701,7 @@ currentPlugin = plugin;
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
 setScreenMode("plugin", plugin.id);
+setStageGridMode(true);
 const title = plugin.title || plugin.id || "Prism";
 setHeader(`✨ ${title} ✨`, subtitleForEngine(plugin));
 setTopbar(true,true);
@@ -1548,6 +1741,33 @@ if(plugin.tileImage && typeof plugin.tileImage === "string") imgs.unshift(plugin
 return [...new Set(imgs)];
 }
 
+
+
+/* ================= FINAL STAGE RENDER HELPERS ================= */
+function setStageGridMode(on){
+if(on) grid.classList.add("stage-render");
+else grid.classList.remove("stage-render");
+}
+
+function makeFullVisualStage(className, imagePath){
+const stage = document.createElement("div");
+stage.className = className + " full-visual";
+if(imagePath){
+  const img = document.createElement("img");
+  img.className = "stage-img";
+  img.src = imagePath;
+  img.alt = "";
+  stage.appendChild(img);
+}
+return stage;
+}
+
+function startStoryAutoSequence(seq, audio){
+runStorySequence(seq);
+if(audio){
+  audio.addEventListener("play",()=>runStorySequence(seq));
+}
+}
 
 /* ================= PLUGIN EFFECT SYSTEM ================= */
 const DEFAULT_MONTHS_FISH_ZONES = [
@@ -1628,32 +1848,21 @@ layer.appendChild(b);
 /* ================= DIRECT AUDIO ENGINE ================= */
 function buildDirectAudio(plugin, autoplay){
 clearGrid();
+setStageGridMode(true);
 const mp3s = pluginMp3s(plugin);
 const audioFile = plugin.primaryAudio || mp3s[0];
 const theme = plugin.theme || plugin.id;
 if(!audioFile) return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
 
-const stage = document.createElement("div");
-stage.className = "stage";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
-stage.style.background = bg ? `url('${bg}')` : gradientFor(theme);
+const stage = makeFullVisualStage("stage", bg);
 
-const hidePanel = true; // direct-audio modules should use full-screen visual stage, not inner tile panel.
-
-stage.innerHTML = `
-<div class="story-overlay"></div>
-${hidePanel ? "" : `
-<div class="stage-content">
-  <div class="stage-title">${plugin.title || ""}</div>
-  <div class="stage-sub"> </div>
-</div>`}
-<audio src="${audioFile}" preload="auto"></audio>
-`;
+stage.innerHTML += `<audio src="${audioFile}" preload="auto"></audio>`;
 
 if(plugin.effect && plugin.effect.type){
-applyPluginEffect(stage, plugin);
+  applyPluginEffect(stage, plugin);
 } else {
-addBubbles(stage,10);
+  addBubbles(stage,10);
 }
 
 grid.appendChild(stage);
@@ -1698,6 +1907,7 @@ const mp3s = pluginMp3s(plugin);
 const theme = plugin.theme || plugin.id;
 
 if(plugin.id === "names" && mp3s.length){
+setStageGridMode(false);
 mp3s.forEach((file,idx)=>{
 const label = normalizeFileName(file).replace("_","–");
 const item = {
@@ -1717,16 +1927,13 @@ updateFocus();
 return;
 }
 
-const audioFile = plugin.primaryAudio || mp3s[0];
-if(!audioFile && plugin.id !== "numbers") return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
-
-const wrap = document.createElement("div");
-wrap.className = "spotlight-wrap";
+setStageGridMode(true);
+const audioFile = plugin.primaryAudio || mp3s[0] || "";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
-wrap.style.background = bg ? `url('${bg}')` : gradientFor(theme);
-
 const isNumberSpotlight = plugin.effect && plugin.effect.type === "numberSpotlight";
-wrap.innerHTML = `
+
+const wrap = makeFullVisualStage("spotlight-wrap", bg);
+wrap.innerHTML += `
 ${isNumberSpotlight ? `<div class="number-focus-dot" id="numberFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
@@ -1736,26 +1943,25 @@ const audio = wrap.querySelector("audio");
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
 items.push(item);
 map[plugin.id] = item;
-wrap.onclick = ()=>play(plugin.id);
+wrap.onclick = ()=>{ if(audio) play(plugin.id); else advanceNumberSpotlight(plugin); };
 updateFocus();
 
 if(isNumberSpotlight){
-positionNumberFocus(plugin, 0);
+positionNumberFocus(plugin,0);
 if(audio){
-audio.addEventListener("play",()=>startNumberSpotlight(plugin,audio));
-audio.addEventListener("pause",()=>stopNumberSpotlight());
-audio.addEventListener("ended",()=>stopNumberSpotlight());
+  audio.addEventListener("play",()=>startNumberSpotlight(plugin,audio));
+  audio.addEventListener("pause",()=>stopNumberSpotlight());
+  audio.addEventListener("ended",()=>stopNumberSpotlight());
 } else {
-let demoIndex = 0;
-stopNumberSpotlight();
-numberSpotlightTimer = setInterval(()=>{ demoIndex++; positionNumberFocus(plugin,demoIndex); }, 1400);
+  startNumberDemo(plugin);
 }
 }
 
-if(autoplay) setTimeout(()=>play(plugin.id),400);
+if(autoplay && audio) setTimeout(()=>play(plugin.id),400);
 }
 
 let numberSpotlightTimer = null;
+let numberDemoIndex = 0;
 
 function stopNumberSpotlight(){
 if(numberSpotlightTimer){
@@ -1774,31 +1980,45 @@ const dot = document.getElementById("numberFocusDot");
 if(!dot) return;
 const keys = orderedNumberKeys(plugin);
 if(!keys.length) return;
-const key = keys[index % keys.length];
+const key = keys[((index % keys.length) + keys.length) % keys.length];
 const p = plugin.coordinates[key];
 if(!p) return;
 dot.style.left = p.x + "%";
 dot.style.top = p.y + "%";
+dot.dataset.index = String(index);
 dot.dataset.number = key;
+}
+
+function advanceNumberSpotlight(plugin){
+numberDemoIndex++;
+positionNumberFocus(plugin, numberDemoIndex);
+}
+
+function startNumberDemo(plugin){
+stopNumberSpotlight();
+numberDemoIndex = 0;
+positionNumberFocus(plugin,0);
+numberSpotlightTimer = setInterval(()=>advanceNumberSpotlight(plugin),1400);
 }
 
 function startNumberSpotlight(plugin,audio){
 stopNumberSpotlight();
 const keys = orderedNumberKeys(plugin);
 if(!keys.length) return;
-
-let i = 0;
-positionNumberFocus(plugin,i);
-
-const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
-const stepMs = duration ? Math.max(650,(duration * 1000) / keys.length) : 1800;
+positionNumberFocus(plugin,0);
 
 numberSpotlightTimer = setInterval(()=>{
 if(!audio || audio.paused || audio.ended){
 stopNumberSpotlight();
 return;
 }
-i = Math.min(keys.length-1, Math.floor((audio.currentTime / Math.max(audio.duration || 1,1)) * keys.length));
+const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
+let i = 0;
+if(duration){
+  i = Math.min(keys.length-1, Math.floor((audio.currentTime / duration) * keys.length));
+} else {
+  i = (Number(document.getElementById("numberFocusDot")?.dataset.index || 0) + 1) % keys.length;
+}
 positionNumberFocus(plugin,i);
 },250);
 }
@@ -1806,16 +2026,16 @@ positionNumberFocus(plugin,i);
 /* ================= STORY ENGINE ================= */
 function buildStory(plugin, autoplay){
 clearGrid();
+setStageGridMode(true);
 const theme = plugin.theme || plugin.id;
 const mp3s = pluginMp3s(plugin);
 const audioFile = plugin.primaryAudio || mp3s[0] || "";
 const seq = Array.isArray(plugin.sequence) && plugin.sequence.length ? plugin.sequence : defaultSalahNamesSequence();
 
-const stage = document.createElement("div");
-stage.className = "stage story-stage";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
-stage.style.background = bg ? `url('${bg}')` : gradientFor(theme);
-stage.innerHTML = `
+const stage = makeFullVisualStage("stage story-stage", bg);
+
+stage.innerHTML += `
 <div class="story-overlay story-dawn" id="storyOverlay"></div>
 <div class="stage-content">
   <div class="stage-title" id="storyArabic">${seq[0].arabic || ""}</div>
@@ -1833,6 +2053,7 @@ map[plugin.id] = item;
 stage.onclick = ()=>{ if(audio) play(plugin.id); runStorySequence(seq); };
 updateFocus();
 renderStoryStep(seq[0]);
+runStorySequence(seq);
 if(autoplay){ setTimeout(()=>{ if(audio) play(plugin.id); runStorySequence(seq); },400); }
 }
 
@@ -2208,7 +2429,7 @@ const item = items[TV.focused];
 if(!item) return;
 if(item.type === "landing") openMenuEntry(item.entry);
 else if(item.type === "audio") play(item.id);
-else if(item.type === "spotlight" && currentPlugin) { positionNumberFocus(currentPlugin, ((Number(document.getElementById("numberFocusDot")?.dataset.number)||0))); }
+else if(item.type === "spotlight" && currentPlugin) { advanceNumberSpotlight(currentPlugin); }
 else if(item.type === "story") runStorySequence(defaultSalahNamesSequence());
 }
 }
