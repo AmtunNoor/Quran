@@ -1192,6 +1192,40 @@ body.plugin-ui-final.plugin-names .card{
   }
 }
 
+
+/* ================= V4 COORDINATE SPOTLIGHT FINAL ================= */
+.coordinate-focus-dot{
+  position:absolute!important;
+  width:clamp(52px,7vw,108px)!important;
+  height:clamp(52px,7vw,108px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.76),rgba(255,213,74,.30) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:8!important;
+  animation:coordinatePulse 1.05s ease-in-out infinite!important;
+}
+.coordinate-focus-dot::before,
+.coordinate-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(15px,2vw,28px);
+  text-shadow:0 0 10px white;
+  animation:coordinateSparkle 1.3s ease-in-out infinite;
+}
+.coordinate-focus-dot::before{left:-12%;top:6%;}
+.coordinate-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+@keyframes coordinatePulse{
+  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+}
+@keyframes coordinateSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+}
+
 </style>
 </head>
 
@@ -1930,55 +1964,62 @@ return;
 setStageGridMode(true);
 const audioFile = plugin.primaryAudio || mp3s[0] || "";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
-const isNumberSpotlight = plugin.effect && plugin.effect.type === "numberSpotlight";
+const effectType = plugin.effect && plugin.effect.type;
+const isCoordinateSpotlight = effectType === "coordinateSpotlight" || effectType === "numberSpotlight";
 
 const wrap = makeFullVisualStage("spotlight-wrap", bg);
 wrap.innerHTML += `
-${isNumberSpotlight ? `<div class="number-focus-dot" id="numberFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
+${isCoordinateSpotlight ? `<div class="coordinate-focus-dot" id="coordinateFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
+
+// Months can still use water/bubble ambience while using the same coordinate spotlight logic.
+if(plugin.effect && (plugin.effect.waterRays || plugin.effect.bubbles)){
+  applyAmbientEffect(wrap, plugin.effect);
+}
+
 grid.appendChild(wrap);
 
 const audio = wrap.querySelector("audio");
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
 items.push(item);
 map[plugin.id] = item;
-wrap.onclick = ()=>{ if(audio) play(plugin.id); else advanceNumberSpotlight(plugin); };
+wrap.onclick = ()=>{ if(audio) play(plugin.id); else advanceCoordinateSpotlight(plugin); };
 updateFocus();
 
-if(isNumberSpotlight){
-positionNumberFocus(plugin,0);
+if(isCoordinateSpotlight){
+positionCoordinateFocus(plugin,0);
 if(audio){
-  audio.addEventListener("play",()=>startNumberSpotlight(plugin,audio));
-  audio.addEventListener("pause",()=>stopNumberSpotlight());
-  audio.addEventListener("ended",()=>stopNumberSpotlight());
+  audio.addEventListener("play",()=>startCoordinateSpotlight(plugin,audio));
+  audio.addEventListener("pause",()=>stopCoordinateSpotlight());
+  audio.addEventListener("ended",()=>stopCoordinateSpotlight());
 } else {
-  startNumberDemo(plugin);
+  startCoordinateDemo(plugin);
 }
 }
 
-if(autoplay && audio) setTimeout(()=>play(plugin.id),400);
+if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),400);
 }
 
-let numberSpotlightTimer = null;
-let numberDemoIndex = 0;
+let coordinateSpotlightTimer = null;
+let coordinateDemoIndex = 0;
 
-function stopNumberSpotlight(){
-if(numberSpotlightTimer){
-clearInterval(numberSpotlightTimer);
-numberSpotlightTimer = null;
+function stopCoordinateSpotlight(){
+if(coordinateSpotlightTimer){
+clearInterval(coordinateSpotlightTimer);
+coordinateSpotlightTimer = null;
 }
 }
 
-function orderedNumberKeys(plugin){
+function orderedCoordinateKeys(plugin){
 const coords = plugin.coordinates || {};
 return Object.keys(coords).sort((a,b)=>Number(a)-Number(b));
 }
 
-function positionNumberFocus(plugin, index){
-const dot = document.getElementById("numberFocusDot");
+function positionCoordinateFocus(plugin, index){
+const dot = document.getElementById("coordinateFocusDot");
 if(!dot) return;
-const keys = orderedNumberKeys(plugin);
+const keys = orderedCoordinateKeys(plugin);
 if(!keys.length) return;
 const key = keys[((index % keys.length) + keys.length) % keys.length];
 const p = plugin.coordinates[key];
@@ -1986,30 +2027,30 @@ if(!p) return;
 dot.style.left = p.x + "%";
 dot.style.top = p.y + "%";
 dot.dataset.index = String(index);
-dot.dataset.number = key;
+dot.dataset.key = key;
 }
 
-function advanceNumberSpotlight(plugin){
-numberDemoIndex++;
-positionNumberFocus(plugin, numberDemoIndex);
+function advanceCoordinateSpotlight(plugin){
+coordinateDemoIndex++;
+positionCoordinateFocus(plugin, coordinateDemoIndex);
 }
 
-function startNumberDemo(plugin){
-stopNumberSpotlight();
-numberDemoIndex = 0;
-positionNumberFocus(plugin,0);
-numberSpotlightTimer = setInterval(()=>advanceNumberSpotlight(plugin),1400);
+function startCoordinateDemo(plugin){
+stopCoordinateSpotlight();
+coordinateDemoIndex = 0;
+positionCoordinateFocus(plugin,0);
+coordinateSpotlightTimer = setInterval(()=>advanceCoordinateSpotlight(plugin),1400);
 }
 
-function startNumberSpotlight(plugin,audio){
-stopNumberSpotlight();
-const keys = orderedNumberKeys(plugin);
+function startCoordinateSpotlight(plugin,audio){
+stopCoordinateSpotlight();
+const keys = orderedCoordinateKeys(plugin);
 if(!keys.length) return;
-positionNumberFocus(plugin,0);
+positionCoordinateFocus(plugin,0);
 
-numberSpotlightTimer = setInterval(()=>{
+coordinateSpotlightTimer = setInterval(()=>{
 if(!audio || audio.paused || audio.ended){
-stopNumberSpotlight();
+stopCoordinateSpotlight();
 return;
 }
 const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
@@ -2017,10 +2058,27 @@ let i = 0;
 if(duration){
   i = Math.min(keys.length-1, Math.floor((audio.currentTime / duration) * keys.length));
 } else {
-  i = (Number(document.getElementById("numberFocusDot")?.dataset.index || 0) + 1) % keys.length;
+  i = (Number(document.getElementById("coordinateFocusDot")?.dataset.index || 0) + 1) % keys.length;
 }
-positionNumberFocus(plugin,i);
+positionCoordinateFocus(plugin,i);
 },250);
+}
+
+function applyAmbientEffect(stage, effect){
+const layer = document.createElement("div");
+layer.className = "aquarium-layer";
+
+if(effect.waterRays !== false){
+const rays = document.createElement("div");
+rays.className = "aquarium-water-rays";
+layer.appendChild(rays);
+}
+
+if(effect.bubbles !== false){
+addBubblesToLayer(layer, effect.bubbleCount || 16);
+}
+
+stage.appendChild(layer);
 }
 
 /* ================= STORY ENGINE ================= */
@@ -2429,7 +2487,7 @@ const item = items[TV.focused];
 if(!item) return;
 if(item.type === "landing") openMenuEntry(item.entry);
 else if(item.type === "audio") play(item.id);
-else if(item.type === "spotlight" && currentPlugin) { advanceNumberSpotlight(currentPlugin); }
+else if(item.type === "spotlight" && currentPlugin) { advanceCoordinateSpotlight(currentPlugin); }
 else if(item.type === "story") runStorySequence(defaultSalahNamesSequence());
 }
 }
