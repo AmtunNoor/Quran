@@ -274,7 +274,7 @@ function normalizeEngine(plugin) {
 
   if (id === "quran" || plugin.type === "core-quran") return "learning";
   if (id === "salah" || plugin.type === "core-salah") return "external";
-  if (raw === "directAudio" || raw === "direct-audio" || plugin.playFromLanding === true || id === "months") return "directAudio";
+  if (raw === "directAudio" || raw === "direct-audio") return "directAudio";
   if (raw === "spotlight" || id === "numbers" || id === "names") return "spotlight";
   if (raw === "story" || id === "salahnames" || id === "salah-names") return "story";
   if (raw === "sequence") return "sequence";
@@ -437,7 +437,8 @@ function buildPlugin(plugin, slicesInfo) {
   const backgroundImage = pickBackgroundImage(plugin, folder, tileImage);
   const primaryAudio = pickPrimaryAudio(plugin, folder, auds);
 
-  const playFromLanding = engine === "directAudio" || plugin.playFromLanding === true;
+  const playFromLanding = engine === "directAudio";
+  const autoStart = plugin.autoStart === true || plugin.autoplay === true;
 
   const pluginConfig = {
     ...plugin,
@@ -460,6 +461,7 @@ function buildPlugin(plugin, slicesInfo) {
     images: imgs,
 
     playFromLanding,
+    autoStart,
     directAudio: playFromLanding,
     action: playFromLanding ? "direct-audio" : "open-plugin",
 
@@ -506,7 +508,7 @@ function buildPlugin(plugin, slicesInfo) {
 
   return {
     title: plugin.title,
-    mainUrl: playFromLanding
+    mainUrl: (playFromLanding || autoStart)
       ? `${LOCAL_BASE}/index.html?plugin=${plugin.id}&autoplay=1`
       : `${LOCAL_BASE}/index.html?plugin=${plugin.id}`,
     plugin: pluginConfig,
