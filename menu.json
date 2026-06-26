@@ -706,7 +706,7 @@
   },
   {
     "title": "Arabic Numbers",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers&autoplay=1",
     "plugin": {
       "id": "numbers",
       "title": "Arabic Numbers",
@@ -725,9 +725,9 @@
         "fallback": "duration"
       },
       "effect": {
-        "type": "numberSpotlight",
+        "type": "coordinateSpotlight",
         "backgroundStatic": true,
-        "focusOneNumber": true,
+        "focusOneItem": true,
         "followAudio": true,
         "activeScale": 1.25,
         "glow": true,
@@ -818,6 +818,9 @@
           "float": true
         }
       },
+      "autoStart": true,
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
       "type": "plugin",
       "tileImage": "numbers/numbers.jpeg",
       "backgroundImage": "numbers/numbers.jpeg",
@@ -826,11 +829,8 @@
       "images": [
         "numbers/numbers.jpeg"
       ],
-      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
-      "audioMode": "single-file-pauses",
-      "segmentDetection": "silence",
       "fallback": "duration",
       "learningMode": null,
       "tilePalette": [
