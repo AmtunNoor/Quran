@@ -185,6 +185,7 @@
       ],
       "audioMode": "multiple-files",
       "theme": "dua",
+      "renderer": "gallery",
       "tileImage": {
         "type": "gradient",
         "style": "colorful",
@@ -398,6 +399,7 @@
           "float": true
         }
       },
+      "renderer": "spotlight",
       "tileImage": "months/months_icon.jpeg",
       "backgroundImage": "months/months_background.jpeg",
       "primaryAudio": "months/months.mp3",
@@ -484,6 +486,7 @@
         "namesPerChunk": 4,
         "repeatCount": 5
       },
+      "renderer": "spotlight",
       "tileImage": "names/names.jpeg",
       "backgroundImage": "names/names.jpeg",
       "primaryAudio": "names/1_27.mp3",
@@ -643,6 +646,7 @@
         }
       ],
       "autoStart": true,
+      "renderer": "story",
       "tileImage": "salahnames/salahnames.jpeg",
       "backgroundImage": "salahnames/salahnames.jpeg",
       "primaryAudio": "salahnames/salahnames.mp3",
@@ -822,6 +826,7 @@
       "audioMode": "single-file-pauses",
       "segmentDetection": "silence",
       "type": "plugin",
+      "renderer": "spotlight",
       "tileImage": "numbers/numbers.jpeg",
       "backgroundImage": "numbers/numbers.jpeg",
       "primaryAudio": null,
