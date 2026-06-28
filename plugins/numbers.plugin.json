@@ -111,5 +111,6 @@
   },
   "autoStart": true,
   "audioMode": "single-file-pauses",
-  "segmentDetection": "silence"
+  "segmentDetection": "silence",
+  "renderer": "visual"
 }
