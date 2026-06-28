@@ -5,7 +5,10 @@
   "priority": 3,
   "folder": "duas",
   "engine": "gallery",
-  "supports": ["listen"],
+  "supports": [
+    "listen"
+  ],
   "audioMode": "multiple-files",
-  "theme": "dua"
+  "theme": "dua",
+  "renderer": "grid"
 }
