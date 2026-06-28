@@ -580,7 +580,7 @@
   },
   {
     "title": "Salah Names",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names&autoplay=1",
     "plugin": {
       "id": "salah-names",
       "title": "Salah Names",
@@ -642,6 +642,7 @@
           ]
         }
       ],
+      "autoStart": true,
       "tileImage": "salahnames/salahnames.jpeg",
       "backgroundImage": "salahnames/salahnames.jpeg",
       "primaryAudio": "salahnames/salahnames.mp3",
@@ -652,7 +653,6 @@
         "salahnames/salahnames.jpeg"
       ],
       "playFromLanding": false,
-      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "effect": {
