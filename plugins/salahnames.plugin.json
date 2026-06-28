@@ -55,9 +55,9 @@
       "rakah": [
         "4 Fard",
         "2 Sunnah",
-        "3 Witr"
+        "Witr"
       ]
     }
   ],
-  "autoStart": true
+  "renderer": "story"
 }
