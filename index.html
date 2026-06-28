@@ -1352,25 +1352,24 @@ body.plugin-ui-final.plugin-numbers .spotlight-wrap{
 }
 
 
-/* ================= PRISM V4.1 FINAL RESPONSIVE RENDERER ================= */
+/* ================= PRISM V4.1 TESTED RENDERER FINAL OVERRIDE ================= */
+:root{--prism-vh:100vh;}
 
-/* Plugin pages: compact controls + maximum visual area */
 body.plugin-ui-final{
-  height:100dvh!important;
-  min-height:100dvh!important;
+  height:var(--prism-vh)!important;
+  min-height:var(--prism-vh)!important;
   overflow:hidden!important;
   padding:8px 10px 46px!important;
 }
 
 body.plugin-ui-final #pageTitle,
-body.plugin-ui-final #pageSubtitle{
-  display:none!important;
-}
+body.plugin-ui-final #pageSubtitle{display:none!important;}
 
 body.plugin-ui-final .topbar{
   margin:0 0 6px!important;
-  gap:7px!important;
   min-height:36px!important;
+  gap:7px!important;
+  flex-shrink:0!important;
 }
 
 body.plugin-ui-final .topbar button,
@@ -1383,11 +1382,12 @@ body.plugin-ui-final .topbar select{
 body.plugin-ui-final .grid.stage-render{
   display:block!important;
   width:100%!important;
-  height:calc(100dvh - 98px)!important;
-  min-height:260px!important;
+  height:calc(var(--prism-vh) - 98px)!important;
+  min-height:220px!important;
   margin:0!important;
   padding:0!important;
   overflow:hidden!important;
+  flex:1 1 auto!important;
 }
 
 body.plugin-ui-final .stage.full-visual,
@@ -1396,17 +1396,29 @@ body.plugin-ui-final .spotlight-wrap.full-visual{
   width:100%!important;
   height:100%!important;
   min-height:0!important;
-  padding:0!important;
   margin:0!important;
+  padding:0!important;
   border:0!important;
-  border-radius:0!important;
   outline:0!important;
-  overflow:hidden!important;
+  border-radius:0!important;
   box-shadow:none!important;
-  background:radial-gradient(circle at center,rgba(15,23,42,.35),rgba(2,6,23,.92))!important;
+  overflow:hidden!important;
+  background:#020617!important;
 }
 
-/* Exact rule: no distortion, largest possible image, coordinates mapped to actual visible image rectangle. */
+.stage-bg-cover{
+  position:absolute!important;
+  inset:-18px!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  filter:blur(14px) saturate(1.15)!important;
+  transform:scale(1.04)!important;
+  opacity:.42!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+
 .stage-img{
   position:absolute!important;
   inset:0!important;
@@ -1417,17 +1429,17 @@ body.plugin-ui-final .spotlight-wrap.full-visual{
   display:block!important;
   visibility:visible!important;
   opacity:1!important;
-  z-index:0!important;
+  z-index:1!important;
   pointer-events:none!important;
 }
 
-/* Months and Numbers are precise coordinate images. Never stretch them. */
+/* Months + Numbers are coordinate artwork: no distortion, map effects to actual image rectangle */
 body.plugin-ui-final.plugin-months .stage-img,
 body.plugin-ui-final.plugin-numbers .stage-img{
   object-fit:contain!important;
 }
 
-/* Salah Names is scenic; cover gives full stage without obvious distortion. */
+/* Salah names is scenic: fill stage without stretching obvious subjects */
 body.plugin-ui-final.plugin-salah-names .stage-img,
 body.plugin-ui-final.plugin-salahnames .stage-img{
   object-fit:cover!important;
@@ -1435,14 +1447,14 @@ body.plugin-ui-final.plugin-salahnames .stage-img{
 
 .coordinate-focus-dot{
   position:absolute!important;
-  width:clamp(52px,7vw,108px)!important;
-  height:clamp(52px,7vw,108px)!important;
+  width:clamp(46px,6.2vw,96px)!important;
+  height:clamp(46px,6.2vw,96px)!important;
   border-radius:50%!important;
-  background:radial-gradient(circle,rgba(255,232,92,.82),rgba(255,213,74,.30) 42%,rgba(255,213,74,0) 72%)!important;
-  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
-  transform:translate(-50%,-50%) scale(1)!important;
+  background:radial-gradient(circle,rgba(255,235,115,.88),rgba(255,213,74,.30) 44%,rgba(255,213,74,0) 74%)!important;
+  box-shadow:0 0 18px rgba(255,213,74,.95),0 0 42px rgba(255,255,255,.42)!important;
+  transform:translate(-50%,-50%)!important;
   pointer-events:none!important;
-  z-index:8!important;
+  z-index:9!important;
   animation:coordinatePulse 1.05s ease-in-out infinite!important;
 }
 
@@ -1451,23 +1463,25 @@ body.plugin-ui-final.plugin-salahnames .stage-img{
   content:"✦";
   position:absolute;
   color:#fff8b5;
-  font-size:clamp(15px,2vw,28px);
+  font-size:clamp(13px,1.8vw,26px);
   text-shadow:0 0 10px white;
   animation:coordinateSparkle 1.3s ease-in-out infinite;
 }
-.coordinate-focus-dot::before{left:-12%;top:6%;}
-.coordinate-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+.coordinate-focus-dot::before{left:-10%;top:4%;}
+.coordinate-focus-dot::after{right:-8%;bottom:2%;animation-delay:.45s;}
 
 @keyframes coordinatePulse{
-  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+  0%,100%{opacity:.64;transform:translate(-50%,-50%) scale(.88);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.20);}
 }
 @keyframes coordinateSparkle{
   0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
-  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+  50%{opacity:1;transform:scale(1.15) rotate(18deg);}
 }
 
-/* Salah Names readable panel and lighter Isha */
+body.plugin-ui-final .aquarium-layer{z-index:5!important;}
+
+/* Salah Names panel: readable and not over credits */
 body.plugin-ui-final .story-stage .stage-content{
   position:absolute!important;
   right:14px!important;
@@ -1478,44 +1492,35 @@ body.plugin-ui-final .story-stage .stage-content{
   max-height:calc(100% - 28px)!important;
   padding:12px!important;
   border-radius:18px!important;
-  background:rgba(15,23,42,.30)!important;
+  background:rgba(15,23,42,.34)!important;
   border:1px solid rgba(255,255,255,.18)!important;
   backdrop-filter:blur(8px)!important;
   -webkit-backdrop-filter:blur(8px)!important;
-  z-index:4!important;
+  z-index:8!important;
 }
 
 body.plugin-ui-final .story-stage .stage-title{
-  font-size:clamp(1.55rem,3vw,2.8rem)!important;
-  margin:0 0 4px!important;
+  font-size:clamp(1.45rem,2.8vw,2.7rem)!important;
+  margin:0 0 3px!important;
 }
-body.plugin-ui-final .story-stage .stage-sub{
-  font-size:clamp(.95rem,1.6vw,1.25rem)!important;
-}
-body.plugin-ui-final .story-stage .stage-badges{
-  margin-top:8px!important;
-  gap:6px!important;
-}
-body.plugin-ui-final .story-stage .rakah-badge{
-  font-size:clamp(.8rem,1.2vw,1.02rem)!important;
-  padding:6px 9px!important;
-}
+body.plugin-ui-final .story-stage .stage-sub{font-size:clamp(.9rem,1.5vw,1.2rem)!important;}
+body.plugin-ui-final .story-stage .stage-badges{margin-top:8px!important;gap:6px!important;}
+body.plugin-ui-final .story-stage .rakah-badge{font-size:clamp(.78rem,1.1vw,1rem)!important;padding:6px 9px!important;}
 
-/* Lighter Isha: night but readable */
+/* Lighter Isha while keeping night feel */
 body.plugin-ui-final .story-night{
-  background:linear-gradient(rgba(15,23,42,.46),rgba(30,64,175,.32))!important;
+  background:linear-gradient(rgba(15,23,42,.40),rgba(30,64,175,.28))!important;
 }
 
-/* Compact Allah Names grid */
+/* Allah Names grid fixed */
 body.plugin-ui-final.plugin-names .grid{
   display:grid!important;
   grid-template-columns:repeat(3,1fr)!important;
   grid-template-rows:repeat(2,1fr)!important;
   gap:10px!important;
-  height:calc(100dvh - 98px)!important;
+  height:calc(var(--prism-vh) - 98px)!important;
   overflow:hidden!important;
 }
-
 body.plugin-ui-final.plugin-names .card{
   min-height:0!important;
   height:100%!important;
@@ -1523,7 +1528,7 @@ body.plugin-ui-final.plugin-names .card{
   border-radius:20px!important;
 }
 
-/* Compact Dua / coming soon card */
+/* Dua/empty gallery compact */
 body.plugin-ui-final.plugin-dua .grid,
 body.plugin-ui-final.plugin-duas .grid{
   display:grid!important;
@@ -1531,7 +1536,7 @@ body.plugin-ui-final.plugin-duas .grid{
   justify-content:center!important;
   align-content:start!important;
   gap:16px!important;
-  height:calc(100dvh - 98px)!important;
+  height:calc(var(--prism-vh) - 98px)!important;
   overflow:hidden!important;
   padding-top:18px!important;
 }
@@ -1544,11 +1549,9 @@ body.plugin-ui-final.plugin-duas .card{
   padding:16px!important;
 }
 body.plugin-ui-final.plugin-dua .english,
-body.plugin-ui-final.plugin-duas .english{
-  display:none!important;
-}
+body.plugin-ui-final.plugin-duas .english{display:none!important;}
 
-/* Transparent credits for visual modules */
+/* More transparent credits */
 body.plugin-ui-final .credits{
   background:rgba(15,23,42,.12)!important;
   padding:4px 8px!important;
@@ -1561,32 +1564,19 @@ body.plugin-ui-final .credits div:first-child,
 body.plugin-ui-final .credits div:last-child{font-size:.66rem!important;}
 
 @media(max-width:768px){
-  body.plugin-ui-final{
-    padding:6px 7px 44px!important;
-  }
-
-  body.plugin-ui-final .topbar{
-    min-height:34px!important;
-    margin-bottom:5px!important;
-  }
-
+  body.plugin-ui-final{padding:6px 7px 42px!important;}
+  body.plugin-ui-final .topbar{min-height:32px!important;margin-bottom:4px!important;gap:5px!important;}
   body.plugin-ui-final .topbar button,
-  body.plugin-ui-final .topbar select{
-    padding:5px 7px!important;
-    font-size:.72rem!important;
-  }
-
+  body.plugin-ui-final .topbar select{padding:5px 7px!important;font-size:.72rem!important;}
   body.plugin-ui-final .grid.stage-render{
-    height:calc(100dvh - 88px)!important;
-    min-height:220px!important;
+    height:calc(var(--prism-vh) - 82px)!important;
+    min-height:200px!important;
   }
-
   body.plugin-ui-final.plugin-names .grid{
     grid-template-columns:repeat(2,1fr)!important;
     grid-template-rows:repeat(3,1fr)!important;
-    height:calc(100dvh - 88px)!important;
+    height:calc(var(--prism-vh) - 82px)!important;
   }
-
   body.plugin-ui-final .story-stage .stage-content{
     left:9px!important;
     right:9px!important;
@@ -1596,7 +1586,6 @@ body.plugin-ui-final .credits div:last-child{font-size:.66rem!important;}
     min-width:0!important;
     max-height:34%!important;
   }
-
   body.plugin-ui-final .story-stage .stage-badges{
     flex-direction:row!important;
     flex-wrap:wrap!important;
@@ -1670,12 +1659,6 @@ const surahs = [
 ];
 
 
-
-const FILE_META = {
-"02":   {name:"البقرة", eng:"Al Baqarah", emoji:"👑", color:"linear-gradient(135deg,#f59e0b,#facc15)"},
-"02_1": {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"}
-};
-
 const SURAH_META = {
 "2":   {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"},
 "55":  {name:"الرحمن", eng:"Ar Rahman", emoji:"🌿", color:"linear-gradient(135deg,#22c55e,#14b8a6)"},
@@ -1688,7 +1671,7 @@ const SURAH_META = {
 "99":  {name:"الزلزلة", eng:"Az Zalzalah", emoji:"🌍", color:"linear-gradient(135deg,#92400e,#f97316)"},
 "100": {name:"العاديات", eng:"Al Adiyat", emoji:"🐎", color:"linear-gradient(135deg,#ef4444,#f97316)"},
 "101": {name:"القارعة", eng:"Al Qariah", emoji:"⚡", color:"linear-gradient(135deg,#facc15,#ef4444)"},
-"102": {name:"التكاثر", eng:"At Takathur", emoji:"💰", color:"linear-gradient(135deg,#f59e0b,#f97316)"},
+"102": {name:"التكاثر", eng:"At Takathur", emoji:"🏆", color:"linear-gradient(135deg,#f59e0b,#f97316)"},
 "103": {name:"العصر", eng:"Al Asr", emoji:"⏳", color:"linear-gradient(135deg,#38bdf8,#6366f1)"},
 "104": {name:"الهمزة", eng:"Al Humazah", emoji:"🛡️", color:"linear-gradient(135deg,#8b5cf6,#ec4899)"},
 "105": {name:"الفيل", eng:"Al Feel", emoji:"🐘", color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
@@ -1841,6 +1824,14 @@ if(mode === "plugin" || mode === "external"){
 }
 }
 
+
+function setPrismViewportHeight(){
+document.documentElement.style.setProperty("--prism-vh", window.innerHeight + "px");
+}
+setPrismViewportHeight();
+window.addEventListener("resize",()=>setTimeout(setPrismViewportHeight,60));
+window.addEventListener("orientationchange",()=>setTimeout(setPrismViewportHeight,250));
+
 function clearTimers(){
 sequenceCancelToken++;
 if(storyTimer){ clearTimeout(storyTimer); storyTimer = null; }
@@ -1990,7 +1981,8 @@ return String(Number(m[0]));
 }
 
 function titleFromPath(path){
-const meta = metaForPath(path);
+const no = surahNumberFromPath(path);
+const meta = SURAH_META[no];
 if(meta) return meta.eng;
 const raw = normalizeFileName(path);
 return raw.replace(/[-_]/g," ").replace(/\b\w/g,m=>m.toUpperCase());
@@ -2001,14 +1993,12 @@ return SURAH_META[String(Number(no))] || null;
 }
 
 function metaForPath(path){
-const file = normalizeFileName(path);
-if(FILE_META && FILE_META[file]) return FILE_META[file];
 return metaForSurahNumber(surahNumberFromPath(path));
 }
 
 function makeSurahDisplayFromPath(path, fallbackIndex){
 const no = surahNumberFromPath(path);
-const meta = metaForPath(path);
+const meta = metaForSurahNumber(no);
 return {
   name: meta?.name || `سورة ${no || fallbackIndex + 1}`,
   eng: meta?.eng || `Surah ${no || titleFromPath(path)}`,
@@ -2107,6 +2097,7 @@ createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
 });
 
 updateFocus();
+prewarmVisibleAudios(24);
 
 const requested = params().get("id") || params().get("surah");
 if(requested && map[requested]){
@@ -2174,10 +2165,17 @@ function makeFullVisualStage(className, imagePath){
 const stage = document.createElement("div");
 stage.className = className + " full-visual";
 if(imagePath){
+  const bg = document.createElement("div");
+  bg.className = "stage-bg-cover";
+  bg.style.backgroundImage = `url('${imagePath}')`;
+  stage.appendChild(bg);
+
   const img = document.createElement("img");
   img.className = "stage-img";
   img.src = imagePath;
   img.alt = "";
+  img.decoding = "async";
+  img.loading = "eager";
   stage.appendChild(img);
 }
 return stage;
@@ -2346,6 +2344,7 @@ learningMode:slicesData[file] ? "slices" : "durationChunks"
 createAudioCard(item,idx,theme,false);
 });
 updateFocus();
+prewarmVisibleAudios(12);
 return;
 }
 
@@ -2377,7 +2376,6 @@ updateFocus();
 
 if(isCoordinateSpotlight){
 positionCoordinateFocus(plugin,0);
-setTimeout(()=>positionCoordinateFocus(plugin,0),180);
 if(audio){
   audio.addEventListener("play",()=>startCoordinateSpotlight(plugin,audio));
   audio.addEventListener("pause",()=>stopCoordinateSpotlight());
@@ -2544,6 +2542,8 @@ updateFocus();
 renderStoryStep(seq[0]);
 if(audio){
   audio.addEventListener("play",()=>runStorySequence(seq,audio));
+  audio.addEventListener("loadedmetadata",()=>{ if(!audio.paused) runStorySequence(seq,audio); });
+  audio.addEventListener("canplay",()=>{ if(!audio.paused) runStorySequence(seq,audio); });
 } else {
   runStorySequence(seq,null);
 }
@@ -2566,9 +2566,14 @@ if(!seq || !seq.length) return;
 
 let lastIndex = -1;
 
-const updateByAudio = ()=>{
-  if(!audio || !audio.duration || !isFinite(audio.duration)){
-    return false;
+const tick = ()=>{
+  if(!audio){
+    return;
+  }
+
+  if(!audio.duration || !isFinite(audio.duration)){
+    storyTimer = setTimeout(tick,120);
+    return;
   }
 
   const i = Math.min(seq.length - 1, Math.floor((audio.currentTime / audio.duration) * seq.length));
@@ -2578,22 +2583,17 @@ const updateByAudio = ()=>{
     renderStoryStep(seq[i]);
   }
 
-  if(audio.paused || audio.ended){
-    return false;
+  if(!audio.paused && !audio.ended){
+    storyTimer = setTimeout(tick,160);
   }
-
-  storyTimer = setTimeout(updateByAudio,180);
-  return true;
 };
 
-// Audio-synced mode: wait for real playback so overlay/audio never mismatch.
 if(audio){
-  if(!audio.paused && !audio.ended && updateByAudio()) return;
   renderStoryStep(seq[0]);
+  tick();
   return;
 }
 
-// Demo fallback only when no audio exists.
 let i=0;
 const step=()=>{
   renderStoryStep(seq[i % seq.length]);
@@ -2616,6 +2616,18 @@ badges.innerHTML = (step.rakah || []).map(r=>`<div class="rakah-badge">${r}</div
 }
 
 /* ================= CARD RENDERER ================= */
+
+function prewarmVisibleAudios(limit=24){
+try{
+  items.slice(0,limit).forEach(item=>{
+    if(item.audio){
+      item.audio.preload = "auto";
+      item.audio.load();
+    }
+  });
+}catch(e){}
+}
+
 function createAudioCard(s, idx, theme, showLearnBadge){
 const card = document.createElement("div");
 card.className = "card";
@@ -3048,15 +3060,6 @@ const dot = document.getElementById("coordinateFocusDot");
 if(dot && currentPlugin && currentPlugin.coordinates){
   const idx = Number(dot.dataset.index || 0);
   setTimeout(()=>positionCoordinateFocus(currentPlugin, idx),80);
-}
-});
-
-
-window.addEventListener("resize",()=>{
-const dot = document.getElementById("coordinateFocusDot");
-if(dot && currentPlugin && currentPlugin.coordinates){
-  const idx = Number(dot.dataset.index || 0);
-  setTimeout(()=>positionCoordinateFocus(currentPlugin, idx),90);
 }
 });
 
