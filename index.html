@@ -1351,6 +1351,259 @@ body.plugin-ui-final.plugin-numbers .spotlight-wrap{
   animation:coordinatePulse 1.05s ease-in-out infinite!important;
 }
 
+
+/* ================= PRISM V4.1 FINAL RESPONSIVE RENDERER ================= */
+
+/* Plugin pages: compact controls + maximum visual area */
+body.plugin-ui-final{
+  height:100dvh!important;
+  min-height:100dvh!important;
+  overflow:hidden!important;
+  padding:8px 10px 46px!important;
+}
+
+body.plugin-ui-final #pageTitle,
+body.plugin-ui-final #pageSubtitle{
+  display:none!important;
+}
+
+body.plugin-ui-final .topbar{
+  margin:0 0 6px!important;
+  gap:7px!important;
+  min-height:36px!important;
+}
+
+body.plugin-ui-final .topbar button,
+body.plugin-ui-final .topbar select{
+  padding:6px 9px!important;
+  border-radius:12px!important;
+  font-size:.8rem!important;
+}
+
+body.plugin-ui-final .grid.stage-render{
+  display:block!important;
+  width:100%!important;
+  height:calc(100dvh - 98px)!important;
+  min-height:260px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final .stage.full-visual,
+body.plugin-ui-final .spotlight-wrap.full-visual{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  border-radius:0!important;
+  outline:0!important;
+  overflow:hidden!important;
+  box-shadow:none!important;
+  background:radial-gradient(circle at center,rgba(15,23,42,.35),rgba(2,6,23,.92))!important;
+}
+
+/* Exact rule: no distortion, largest possible image, coordinates mapped to actual visible image rectangle. */
+.stage-img{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+
+/* Months and Numbers are precise coordinate images. Never stretch them. */
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img{
+  object-fit:contain!important;
+}
+
+/* Salah Names is scenic; cover gives full stage without obvious distortion. */
+body.plugin-ui-final.plugin-salah-names .stage-img,
+body.plugin-ui-final.plugin-salahnames .stage-img{
+  object-fit:cover!important;
+}
+
+.coordinate-focus-dot{
+  position:absolute!important;
+  width:clamp(52px,7vw,108px)!important;
+  height:clamp(52px,7vw,108px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.82),rgba(255,213,74,.30) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:8!important;
+  animation:coordinatePulse 1.05s ease-in-out infinite!important;
+}
+
+.coordinate-focus-dot::before,
+.coordinate-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(15px,2vw,28px);
+  text-shadow:0 0 10px white;
+  animation:coordinateSparkle 1.3s ease-in-out infinite;
+}
+.coordinate-focus-dot::before{left:-12%;top:6%;}
+.coordinate-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+
+@keyframes coordinatePulse{
+  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+}
+@keyframes coordinateSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+}
+
+/* Salah Names readable panel and lighter Isha */
+body.plugin-ui-final .story-stage .stage-content{
+  position:absolute!important;
+  right:14px!important;
+  top:14px!important;
+  bottom:auto!important;
+  width:min(27vw,285px)!important;
+  min-width:210px!important;
+  max-height:calc(100% - 28px)!important;
+  padding:12px!important;
+  border-radius:18px!important;
+  background:rgba(15,23,42,.30)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  z-index:4!important;
+}
+
+body.plugin-ui-final .story-stage .stage-title{
+  font-size:clamp(1.55rem,3vw,2.8rem)!important;
+  margin:0 0 4px!important;
+}
+body.plugin-ui-final .story-stage .stage-sub{
+  font-size:clamp(.95rem,1.6vw,1.25rem)!important;
+}
+body.plugin-ui-final .story-stage .stage-badges{
+  margin-top:8px!important;
+  gap:6px!important;
+}
+body.plugin-ui-final .story-stage .rakah-badge{
+  font-size:clamp(.8rem,1.2vw,1.02rem)!important;
+  padding:6px 9px!important;
+}
+
+/* Lighter Isha: night but readable */
+body.plugin-ui-final .story-night{
+  background:linear-gradient(rgba(15,23,42,.46),rgba(30,64,175,.32))!important;
+}
+
+/* Compact Allah Names grid */
+body.plugin-ui-final.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  grid-template-rows:repeat(2,1fr)!important;
+  gap:10px!important;
+  height:calc(100dvh - 98px)!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final.plugin-names .card{
+  min-height:0!important;
+  height:100%!important;
+  padding:12px!important;
+  border-radius:20px!important;
+}
+
+/* Compact Dua / coming soon card */
+body.plugin-ui-final.plugin-dua .grid,
+body.plugin-ui-final.plugin-duas .grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(190px,260px))!important;
+  justify-content:center!important;
+  align-content:start!important;
+  gap:16px!important;
+  height:calc(100dvh - 98px)!important;
+  overflow:hidden!important;
+  padding-top:18px!important;
+}
+body.plugin-ui-final.plugin-dua .card,
+body.plugin-ui-final.plugin-duas .card{
+  width:min(260px,88vw)!important;
+  height:190px!important;
+  min-height:190px!important;
+  border-radius:24px!important;
+  padding:16px!important;
+}
+body.plugin-ui-final.plugin-dua .english,
+body.plugin-ui-final.plugin-duas .english{
+  display:none!important;
+}
+
+/* Transparent credits for visual modules */
+body.plugin-ui-final .credits{
+  background:rgba(15,23,42,.12)!important;
+  padding:4px 8px!important;
+  line-height:1!important;
+  backdrop-filter:blur(4px)!important;
+  -webkit-backdrop-filter:blur(4px)!important;
+}
+body.plugin-ui-final .amtun{font-size:.98rem!important;}
+body.plugin-ui-final .credits div:first-child,
+body.plugin-ui-final .credits div:last-child{font-size:.66rem!important;}
+
+@media(max-width:768px){
+  body.plugin-ui-final{
+    padding:6px 7px 44px!important;
+  }
+
+  body.plugin-ui-final .topbar{
+    min-height:34px!important;
+    margin-bottom:5px!important;
+  }
+
+  body.plugin-ui-final .topbar button,
+  body.plugin-ui-final .topbar select{
+    padding:5px 7px!important;
+    font-size:.72rem!important;
+  }
+
+  body.plugin-ui-final .grid.stage-render{
+    height:calc(100dvh - 88px)!important;
+    min-height:220px!important;
+  }
+
+  body.plugin-ui-final.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-template-rows:repeat(3,1fr)!important;
+    height:calc(100dvh - 88px)!important;
+  }
+
+  body.plugin-ui-final .story-stage .stage-content{
+    left:9px!important;
+    right:9px!important;
+    top:auto!important;
+    bottom:8px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-height:34%!important;
+  }
+
+  body.plugin-ui-final .story-stage .stage-badges{
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    justify-content:center!important;
+  }
+}
+
 </style>
 </head>
 
@@ -1366,8 +1619,9 @@ body.plugin-ui-final.plugin-numbers .spotlight-wrap{
 <button id="loopBtn" tabindex="0" onclick="toggleLoopAll()">🔁 Loop OFF</button>
 <select id="mode" tabindex="0">
 <option value="listen" selected>🎧 Listen</option>
-<option value="repeat5">🔁 5x</option>
-<option value="hifz">🧠 Hifz</option>
+<option value="learnListen">🎓 Learn · Listen</option>
+<option value="repeat5">🎓 Learn · 5x</option>
+<option value="hifz">🎓 Learn · Hifz</option>
 </select>
 </div>
 
@@ -1415,6 +1669,12 @@ const surahs = [
 {id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
 ];
 
+
+
+const FILE_META = {
+"02":   {name:"البقرة", eng:"Al Baqarah", emoji:"👑", color:"linear-gradient(135deg,#f59e0b,#facc15)"},
+"02_1": {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"}
+};
 
 const SURAH_META = {
 "2":   {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"},
@@ -1730,8 +1990,7 @@ return String(Number(m[0]));
 }
 
 function titleFromPath(path){
-const no = surahNumberFromPath(path);
-const meta = SURAH_META[no];
+const meta = metaForPath(path);
 if(meta) return meta.eng;
 const raw = normalizeFileName(path);
 return raw.replace(/[-_]/g," ").replace(/\b\w/g,m=>m.toUpperCase());
@@ -1742,18 +2001,21 @@ return SURAH_META[String(Number(no))] || null;
 }
 
 function metaForPath(path){
+const file = normalizeFileName(path);
+if(FILE_META && FILE_META[file]) return FILE_META[file];
 return metaForSurahNumber(surahNumberFromPath(path));
 }
 
 function makeSurahDisplayFromPath(path, fallbackIndex){
 const no = surahNumberFromPath(path);
-const meta = metaForSurahNumber(no);
+const meta = metaForPath(path);
 return {
   name: meta?.name || `سورة ${no || fallbackIndex + 1}`,
   eng: meta?.eng || `Surah ${no || titleFromPath(path)}`,
   emoji: meta?.emoji || "📖",
   color: meta?.color || DEFAULT_PALETTE[fallbackIndex % DEFAULT_PALETTE.length],
   surahNo: no
+};
 };
 }
 
@@ -1833,15 +2095,16 @@ const mode = getMode();
 clearGrid();
 stopAll(false);
 
-let source = mode === "listen" ? buildQuranListenSource() : buildQuranLearnSource();
+const isMainListen = mode === "listen";
+let source = isMainListen ? buildQuranListenSource() : buildQuranLearnSource();
 
 if(!source.length) source = surahs;
 
 source.forEach((s,idx)=>{
 const item = {...s};
-if(mode !== "listen" && item.learnFile) item.file = item.learnFile;
-if(mode === "listen" && item.listenFile) item.file = item.listenFile;
-createAudioCard(item,idx,"quran", mode === "listen" && item.hasLearn);
+if(isMainListen && item.listenFile) item.file = item.listenFile;
+if(!isMainListen && item.learnFile) item.file = item.learnFile;
+createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
 });
 
 updateFocus();
@@ -2115,6 +2378,7 @@ updateFocus();
 
 if(isCoordinateSpotlight){
 positionCoordinateFocus(plugin,0);
+setTimeout(()=>positionCoordinateFocus(plugin,0),180);
 if(audio){
   audio.addEventListener("play",()=>startCoordinateSpotlight(plugin,audio));
   audio.addEventListener("pause",()=>stopCoordinateSpotlight());
@@ -2157,10 +2421,14 @@ const stage = dot.closest(".spotlight-wrap,.stage");
 const img = stage ? stage.querySelector(".stage-img") : null;
 
 if(img && stage){
+  if(!img.complete || !img.naturalWidth){
+    img.onload = ()=>positionCoordinateFocus(plugin,index);
+  }
+
   const stageRect = stage.getBoundingClientRect();
 
-  // Actual rendered image rectangle for object-fit: contain.
-  // Coordinates are mapped to the visible image only, not to the whole screen.
+  // Actual displayed rectangle for object-fit: contain.
+  // Coordinates map to visible image only, not to screen margins.
   const naturalW = img.naturalWidth || 16;
   const naturalH = img.naturalHeight || 9;
   const stageW = stageRect.width;
@@ -2188,6 +2456,13 @@ if(img && stage){
 
   dot.style.left = x + "px";
   dot.style.top = y + "px";
+} else {
+  dot.style.left = p.x + "%";
+  dot.style.top = p.y + "%";
+}
+
+dot.dataset.index = String(index);
+dot.dataset.key = key;
 } else {
   dot.style.left = p.x + "%";
   dot.style.top = p.y + "%";
@@ -2784,6 +3059,15 @@ const dot = document.getElementById("coordinateFocusDot");
 if(dot && currentPlugin && currentPlugin.coordinates){
   const idx = Number(dot.dataset.index || 0);
   setTimeout(()=>positionCoordinateFocus(currentPlugin, idx),80);
+}
+});
+
+
+window.addEventListener("resize",()=>{
+const dot = document.getElementById("coordinateFocusDot");
+if(dot && currentPlugin && currentPlugin.coordinates){
+  const idx = Number(dot.dataset.index || 0);
+  setTimeout(()=>positionCoordinateFocus(currentPlugin, idx),90);
 }
 });
 
