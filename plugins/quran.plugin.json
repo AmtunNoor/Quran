@@ -4,8 +4,13 @@
   "type": "core-quran",
   "priority": 1,
   "engine": "learning",
-  "supports": ["listen", "5x", "hifz"],
+  "supports": [
+    "listen",
+    "5x",
+    "hifz"
+  ],
   "audioMode": "single-file-or-sliced",
   "useSlices": true,
-  "locked": true
+  "locked": true,
+  "renderer": "quran"
 }
