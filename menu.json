@@ -534,7 +534,7 @@
         "namesPerChunk": 4,
         "repeatCount": 5
       },
-      "renderer": "spotlight",
+      "renderer": "grid",
       "tileImage": "names/names.jpeg",
       "backgroundImage": "names/names.jpeg",
       "primaryAudio": "names/1_27.mp3",
