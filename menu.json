@@ -431,7 +431,7 @@
           "float": true
         }
       },
-      "renderer": "spotlight",
+      "renderer": "visual",
       "tileImage": "months/months_icon.jpeg",
       "backgroundImage": "months/months_background.jpeg",
       "primaryAudio": "months/months.mp3",
