@@ -201,7 +201,7 @@
       ],
       "audioMode": "multiple-files",
       "theme": "dua",
-      "renderer": "gallery",
+      "renderer": "grid",
       "tileImage": {
         "type": "gradient",
         "style": "colorful",
