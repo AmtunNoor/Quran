@@ -146,6 +146,22 @@
         "path": "learn/102.mp3"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
       }
@@ -185,7 +201,7 @@
       ],
       "audioMode": "multiple-files",
       "theme": "dua",
-      "renderer": "gallery",
+      "renderer": "grid",
       "tileImage": {
         "type": "gradient",
         "style": "colorful",
@@ -246,6 +262,22 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/duas/index.html",
         "path": "duas/index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/dua.plugin.json",
@@ -399,7 +431,7 @@
           "float": true
         }
       },
-      "renderer": "spotlight",
+      "renderer": "visual",
       "tileImage": "months/months_icon.jpeg",
       "backgroundImage": "months/months_background.jpeg",
       "primaryAudio": "months/months.mp3",
@@ -455,6 +487,22 @@
         "path": "months/months.mp3"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/months.plugin.json",
         "path": "plugins/months.plugin.json"
       },
@@ -486,7 +534,7 @@
         "namesPerChunk": 4,
         "repeatCount": 5
       },
-      "renderer": "spotlight",
+      "renderer": "grid",
       "tileImage": "names/names.jpeg",
       "backgroundImage": "names/names.jpeg",
       "primaryAudio": "names/1_27.mp3",
@@ -572,6 +620,22 @@
         "path": "names/names.jpeg"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/names.plugin.json",
         "path": "plugins/names.plugin.json"
       },
@@ -583,7 +647,7 @@
   },
   {
     "title": "Salah Names",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names&autoplay=1",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names",
     "plugin": {
       "id": "salah-names",
       "title": "Salah Names",
@@ -641,11 +705,10 @@
           "rakah": [
             "4 Fard",
             "2 Sunnah",
-            "3 Witr"
+            "Witr"
           ]
         }
       ],
-      "autoStart": true,
       "renderer": "story",
       "tileImage": "salahnames/salahnames.jpeg",
       "backgroundImage": "salahnames/salahnames.jpeg",
@@ -657,6 +720,7 @@
         "salahnames/salahnames.jpeg"
       ],
       "playFromLanding": false,
+      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "effect": {
@@ -697,6 +761,22 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/salahnames/salahnames.mp3",
         "path": "salahnames/salahnames.mp3"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/salahnames.plugin.json",
@@ -825,8 +905,8 @@
       "autoStart": true,
       "audioMode": "single-file-pauses",
       "segmentDetection": "silence",
+      "renderer": "visual",
       "type": "plugin",
-      "renderer": "spotlight",
       "tileImage": "numbers/numbers.jpeg",
       "backgroundImage": "numbers/numbers.jpeg",
       "primaryAudio": null,
@@ -864,6 +944,22 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.jpeg",
         "path": "numbers/numbers.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
