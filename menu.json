@@ -158,6 +158,10 @@
         "path": "engines/story.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
       }
@@ -270,6 +274,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
         "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/dua.plugin.json",
@@ -491,6 +499,10 @@
         "path": "engines/story.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/months.plugin.json",
         "path": "plugins/months.plugin.json"
       },
@@ -618,6 +630,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
         "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/names.plugin.json",
@@ -757,6 +773,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
         "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/salahnames.plugin.json",
@@ -936,6 +956,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
         "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers.plugin.json",
