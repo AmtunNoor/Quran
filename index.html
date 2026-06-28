@@ -1524,296 +1524,6 @@ body.plugin-ui-final.plugin-names .play-btn{
   }
 }
 
-
-/* ================= PRISM V4.2 ADAPTIVE IMAGE RENDERER =================
-   Stable goal:
-   - Do not distort artwork.
-   - Foreground image uses contain and becomes as large as possible.
-   - A blurred cover layer fills unused screen area so there are no ugly black bars.
-   - Coordinates map to the actual visible foreground image rectangle.
-*/
-
-body.plugin-ui-final{
-  height:100vh!important;
-  min-height:100vh!important;
-  overflow:hidden!important;
-  padding:8px 10px 48px!important;
-}
-
-body.plugin-ui-final #pageTitle,
-body.plugin-ui-final #pageSubtitle{
-  display:none!important;
-}
-
-body.plugin-ui-final .topbar{
-  margin:0 0 6px!important;
-  min-height:36px!important;
-  gap:7px!important;
-}
-
-body.plugin-ui-final .topbar button,
-body.plugin-ui-final .topbar select{
-  padding:6px 9px!important;
-  font-size:.8rem!important;
-  border-radius:12px!important;
-}
-
-body.plugin-ui-final .grid.stage-render{
-  display:block!important;
-  width:100%!important;
-  height:calc(100vh - 104px)!important;
-  min-height:260px!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-}
-
-body.plugin-ui-final .stage.full-visual,
-body.plugin-ui-final .spotlight-wrap.full-visual{
-  position:relative!important;
-  width:100%!important;
-  height:100%!important;
-  min-height:0!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  border:0!important;
-  border-radius:0!important;
-  outline:0!important;
-  box-shadow:none!important;
-  background:#020617!important;
-}
-
-/* Blurred cover layer fills all screen space. */
-.visual-bg-fill{
-  position:absolute!important;
-  inset:-4%!important;
-  width:108%!important;
-  height:108%!important;
-  background-size:cover!important;
-  background-position:center center!important;
-  filter:blur(16px) saturate(1.08) brightness(.76)!important;
-  transform:scale(1.03)!important;
-  opacity:.86!important;
-  z-index:0!important;
-  pointer-events:none!important;
-}
-
-/* Foreground educational image: full visible, no distortion. */
-.stage-img{
-  position:absolute!important;
-  left:50%!important;
-  top:50%!important;
-  max-width:100%!important;
-  max-height:100%!important;
-  width:auto!important;
-  height:auto!important;
-  object-fit:contain!important;
-  object-position:center center!important;
-  transform:translate(-50%,-50%)!important;
-  display:block!important;
-  visibility:visible!important;
-  opacity:1!important;
-  z-index:1!important;
-  pointer-events:none!important;
-}
-
-/* Story overlays and coordinate effects stay above foreground image. */
-.aquarium-layer,
-.number-overlay-layer,
-.story-overlay,
-.coordinate-focus-dot{
-  z-index:3!important;
-}
-
-body.plugin-ui-final .story-stage .stage-content{
-  z-index:5!important;
-}
-
-/* Lighter readable Isha, no change to mosque image logic. */
-body.plugin-ui-final .story-night{
-  background:linear-gradient(rgba(15,23,42,.42),rgba(30,64,175,.30))!important;
-}
-
-/* Allah Names: fit 6 cards in one view, especially phone landscape. */
-body.plugin-ui-final.plugin-names .grid{
-  display:grid!important;
-  grid-template-columns:repeat(3,1fr)!important;
-  grid-template-rows:repeat(2,1fr)!important;
-  gap:8px!important;
-  height:calc(100vh - 104px)!important;
-  overflow:hidden!important;
-}
-
-body.plugin-ui-final.plugin-names .card{
-  min-height:0!important;
-  height:100%!important;
-  padding:10px!important;
-  border-radius:18px!important;
-}
-
-body.plugin-ui-final.plugin-names .emoji{
-  font-size:1.55rem!important;
-  margin-bottom:2px!important;
-}
-
-body.plugin-ui-final.plugin-names .arabic{
-  font-size:1.15rem!important;
-  line-height:1!important;
-}
-
-body.plugin-ui-final.plugin-names .english{
-  font-size:.7rem!important;
-  line-height:1!important;
-}
-
-body.plugin-ui-final.plugin-names .play-btn{
-  padding:5px 7px!important;
-  font-size:.7rem!important;
-  margin-top:4px!important;
-  border-radius:10px!important;
-}
-
-/* Compact Quran/Learn tiles on phones. */
-@media(max-width:900px){
-  body:not(.plugin-ui-final) .card{
-    min-height:112px!important;
-    padding:9px!important;
-    border-radius:18px!important;
-  }
-
-  body:not(.plugin-ui-final) .emoji{
-    font-size:1.9rem!important;
-    margin-bottom:2px!important;
-  }
-
-  body:not(.plugin-ui-final) .arabic{
-    font-size:1.18rem!important;
-    line-height:1.05!important;
-  }
-
-  body:not(.plugin-ui-final) .english{
-    font-size:.76rem!important;
-    line-height:1.05!important;
-  }
-
-  body:not(.plugin-ui-final) .play-btn{
-    padding:6px!important;
-    font-size:.78rem!important;
-    margin-top:5px!important;
-    border-radius:11px!important;
-  }
-}
-
-/* Phone portrait/landscape */
-@media(max-width:768px){
-  body.plugin-ui-final{
-    padding:6px 7px 44px!important;
-  }
-
-  body.plugin-ui-final .grid.stage-render{
-    height:calc(100vh - 92px)!important;
-    min-height:220px!important;
-  }
-
-  body.plugin-ui-final .topbar button,
-  body.plugin-ui-final .topbar select{
-    padding:5px 7px!important;
-    font-size:.72rem!important;
-  }
-
-  body.plugin-ui-final.plugin-names .grid{
-    grid-template-columns:repeat(2,1fr)!important;
-    grid-template-rows:repeat(3,1fr)!important;
-    height:calc(100vh - 92px)!important;
-  }
-
-  body.plugin-ui-final .story-stage .stage-content{
-    left:9px!important;
-    right:9px!important;
-    top:auto!important;
-    bottom:8px!important;
-    width:auto!important;
-    min-width:0!important;
-    max-height:36%!important;
-  }
-}
-
-@media(orientation:landscape) and (max-height:560px){
-  body.plugin-ui-final{
-    padding:4px 6px 34px!important;
-  }
-
-  body.plugin-ui-final .topbar{
-    min-height:30px!important;
-    margin-bottom:3px!important;
-    gap:5px!important;
-  }
-
-  body.plugin-ui-final .topbar button,
-  body.plugin-ui-final .topbar select{
-    padding:4px 7px!important;
-    font-size:.68rem!important;
-    border-radius:10px!important;
-  }
-
-  body.plugin-ui-final .grid.stage-render{
-    height:calc(100vh - 70px)!important;
-    min-height:170px!important;
-  }
-
-  body.plugin-ui-final.plugin-names .grid{
-    height:calc(100vh - 70px)!important;
-    gap:6px!important;
-  }
-
-  body.plugin-ui-final.plugin-names .card{
-    padding:7px!important;
-    border-radius:14px!important;
-  }
-
-  body.plugin-ui-final.plugin-names .emoji{
-    font-size:1.15rem!important;
-  }
-
-  body.plugin-ui-final.plugin-names .arabic{
-    font-size:.95rem!important;
-  }
-
-  body.plugin-ui-final.plugin-names .english{
-    display:none!important;
-  }
-
-  body.plugin-ui-final.plugin-names .play-btn{
-    padding:4px!important;
-    font-size:.62rem!important;
-    margin-top:3px!important;
-  }
-
-  body:not(.plugin-ui-final) .card{
-    min-height:92px!important;
-    padding:7px!important;
-  }
-
-  body:not(.plugin-ui-final) .emoji{
-    font-size:1.35rem!important;
-  }
-
-  body:not(.plugin-ui-final) .arabic{
-    font-size:.95rem!important;
-  }
-
-  body:not(.plugin-ui-final) .english{
-    font-size:.62rem!important;
-  }
-
-  body:not(.plugin-ui-final) .play-btn{
-    padding:4px!important;
-    font-size:.62rem!important;
-    margin-top:3px!important;
-  }
-}
-
 </style>
 </head>
 
@@ -1891,7 +1601,7 @@ const SURAH_META = {
 "99":  {name:"الزلزلة", eng:"Az Zalzalah", emoji:"🌍", color:"linear-gradient(135deg,#92400e,#f97316)"},
 "100": {name:"العاديات", eng:"Al Adiyat", emoji:"🐎", color:"linear-gradient(135deg,#ef4444,#f97316)"},
 "101": {name:"القارعة", eng:"Al Qariah", emoji:"⚡", color:"linear-gradient(135deg,#facc15,#ef4444)"},
-"102": {name:"التكاثر", eng:"At Takathur", emoji:"💰", color:"linear-gradient(135deg,#f59e0b,#f97316)"},
+"102": {name:"التكاثر", eng:"At Takathur", emoji:"🏆", color:"linear-gradient(135deg,#f59e0b,#f97316)"},
 "103": {name:"العصر", eng:"Al Asr", emoji:"⏳", color:"linear-gradient(135deg,#38bdf8,#6366f1)"},
 "104": {name:"الهمزة", eng:"Al Humazah", emoji:"🛡️", color:"linear-gradient(135deg,#8b5cf6,#ec4899)"},
 "105": {name:"الفيل", eng:"Al Feel", emoji:"🐘", color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
@@ -2375,18 +2085,13 @@ function makeFullVisualStage(className, imagePath){
 const stage = document.createElement("div");
 stage.className = className + " full-visual";
 if(imagePath){
-  const bg = document.createElement("div");
-  bg.className = "visual-bg-fill";
-  bg.style.backgroundImage = `url('${imagePath}')`;
-  stage.appendChild(bg);
-
   const img = document.createElement("img");
   img.className = "stage-img";
   img.loading = "eager";
   img.decoding = "sync";
+  img.onload = ()=>{ if(typeof recalcCoordinateSpotlightSoon === "function") recalcCoordinateSpotlightSoon(); };
   img.src = imagePath;
   img.alt = "";
-  img.onload = ()=>{ if(typeof recalcCoordinateSpotlightSoon === "function") recalcCoordinateSpotlightSoon(); };
   stage.appendChild(img);
 }
 return stage;
@@ -2628,15 +2333,34 @@ const stage = dot.closest(".spotlight-wrap,.stage");
 const img = stage ? stage.querySelector(".stage-img") : null;
 
 if(img && stage){
-  if(!img.complete || !img.naturalWidth){
-    img.onload = ()=>positionCoordinateFocus(plugin,index);
+  const stageRect = stage.getBoundingClientRect();
+
+  // Actual rendered image rectangle for object-fit: contain.
+  // Coordinates are mapped to the visible image only, not to the whole screen.
+  const naturalW = img.naturalWidth || 16;
+  const naturalH = img.naturalHeight || 9;
+  const stageW = stageRect.width;
+  const stageH = stageRect.height;
+
+  const imageRatio = naturalW / naturalH;
+  const stageRatio = stageW / stageH;
+
+  let renderW, renderH, offsetX, offsetY;
+
+  if(stageRatio > imageRatio){
+    renderH = stageH;
+    renderW = renderH * imageRatio;
+    offsetX = (stageW - renderW) / 2;
+    offsetY = 0;
+  } else {
+    renderW = stageW;
+    renderH = renderW / imageRatio;
+    offsetX = 0;
+    offsetY = (stageH - renderH) / 2;
   }
 
-  const stageRect = stage.getBoundingClientRect();
-  const imgRect = img.getBoundingClientRect();
-
-  const x = (imgRect.left - stageRect.left) + (Number(p.x) / 100) * imgRect.width;
-  const y = (imgRect.top - stageRect.top) + (Number(p.y) / 100) * imgRect.height;
+  const x = offsetX + (Number(p.x) / 100) * renderW;
+  const y = offsetY + (Number(p.y) / 100) * renderH;
 
   dot.style.left = x + "px";
   dot.style.top = y + "px";
@@ -3252,22 +2976,6 @@ function recalcCoordinateSpotlightSoon(){
   });
 }
 
-window.addEventListener("orientationchange", recalcCoordinateSpotlightSoon);
-window.addEventListener("resize", recalcCoordinateSpotlightSoon);
-window.addEventListener("load", recalcCoordinateSpotlightSoon);
-
-
-/* ================= ADAPTIVE RENDERER RECALC HOOKS ================= */
-function recalcCoordinateSpotlightSoon(){
-  const dot = document.getElementById("coordinateFocusDot");
-  if(!dot || !currentPlugin || !currentPlugin.coordinates) return;
-  const idx = Number(dot.dataset.index || 0);
-  [60,220,600,1000].forEach(ms=>{
-    setTimeout(()=>{
-      try{ positionCoordinateFocus(currentPlugin, idx); }catch(e){}
-    },ms);
-  });
-}
 window.addEventListener("orientationchange", recalcCoordinateSpotlightSoon);
 window.addEventListener("resize", recalcCoordinateSpotlightSoon);
 window.addEventListener("load", recalcCoordinateSpotlightSoon);
