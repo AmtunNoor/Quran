@@ -6,5 +6,6 @@
   "engine": "external",
   "mainUrl": "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
   "theme": "salah",
-  "locked": true
+  "locked": true,
+  "renderer": "external"
 }
