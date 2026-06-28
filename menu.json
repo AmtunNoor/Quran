@@ -647,7 +647,7 @@
   },
   {
     "title": "Salah Names",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names&autoplay=1",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah-names",
     "plugin": {
       "id": "salah-names",
       "title": "Salah Names",
@@ -705,11 +705,10 @@
           "rakah": [
             "4 Fard",
             "2 Sunnah",
-            "3 Witr"
+            "Witr"
           ]
         }
       ],
-      "autoStart": true,
       "renderer": "story",
       "tileImage": "salahnames/salahnames.jpeg",
       "backgroundImage": "salahnames/salahnames.jpeg",
@@ -721,6 +720,7 @@
         "salahnames/salahnames.jpeg"
       ],
       "playFromLanding": false,
+      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "effect": {
