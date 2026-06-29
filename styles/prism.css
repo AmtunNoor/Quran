@@ -2055,3 +2055,137 @@ body.quran-learn-mode:not(.plugin-ui-final) .play-btn{
   font-family:Arial, "Noto Sans Symbols", sans-serif!important;
 }
 
+
+
+/* ================= PRISM V6.1 FINAL COMBINED FIX ================= */
+
+/* Landing: show more of second row by using page space better, without shrinking tiles aggressively */
+body.landing-mode{
+  padding-top:10px!important;
+}
+body.landing-mode #pageTitle{
+  font-size:clamp(1.65rem,3.5vw,3rem)!important;
+  margin-bottom:0!important;
+}
+body.landing-mode #pageSubtitle{
+  font-size:clamp(.85rem,1.8vw,1.25rem)!important;
+  margin-bottom:6px!important;
+}
+body.landing-mode .grid{
+  gap:14px!important;
+  align-content:start!important;
+  padding-bottom:110px!important;
+}
+
+/* Laptop/TV: ensure any grid can scroll fully above credits */
+@media(min-width:769px){
+  body:not(.plugin-ui-final){
+    padding-bottom:150px!important;
+  }
+  body:not(.plugin-ui-final) .grid{
+    padding-bottom:130px!important;
+  }
+}
+
+/* Learn mode: use same visual proportions as core Quran tiles but avoid one-card stretching */
+body.quran-learn-mode:not(.plugin-ui-final) .grid{
+  display:grid!important;
+  grid-template-columns:repeat(4, minmax(0,1fr))!important;
+  gap:18px!important;
+  width:100%!important;
+  max-width:none!important;
+  height:auto!important;
+  overflow:visible!important;
+  align-content:start!important;
+  align-items:start!important;
+  grid-auto-rows:auto!important;
+  padding-bottom:130px!important;
+}
+
+body.quran-learn-mode:not(.plugin-ui-final) .card{
+  min-height:210px!important;
+  height:auto!important;
+  width:100%!important;
+  padding:18px!important;
+  border-radius:28px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+}
+
+body.quran-learn-mode:not(.plugin-ui-final) .card-info-box{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  height:100%!important;
+  width:100%!important;
+}
+
+body.quran-learn-mode:not(.plugin-ui-final) .emoji{font-size:2.4rem!important;margin-bottom:8px!important;}
+body.quran-learn-mode:not(.plugin-ui-final) .arabic{font-size:1.9rem!important;line-height:1.1!important;}
+body.quran-learn-mode:not(.plugin-ui-final) .english{font-size:1.05rem!important;line-height:1.1!important;}
+body.quran-learn-mode:not(.plugin-ui-final) .play-btn{
+  margin-top:14px!important;
+  padding:12px!important;
+  font-size:1rem!important;
+  border-radius:18px!important;
+}
+
+/* Allah Names: keep same grid/card sizes as Quran tiles */
+body.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(4, minmax(0,1fr))!important;
+  gap:18px!important;
+  height:auto!important;
+  overflow:visible!important;
+  align-content:start!important;
+  align-items:start!important;
+  grid-auto-rows:auto!important;
+  padding-bottom:130px!important;
+}
+body.plugin-names .card{
+  min-height:210px!important;
+  height:auto!important;
+  width:100%!important;
+  padding:18px!important;
+  border-radius:28px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+}
+body.plugin-names .emoji{font-size:2.4rem!important;margin-bottom:8px!important;}
+body.plugin-names .arabic{font-size:1.9rem!important;line-height:1.1!important;}
+body.plugin-names .english{font-size:1.05rem!important;line-height:1.1!important;}
+body.plugin-names .play-btn{margin-top:14px!important;padding:12px!important;font-size:1rem!important;border-radius:18px!important;}
+
+@media(max-width:768px){
+  body.quran-learn-mode:not(.plugin-ui-final) .grid,
+  body.plugin-names .grid{
+    grid-template-columns:repeat(2, minmax(0,1fr))!important;
+    gap:12px!important;
+    padding-bottom:75px!important;
+  }
+}
+
+@media(orientation:landscape) and (max-height:560px){
+  body.quran-learn-mode:not(.plugin-ui-final) .grid,
+  body.plugin-names .grid{
+    grid-template-columns:repeat(4, minmax(0,1fr))!important;
+    gap:8px!important;
+  }
+  body.quran-learn-mode:not(.plugin-ui-final) .card,
+  body.plugin-names .card{
+    min-height:150px!important;
+  }
+}
+
+/* Visual modules: hidden until image has decoded/laid out */
+.stage-waiting-image .stage-img,
+.stage-waiting-image .coordinate-focus-dot{
+  visibility:hidden!important;
+}
+.stage-image-ready .stage-img,
+.stage-image-ready .coordinate-focus-dot{
+  visibility:visible!important;
+}
+
