@@ -949,8 +949,10 @@
       "type": "plugin",
       "tileImage": "numbers/numbers.jpeg",
       "backgroundImage": "numbers/numbers.jpeg",
-      "primaryAudio": null,
-      "audios": [],
+      "primaryAudio": "numbers/numbers.mp3",
+      "audios": [
+        "numbers/numbers.mp3"
+      ],
       "images": [
         "numbers/numbers.jpeg"
       ],
@@ -984,6 +986,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.jpeg",
         "path": "numbers/numbers.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/numbers/numbers.mp3",
+        "path": "numbers/numbers.mp3"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
