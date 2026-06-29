@@ -164,6 +164,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
       }
     ]
   },
@@ -183,6 +191,30 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
       }
     ]
   },
@@ -286,6 +318,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
       }
     ]
   },
@@ -509,6 +549,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
       }
     ]
   },
@@ -642,6 +690,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
       }
     ]
   },
@@ -785,6 +841,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
       }
     ]
   },
@@ -968,6 +1032,14 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
       }
     ]
   }
