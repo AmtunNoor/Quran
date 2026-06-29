@@ -2008,3 +2008,52 @@ body.plugin-names .play-btn{
   font-family:Arial, "Noto Sans Symbols", sans-serif!important;
 }
 
+
+
+/* ================= V5 MODE / LAYOUT / ORDER FIX ================= */
+/* Keep last Quran row clear of credits on laptop */
+body:not(.plugin-ui-final){
+  padding-bottom:140px!important;
+}
+
+/* Allah Names: use normal Quran-like tile sizing; never stretch to fill page */
+body.plugin-names .grid{
+  align-content:start!important;
+  align-items:start!important;
+  grid-template-rows:auto!important;
+}
+body.plugin-names .card{
+  flex:0 0 auto!important;
+}
+
+/* Learn mode should match Quran tile proportions rather than full-screen plugin sizing */
+body.quran-learn-mode:not(.plugin-ui-final) .grid{
+  align-content:start!important;
+  align-items:start!important;
+}
+@media(max-width:768px){
+  body.quran-learn-mode:not(.plugin-ui-final) .card{
+    min-height:150px!important;
+    padding:14px!important;
+    border-radius:22px!important;
+  }
+  body.quran-learn-mode:not(.plugin-ui-final) .emoji{
+    font-size:2.25rem!important;
+    margin-bottom:8px!important;
+  }
+  body.quran-learn-mode:not(.plugin-ui-final) .arabic{
+    font-size:1.45rem!important;
+    line-height:1.1!important;
+  }
+  body.quran-learn-mode:not(.plugin-ui-final) .english{
+    font-size:.85rem!important;
+    line-height:1.1!important;
+  }
+  body.quran-learn-mode:not(.plugin-ui-final) .play-btn{
+    padding:9px!important;
+    font-size:.85rem!important;
+    margin-top:8px!important;
+    border-radius:16px!important;
+  }
+}
+
