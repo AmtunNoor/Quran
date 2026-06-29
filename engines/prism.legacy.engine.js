@@ -30,6 +30,11 @@ const surahs = [
 ];
 
 
+const FILE_META = {
+"02":   {name:"البقرة", eng:"Al Baqarah", emoji:"👑", color:"linear-gradient(135deg,#f59e0b,#facc15)"},
+"02_1": {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"}
+};
+
 const SURAH_META = {
 "2":   {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"},
 "55":  {name:"الرحمن", eng:"Ar Rahman", emoji:"🌿", color:"linear-gradient(135deg,#22c55e,#14b8a6)"},
@@ -356,8 +361,7 @@ return String(Number(m[0]));
 }
 
 function titleFromPath(path){
-const no = surahNumberFromPath(path);
-const meta = SURAH_META[no];
+const meta = metaForPath(path);
 if(meta) return meta.eng;
 const raw = normalizeFileName(path);
 return raw.replace(/[-_]/g," ").replace(/\b\w/g,m=>m.toUpperCase());
@@ -368,12 +372,14 @@ return SURAH_META[String(Number(no))] || null;
 }
 
 function metaForPath(path){
+const file = normalizeFileName(path);
+if(typeof FILE_META !== "undefined" && FILE_META[file]) return FILE_META[file];
 return metaForSurahNumber(surahNumberFromPath(path));
 }
 
 function makeSurahDisplayFromPath(path, fallbackIndex){
 const no = surahNumberFromPath(path);
-const meta = metaForSurahNumber(no);
+const meta = metaForPath(path);
 return {
   name: meta?.name || `سورة ${no || fallbackIndex + 1}`,
   eng: meta?.eng || `Surah ${no || titleFromPath(path)}`,
@@ -424,7 +430,7 @@ const extraListen = getListenFiles()
 const display = makeSurahDisplayFromPath(p, idx);
 const learnMatch = getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p));
 return {
-id:`listen-${display.surahNo || idx}`,
+id:`listen-${normalizeFileName(p) || idx}`,
 ...display,
 file:p,
 listenFile:p,
@@ -442,7 +448,7 @@ const learns = getLearnFiles();
 return learns.map((p,idx)=>{
 const display = makeSurahDisplayFromPath(p, idx);
 return {
-id:display.surahNo || `learn-${idx}`,
+id:`learn-${normalizeFileName(p) || idx}`,
 ...display,
 emoji:display.emoji || "🎓",
 file:p,
@@ -553,6 +559,7 @@ if(imagePath){
   img.decoding = "async";
   img.loading = "eager";
   img.onload = ()=>{ if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon(); };
+  if(img.decode){ img.decode().then(()=>{ if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon(); }).catch(()=>{}); }
   stage.appendChild(img);
 }
 return stage;
@@ -747,6 +754,7 @@ if(plugin.effect && (plugin.effect.waterRays || plugin.effect.bubbles)){
 
 grid.appendChild(wrap);
 if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon();
+requestAnimationFrame(()=>{ if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon(); });
 
 const audio = wrap.querySelector("audio");
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
@@ -1447,21 +1455,19 @@ if(dot && currentPlugin && currentPlugin.coordinates){
 
 /* ================= V5 VISUAL FIRST-LOAD STABILITY ================= */
 function recalcVisualModuleSoon(){
-  try{
-    setPrismViewportHeight();
-  }catch(e){}
-
-  const dot = document.getElementById("coordinateFocusDot");
-  const idx = Number(dot?.dataset?.index || 0);
-
-  [80, 240, 600, 1100].forEach(ms=>{
+  try{ setPrismViewportHeight(); }catch(e){}
+  const run = ()=>{
+    const dot = document.getElementById("coordinateFocusDot");
+    if(dot && currentPlugin && currentPlugin.coordinates){
+      const idx = Number(dot.dataset.index || 0);
+      try{ positionCoordinateFocus(currentPlugin, idx); }catch(e){}
+    }
+  };
+  requestAnimationFrame(run);
+  [80, 220, 520, 900, 1400].forEach(ms=>{
     setTimeout(()=>{
-      try{
-        setPrismViewportHeight();
-        if(dot && currentPlugin && currentPlugin.coordinates){
-          positionCoordinateFocus(currentPlugin, idx);
-        }
-      }catch(e){}
+      try{ setPrismViewportHeight(); }catch(e){}
+      run();
     }, ms);
   });
 }
