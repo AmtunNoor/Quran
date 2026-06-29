@@ -1,174 +1,3204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Mariam & Hamza's Prism</title>
-<meta name="theme-color" content="#0f172a"/>
-<link rel="stylesheet" href="styles/prism.css"/>
-</head>
-<body>
-<h1 id="pageTitle">🌙 Mariam & Hamza’s 🌙</h1>
-<div id="pageSubtitle">✨Quran Adventures with Mom!✨</div>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-<div class="topbar">
-<button id="btnBack">🏠 Home</button>
-<button id="btnStop">⏹ Stop</button>
-<select id="mode"></select>
+<title>My Little Quran Corner!</title>
+<meta name="theme-color" content="#0f172a"/>
+
+<style>
+@font-face{
+  font-family:"Baloo Bhaijaan 2";
+  src:url("BalooBhaijaan2-ExtraBold.ttf");
+  font-display:swap;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Baloo Bhaijaan 2","Comic Sans MS","Trebuchet MS",Arial,sans-serif;
+-webkit-touch-callout:none;
+-webkit-user-select:none;
+user-select:none;
+}
+
+body{
+background:radial-gradient(circle at top,#172554,#020617 70%);
+min-height:100vh;
+overflow-x:hidden;
+color:white;
+padding:20px;
+padding-bottom:110px;
+display:flex;
+flex-direction:column;
+}
+
+body.tv-mode{
+height:100vh;
+overflow:hidden;
+padding:15px;
+padding-top:45px!important;
+padding-bottom:95px;
+}
+
+body.tv-mode h1{
+margin-top:0!important;
+font-size:2.8rem!important;
+}
+
+body.tv-mode .subtitle{
+margin-bottom:20px!important;
+}
+
+.stars{
+position:fixed;
+inset:0;
+overflow:hidden;
+pointer-events:none;
+z-index:0;
+}
+
+.star{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+border-radius:50%;
+animation:twinkle 3s infinite alternate, drift 25s linear infinite;
+}
+
+@keyframes twinkle{
+from{opacity:.2;transform:scale(.5);}
+to{opacity:1;transform:scale(1.5);}
+}
+
+@keyframes drift{
+from{transform:translateY(0px);}
+to{transform:translateY(-120px);}
+}
+
+.sparkle{
+position:absolute;
+width:2px;
+height:2px;
+border-radius:50%;
+background:white;
+opacity:.8;
+animation:sparkleFloat 12s linear infinite;
+}
+
+@keyframes sparkleFloat{
+0%{transform:translateY(40px);opacity:0;}
+20%{opacity:1;}
+100%{transform:translateY(-140px);opacity:0;}
+}
+
+h1{
+text-align:center;
+font-size:2.5rem;
+margin-bottom:8px;
+background:linear-gradient(90deg,#facc15,#38bdf8,#f472b6);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:glow 3s infinite alternate, headerFloat 4s ease-in-out infinite;
+display:block;
+width:100%;
+}
+
+@keyframes glow{
+from{filter:drop-shadow(0 0 5px #38bdf8);}
+to{filter:drop-shadow(0 0 18px #f472b6);}
+}
+
+@keyframes headerFloat{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
+}
+
+.subtitle{
+text-align:center;
+margin-bottom:24px;
+color:#cbd5e1;
+animation:headerFloat 4s ease-in-out infinite;
+animation-delay:.5s;
+}
+
+.topbar{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-bottom:25px;
+flex-wrap:wrap;
+z-index:10;
+}
+
+.topbar button,
+.topbar select{
+border:none;
+padding:12px 16px;
+border-radius:18px;
+font-weight:bold;
+cursor:pointer;
+background:linear-gradient(90deg,#facc15,#fde68a);
+}
+
+.topbar button:focus,
+.topbar select:focus{
+outline:5px solid #fff!important;
+outline-offset:2px;
+transform:scale(1.05);
+}
+
+#btnBack{display:none;}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px;
+max-width:none;
+width:100%;
+margin:auto;
+flex:1;
+}
+
+@media(max-width:768px){
+.grid{grid-template-columns:repeat(2,1fr)!important;}
+}
+
+body.tv-mode .grid{
+grid-template-rows:repeat(4,1fr);
+gap:12px;
+padding-top:5px;
+margin-bottom:15px;
+}
+
+body.landing-mode .grid{
+perspective:1200px;
+align-items:stretch;
+}
+
+body.landing-mode .card{
+animation:livingFloat 5s ease-in-out infinite;
+transform-style:preserve-3d;
+}
+
+body.landing-mode .card:nth-child(2n){animation-delay:.35s;}
+body.landing-mode .card:nth-child(3n){animation-delay:.7s;}
+
+@keyframes livingFloat{
+0%,100%{transform:translateY(0) rotateX(0deg);}
+50%{transform:translateY(-7px) rotateX(2deg);}
+}
+
+body.landing-mode .remote-focus{
+transform:translateY(-10px) scale(1.08) rotateX(4deg)!important;
+box-shadow:0 0 38px rgba(255,255,255,.95),0 18px 35px rgba(0,0,0,.35);
+}
+
+body.landing-mode .remote-focus:after{
+content:"";
+position:absolute;
+inset:-3px;
+border-radius:30px;
+background:linear-gradient(120deg,rgba(255,255,255,.45),transparent,rgba(250,204,21,.45));
+z-index:0;
+animation:focusShimmer 1.8s linear infinite;
+pointer-events:none;
+}
+
+@keyframes focusShimmer{
+0%{opacity:.25;transform:translateX(-8px);}
+50%{opacity:.8;}
+100%{opacity:.25;transform:translateX(8px);}
+}
+
+.card{
+position:relative;
+overflow:hidden;
+border-radius:28px;
+padding:18px;
+min-height:210px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+cursor:pointer;
+transition:.3s;
+backdrop-filter:blur(10px);
+box-shadow:0 0 20px rgba(255,255,255,.1);
+animation:float 4s ease-in-out infinite;
+height:100%;
+width:100%;
+background-size:cover!important;
+background-position:center!important;
+}
+
+.card:before{
+content:"";
+position:absolute;
+inset:0;
+background:rgba(2,6,23,.18);
+z-index:0;
+pointer-events:none;
+}
+
+.card>*{position:relative;z-index:1;}
+
+.card:hover{
+transform:translateY(-8px) scale(1.03);
+box-shadow:0 0 30px rgba(255,255,255,.35);
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-6px);}
+}
+
+.card-info-box{
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+height:100%;
+width:100%;
+}
+
+.emoji{font-size:2.4rem;margin-bottom:8px;}
+.arabic{font-size:1.9rem;font-weight:bold;margin-bottom:4px;text-shadow:0 2px 10px rgba(0,0,0,.25);}
+.english{font-size:1.05rem;opacity:.95;}
+
+body.landing-mode .card{
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+body.landing-mode .card-info-box{
+height:auto;
+justify-content:center;
+align-items:center;
+gap:12px;
+}
+
+body.landing-mode .emoji{font-size:3.2rem;}
+body.landing-mode .english{display:none;}
+
+.badge{
+position:absolute;
+top:12px;
+right:12px;
+padding:6px 10px;
+border-radius:999px;
+background:rgba(255,255,255,.9);
+color:#020617;
+font-size:.8rem;
+font-weight:900;
+z-index:3;
+}
+
+.play-btn{
+margin-top:14px;
+border:none;
+border-radius:18px;
+padding:12px;
+font-size:1rem;
+font-weight:bold;
+cursor:pointer;
+background:white;
+color:black;
+transition:.3s;
+position:relative;
+z-index:5;
+width:100%;
+}
+
+body.landing-mode .play-btn{display:none;}
+
+.active-tile .play-btn{
+background:linear-gradient(90deg,#facc15,#fde68a)!important;
+color:#020617!important;
+}
+
+.active-tile{
+box-shadow:0 0 25px 6px rgba(255,255,255,.7)!important;
+transform:scale(1.04);
+}
+
+.remote-focus{
+outline:5px solid #fff;
+outline-offset:4px;
+transform:scale(1.04);
+box-shadow:0 0 30px rgba(255,255,255,.9);
+z-index:10;
+}
+
+.stage{
+position:relative;
+width:100%;
+min-height:62vh;
+border-radius:32px;
+overflow:hidden;
+background-size:cover!important;
+background-position:center!important;
+box-shadow:0 0 35px rgba(255,255,255,.18);
+display:flex;
+align-items:flex-end;
+justify-content:center;
+padding:24px;
+}
+
+.stage-content{
+width:min(900px,100%);
+text-align:center;
+padding:22px;
+border-radius:26px;
+background:rgba(15,23,42,.45);
+backdrop-filter:blur(10px);
+-webkit-backdrop-filter:blur(10px);
+box-shadow:0 0 25px rgba(255,255,255,.18);
+}
+
+.stage-title{
+font-size:clamp(2rem,5vw,4.5rem);
+font-weight:900;
+margin-bottom:8px;
+}
+
+.stage-sub{
+font-size:clamp(1.1rem,2.5vw,2rem);
+opacity:.95;
+}
+
+.stage-badges{
+margin-top:18px;
+display:flex;
+gap:12px;
+justify-content:center;
+flex-wrap:wrap;
+}
+
+.rakah-badge{
+padding:12px 16px;
+border-radius:999px;
+background:linear-gradient(135deg,#fff7ed,#fde68a);
+color:#111827;
+font-weight:900;
+font-size:clamp(1rem,2vw,1.4rem);
+box-shadow:0 0 15px rgba(255,255,255,.4);
+animation:badgePop .8s ease;
+}
+
+@keyframes badgePop{
+0%{transform:scale(.2);opacity:0;}
+65%{transform:scale(1.1);opacity:1;}
+100%{transform:scale(1);}
+}
+
+.story-dawn{background:linear-gradient(rgba(255,182,193,.28),rgba(15,23,42,.35));}
+.story-bright-day{background:linear-gradient(rgba(250,204,21,.25),rgba(14,165,233,.18));}
+.story-afternoon{background:linear-gradient(rgba(251,146,60,.22),rgba(15,23,42,.28));}
+.story-sunset{background:linear-gradient(rgba(249,115,22,.38),rgba(124,45,18,.28));}
+.story-night{background:linear-gradient(rgba(30,64,175,.42),rgba(2,6,23,.55));}
+
+.story-overlay{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:0;
+transition:background 1s ease;
+}
+
+.spotlight-wrap{
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:62vh;
+border-radius:32px;
+overflow:hidden;
+background-size:contain!important;
+background-position:center!important;
+background-repeat:no-repeat!important;
+background-color:rgba(15,23,42,.55);
+box-shadow:0 0 35px rgba(255,255,255,.18);
+}
+
+.spotlight-number{
+position:absolute;
+font-size:clamp(4rem,15vw,11rem);
+font-weight:900;
+text-shadow:0 0 22px rgba(250,204,21,.9);
+animation:spotlightPop 1.2s ease;
+}
+
+@keyframes spotlightPop{
+0%{transform:scale(.35);opacity:0;}
+50%{transform:scale(1.25);opacity:1;}
+100%{transform:scale(1);opacity:1;}
+}
+
+.bubble{
+position:absolute;
+width:44px;
+height:44px;
+border-radius:50%;
+background:rgba(255,255,255,.22);
+box-shadow:inset 0 0 12px rgba(255,255,255,.35),0 0 18px rgba(255,255,255,.2);
+animation:bubbleFloat 8s ease-in-out infinite;
+pointer-events:none;
+}
+
+@keyframes bubbleFloat{
+0%,100%{transform:translateY(0) scale(.85);opacity:.45;}
+50%{transform:translateY(-60px) scale(1.15);opacity:.85;}
+}
+
+#overlay{
+position:fixed;
+inset:0;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.85);
+z-index:999;
+}
+
+#overlay div{
+background:white;
+color:black;
+padding:22px;
+border-radius:20px;
+font-size:1.2rem;
+font-weight:bold;
+text-align:center;
+cursor:pointer;
+box-shadow:0 0 25px rgba(255,255,255,.4);
+}
+
+audio{display:none;}
+
+.credits{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+padding:12px 8px;
+text-align:center;
+background:rgba(15,23,42,.25);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+border-top:1px solid rgba(255,255,255,.08);
+z-index:1000;
+width:100%;
+line-height:1.4;
+font-weight:bold;
+box-shadow:0 -4px 30px rgba(0,0,0,.2);
+}
+
+body.tv-mode .credits{
+position:fixed!important;
+bottom:0!important;
+left:0!important;
+right:0!important;
+background:rgba(15,23,42,.85)!important;
+}
+
+.amtun{
+display:inline-block;
+font-family:cursive;
+font-size:1.5rem;
+font-weight:900;
+letter-spacing:3px;
+text-transform:uppercase;
+background:linear-gradient(90deg,red,orange,yellow,lime,cyan,blue,violet,red);
+background-size:400% 100%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:rainbowSparkle 5s linear infinite;
+}
+
+@keyframes rainbowSparkle{
+0%{background-position:0% 50%;filter:drop-shadow(0 0 4px rgba(255,255,255,.3));}
+100%{background-position:400% 50%;filter:drop-shadow(0 0 10px rgba(255,255,255,.6));}
+}
+
+body>*{position:relative;z-index:1;}
+
+@media(max-width:768px){
+.stage{min-height:58vh;padding:14px;border-radius:24px;}
+.stage-content{padding:16px;border-radius:20px;}
+.stage-badges{flex-direction:column;align-items:center;}
+.rakah-badge{width:100%;max-width:260px;}
+}
+
+/* ================= PLUGIN EFFECT: AQUARIUM ================= */
+.aquarium-layer{
+position:absolute;
+inset:0;
+pointer-events:none;
+z-index:1;
+overflow:hidden;
+}
+
+.aquarium-water-rays{
+position:absolute;
+inset:0;
+pointer-events:none;
+background:linear-gradient(
+  110deg,
+  transparent 0%,
+  rgba(255,255,255,0.10) 35%,
+  transparent 60%
+);
+animation:waterRayMove 9s ease-in-out infinite;
+mix-blend-mode:screen;
+}
+
+@keyframes waterRayMove{
+0%,100%{transform:translateX(-8%);opacity:.35;}
+50%{transform:translateX(8%);opacity:.55;}
+}
+
+.fish-zone{
+position:absolute;
+pointer-events:none;
+}
+
+.fish-zone::before{
+content:"";
+position:absolute;
+left:var(--mouthLeft);
+top:var(--mouthTop);
+width:4%;
+height:5%;
+border-radius:50%;
+background:rgba(60,25,15,.25);
+animation:mouthSing 3.8s ease-in-out infinite;
+animation-delay:var(--d);
+}
+
+.fish-zone::after{
+content:"";
+position:absolute;
+left:var(--tailLeft);
+top:var(--tailTop);
+width:18%;
+height:35%;
+border-radius:50%;
+background:rgba(255,255,255,.16);
+filter:blur(6px);
+animation:tailWag 3.2s ease-in-out infinite;
+animation-delay:var(--d);
+}
+
+@keyframes mouthSing{
+0%,70%,100%{transform:scaleY(.35);opacity:.15;}
+82%{transform:scaleY(1.25);opacity:.38;}
+}
+
+@keyframes tailWag{
+0%,100%{transform:rotate(-4deg) scale(.9);opacity:.08;}
+50%{transform:rotate(5deg) scale(1.08);opacity:.22;}
+}
+
+
+/* ================= V3.4 FIX: FULLSCREEN PLUGIN STAGES ================= */
+body.plugin-stage-mode .grid{
+  display:block;
+  width:100%;
+  max-width:none;
+  margin:0 auto;
+  flex:1;
+}
+
+body.plugin-stage-mode .stage,
+body.plugin-stage-mode .spotlight-wrap{
+  width:100%;
+  min-height:calc(100vh - 245px);
+  height:calc(100vh - 245px);
+  border-radius:28px;
+}
+
+body.tv-mode.plugin-stage-mode .stage,
+body.tv-mode.plugin-stage-mode .spotlight-wrap{
+  min-height:calc(100vh - 220px);
+  height:calc(100vh - 220px);
+}
+
+/* Salah Names: keep teaching panel narrow so mosque/time effects remain visible */
+.story-stage{
+  align-items:center!important;
+  justify-content:flex-end!important;
+}
+
+.story-stage .stage-content{
+  position:absolute;
+  right:18px;
+  top:18px;
+  bottom:18px;
+  width:min(30vw,310px);
+  min-width:210px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:rgba(15,23,42,.32);
+  border:1px solid rgba(255,255,255,.14);
+}
+
+.story-stage .stage-title{
+  font-size:clamp(1.6rem,3.2vw,3.4rem);
+}
+
+.story-stage .stage-sub{
+  font-size:clamp(1rem,1.8vw,1.5rem);
+}
+
+.story-stage .stage-badges{
+  flex-direction:column;
+  align-items:stretch;
+  gap:8px;
+}
+
+.story-stage .rakah-badge{
+  font-size:clamp(.9rem,1.4vw,1.15rem);
+  padding:9px 12px;
+}
+
+.story-night{
+  background:linear-gradient(rgba(3,7,18,.78),rgba(2,6,23,.88))!important;
+}
+
+.story-sunset{
+  background:linear-gradient(rgba(249,115,22,.45),rgba(88,28,12,.42))!important;
+}
+
+.story-bright-day{
+  background:linear-gradient(rgba(250,204,21,.22),rgba(14,165,233,.10))!important;
+}
+
+.story-dawn{
+  background:linear-gradient(rgba(255,182,193,.30),rgba(59,130,246,.16))!important;
+}
+
+/* Numbers spotlight overlay: no text tile, only active number glow at coordinates */
+.number-focus-dot{
+  position:absolute;
+  width:clamp(54px,8vw,105px);
+  height:clamp(54px,8vw,105px);
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%) scale(1);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,213,74,.55),rgba(255,213,74,.18) 45%,rgba(255,213,74,0) 72%);
+  box-shadow:0 0 28px rgba(255,213,74,.75),0 0 55px rgba(255,255,255,.35);
+  pointer-events:none;
+  z-index:4;
+  animation:numberPulse 1.15s ease-in-out infinite;
+}
+
+.number-focus-dot::before,
+.number-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff7ad;
+  font-size:clamp(16px,2vw,30px);
+  text-shadow:0 0 12px white;
+  animation:numberSparkle 1.4s ease-in-out infinite;
+}
+
+.number-focus-dot::before{left:-10%;top:8%;}
+.number-focus-dot::after{right:-8%;bottom:6%;animation-delay:.45s;}
+
+@keyframes numberPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(.88);opacity:.65;}
+  50%{transform:translate(-50%,-50%) scale(1.22);opacity:1;}
+}
+
+@keyframes numberSparkle{
+  0%,100%{transform:scale(.65) rotate(0deg);opacity:.35;}
+  50%{transform:scale(1.2) rotate(15deg);opacity:1;}
+}
+
+/* External bridge */
+.external-bridge{
+  width:100%;
+  height:calc(100vh - 245px);
+  min-height:520px;
+  border-radius:28px;
+  overflow:hidden;
+  background:rgba(15,23,42,.65);
+  box-shadow:0 0 35px rgba(255,255,255,.18);
+}
+
+.external-bridge iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  background:white;
+}
+
+@media(max-width:768px){
+  body.plugin-stage-mode .stage,
+  body.plugin-stage-mode .spotlight-wrap,
+  .external-bridge{
+    min-height:calc(100vh - 230px);
+    height:calc(100vh - 230px);
+    border-radius:22px;
+  }
+
+  .story-stage .stage-content{
+    left:12px;
+    right:12px;
+    top:auto;
+    bottom:12px;
+    width:auto;
+    min-width:0;
+    max-height:38%;
+  }
+
+  .story-stage .stage-badges{
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+}
+
+
+/* ================= PRISM V3.4 UI FINAL OVERRIDES ================= */
+
+/* Keep big decorative header only for Landing + Quran.
+   Plugin/external screens use compact controls and full content stage. */
+body.plugin-ui-final #pageTitle,
+body.plugin-ui-final #pageSubtitle{
+  display:none!important;
+}
+
+body.plugin-ui-final{
+  padding:10px 14px 58px!important;
+  overflow:hidden;
+}
+
+body.plugin-ui-final .topbar{
+  margin:0 0 8px!important;
+  gap:8px!important;
+  align-items:center;
+}
+
+body.plugin-ui-final .topbar button,
+body.plugin-ui-final .topbar select{
+  padding:7px 11px!important;
+  border-radius:13px!important;
+  font-size:.86rem!important;
+}
+
+body.plugin-ui-final .grid{
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  margin:0!important;
+  flex:1!important;
+}
+
+body.plugin-ui-final .stage,
+body.plugin-ui-final .spotlight-wrap,
+body.plugin-ui-final .external-bridge{
+  width:100%!important;
+  height:calc(100vh - 132px)!important;
+  min-height:0!important;
+  border-radius:22px!important;
+  margin:0!important;
+  background-size:contain!important;
+  background-repeat:no-repeat!important;
+  background-position:center!important;
+  background-color:rgba(2,6,23,.45)!important;
+  box-shadow:0 0 22px rgba(255,255,255,.14)!important;
+}
+
+/* Months should fill more strongly because its poster already has full layout. */
+body.plugin-ui-final.plugin-months .stage{
+  background-size:contain!important;
+}
+
+/* Numbers image should be fully visible. */
+body.plugin-ui-final.plugin-numbers .spotlight-wrap{
+  background-size:contain!important;
+}
+
+/* Allah Names: restore a compact one-screen grid. */
+body.plugin-ui-final.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  grid-template-rows:repeat(2,1fr)!important;
+  gap:12px!important;
+  height:calc(100vh - 132px)!important;
+}
+
+body.plugin-ui-final.plugin-names .card{
+  min-height:0!important;
+  height:100%!important;
+  border-radius:22px!important;
+  padding:14px!important;
+  animation:none!important;
+}
+
+body.plugin-ui-final.plugin-names .emoji{
+  font-size:2rem!important;
+  margin-bottom:4px!important;
+}
+
+body.plugin-ui-final.plugin-names .arabic{
+  font-size:1.55rem!important;
+}
+
+body.plugin-ui-final.plugin-names .english{
+  font-size:.95rem!important;
+}
+
+body.plugin-ui-final.plugin-names .play-btn{
+  padding:8px!important;
+  border-radius:13px!important;
+  font-size:.9rem!important;
+  margin-top:8px!important;
+}
+
+/* Salah names: compact floating badge panel, does not cover credits. */
+body.plugin-ui-final .story-stage{
+  align-items:flex-start!important;
+  justify-content:flex-end!important;
+}
+
+body.plugin-ui-final .story-stage .stage-content{
+  position:absolute!important;
+  right:16px!important;
+  top:16px!important;
+  bottom:auto!important;
+  width:min(28vw,300px)!important;
+  min-width:210px!important;
+  max-height:calc(100% - 32px)!important;
+  padding:14px!important;
+  border-radius:20px!important;
+  background:rgba(15,23,42,.24)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+}
+
+body.plugin-ui-final .story-stage .stage-title{
+  font-size:clamp(1.6rem,3vw,3rem)!important;
+  margin-bottom:4px!important;
+}
+
+body.plugin-ui-final .story-stage .stage-sub{
+  font-size:clamp(1rem,1.7vw,1.35rem)!important;
+}
+
+body.plugin-ui-final .story-stage .stage-badges{
+  margin-top:10px!important;
+  gap:7px!important;
+  flex-direction:column!important;
+}
+
+body.plugin-ui-final .story-stage .rakah-badge{
+  font-size:clamp(.85rem,1.25vw,1.08rem)!important;
+  padding:7px 10px!important;
+}
+
+/* Stronger day/night story overlays */
+body.plugin-ui-final .story-dawn{background:linear-gradient(rgba(255,182,193,.28),rgba(59,130,246,.12))!important;}
+body.plugin-ui-final .story-bright-day{background:linear-gradient(rgba(250,204,21,.16),rgba(14,165,233,.06))!important;}
+body.plugin-ui-final .story-afternoon{background:linear-gradient(rgba(251,146,60,.22),rgba(15,23,42,.12))!important;}
+body.plugin-ui-final .story-sunset{background:linear-gradient(rgba(249,115,22,.38),rgba(88,28,12,.36))!important;}
+body.plugin-ui-final .story-night{background:linear-gradient(rgba(2,6,23,.76),rgba(0,0,0,.84))!important;}
+
+/* Numbers active glow must sit above full image. */
+body.plugin-ui-final .number-focus-dot{
+  z-index:8!important;
+  display:block!important;
+}
+
+/* Credits: visible but no longer a thick dark block */
+body.plugin-ui-final .credits{
+  padding:5px 8px!important;
+  background:rgba(15,23,42,.18)!important;
+  border-top:1px solid rgba(255,255,255,.05)!important;
+  backdrop-filter:blur(5px)!important;
+  -webkit-backdrop-filter:blur(5px)!important;
+  line-height:1.05!important;
+  box-shadow:none!important;
+}
+
+body.plugin-ui-final .amtun{
+  font-size:1.05rem!important;
+  letter-spacing:2px!important;
+}
+
+body.plugin-ui-final .credits div:first-child,
+body.plugin-ui-final .credits div:last-child{
+  font-size:.72rem!important;
+}
+
+/* Landing remains clean: no text clutter/buttons. */
+body.landing-mode .play-btn,
+body.landing-mode .english{
+  display:none!important;
+}
+
+/* External Salah iframe: full available space. */
+body.plugin-ui-final .external-bridge iframe{
+  width:100%!important;
+  height:100%!important;
+  border:0!important;
+}
+
+/* TV/laptop one-page behavior */
+body.plugin-ui-final.tv-mode{
+  height:100vh!important;
+  overflow:hidden!important;
+}
+
+@media(max-width:768px){
+  body.plugin-ui-final{
+    padding:8px 9px 54px!important;
+  }
+
+  body.plugin-ui-final .topbar button,
+  body.plugin-ui-final .topbar select{
+    padding:6px 9px!important;
+    font-size:.78rem!important;
+  }
+
+  body.plugin-ui-final .stage,
+  body.plugin-ui-final .spotlight-wrap,
+  body.plugin-ui-final .external-bridge{
+    height:calc(100vh - 126px)!important;
+    border-radius:18px!important;
+  }
+
+  body.plugin-ui-final.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-template-rows:repeat(3,1fr)!important;
+    gap:9px!important;
+    height:calc(100vh - 126px)!important;
+  }
+
+  body.plugin-ui-final.plugin-names .arabic{
+    font-size:1.25rem!important;
+  }
+
+  body.plugin-ui-final .story-stage .stage-content{
+    left:10px!important;
+    right:10px!important;
+    top:auto!important;
+    bottom:10px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-height:38%!important;
+  }
+
+  body.plugin-ui-final .story-stage .stage-badges{
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    justify-content:center!important;
+  }
+}
+
+
+/* ================= PRISM V3.4 FINAL RENDERER SPLIT ================= */
+
+/* Plugins use stage area, not card-within-stage. */
+body.plugin-ui-final .grid.stage-render{
+  display:block!important;
+  width:100%!important;
+  height:calc(100vh - 118px)!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final .stage.full-visual,
+body.plugin-ui-final .spotlight-wrap.full-visual{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  border:0!important;
+  border-radius:0!important;
+  margin:0!important;
+  padding:0!important;
+  box-shadow:none!important;
+  background:none!important;
+  overflow:hidden!important;
+}
+
+.stage-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  z-index:0;
+  pointer-events:none;
+}
+
+/* Keep no ugly white border/card look in stage modules */
+body.plugin-ui-final.plugin-months .stage,
+body.plugin-ui-final.plugin-numbers .spotlight-wrap,
+body.plugin-ui-final.plugin-salahnames .stage{
+  background:rgba(2,6,23,.15)!important;
+  border-radius:0!important;
+}
+
+/* Optional: months/numbers can preserve complete poster/image without crop */
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img,
+body.plugin-ui-final.plugin-salahnames .stage-img{
+  object-fit:contain!important;
+}
+
+/* Stage overlay layers above real image */
+.aquarium-layer,
+.number-overlay-layer,
+.story-overlay{
+  z-index:2!important;
+}
+
+/* Numbers spotlight, positioned by coordinates over the actual img */
+.number-focus-dot{
+  position:absolute!important;
+  width:clamp(48px,7vw,96px)!important;
+  height:clamp(48px,7vw,96px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.78),rgba(255,213,74,.28) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:5!important;
+  animation:numberPulse 1.05s ease-in-out infinite!important;
+}
+
+.number-focus-dot::before,
+.number-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(15px,2vw,28px);
+  text-shadow:0 0 10px white;
+  animation:numberSparkle 1.3s ease-in-out infinite;
+}
+.number-focus-dot::before{left:-12%;top:6%;}
+.number-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+
+@keyframes numberPulse{
+  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+}
+@keyframes numberSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+}
+
+/* Salah Names side panel: compact and above credits, not a tall blocking tile */
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-content{
+  position:absolute!important;
+  right:16px!important;
+  top:16px!important;
+  bottom:auto!important;
+  width:min(27vw,285px)!important;
+  min-width:210px!important;
+  max-height:calc(100% - 36px)!important;
+  padding:13px!important;
+  border-radius:19px!important;
+  background:rgba(15,23,42,.28)!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  z-index:4!important;
+}
+
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-title{
+  font-size:clamp(1.55rem,3vw,2.8rem)!important;
+  margin:0 0 4px!important;
+}
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-sub{
+  font-size:clamp(.95rem,1.6vw,1.25rem)!important;
+}
+body.plugin-ui-final.plugin-salahnames .story-stage .stage-badges{
+  margin-top:8px!important;
+  gap:6px!important;
+}
+body.plugin-ui-final.plugin-salahnames .story-stage .rakah-badge{
+  font-size:clamp(.8rem,1.2vw,1.02rem)!important;
+  padding:6px 9px!important;
+}
+
+/* Make credits less blocking over visual stage */
+body.plugin-ui-final .credits{
+  background:rgba(15,23,42,.12)!important;
+  padding:4px 8px!important;
+  line-height:1!important;
+}
+body.plugin-ui-final .amtun{font-size:.98rem!important;}
+body.plugin-ui-final .credits div:first-child,
+body.plugin-ui-final .credits div:last-child{font-size:.66rem!important;}
+
+/* Stage modules: tiny topbar only */
+body.plugin-ui-final .topbar{
+  margin-bottom:4px!important;
+}
+body.plugin-ui-final .topbar button,
+body.plugin-ui-final .topbar select{
+  padding:6px 10px!important;
+  font-size:.82rem!important;
+}
+
+/* Allah names must stay single page, not huge scrolling */
+body.plugin-ui-final.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  grid-template-rows:repeat(2,1fr)!important;
+  gap:10px!important;
+  height:calc(100vh - 118px)!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final.plugin-names .card{
+  min-height:0!important;
+  height:100%!important;
+  padding:12px!important;
+  border-radius:20px!important;
+}
+
+@media(max-width:768px){
+  body.plugin-ui-final .grid.stage-render{
+    height:calc(100vh - 112px)!important;
+  }
+
+  body.plugin-ui-final.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-template-rows:repeat(3,1fr)!important;
+    height:calc(100vh - 112px)!important;
+  }
+
+  body.plugin-ui-final.plugin-salahnames .story-stage .stage-content{
+    left:10px!important;
+    right:10px!important;
+    top:auto!important;
+    bottom:8px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-height:34%!important;
+  }
+}
+
+
+/* ================= V4 COORDINATE SPOTLIGHT FINAL ================= */
+.coordinate-focus-dot{
+  position:absolute!important;
+  width:clamp(52px,7vw,108px)!important;
+  height:clamp(52px,7vw,108px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.76),rgba(255,213,74,.30) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:8!important;
+  animation:coordinatePulse 1.05s ease-in-out infinite!important;
+}
+.coordinate-focus-dot::before,
+.coordinate-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(15px,2vw,28px);
+  text-shadow:0 0 10px white;
+  animation:coordinateSparkle 1.3s ease-in-out infinite;
+}
+.coordinate-focus-dot::before{left:-12%;top:6%;}
+.coordinate-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+@keyframes coordinatePulse{
+  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+}
+@keyframes coordinateSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+}
+
+
+/* ================= PRISM V4 FINAL PATCH: COORDINATE STAGE + COMPACT EMPTY GALLERY ================= */
+
+/* Months/Numbers coordinate images must fill their visual stage so plugin % coordinates match exactly. */
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:fill!important;
+  object-position:center!important;
+}
+
+/* Keep SalahNames image undistorted because it is a story background. */
+body.plugin-ui-final.plugin-salahnames .stage-img{
+  object-fit:cover!important;
+  object-position:center!important;
+}
+
+/* Remove remaining inner-card look for coordinate modules. */
+body.plugin-ui-final.plugin-months .spotlight-wrap,
+body.plugin-ui-final.plugin-numbers .spotlight-wrap,
+body.plugin-ui-final.plugin-months .stage,
+body.plugin-ui-final.plugin-numbers .stage{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  background:#020617!important;
+}
+
+/* Coordinate dot is positioned by JS in pixels, not by stage percent. */
+.coordinate-focus-dot{
+  position:absolute!important;
+  width:clamp(52px,7vw,108px)!important;
+  height:clamp(52px,7vw,108px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.80),rgba(255,213,74,.30) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:8!important;
+  animation:coordinatePulse 1.05s ease-in-out infinite!important;
+}
+
+.coordinate-focus-dot::before,
+.coordinate-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(15px,2vw,28px);
+  text-shadow:0 0 10px white;
+  animation:coordinateSparkle 1.3s ease-in-out infinite;
+}
+.coordinate-focus-dot::before{left:-12%;top:6%;}
+.coordinate-focus-dot::after{right:-10%;bottom:4%;animation-delay:.45s;}
+
+@keyframes coordinatePulse{
+  0%,100%{opacity:.58;transform:translate(-50%,-50%) scale(.86);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.26);}
+}
+@keyframes coordinateSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.2) rotate(18deg);}
+}
+
+/* Dua / empty gallery should NOT become one huge full-screen card. */
+body.plugin-ui-final.plugin-dua .grid,
+body.plugin-ui-final.plugin-duas .grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(190px,260px))!important;
+  justify-content:center!important;
+  align-content:start!important;
+  gap:16px!important;
+  height:calc(100vh - 118px)!important;
+  overflow:hidden!important;
+  padding-top:18px!important;
+}
+
+body.plugin-ui-final.plugin-dua .card,
+body.plugin-ui-final.plugin-duas .card{
+  width:min(260px,88vw)!important;
+  height:190px!important;
+  min-height:190px!important;
+  border-radius:24px!important;
+  padding:16px!important;
+  animation:float 4s ease-in-out infinite!important;
+}
+
+body.plugin-ui-final.plugin-dua .english,
+body.plugin-ui-final.plugin-duas .english{
+  display:none!important;
+}
+
+
+/* ================= PRISM V4 FINAL: CONTAIN IMAGE + SMART COORDINATE MAPPING ================= */
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+}
+
+body.plugin-ui-final.plugin-months .spotlight-wrap,
+body.plugin-ui-final.plugin-numbers .spotlight-wrap{
+  background:radial-gradient(circle at center,rgba(15,23,42,.35),rgba(2,6,23,.92))!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+
+.coordinate-focus-dot{
+  position:absolute!important;
+  width:clamp(52px,7vw,108px)!important;
+  height:clamp(52px,7vw,108px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,232,92,.82),rgba(255,213,74,.30) 42%,rgba(255,213,74,0) 72%)!important;
+  box-shadow:0 0 24px rgba(255,213,74,.95),0 0 58px rgba(255,255,255,.45)!important;
+  transform:translate(-50%,-50%) scale(1)!important;
+  pointer-events:none!important;
+  z-index:8!important;
+  animation:coordinatePulse 1.05s ease-in-out infinite!important;
+}
+
+
+/* ================= PRISM V4.1 TESTED RENDERER FINAL OVERRIDE ================= */
+:root{--prism-vh:100vh;}
+
+body.plugin-ui-final{
+  height:var(--prism-vh)!important;
+  min-height:var(--prism-vh)!important;
+  overflow:hidden!important;
+  padding:8px 10px 46px!important;
+}
+
+body.plugin-ui-final #pageTitle,
+body.plugin-ui-final #pageSubtitle{display:none!important;}
+
+body.plugin-ui-final .topbar{
+  margin:0 0 6px!important;
+  min-height:36px!important;
+  gap:7px!important;
+  flex-shrink:0!important;
+}
+
+body.plugin-ui-final .topbar button,
+body.plugin-ui-final .topbar select{
+  padding:6px 9px!important;
+  border-radius:12px!important;
+  font-size:.8rem!important;
+}
+
+body.plugin-ui-final .grid.stage-render{
+  display:block!important;
+  width:100%!important;
+  height:calc(var(--prism-vh) - 98px)!important;
+  min-height:220px!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  flex:1 1 auto!important;
+}
+
+body.plugin-ui-final .stage.full-visual,
+body.plugin-ui-final .spotlight-wrap.full-visual{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  outline:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+  background:#020617!important;
+}
+
+.stage-bg-cover{
+  position:absolute!important;
+  inset:-18px!important;
+  background-size:cover!important;
+  background-position:center!important;
+  background-repeat:no-repeat!important;
+  filter:blur(14px) saturate(1.15)!important;
+  transform:scale(1.04)!important;
+  opacity:.42!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+
+.stage-img{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  z-index:1!important;
+  pointer-events:none!important;
+}
+
+/* Months + Numbers are coordinate artwork: no distortion, map effects to actual image rectangle */
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img{
+  object-fit:contain!important;
+}
+
+/* Salah names is scenic: fill stage without stretching obvious subjects */
+body.plugin-ui-final.plugin-salah-names .stage-img,
+body.plugin-ui-final.plugin-salahnames .stage-img{
+  object-fit:cover!important;
+}
+
+.coordinate-focus-dot{
+  position:absolute!important;
+  width:clamp(46px,6.2vw,96px)!important;
+  height:clamp(46px,6.2vw,96px)!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle,rgba(255,235,115,.88),rgba(255,213,74,.30) 44%,rgba(255,213,74,0) 74%)!important;
+  box-shadow:0 0 18px rgba(255,213,74,.95),0 0 42px rgba(255,255,255,.42)!important;
+  transform:translate(-50%,-50%)!important;
+  pointer-events:none!important;
+  z-index:9!important;
+  animation:coordinatePulse 1.05s ease-in-out infinite!important;
+}
+
+.coordinate-focus-dot::before,
+.coordinate-focus-dot::after{
+  content:"✦";
+  position:absolute;
+  color:#fff8b5;
+  font-size:clamp(13px,1.8vw,26px);
+  text-shadow:0 0 10px white;
+  animation:coordinateSparkle 1.3s ease-in-out infinite;
+}
+.coordinate-focus-dot::before{left:-10%;top:4%;}
+.coordinate-focus-dot::after{right:-8%;bottom:2%;animation-delay:.45s;}
+
+@keyframes coordinatePulse{
+  0%,100%{opacity:.64;transform:translate(-50%,-50%) scale(.88);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.20);}
+}
+@keyframes coordinateSparkle{
+  0%,100%{opacity:.35;transform:scale(.7) rotate(0deg);}
+  50%{opacity:1;transform:scale(1.15) rotate(18deg);}
+}
+
+body.plugin-ui-final .aquarium-layer{z-index:5!important;}
+
+/* Salah Names panel: readable and not over credits */
+body.plugin-ui-final .story-stage .stage-content{
+  position:absolute!important;
+  right:14px!important;
+  top:14px!important;
+  bottom:auto!important;
+  width:min(27vw,285px)!important;
+  min-width:210px!important;
+  max-height:calc(100% - 28px)!important;
+  padding:12px!important;
+  border-radius:18px!important;
+  background:rgba(15,23,42,.34)!important;
+  border:1px solid rgba(255,255,255,.18)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  z-index:8!important;
+}
+
+body.plugin-ui-final .story-stage .stage-title{
+  font-size:clamp(1.45rem,2.8vw,2.7rem)!important;
+  margin:0 0 3px!important;
+}
+body.plugin-ui-final .story-stage .stage-sub{font-size:clamp(.9rem,1.5vw,1.2rem)!important;}
+body.plugin-ui-final .story-stage .stage-badges{margin-top:8px!important;gap:6px!important;}
+body.plugin-ui-final .story-stage .rakah-badge{font-size:clamp(.78rem,1.1vw,1rem)!important;padding:6px 9px!important;}
+
+/* Lighter Isha while keeping night feel */
+body.plugin-ui-final .story-night{
+  background:linear-gradient(rgba(15,23,42,.40),rgba(30,64,175,.28))!important;
+}
+
+/* Allah Names grid fixed */
+body.plugin-ui-final.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  grid-template-rows:repeat(2,1fr)!important;
+  gap:10px!important;
+  height:calc(var(--prism-vh) - 98px)!important;
+  overflow:hidden!important;
+}
+body.plugin-ui-final.plugin-names .card{
+  min-height:0!important;
+  height:100%!important;
+  padding:12px!important;
+  border-radius:20px!important;
+}
+
+/* Dua/empty gallery compact */
+body.plugin-ui-final.plugin-dua .grid,
+body.plugin-ui-final.plugin-duas .grid{
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(190px,260px))!important;
+  justify-content:center!important;
+  align-content:start!important;
+  gap:16px!important;
+  height:calc(var(--prism-vh) - 98px)!important;
+  overflow:hidden!important;
+  padding-top:18px!important;
+}
+body.plugin-ui-final.plugin-dua .card,
+body.plugin-ui-final.plugin-duas .card{
+  width:min(260px,88vw)!important;
+  height:190px!important;
+  min-height:190px!important;
+  border-radius:24px!important;
+  padding:16px!important;
+}
+body.plugin-ui-final.plugin-dua .english,
+body.plugin-ui-final.plugin-duas .english{display:none!important;}
+
+/* More transparent credits */
+body.plugin-ui-final .credits{
+  background:rgba(15,23,42,.12)!important;
+  padding:4px 8px!important;
+  line-height:1!important;
+  backdrop-filter:blur(4px)!important;
+  -webkit-backdrop-filter:blur(4px)!important;
+}
+body.plugin-ui-final .amtun{font-size:.98rem!important;}
+body.plugin-ui-final .credits div:first-child,
+body.plugin-ui-final .credits div:last-child{font-size:.66rem!important;}
+
+@media(max-width:768px){
+  body.plugin-ui-final{padding:6px 7px 42px!important;}
+  body.plugin-ui-final .topbar{min-height:32px!important;margin-bottom:4px!important;gap:5px!important;}
+  body.plugin-ui-final .topbar button,
+  body.plugin-ui-final .topbar select{padding:5px 7px!important;font-size:.72rem!important;}
+  body.plugin-ui-final .grid.stage-render{
+    height:calc(var(--prism-vh) - 82px)!important;
+    min-height:200px!important;
+  }
+  body.plugin-ui-final.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    grid-template-rows:repeat(3,1fr)!important;
+    height:calc(var(--prism-vh) - 82px)!important;
+  }
+  body.plugin-ui-final .story-stage .stage-content{
+    left:9px!important;
+    right:9px!important;
+    top:auto!important;
+    bottom:8px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-height:34%!important;
+  }
+  body.plugin-ui-final .story-stage .stage-badges{
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    justify-content:center!important;
+  }
+}
+
+
+/* ================= ALLAH NAMES: USE QURAN-STYLE TILE GRID =================
+   Allah's Names should visually match Quran cards:
+   - same normal grid behavior
+   - same card proportions
+   - no stretched 3x2 plugin screen layout
+*/
+body.plugin-names{
+  height:auto!important;
+  min-height:100vh!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  padding:20px!important;
+  padding-bottom:110px!important;
+}
+
+body.plugin-names #pageTitle,
+body.plugin-names #pageSubtitle{
+  display:block!important;
+}
+
+body.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:18px!important;
+  max-width:none!important;
+  width:100%!important;
+  margin:auto!important;
+  height:auto!important;
+  overflow:visible!important;
+  flex:1!important;
+}
+
+body.plugin-names .card{
+  min-height:170px!important;
+  height:auto!important;
+  padding:18px!important;
+  border-radius:26px!important;
+  animation:float 4s ease-in-out infinite!important;
+}
+
+body.plugin-names .emoji{
+  font-size:3rem!important;
+  margin-bottom:8px!important;
+}
+
+body.plugin-names .arabic{
+  font-size:2rem!important;
+  line-height:1.1!important;
+}
+
+body.plugin-names .english{
+  display:block!important;
+  font-size:1rem!important;
+}
+
+body.plugin-names .play-btn{
+  display:block!important;
+  padding:12px!important;
+  font-size:1rem!important;
+  margin-top:12px!important;
+  border-radius:16px!important;
+}
+
+@media(max-width:768px){
+  body.plugin-names .grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:12px!important;
+  }
+
+  body.plugin-names .card{
+    min-height:150px!important;
+    padding:14px!important;
+  }
+
+  body.plugin-names .emoji{
+    font-size:2.2rem!important;
+  }
+
+  body.plugin-names .arabic{
+    font-size:1.45rem!important;
+  }
+
+  body.plugin-names .english{
+    font-size:.85rem!important;
+  }
+
+  body.plugin-names .play-btn{
+    padding:9px!important;
+    font-size:.85rem!important;
+    margin-top:8px!important;
+  }
+}
+
+@media(orientation:landscape) and (max-height:560px){
+  body.plugin-names{
+    padding:8px!important;
+    padding-bottom:42px!important;
+  }
+
+  body.plugin-names .grid{
+    grid-template-columns:repeat(3,1fr)!important;
+    gap:8px!important;
+  }
+
+  body.plugin-names .card{
+    min-height:100px!important;
+    padding:8px!important;
+    border-radius:16px!important;
+  }
+
+  body.plugin-names .emoji{
+    font-size:1.35rem!important;
+    margin-bottom:2px!important;
+  }
+
+  body.plugin-names .arabic{
+    font-size:1.05rem!important;
+  }
+
+  body.plugin-names .english{
+    font-size:.65rem!important;
+  }
+
+  body.plugin-names .play-btn{
+    padding:5px!important;
+    font-size:.65rem!important;
+    margin-top:4px!important;
+  }
+}
+
+</style>
+</head>
+
+<body>
+<div class="stars"></div>
+
+<h1 id="pageTitle">🌙 Mariam & Hamza's 🌙 </h1>
+<p class="subtitle" id="pageSubtitle">✨Quran Adventures with Mom!✨</p>
+
+<div class="topbar" id="topbar">
+<button id="btnBack" tabindex="0" onclick="goHome()">🏠 Home</button>
+<button id="btnStop" tabindex="0" onclick="stopAll()">⏹ Stop</button>
+<button id="loopBtn" tabindex="0" onclick="toggleLoopAll()">🔁 Loop OFF</button>
+<select id="mode" tabindex="0">
+<option value="listen" selected>🎧 Listen</option>
+<option value="learnListen">🎓 Learn · Listen</option>
+<option value="repeat5">🎓 Learn · 5x</option>
+<option value="hifz">🎓 Learn · Hifz</option>
+</select>
 </div>
 
-<main id="app" class="grid"></main>
+<div class="grid" id="grid"></div>
 
-<footer class="credits">
-<small>Created by</small>
+<div id="overlay">
+<div>▶ Tap Anywhere / Press OK To Start</div>
+</div>
+
+<div class="credits">
+<div>Created by</div>
 <div class="amtun">AMTUN NOOR</div>
-<small>May 2026</small>
-</footer>
+<div>May 2026</div>
+</div>
 
-<script src="engines/quran.engine.js"></script>
-<script src="engines/grid.engine.js"></script>
-<script src="engines/visual.engine.js"></script>
-<script src="engines/story.engine.js"></script>
 <script>
-const Prism = {
-  menu: [],
-  current: null,
-  items: [],
-  focus: 0,
-  audio: null,
-  timers: [],
-  params: new URLSearchParams(location.search),
-  els: {},
-  engines: window.PrismEngines || {}
+/* =========================================================
+   PRISM V3.4 CORRECTED INDEX ENGINE
+   Fixes:
+   - Quran listen/learn folders merge
+   - Learn badge on Quran listen tiles
+   - Quran 5x/Hifz from slices.json
+   - Allah Names 5x/Hifz chunk fallback by duration
+   - Landing tiles uncluttered
+   - Salah external URL
+   - Months full-screen direct audio, no inner tile
+   ========================================================= */
+
+const surahs = [
+{id:"A1",name:"الفاتحة",eng:"Al Fatiha",emoji:"🌟",file:"A5.mp3",color:"linear-gradient(135deg,#f59e0b,#ef4444)",surahNo:"1"},
+{id:"A2",name:"الإخلاص",eng:"Al Ikhlas",emoji:"💖",file:"A6.mp3",color:"linear-gradient(135deg,#ec4899,#8b5cf6)",surahNo:"112"},
+{id:"A3",name:"الفلق",eng:"Al Falaq",emoji:"🌙",file:"A7.mp3",color:"linear-gradient(135deg,#06b6d4,#3b82f6)",surahNo:"113"},
+{id:"A4",name:"الناس",eng:"An Naas",emoji:"⭐",file:"A8.mp3",color:"linear-gradient(135deg,#10b981,#14b8a6)",surahNo:"114"},
+{id:"A5",name:"الفيل",eng:"Al Feel",emoji:"🐘",file:"A9.mp3",color:"linear-gradient(135deg,#8b5cf6,#6366f1)",surahNo:"105"},
+{id:"A6",name:"قريش",eng:"Quraish",emoji:"🕋",file:"A10.mp3",color:"linear-gradient(135deg,#0ea5e9,#2563eb)",surahNo:"106"},
+{id:"A7",name:"الماعون",eng:"Al Ma'un",emoji:"🤲",file:"A11.mp3",color:"linear-gradient(135deg,#14b8a6,#22c55e)",surahNo:"107"},
+{id:"A8",name:"الكوثر",eng:"Al Kawther",emoji:"💧",file:"A12.mp3",color:"linear-gradient(135deg,#f97316,#fb7185)",surahNo:"108"},
+{id:"A9",name:"الكافرون",eng:"Al Kafiroon",emoji:"☀️",file:"A13.mp3",color:"linear-gradient(135deg,#84cc16,#22c55e)",surahNo:"109"},
+{id:"A10",name:"النصر",eng:"An Nasr",emoji:"🏆",file:"A14.mp3",color:"linear-gradient(135deg,#38bdf8,#818cf8)",surahNo:"110"},
+{id:"A11",name:"المسد",eng:"Al Masad",emoji:"🔥",file:"A15.mp3",color:"linear-gradient(135deg,#ef4444,#f97316)",surahNo:"111"},
+{id:"A12",name:"تكبير",eng:"Takbir",emoji:"🕌",file:"A16.mp3",color:"linear-gradient(135deg,#6366f1,#8b5cf6)"},
+{id:"A13",name:"الأذان",eng:"Azan",emoji:"📢",file:"A17.mp3",color:"linear-gradient(135deg,#06b6d4,#0ea5e9)"},
+{id:"A14",name:"الكلمة الثانية",eng:"Second Kalima",emoji:"🌹",file:"A18.mp3",color:"linear-gradient(135deg,#14b8a6,#0f766e)"},
+{id:"A15",name:"الضحى",eng:"Ad Duha",emoji:"☀️",file:"A19.mp3",color:"linear-gradient(135deg,#facc15,#fb7185)",surahNo:"93"},
+{id:"A16",name:"إِنَّ الْمُسْلِمِينَ",eng:"Innal Muslimeena",emoji:"💚",file:"A20.mp3",color:"linear-gradient(135deg,#22c55e,#16a34a)"}
+];
+
+
+const SURAH_META = {
+"2":   {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"},
+"55":  {name:"الرحمن", eng:"Ar Rahman", emoji:"🌿", color:"linear-gradient(135deg,#22c55e,#14b8a6)"},
+"93":  {name:"الضحى", eng:"Ad Duha", emoji:"☀️", color:"linear-gradient(135deg,#facc15,#fb7185)"},
+"94":  {name:"الشرح", eng:"Ash Sharh", emoji:"🌸", color:"linear-gradient(135deg,#f9a8d4,#a78bfa)"},
+"95":  {name:"التين", eng:"At Teen", emoji:"🫒", color:"linear-gradient(135deg,#84cc16,#22c55e)"},
+"96":  {name:"العلق", eng:"Al Alaq", emoji:"📜", color:"linear-gradient(135deg,#f97316,#facc15)"},
+"97":  {name:"القدر", eng:"Al Qadr", emoji:"🌌", color:"linear-gradient(135deg,#312e81,#8b5cf6)"},
+"98":  {name:"البينة", eng:"Al Bayyinah", emoji:"📖", color:"linear-gradient(135deg,#0ea5e9,#6366f1)"},
+"99":  {name:"الزلزلة", eng:"Az Zalzalah", emoji:"🌍", color:"linear-gradient(135deg,#92400e,#f97316)"},
+"100": {name:"العاديات", eng:"Al Adiyat", emoji:"🐎", color:"linear-gradient(135deg,#ef4444,#f97316)"},
+"101": {name:"القارعة", eng:"Al Qariah", emoji:"⚡", color:"linear-gradient(135deg,#facc15,#ef4444)"},
+"102": {name:"التكاثر", eng:"At Takathur", emoji:"🏆", color:"linear-gradient(135deg,#f59e0b,#f97316)"},
+"103": {name:"العصر", eng:"Al Asr", emoji:"⏳", color:"linear-gradient(135deg,#38bdf8,#6366f1)"},
+"104": {name:"الهمزة", eng:"Al Humazah", emoji:"🛡️", color:"linear-gradient(135deg,#8b5cf6,#ec4899)"},
+"105": {name:"الفيل", eng:"Al Feel", emoji:"🐘", color:"linear-gradient(135deg,#8b5cf6,#6366f1)"},
+"106": {name:"قريش", eng:"Quraish", emoji:"🕋", color:"linear-gradient(135deg,#0ea5e9,#2563eb)"},
+"107": {name:"الماعون", eng:"Al Ma'un", emoji:"🤲", color:"linear-gradient(135deg,#14b8a6,#22c55e)"},
+"108": {name:"الكوثر", eng:"Al Kawther", emoji:"💧", color:"linear-gradient(135deg,#f97316,#fb7185)"},
+"109": {name:"الكافرون", eng:"Al Kafiroon", emoji:"☀️", color:"linear-gradient(135deg,#84cc16,#22c55e)"},
+"110": {name:"النصر", eng:"An Nasr", emoji:"🏆", color:"linear-gradient(135deg,#38bdf8,#818cf8)"},
+"111": {name:"المسد", eng:"Al Masad", emoji:"🔥", color:"linear-gradient(135deg,#ef4444,#f97316)"},
+"112": {name:"الإخلاص", eng:"Al Ikhlas", emoji:"💖", color:"linear-gradient(135deg,#ec4899,#8b5cf6)"},
+"113": {name:"الفلق", eng:"Al Falaq", emoji:"🌙", color:"linear-gradient(135deg,#06b6d4,#3b82f6)"},
+"114": {name:"الناس", eng:"An Naas", emoji:"⭐", color:"linear-gradient(135deg,#10b981,#14b8a6)"}
 };
 
-function setVh(){document.documentElement.style.setProperty("--vh", window.innerHeight+"px")}
-setVh(); addEventListener("resize",()=>setTimeout(setVh,80)); addEventListener("orientationchange",()=>setTimeout(setVh,250));
+const FALLBACK_MENU = [
+{title:"Quran",mainUrl:"file:///data/user/0/com.noor.prism/files/quran/index.html?id=A1",plugin:{id:"quran",title:"Quran",theme:"quran",engine:"learning"}},
+{title:"Salah",mainUrl:"https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",plugin:{id:"salah",title:"Salah",theme:"salah",engine:"external"}},
+{title:"Dua",mainUrl:"index.html?plugin=dua",plugin:{id:"dua",title:"Dua",folder:"dua",theme:"dua",engine:"gallery",supports:["listen"]}},
+{title:"Islamic Months",mainUrl:"index.html?plugin=months&autoplay=1",plugin:{id:"months",title:"Islamic Months",folder:"months",theme:"months",engine:"directAudio",playFromLanding:true,supports:["listen"],effect:{type:"aquarium",waterRays:true,bubbles:true,fishZones:true,mouthMove:true,tailGlow:true}}},
+{title:"Allah Names",mainUrl:"index.html?plugin=names",plugin:{id:"names",title:"Allah Names",folder:"names",theme:"names",engine:"spotlight",supports:["listen","repeat5","hifz"],chunkMode:{enabled:true,namesPerChunk:4,repeatCount:5}}}
+];
 
-function $(id){return document.getElementById(id)}
-Prism.els = {app:$("app"), title:$("pageTitle"), sub:$("pageSubtitle"), back:$("btnBack"), stop:$("btnStop"), mode:$("mode")};
+const THEME = {
+quran:["#f59e0b","#ef4444","📖"],
+salah:["#22c55e","#0ea5e9","🕌"],
+dua:["#f472b6","#8b5cf6","🤲"],
+months:["#38bdf8","#6366f1","🗓"],
+names:["#facc15","#fb7185","ﷲ"],
+numbers:["#f97316","#22c55e","🔢"],
+"salah-names":["#fb923c","#1d4ed8","🌙"],
+angels:["#e0f2fe","#a78bfa","🕊"],
+default:["#a78bfa","#22d3ee","✨"]
+};
 
-function clearAll(){
-  Prism.timers.forEach(t=>clearTimeout(t)); Prism.timers=[];
-  if(Prism.audio){try{Prism.audio.pause(); Prism.audio.currentTime=0}catch(e){}}
-  Prism.audio=null; Prism.items=[]; Prism.focus=0; Prism.els.app.innerHTML="";
-  document.body.className="";
+const DEFAULT_PALETTE = [
+"linear-gradient(135deg,#f97316,#facc15)",
+"linear-gradient(135deg,#22c55e,#14b8a6)",
+"linear-gradient(135deg,#38bdf8,#6366f1)",
+"linear-gradient(135deg,#ec4899,#8b5cf6)",
+"linear-gradient(135deg,#ef4444,#fb7185)",
+"linear-gradient(135deg,#84cc16,#06b6d4)",
+"linear-gradient(135deg,#a855f7,#f472b6)",
+"linear-gradient(135deg,#0ea5e9,#22c55e)"
+];
+
+const TV = {
+cols: window.innerWidth <= 768 ? 2 : 4,
+focused: 0,
+isTV: /Android TV|TV|SmartTV|MiTV/i.test(navigator.userAgent) || !("ontouchstart" in window)
+};
+
+if(TV.isTV && window.innerWidth > 768){document.body.classList.add("tv-mode");}
+
+window.addEventListener("resize",()=>{
+TV.cols = window.innerWidth <= 768 ? 2 : 4;
+if(TV.isTV && window.innerWidth > 768){document.body.classList.add("tv-mode");}
+else{document.body.classList.remove("tv-mode");}
+});
+
+const grid = document.getElementById("grid");
+const map = {};
+let items = [];
+let menuData = [];
+let slicesData = {};
+let currentAudio = null;
+let currentButton = null;
+let currentCard = null;
+let currentItem = null;
+let loopAll = false;
+let currentView = "landing";
+let currentPlugin = null;
+let sequenceCancelToken = 0;
+let storyTimer = null;
+
+function params(){return new URLSearchParams(location.search);}
+function getMode(){return document.getElementById("mode").value;}
+
+function speak(text){
+try{
+const u = new SpeechSynthesisUtterance(text);
+u.rate = .9;
+speechSynthesis.cancel();
+speechSynthesis.speak(u);
+}catch(e){}
 }
 
-function rel(path){return path || ""}
-async function fetchJson(path, fallback){
-  try{const r=await fetch(path,{cache:"no-store"}); if(r.ok) return await r.json()}catch(e){}
-  return fallback;
+
+async function fetchFirstJson(urls, fallback){
+for(const url of urls){
+  try{
+    const res = await fetch(url,{cache:"no-store"});
+    if(res.ok) return await res.json();
+  }catch(e){}
+}
+return fallback;
 }
 
-function setHeader(title, sub){
-  Prism.els.title.textContent = title || "";
-  Prism.els.sub.textContent = sub || "";
+async function fetchJson(url,fallback){
+try{
+const res = await fetch(url,{cache:"no-store"});
+if(!res.ok) throw new Error("not found");
+return await res.json();
+}catch(e){return fallback;}
 }
 
-function setModes(options, value, onchange){
-  const m=Prism.els.mode; m.innerHTML="";
-  (options||[]).forEach(o=>{
-    const opt=document.createElement("option"); opt.value=o.value; opt.textContent=o.label; m.appendChild(opt);
+function gradientFor(theme){
+const t = THEME[theme] || THEME.default;
+return `linear-gradient(135deg,${t[0]},${t[1]})`;
+}
+
+function iconFor(theme){
+return (THEME[theme] || THEME.default)[2];
+}
+
+function applyImageOrGradient(card, image, theme){
+if(typeof image === "string" && image.trim()){
+card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${image}')`;
+card.style.backgroundColor = "transparent";
+} else if(image && image.type === "gradient" && Array.isArray(image.colors)){
+card.style.background = `linear-gradient(135deg,${image.colors.join(",")})`;
+} else {
+card.style.background = gradientFor(theme);
+}
+}
+
+function setHeader(title, subtitle){
+document.getElementById("pageTitle").innerText = title;
+document.getElementById("pageSubtitle").innerText = subtitle;
+}
+
+function setTopbar(show, showHome){
+document.getElementById("topbar").style.display = show ? "flex" : "none";
+document.getElementById("btnBack").style.display = showHome ? "inline-block" : "none";
+}
+
+function clearGrid(){
+Object.keys(map).forEach(k=>delete map[k]);
+items = [];
+grid.innerHTML = "";
+TV.focused = 0;
+clearTimers();
+}
+
+
+function setScreenMode(mode, pluginId){
+document.body.classList.remove("plugin-ui-final","plugin-months","plugin-numbers","plugin-salahnames","plugin-names","plugin-external");
+if(mode === "plugin" || mode === "external"){
+  document.body.classList.add("plugin-ui-final");
+  if(pluginId) document.body.classList.add("plugin-" + String(pluginId).replace(/[^a-z0-9_-]/gi,"").toLowerCase());
+}
+}
+
+
+function setPrismViewportHeight(){
+document.documentElement.style.setProperty("--prism-vh", window.innerHeight + "px");
+}
+setPrismViewportHeight();
+window.addEventListener("resize",()=>setTimeout(setPrismViewportHeight,60));
+window.addEventListener("orientationchange",()=>setTimeout(setPrismViewportHeight,250));
+
+function clearTimers(){
+sequenceCancelToken++;
+if(storyTimer){ clearTimeout(storyTimer); storyTimer = null; }
+}
+
+function pluginEntry(pluginId){
+return menuData.find(m => (m.plugin||{}).id === pluginId) || {};
+}
+
+function quranSyncFiles(){
+const q = menuData.find(m => (m.plugin||{}).id === "quran" || m.title === "Quran");
+return (q && q.syncFiles) ? q.syncFiles : [];
+}
+
+function pluginSyncFiles(plugin){
+return (pluginEntry(plugin.id).syncFiles || []);
+}
+
+/* ================= LANDING PAGE ================= */
+function buildLanding(){
+currentView = "landing";
+currentPlugin = null;
+document.body.classList.remove("plugin-names");
+document.body.classList.add("landing-mode");
+document.body.classList.remove("plugin-stage-mode");
+setScreenMode("landing");
+setStageGridMode(false);
+clearGrid();
+stopAll(false);
+setHeader("🌙 Mariam & Hamza's 🌙","✨Choose Your Prism Adventure!✨");
+setTopbar(false,false);
+
+const cards = menuData.length ? menuData : FALLBACK_MENU;
+
+cards.forEach((entry,idx)=>{
+const plugin = entry.plugin || {};
+const id = plugin.id || entry.title.toLowerCase().replace(/\s+/g,"-");
+const theme = plugin.theme || id || "default";
+const card = document.createElement("div");
+card.className = "card";
+applyImageOrGradient(card, plugin.tileImage, theme);
+card.innerHTML = `
+<div class="card-info-box">
+  <div class="emoji">${iconFor(theme)}</div>
+  <div class="arabic">${entry.title}</div>
+  <div class="english"></div>
+</div>
+<button class="play-btn">▶</button>
+`;
+card.onclick = ()=>openMenuEntry(entry);
+card.querySelector("button").onclick = (e)=>{e.stopPropagation();openMenuEntry(entry);};
+grid.appendChild(card);
+const item = {id,entry,card,index:idx,type:"landing"};
+items.push(item);
+map[id] = item;
+});
+updateFocus();
+}
+
+function openMenuEntry(entry){
+const plugin = entry.plugin || {};
+const id = plugin.id;
+
+if(id === "quran" || entry.title === "Quran"){
+history.pushState(null,"","?plugin=quran");
+buildQuran();
+return;
+}
+
+if(id === "salah" || plugin.engine === "external" || entry.title === "Salah"){
+history.pushState(null,"",`?plugin=${encodeURIComponent(id || "salah")}`);
+buildExternalBridge(entry);
+return;
+}
+
+if(plugin.playFromLanding || plugin.engine === "directAudio"){
+history.pushState(null,"",`?plugin=${encodeURIComponent(id)}&autoplay=1`);
+buildPlugin(plugin,true);
+return;
+}
+
+if(id){
+history.pushState(null,"",`?plugin=${encodeURIComponent(id)}`);
+buildPlugin(plugin,false);
+return;
+}
+
+if(entry.mainUrl){ location.href = entry.mainUrl; }
+}
+
+function goHome(){
+history.pushState(null,"","index.html");
+buildLanding();
+}
+
+
+/* ================= EXTERNAL URL BRIDGE ================= */
+function buildExternalBridge(entry){
+currentView = "external";
+currentPlugin = entry.plugin || {id:"salah",title:"Salah"};
+document.body.classList.remove("landing-mode");
+document.body.classList.add("plugin-stage-mode");
+setScreenMode("external","external");
+setStageGridMode(true);
+clearGrid();
+stopAll(false);
+setHeader("🕌 Salah"," ");
+setTopbar(true,true);
+
+const url = (entry.plugin && entry.plugin.externalUrl) || entry.mainUrl || "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html";
+
+const wrap = document.createElement("div");
+wrap.className = "external-bridge remote-focus";
+wrap.innerHTML = `<iframe src="${url}" allow="autoplay; fullscreen"></iframe>`;
+grid.appendChild(wrap);
+
+const item = {id:"salah-bridge",card:wrap,index:0,type:"external"};
+items.push(item);
+map[item.id]=item;
+TV.focused=0;
+updateFocus();
+}
+
+
+/* ================= QURAN VIEW ================= */
+function buildQuran(){
+currentView = "quran";
+currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
+document.body.classList.remove("landing-mode");
+document.body.classList.remove("plugin-names");
+document.body.classList.remove("plugin-stage-mode");
+setScreenMode("quran");
+setStageGridMode(false);
+setHeader("🌙 Mariam & Hamza's 🌙","✨Quran Adventures with Mom!✨");
+setTopbar(true,true);
+renderQuranItems();
+}
+
+function normalizeFileName(path){
+return String(path).split("/").pop().replace(/\.(mp3|m4a|wav|ogg)$/i,"");
+}
+
+function surahNumberFromPath(path){
+const raw = normalizeFileName(path);
+const first = raw.split(/[_-]/)[0];
+const m = first.match(/\d+/);
+if(!m) return "";
+return String(Number(m[0]));
+}
+
+function titleFromPath(path){
+const no = surahNumberFromPath(path);
+const meta = SURAH_META[no];
+if(meta) return meta.eng;
+const raw = normalizeFileName(path);
+return raw.replace(/[-_]/g," ").replace(/\b\w/g,m=>m.toUpperCase());
+}
+
+function metaForSurahNumber(no){
+return SURAH_META[String(Number(no))] || null;
+}
+
+function metaForPath(path){
+return metaForSurahNumber(surahNumberFromPath(path));
+}
+
+function makeSurahDisplayFromPath(path, fallbackIndex){
+const no = surahNumberFromPath(path);
+const meta = metaForSurahNumber(no);
+return {
+  name: meta?.name || `سورة ${no || fallbackIndex + 1}`,
+  eng: meta?.eng || `Surah ${no || titleFromPath(path)}`,
+  emoji: meta?.emoji || "📖",
+  color: meta?.color || DEFAULT_PALETTE[fallbackIndex % DEFAULT_PALETTE.length],
+  surahNo: no
+};
+}
+
+function getListenFiles(){
+return quranSyncFiles().map(f=>f.path).filter(p=>/^listen\/.+\.(mp3|m4a|wav|ogg)$/i.test(p));
+}
+
+function getLearnFiles(){
+const fromSync = quranSyncFiles().map(f=>f.path).filter(p=>/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(p));
+const fromSlices = Object.keys(slicesData || {}).filter(k=>/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(k));
+return [...new Set([...fromSync,...fromSlices])];
+}
+
+function findLearnForSurah(s){
+const learns = getLearnFiles();
+const candidates = [];
+if(s.surahNo) candidates.push(String(s.surahNo));
+candidates.push(String(s.id).replace(/[^\d]/g,""));
+for(const c of candidates){
+const hit = learns.find(p => surahNumberFromPath(p) === c);
+if(hit) return hit;
+}
+return null;
+}
+
+function buildQuranListenSource(){
+const base = surahs.map(s=>{
+const learn = findLearnForSurah(s);
+return {
+...s,
+listenFile:s.file,
+learnFile:learn,
+slices:learn ? slicesData[learn] : null,
+hasLearn:!!learn
+};
+});
+
+const usedNums = new Set(base.map(s=>s.surahNo).filter(Boolean));
+const extraListen = getListenFiles()
+.filter(p => !usedNums.has(surahNumberFromPath(p)))
+.map((p,idx)=>{
+const display = makeSurahDisplayFromPath(p, idx);
+const learnMatch = getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p));
+return {
+id:`listen-${display.surahNo || idx}`,
+...display,
+file:p,
+listenFile:p,
+learnFile:learnMatch,
+slices:learnMatch ? slicesData[learnMatch] : null,
+hasLearn:!!learnMatch
+};
+});
+
+return [...base,...extraListen];
+}
+
+function buildQuranLearnSource(){
+const learns = getLearnFiles();
+return learns.map((p,idx)=>{
+const display = makeSurahDisplayFromPath(p, idx);
+return {
+id:display.surahNo || `learn-${idx}`,
+...display,
+emoji:display.emoji || "🎓",
+file:p,
+learnFile:p,
+slices:slicesData[p] || null,
+learningMode:slicesData[p] ? "slices" : "durationChunks",
+hasLearn:true
+};
+});
+}
+
+function renderQuranItems(){
+const mode = getMode();
+clearGrid();
+stopAll(false);
+
+const isMainListen = mode === "listen";
+let source = isMainListen ? buildQuranListenSource() : buildQuranLearnSource();
+
+if(!source.length) source = surahs;
+
+source.forEach((s,idx)=>{
+const item = {...s};
+if(isMainListen && item.listenFile) item.file = item.listenFile;
+if(!isMainListen && item.learnFile) item.file = item.learnFile;
+createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
+});
+
+updateFocus();
+prewarmVisibleAudios(24);
+
+const requested = params().get("id") || params().get("surah");
+if(requested && map[requested]){
+TV.focused = map[requested].index;
+qrFix();
+}
+}
+
+/* ================= PLUGIN ROUTER ================= */
+function buildPlugin(plugin, autoplay){
+currentView = "plugin";
+currentPlugin = plugin;
+document.body.classList.remove("landing-mode");
+document.body.classList.add("plugin-stage-mode");
+setScreenMode("plugin", plugin.id);
+setStageGridMode(true);
+const title = plugin.title || plugin.id || "Prism";
+setHeader(`✨ ${title} ✨`, subtitleForEngine(plugin));
+setTopbar(true,true);
+
+const engine = plugin.engine || "gallery";
+if(engine === "directAudio") return buildDirectAudio(plugin, autoplay);
+if(engine === "spotlight") return buildSpotlight(plugin, autoplay);
+if(engine === "story") return buildStory(plugin, autoplay || plugin.autoStart === true || plugin.id === "salah-names" || plugin.id === "salahnames");
+return buildGallery(plugin, autoplay);
+}
+
+function subtitleForEngine(plugin){
+if(plugin.engine === "directAudio") return " ";
+if(plugin.engine === "spotlight") return " ";
+if(plugin.engine === "story") return " ";
+return " ";
+}
+
+function pluginMp3s(plugin){
+const folder = plugin.folder || plugin.id;
+const syncFiles = pluginSyncFiles(plugin);
+let mp3s = [];
+if(Array.isArray(plugin.audios) && plugin.audios.length) mp3s = plugin.audios;
+else mp3s = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.(mp3|m4a|wav|ogg)$/i.test(p));
+if(!mp3s.length && plugin.primaryAudio) mp3s = [plugin.primaryAudio];
+return [...new Set(mp3s)];
+}
+
+function pluginImages(plugin){
+const folder = plugin.folder || plugin.id;
+const syncFiles = pluginSyncFiles(plugin);
+let imgs = [];
+if(Array.isArray(plugin.images) && plugin.images.length) imgs = plugin.images;
+else imgs = syncFiles.map(f=>f.path).filter(p=>p && p.startsWith(folder + "/") && /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(p));
+if(plugin.backgroundImage && typeof plugin.backgroundImage === "string") imgs.unshift(plugin.backgroundImage);
+if(plugin.tileImage && typeof plugin.tileImage === "string") imgs.unshift(plugin.tileImage);
+return [...new Set(imgs)];
+}
+
+
+
+/* ================= FINAL STAGE RENDER HELPERS ================= */
+function setStageGridMode(on){
+if(on) grid.classList.add("stage-render");
+else grid.classList.remove("stage-render");
+}
+
+function makeFullVisualStage(className, imagePath){
+const stage = document.createElement("div");
+stage.className = className + " full-visual";
+if(imagePath){
+  const bg = document.createElement("div");
+  bg.className = "stage-bg-cover";
+  bg.style.backgroundImage = `url('${imagePath}')`;
+  stage.appendChild(bg);
+
+  const img = document.createElement("img");
+  img.className = "stage-img";
+  img.src = imagePath;
+  img.alt = "";
+  img.decoding = "async";
+  img.loading = "eager";
+  stage.appendChild(img);
+}
+return stage;
+}
+
+function startStoryAutoSequence(seq, audio){
+runStorySequence(seq);
+if(audio){
+  audio.addEventListener("play",()=>runStorySequence(seq));
+}
+}
+
+/* ================= PLUGIN EFFECT SYSTEM ================= */
+const DEFAULT_MONTHS_FISH_ZONES = [
+{id:1,name:"محرّم",x:2.2,y:6.2,w:22.5,h:25.9,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:2,name:"صفر",x:26.1,y:8.4,w:21.8,h:24.0,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:3,name:"ربيع الأول",x:49.1,y:8.3,w:22.4,h:24.1,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:4,name:"ربيع الآخر",x:72.5,y:8.3,w:21.7,h:24.0,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:5,name:"جمادى الأولى",x:2.7,y:36.1,w:22.7,h:23.8,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:6,name:"جمادى الآخرة",x:25.9,y:37.4,w:22.4,h:22.9,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:7,name:"رجب",x:49.5,y:36.8,w:21.6,h:22.9,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:8,name:"شعبان",x:72.1,y:37.2,w:21.6,h:22.4,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:9,name:"رمضان",x:2.7,y:63.9,w:22.2,h:23.8,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:10,name:"شوّال",x:25.8,y:64.4,w:21.6,h:23.5,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:11,name:"ذو القعدة",x:49.1,y:64.3,w:22.5,h:23.1,mouthX:90,mouthY:56,tailX:2,tailY:35},
+{id:12,name:"ذو الحجة",x:71.5,y:64.3,w:22.5,h:23.5,mouthX:90,mouthY:56,tailX:2,tailY:35}
+];
+
+function applyPluginEffect(stage, plugin){
+const effect = plugin.effect || {};
+if(!effect || !effect.type) return;
+
+if(effect.type === "aquarium"){
+applyAquariumEffect(stage, effect);
+}
+}
+
+function applyAquariumEffect(stage, effect){
+const layer = document.createElement("div");
+layer.className = "aquarium-layer";
+
+if(effect.waterRays !== false){
+const rays = document.createElement("div");
+rays.className = "aquarium-water-rays";
+layer.appendChild(rays);
+}
+
+if(effect.bubbles !== false){
+addBubblesToLayer(layer, effect.bubbleCount || 16);
+}
+
+if(effect.fishZones !== false){
+const zones = Array.isArray(effect.fishCoordinates) && effect.fishCoordinates.length
+  ? effect.fishCoordinates
+  : DEFAULT_MONTHS_FISH_ZONES;
+
+zones.forEach((fish,index)=>{
+const zone = document.createElement("div");
+zone.className = "fish-zone";
+zone.style.left = fish.x + "%";
+zone.style.top = fish.y + "%";
+zone.style.width = fish.w + "%";
+zone.style.height = fish.h + "%";
+zone.style.setProperty("--mouthLeft",(fish.mouthX ?? 90) + "%");
+zone.style.setProperty("--mouthTop",(fish.mouthY ?? 56) + "%");
+zone.style.setProperty("--tailLeft",(fish.tailX ?? 2) + "%");
+zone.style.setProperty("--tailTop",(fish.tailY ?? 35) + "%");
+zone.style.setProperty("--d",(index * .45) + "s");
+zone.dataset.month = fish.name || "";
+layer.appendChild(zone);
+});
+}
+
+stage.appendChild(layer);
+}
+
+function addBubblesToLayer(layer,count){
+for(let i=0;i<count;i++){
+const b=document.createElement("div");
+b.className="bubble";
+b.style.left=(5+Math.random()*90)+"%";
+b.style.bottom=(5+Math.random()*65)+"%";
+b.style.animationDelay=(Math.random()*5)+"s";
+b.style.width=b.style.height=(24+Math.random()*36)+"px";
+layer.appendChild(b);
+}
+}
+
+/* ================= DIRECT AUDIO ENGINE ================= */
+function buildDirectAudio(plugin, autoplay){
+clearGrid();
+setStageGridMode(true);
+const mp3s = pluginMp3s(plugin);
+const audioFile = plugin.primaryAudio || mp3s[0];
+const theme = plugin.theme || plugin.id;
+if(!audioFile) return renderComingSoon(plugin, `Add audio in ${plugin.folder || plugin.id}/`);
+
+const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+const stage = makeFullVisualStage("stage", bg);
+
+stage.innerHTML += `<audio src="${audioFile}" preload="auto"></audio>`;
+
+if(plugin.effect && plugin.effect.type){
+  applyPluginEffect(stage, plugin);
+} else {
+  addBubbles(stage,10);
+}
+
+grid.appendChild(stage);
+
+const audio = stage.querySelector("audio");
+const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:""},index:0,type:"audio"};
+items.push(item);
+map[plugin.id]=item;
+stage.onclick = ()=>play(plugin.id);
+updateFocus();
+if(autoplay || params().get("autoplay")==="1") setTimeout(()=>play(plugin.id),400);
+}
+
+/* ================= GALLERY ENGINE ================= */
+function buildGallery(plugin, autoplay){
+clearGrid();
+setStageGridMode(false);
+const mp3s = pluginMp3s(plugin);
+if(!mp3s.length) return renderComingSoon(plugin, `Add audio files in ${plugin.folder || plugin.id}/`);
+
+mp3s.forEach((file,idx)=>{
+const clean = normalizeFileName(file).replace(/[-_]/g," ");
+const item = {
+id:`${plugin.id}-${idx}`,
+name:plugin.title,
+eng:clean,
+emoji:iconFor(plugin.theme || plugin.id),
+file,
+color:(plugin.tilePalette || DEFAULT_PALETTE)[idx % (plugin.tilePalette || DEFAULT_PALETTE).length],
+slices:slicesData[file] || null,
+plugin
+};
+createAudioCard(item,idx,plugin.theme || plugin.id,false);
+});
+updateFocus();
+if(autoplay && items[0]) setTimeout(()=>play(items[0].id),400);
+}
+
+/* ================= SPOTLIGHT ENGINE ================= */
+function buildSpotlight(plugin, autoplay){
+clearGrid();
+const mp3s = pluginMp3s(plugin);
+const theme = plugin.theme || plugin.id;
+
+if(plugin.id === "names" && mp3s.length){
+document.body.classList.remove("plugin-ui-final");
+document.body.classList.remove("plugin-stage-mode");
+document.body.classList.add("plugin-names");
+setStageGridMode(false);
+mp3s.forEach((file,idx)=>{
+const label = normalizeFileName(file).replace("_","–");
+const item = {
+id:`${plugin.id}-${idx}`,
+name:"ﷲ",
+eng:label,
+emoji:"✨",
+file,
+color:(plugin.tilePalette || DEFAULT_PALETTE)[idx % (plugin.tilePalette || DEFAULT_PALETTE).length],
+slices:slicesData[file] || null,
+plugin,
+learningMode:slicesData[file] ? "slices" : "durationChunks"
+};
+createAudioCard(item,idx,theme,false);
+});
+updateFocus();
+prewarmVisibleAudios(12);
+return;
+}
+
+setStageGridMode(true);
+const audioFile = plugin.primaryAudio || mp3s[0] || "";
+const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+const effectType = plugin.effect && plugin.effect.type;
+const isCoordinateSpotlight = effectType === "coordinateSpotlight" || effectType === "numberSpotlight";
+
+const wrap = makeFullVisualStage("spotlight-wrap", bg);
+wrap.innerHTML += `
+${isCoordinateSpotlight ? `<div class="coordinate-focus-dot" id="coordinateFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
+${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
+`;
+
+// Months can still use water/bubble ambience while using the same coordinate spotlight logic.
+if(plugin.effect && (plugin.effect.waterRays || plugin.effect.bubbles)){
+  applyAmbientEffect(wrap, plugin.effect);
+}
+
+grid.appendChild(wrap);
+
+const audio = wrap.querySelector("audio");
+const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
+items.push(item);
+map[plugin.id] = item;
+wrap.onclick = ()=>{ if(audio) play(plugin.id); else advanceCoordinateSpotlight(plugin); };
+updateFocus();
+
+if(isCoordinateSpotlight){
+positionCoordinateFocus(plugin,0);
+if(audio){
+  audio.addEventListener("play",()=>startCoordinateSpotlight(plugin,audio));
+  audio.addEventListener("pause",()=>stopCoordinateSpotlight());
+  audio.addEventListener("ended",()=>stopCoordinateSpotlight());
+} else {
+  startCoordinateDemo(plugin);
+}
+}
+
+if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),400);
+}
+
+let coordinateSpotlightTimer = null;
+let coordinateDemoIndex = 0;
+
+function stopCoordinateSpotlight(){
+if(coordinateSpotlightTimer){
+clearInterval(coordinateSpotlightTimer);
+coordinateSpotlightTimer = null;
+}
+}
+
+function orderedCoordinateKeys(plugin){
+const coords = plugin.coordinates || {};
+return Object.keys(coords).sort((a,b)=>Number(a)-Number(b));
+}
+
+function positionCoordinateFocus(plugin, index){
+const dot = document.getElementById("coordinateFocusDot");
+if(!dot) return;
+
+const keys = orderedCoordinateKeys(plugin);
+if(!keys.length) return;
+
+const key = keys[((index % keys.length) + keys.length) % keys.length];
+const p = plugin.coordinates[key];
+if(!p) return;
+
+const stage = dot.closest(".spotlight-wrap,.stage");
+const img = stage ? stage.querySelector(".stage-img") : null;
+
+if(img && stage){
+  if(!img.complete || !img.naturalWidth){
+    img.onload = ()=>positionCoordinateFocus(plugin,index);
+  }
+
+  const stageRect = stage.getBoundingClientRect();
+  const naturalW = img.naturalWidth || 16;
+  const naturalH = img.naturalHeight || 9;
+  const stageW = stageRect.width;
+  const stageH = stageRect.height;
+
+  const imageRatio = naturalW / naturalH;
+  const stageRatio = stageW / stageH;
+
+  let renderW, renderH, offsetX, offsetY;
+
+  if(stageRatio > imageRatio){
+    renderH = stageH;
+    renderW = renderH * imageRatio;
+    offsetX = (stageW - renderW) / 2;
+    offsetY = 0;
+  } else {
+    renderW = stageW;
+    renderH = renderW / imageRatio;
+    offsetX = 0;
+    offsetY = (stageH - renderH) / 2;
+  }
+
+  const x = offsetX + (Number(p.x) / 100) * renderW;
+  const y = offsetY + (Number(p.y) / 100) * renderH;
+
+  dot.style.left = x + "px";
+  dot.style.top = y + "px";
+} else {
+  dot.style.left = p.x + "%";
+  dot.style.top = p.y + "%";
+}
+
+dot.dataset.index = String(index);
+dot.dataset.key = key;
+}
+
+function advanceCoordinateSpotlight(plugin){
+coordinateDemoIndex++;
+positionCoordinateFocus(plugin, coordinateDemoIndex);
+}
+
+function startCoordinateDemo(plugin){
+stopCoordinateSpotlight();
+coordinateDemoIndex = 0;
+positionCoordinateFocus(plugin,0);
+coordinateSpotlightTimer = setInterval(()=>advanceCoordinateSpotlight(plugin),1400);
+}
+
+function startCoordinateSpotlight(plugin,audio){
+stopCoordinateSpotlight();
+const keys = orderedCoordinateKeys(plugin);
+if(!keys.length) return;
+positionCoordinateFocus(plugin,0);
+
+coordinateSpotlightTimer = setInterval(()=>{
+if(!audio || audio.paused || audio.ended){
+stopCoordinateSpotlight();
+return;
+}
+const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
+let i = 0;
+if(duration){
+  i = Math.min(keys.length-1, Math.floor((audio.currentTime / duration) * keys.length));
+} else {
+  i = (Number(document.getElementById("coordinateFocusDot")?.dataset.index || 0) + 1) % keys.length;
+}
+positionCoordinateFocus(plugin,i);
+},250);
+}
+
+function applyAmbientEffect(stage, effect){
+const layer = document.createElement("div");
+layer.className = "aquarium-layer";
+
+if(effect.waterRays !== false){
+const rays = document.createElement("div");
+rays.className = "aquarium-water-rays";
+layer.appendChild(rays);
+}
+
+if(effect.bubbles !== false){
+addBubblesToLayer(layer, effect.bubbleCount || 16);
+}
+
+stage.appendChild(layer);
+}
+
+/* ================= STORY ENGINE ================= */
+function buildStory(plugin, autoplay){
+clearGrid();
+setStageGridMode(true);
+const theme = plugin.theme || plugin.id;
+const mp3s = pluginMp3s(plugin);
+const audioFile = plugin.primaryAudio || mp3s[0] || "";
+const seq = Array.isArray(plugin.sequence) && plugin.sequence.length ? plugin.sequence : defaultSalahNamesSequence();
+
+const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+const stage = makeFullVisualStage("stage story-stage", bg);
+
+stage.innerHTML += `
+<div class="story-overlay story-dawn" id="storyOverlay"></div>
+<div class="stage-content">
+  <div class="stage-title" id="storyArabic">${seq[0].arabic || ""}</div>
+  <div class="stage-sub" id="storyName">${seq[0].name || plugin.title}</div>
+  <div class="stage-badges" id="storyBadges"></div>
+</div>
+${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
+`;
+grid.appendChild(stage);
+
+const audio = stage.querySelector("audio");
+const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Story",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "story"};
+items.push(item);
+map[plugin.id] = item;
+stage.onclick = ()=>{ if(audio) play(plugin.id); else runStorySequence(seq,null); };
+updateFocus();
+renderStoryStep(seq[0]);
+if(audio){
+  audio.addEventListener("play",()=>runStorySequence(seq,audio));
+  audio.addEventListener("loadedmetadata",()=>{ if(!audio.paused) runStorySequence(seq,audio); });
+  audio.addEventListener("canplay",()=>{ if(!audio.paused) runStorySequence(seq,audio); });
+} else {
+  runStorySequence(seq,null);
+}
+if(autoplay){ setTimeout(()=>{ if(audio) play(plugin.id); },400); }
+}
+
+function defaultSalahNamesSequence(){
+return [
+{name:"Fajr",arabic:"الفجر",effect:"dawn",rakah:["2 Sunnah","2 Fard"]},
+{name:"Dhuhr",arabic:"الظهر",effect:"bright-day",rakah:["4 Sunnah","4 Fard","2 Sunnah"]},
+{name:"Asr",arabic:"العصر",effect:"afternoon",rakah:["4 Fard"]},
+{name:"Maghrib",arabic:"المغرب",effect:"sunset",rakah:["3 Fard","2 Sunnah"]},
+{name:"Isha",arabic:"العشاء",effect:"night",rakah:["4 Fard","2 Sunnah","Witr"]}
+];
+}
+
+function runStorySequence(seq,audio){
+clearTimeout(storyTimer);
+if(!seq || !seq.length) return;
+
+let lastIndex = -1;
+
+const tick = ()=>{
+  if(!audio){
+    return;
+  }
+
+  if(!audio.duration || !isFinite(audio.duration)){
+    storyTimer = setTimeout(tick,120);
+    return;
+  }
+
+  const i = Math.min(seq.length - 1, Math.floor((audio.currentTime / audio.duration) * seq.length));
+
+  if(i !== lastIndex){
+    lastIndex = i;
+    renderStoryStep(seq[i]);
+  }
+
+  if(!audio.paused && !audio.ended){
+    storyTimer = setTimeout(tick,160);
+  }
+};
+
+if(audio){
+  renderStoryStep(seq[0]);
+  tick();
+  return;
+}
+
+let i=0;
+const step=()=>{
+  renderStoryStep(seq[i % seq.length]);
+  i++;
+  storyTimer = setTimeout(step,4200);
+};
+step();
+}
+
+function renderStoryStep(step){
+const overlay = document.getElementById("storyOverlay");
+const arabic = document.getElementById("storyArabic");
+const name = document.getElementById("storyName");
+const badges = document.getElementById("storyBadges");
+if(!overlay || !arabic || !name || !badges) return;
+overlay.className = "story-overlay story-" + (step.effect || "dawn");
+arabic.innerText = step.arabic || "";
+name.innerText = step.name || "";
+badges.innerHTML = (step.rakah || []).map(r=>`<div class="rakah-badge">${r}</div>`).join("");
+}
+
+/* ================= CARD RENDERER ================= */
+
+function prewarmVisibleAudios(limit=24){
+try{
+  items.slice(0,limit).forEach(item=>{
+    if(item.audio){
+      item.audio.preload = "auto";
+      item.audio.load();
+    }
   });
-  m.style.display = options && options.length ? "" : "none";
-  if(value) m.value=value;
-  m.onchange=onchange||null;
+}catch(e){}
 }
 
-function showTop(home=true, stop=true){
-  Prism.els.back.style.display = home ? "" : "none";
-  Prism.els.stop.style.display = stop ? "" : "none";
+function createAudioCard(s, idx, theme, showLearnBadge){
+const card = document.createElement("div");
+card.className = "card";
+card.style.background = s.color || gradientFor(theme);
+
+const badge = showLearnBadge ? `<div class="badge">🎓</div>` : "";
+
+card.innerHTML = `
+${badge}
+<div class="card-info-box">
+  <div class="emoji">${s.emoji || iconFor(theme)}</div>
+  <div class="arabic">${s.name || s.eng}</div>
+  <div class="english">${s.eng || s.file}</div>
+</div>
+<button class="play-btn">⏸ Pause</button>
+<audio src="${s.file}" preload="auto"></audio>
+`;
+
+const btn = card.querySelector("button");
+const audio = card.querySelector("audio");
+
+const item = {card,audio,btn,s,index:idx,id:s.id,type:"audio"};
+items.push(item);
+map[s.id] = item;
+
+card.onclick = ()=>{
+TV.focused = idx;
+updateFocus();
+play(s.id);
+};
+
+btn.onclick = (e)=>{
+e.stopPropagation();
+pauseCurrent();
+};
+
+grid.appendChild(card);
 }
 
-function card(data, onClick){
-  const el=document.createElement("div");
-  el.className="card";
-  el.tabIndex=0;
-  if(data.color) el.style.background=data.color;
-  if(data.image) el.style.backgroundImage=`linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)),url('${data.image}')`;
-  el.innerHTML = `${data.badge?`<div class="badge-learn">${data.badge}</div>`:""}
-    <div class="emoji">${data.emoji||"✨"}</div>
-    <div class="arabic">${data.name||""}</div>
-    <div class="english">${data.eng||""}</div>
-    <button class="play-btn">${data.button||"▶ Play"}</button>`;
-  el.onclick=onClick;
-  Prism.els.app.appendChild(el);
-  const item={el,onClick};
-  Prism.items.push(item);
-  return item;
+function renderComingSoon(plugin,msg){
+setStageGridMode(false);
+const theme = plugin.theme || plugin.id;
+const card = document.createElement("div");
+card.className = "card";
+applyImageOrGradient(card, plugin.tileImage, theme);
+card.innerHTML = `
+<div class="card-info-box">
+  <div class="emoji">${iconFor(theme)}</div>
+  <div class="arabic">${plugin.title || plugin.id}</div>
+  <div class="english">Coming Soon</div>
+</div>
+<button class="play-btn">✨ Coming Soon</button>
+`;
+grid.appendChild(card);
+const item = {id:plugin.id,card,index:0,type:"empty"};
+items.push(item);
+map[plugin.id]=item;
+updateFocus();
+}
+
+/* ================= AUDIO + LEARN/HIFZ ================= */
+function play(id){
+const item = map[id];
+if(!item || item.type !== "audio") return;
+
+sequenceCancelToken++;
+const token = sequenceCancelToken;
+
+if(currentAudio && currentAudio !== item.audio){
+currentAudio.pause();
+currentAudio.currentTime = 0;
+if(currentCard) currentCard.classList.remove("active-tile");
+}
+
+currentAudio = item.audio;
+currentButton = item.btn;
+currentCard = item.card;
+currentItem = item;
+
+item.card.classList.add("active-tile");
+
+const mode = getMode();
+const hasSlices = Array.isArray(item.s.slices) && item.s.slices.length;
+
+if((mode === "repeat5" || mode === "hifz") && (hasSlices || item.s.learningMode === "durationChunks" || item.s.learningMode === "silence")){
+runLearningSequence(item, mode, token);
+} else {
+item.audio.loop = loopAll;
+item.audio.play().catch(()=>{});
+}
+
+speak(item.s.name || item.s.eng || "");
+}
+
+function toSeconds(t){
+if(typeof t === "number") return t;
+const parts = String(t).split(":").map(Number);
+if(parts.length === 2) return parts[0]*60 + parts[1];
+if(parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
+return Number(t) || 0;
+}
+
+function getChunkEnds(item){
+if(Array.isArray(item.s.slices) && item.s.slices.length) return item.s.slices.map(toSeconds);
+
+const audio = item.audio;
+const duration = audio.duration || 0;
+if(!duration || !isFinite(duration)) return [];
+
+const plugin = item.s.plugin || currentPlugin || {};
+const chunkMode = plugin.chunkMode || item.s.chunkMode || {};
+let chunks = chunkMode.chunkCount || 0;
+
+if(!chunks && plugin.id === "names"){
+const label = item.s.eng || "";
+const nums = label.match(/\d+/g) || [];
+if(nums.length >= 2){
+const count = Math.abs(Number(nums[1]) - Number(nums[0])) + 1;
+chunks = Math.max(1, Math.ceil(count / (chunkMode.namesPerChunk || 4)));
+}
+}
+
+if(!chunks && Array.isArray(plugin.spotlight?.items)) chunks = plugin.spotlight.items.length;
+if(!chunks && Array.isArray(plugin.sequence)) chunks = plugin.sequence.length;
+if(!chunks) chunks = 5;
+
+const step = duration / chunks;
+return Array.from({length:chunks},(_,i)=>Math.min(duration, step*(i+1)));
+}
+
+function playSegment(audio,start,end,token){
+return new Promise(resolve=>{
+if(token !== sequenceCancelToken) return resolve();
+audio.pause();
+audio.currentTime = Math.max(0,start);
+audio.play().catch(()=>resolve());
+const tick = ()=>{
+if(token !== sequenceCancelToken){
+audio.removeEventListener("timeupdate",tick);
+return resolve();
+}
+if(audio.currentTime >= end){
+audio.pause();
+audio.removeEventListener("timeupdate",tick);
+resolve();
+}
+};
+audio.addEventListener("timeupdate",tick);
+});
+}
+
+async function runLearningSequence(item, mode, token){
+const audio = item.audio;
+
+if(!audio.duration || !isFinite(audio.duration)){
+await new Promise(resolve=>{
+audio.addEventListener("loadedmetadata",resolve,{once:true});
+audio.load();
+});
+}
+
+const ends = getChunkEnds(item);
+if(!ends.length){
+audio.play().catch(()=>{});
+return;
+}
+
+const starts = [0].concat(ends.slice(0,-1));
+const repeat = ((item.s.plugin || currentPlugin || {}).chunkMode || {}).repeatCount || 5;
+
+if(mode === "repeat5"){
+for(let i=0;i<ends.length;i++){
+for(let r=0;r<repeat;r++){
+if(token !== sequenceCancelToken) return;
+await playSegment(audio,starts[i],ends[i],token);
+await sleep(250);
+}
+}
+}
+
+if(mode === "hifz"){
+for(let upto=0;upto<ends.length;upto++){
+for(let r=0;r<repeat;r++){
+if(token !== sequenceCancelToken) return;
+await playSegment(audio,starts[upto],ends[upto],token);
+await sleep(250);
+}
+if(token !== sequenceCancelToken) return;
+await playSegment(audio,0,ends[upto],token);
+await sleep(450);
+}
+}
+
+if(loopAll && token === sequenceCancelToken){
+runLearningSequence(item,mode,token);
+}
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function pauseCurrent(){
+sequenceCancelToken++;
+if(currentAudio){ currentAudio.pause(); }
+}
+
+function stopAll(clearFocus=true){
+sequenceCancelToken++;
+if(currentAudio){
+currentAudio.pause();
+currentAudio.currentTime = 0;
+}
+if(currentCard) currentCard.classList.remove("active-tile");
+currentAudio = null;
+currentButton = null;
+currentCard = null;
+currentItem = null;
+if(clearFocus) updateFocus();
+}
+
+function toggleLoopAll(){
+loopAll = !loopAll;
+document.getElementById("loopBtn").innerText = loopAll ? "🔁 Loop ON" : "🔁 Loop OFF";
+if(currentAudio) currentAudio.loop = loopAll;
+}
+
+document.getElementById("mode").addEventListener("change",()=>{
+if(currentView === "quran") renderQuranItems();
+});
+
+/* ================= NAVIGATION ================= */
+function move(dir){
+const max = items.length - 1;
+if(max < 0) return;
+
+if(dir === "right") TV.focused = Math.min(max,TV.focused + 1);
+if(dir === "left") TV.focused = Math.max(0,TV.focused - 1);
+if(dir === "down") TV.focused = Math.min(max,TV.focused + TV.cols);
+if(dir === "up") TV.focused = Math.max(0,TV.focused - TV.cols);
+
+updateFocus();
 }
 
 function updateFocus(){
-  Prism.items.forEach((it,i)=>it.el.classList.toggle("remote-focus", i===Prism.focus));
-  Prism.items[Prism.focus]?.el?.scrollIntoView({block:"nearest",inline:"nearest"});
+const cards = document.querySelectorAll(".card,.stage,.spotlight-wrap");
+cards.forEach(c=>c.classList.remove("remote-focus"));
+
+const el = cards[TV.focused];
+if(!el) return;
+
+el.classList.add("remote-focus");
+
+if(TV.isTV){
+el.scrollIntoView({block:"center",behavior:"smooth"});
+}
 }
 
-function playAudio(src, opts={}){
-  if(!src) return;
-  if(Prism.audio){try{Prism.audio.pause()}catch(e){}}
-  const a=new Audio(src);
-  a.preload="auto";
-  Prism.audio=a;
-  a.onplay=()=>opts.onplay&&opts.onplay(a);
-  a.ontimeupdate=()=>opts.ontimeupdate&&opts.ontimeupdate(a);
-  a.onended=()=>opts.onended&&opts.onended(a);
-  a.play().catch(()=>{});
-  return a;
+function handleOverlayDismissal(){
+const overlay = document.getElementById("overlay");
+if(overlay && overlay.style.display !== "none"){
+const id = params().get("id") || params().get("surah");
+if(id && map[id]) play(id);
+overlay.style.display = "none";
+return true;
+}
+return false;
 }
 
-function stopAudio(){ if(Prism.audio){Prism.audio.pause(); Prism.audio.currentTime=0;} }
+document.addEventListener("keydown",(e)=>{
+const k = e.keyCode;
+const activeEl = document.activeElement;
 
-function renderLanding(){
-  clearAll(); setHeader("🌙 Mariam & Hamza’s 🌙","✨Quran Adventures with Mom!✨"); showTop(false,true); setModes([]);
-  Prism.els.app.className="grid";
-  const sorted=[...Prism.menu].sort((a,b)=>(a.plugin?.priority||99)-(b.plugin?.priority||99));
-  sorted.forEach(entry=>{
-    const p=entry.plugin||{};
-    card({emoji:icon(p.id), name:entry.title, eng:"", image:p.tileImage, color:theme(p.id)},()=>openPlugin(p.id));
-  });
-  updateFocus();
+if(document.getElementById("overlay").style.display === "flex"){
+const okKeys = ["Enter","NumpadEnter"," ","OK","Select"];
+if(k===23 || k===66 || okKeys.includes(e.key) || k===19 || k===20 || k===21 || k===22 || (e.key||"").startsWith("Arrow")){
+e.preventDefault();
+handleOverlayDismissal();
+return;
+}
 }
 
-function icon(id){return {quran:"📖",salah:"🕌",dua:"🤲",months:"🗓️",names:"✨","salah-names":"🕌",numbers:"🔢"}[id]||"✨"}
-function theme(id){
- const map={quran:"linear-gradient(135deg,#22c55e,#0ea5e9)",salah:"linear-gradient(135deg,#f97316,#facc15)",dua:"linear-gradient(135deg,#ec4899,#8b5cf6)",months:"linear-gradient(135deg,#38bdf8,#06b6d4)",names:"linear-gradient(135deg,#f59e0b,#facc15)",numbers:"linear-gradient(135deg,#a855f7,#ec4899)"};
- return map[id]||"linear-gradient(135deg,#38bdf8,#6366f1)";
+if(activeEl && (activeEl.id==="btnBack" || activeEl.id==="btnStop" || activeEl.id==="loopBtn" || activeEl.id==="mode")){
+if(k===22 || e.key==="ArrowRight"){
+e.preventDefault();
+if(activeEl.id==="btnBack") document.getElementById("btnStop").focus();
+else if(activeEl.id==="btnStop") document.getElementById("loopBtn").focus();
+else if(activeEl.id==="loopBtn") document.getElementById("mode").focus();
+}
+if(k===21 || e.key==="ArrowLeft"){
+e.preventDefault();
+if(activeEl.id==="btnStop" && document.getElementById("btnBack").style.display !== "none") document.getElementById("btnBack").focus();
+else if(activeEl.id==="loopBtn") document.getElementById("btnStop").focus();
+else if(activeEl.id==="mode") document.getElementById("loopBtn").focus();
+}
+if(k===20 || e.key==="ArrowDown"){
+e.preventDefault();
+activeEl.blur();
+updateFocus();
+}
+return;
 }
 
-function pluginEntry(id){return Prism.menu.find(e=>(e.plugin||{}).id===id)}
-function openPlugin(id){
-  const entry=pluginEntry(id); if(!entry) return renderLanding();
-  const p=entry.plugin; Prism.current=p;
-  history.replaceState(null,"",`?plugin=${encodeURIComponent(id)}`);
-  if(p.engine==="external") return renderExternal(p);
-  const renderer=p.renderer || (p.id==="quran"?"quran":p.engine);
-  const engine=Prism.engines[renderer] || Prism.engines.grid;
-  engine.render(Prism, p, entry);
+if(k===21 || e.key==="ArrowLeft"){
+e.preventDefault();
+if(TV.focused % TV.cols === 0) return;
+move("left");
 }
 
-function renderExternal(p){
-  clearAll(); document.body.classList.add("stage-page"); setHeader("",""); showTop(true,true); setModes([]);
-  Prism.els.app.className="stage-shell";
-  Prism.els.app.innerHTML=`<iframe class="external-frame" src="${p.externalUrl||p.mainUrl||""}" allow="autoplay; fullscreen"></iframe>`;
+if(k===22 || e.key==="ArrowRight"){
+e.preventDefault();
+if((TV.focused + 1) % TV.cols === 0) return;
+move("right");
 }
 
-Prism.els.back.onclick=()=>{history.replaceState(null,"",location.pathname);renderLanding()};
-Prism.els.stop.onclick=()=>stopAudio();
+if(k===20 || e.key==="ArrowDown"){
+e.preventDefault();
+move("down");
+}
 
-document.addEventListener("keydown",e=>{
-  if(!Prism.items.length) return;
-  if(["ArrowRight","ArrowDown"].includes(e.key)){Prism.focus=(Prism.focus+1)%Prism.items.length;updateFocus();e.preventDefault()}
-  if(["ArrowLeft","ArrowUp"].includes(e.key)){Prism.focus=(Prism.focus-1+Prism.items.length)%Prism.items.length;updateFocus();e.preventDefault()}
-  if(e.key==="Enter"){Prism.items[Prism.focus]?.onClick?.();e.preventDefault()}
+if(k===19 || e.key==="ArrowUp"){
+e.preventDefault();
+if(TV.focused < TV.cols && currentView !== "landing"){
+const cards = document.querySelectorAll(".card,.stage,.spotlight-wrap");
+cards.forEach(c=>c.classList.remove("remote-focus"));
+const first = document.getElementById("btnBack").style.display !== "none" ? "btnBack" : "btnStop";
+document.getElementById(first).focus();
+} else {
+move("up");
+}
+}
+
+const okKeys = ["Enter","NumpadEnter"," ","OK","Select"];
+if(k===23 || k===66 || okKeys.includes(e.key)){
+if(activeEl && !activeEl.closest(".topbar")){
+e.preventDefault();
+const item = items[TV.focused];
+if(!item) return;
+if(item.type === "landing") openMenuEntry(item.entry);
+else if(item.type === "audio") play(item.id);
+else if(item.type === "spotlight" && currentPlugin) { advanceCoordinateSpotlight(currentPlugin); }
+else if(item.type === "story") runStorySequence(defaultSalahNamesSequence());
+}
+}
 });
 
-async function boot(){
-  Prism.menu = await fetchJson("menu.json", []);
-  const plugin=Prism.params.get("plugin");
-  if(plugin) openPlugin(plugin); else renderLanding();
+/* ================= BACKGROUND PARTICLES ================= */
+const starsContainer = document.querySelector(".stars");
+for(let i=0;i<80;i++){
+const d = document.createElement("div");
+d.className = "star";
+d.style.left = Math.random()*100 + "%";
+d.style.top = Math.random()*100 + "%";
+starsContainer.appendChild(d);
 }
-boot();
+for(let i=0;i<40;i++){
+const s = document.createElement("div");
+s.className = "sparkle";
+s.style.left = Math.random()*100 + "%";
+s.style.top = Math.random()*100 + "%";
+starsContainer.appendChild(s);
+}
+
+/* ================= QR LINK HANDLING ================= */
+function qrFix(){
+const id = params().get("id") || params().get("surah");
+
+if(!id || !map[id]){
+updateFocus();
+return;
+}
+
+const item = map[id];
+TV.focused = item.index;
+
+setTimeout(()=>{
+item.card.classList.add("active-tile");
+item.card.scrollIntoView({behavior:"smooth",block:"center"});
+
+currentCard = item.card;
+currentAudio = item.audio;
+currentButton = item.btn;
+currentItem = item;
+
+document.getElementById("overlay").style.display = "flex";
+setTimeout(()=>speak(item.s.name),600);
+updateFocus();
+},500);
+}
+
+document.getElementById("overlay").onclick = ()=>handleOverlayDismissal();
+
+window.addEventListener("popstate",()=>route());
+
+async function route(){
+menuData = await fetchFirstJson(["menu.json","../menu.json"], FALLBACK_MENU);
+slicesData = await fetchFirstJson(["slices.json","../slices.json","learn.master.slices.json","../learn.master.slices.json"], {});
+if(slicesData && slicesData.QURAN){
+  const flat = {};
+  Object.values(slicesData.QURAN).forEach(entry=>{
+    if(entry && entry.file && Array.isArray(entry.slices)) flat[entry.file] = entry.slices;
+  });
+  slicesData = flat;
+}
+
+const p = params();
+const id = p.get("id") || p.get("surah");
+const pluginId = p.get("plugin");
+
+if(id){
+buildQuran();
+return;
+}
+
+if(pluginId && pluginId !== "landing"){
+const foundEntry = menuData.find(m => (m.plugin||{}).id === pluginId);
+const found = foundEntry ? foundEntry.plugin : null;
+if(pluginId === "quran") buildQuran();
+else if(pluginId === "salah" && foundEntry) buildExternalBridge(foundEntry);
+else if(found) buildPlugin(found, p.get("autoplay") === "1");
+else buildLanding();
+return;
+}
+
+buildLanding();
+}
+
+window.addEventListener("load",route);
+
+window.addEventListener("resize",()=>{
+const dot = document.getElementById("coordinateFocusDot");
+if(dot && currentPlugin && currentPlugin.coordinates){
+  const idx = Number(dot.dataset.index || 0);
+  setTimeout(()=>positionCoordinateFocus(currentPlugin, idx),80);
+}
+});
+
 </script>
 </body>
 </html>
