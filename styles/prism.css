@@ -689,7 +689,7 @@ body.tv-mode.plugin-stage-mode .spotlight-wrap{
 
 .number-focus-dot::before,
 .number-focus-dot::after{
-  content:"\2726";
+  content:"✦";
   position:absolute;
   color:#fff7ad;
   font-size:clamp(16px,2vw,30px);
@@ -1070,7 +1070,7 @@ body.plugin-ui-final.plugin-salahnames .stage-img{
 
 .number-focus-dot::before,
 .number-focus-dot::after{
-  content:"\2726";
+  content:"✦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(15px,2vw,28px);
@@ -1198,7 +1198,7 @@ body.plugin-ui-final.plugin-names .card{
 }
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after{
-  content:"\2726";
+  content:"✦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(15px,2vw,28px);
@@ -1262,7 +1262,7 @@ body.plugin-ui-final.plugin-numbers .stage{
 
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after{
-  content:"\2726";
+  content:"✦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(15px,2vw,28px);
@@ -1450,7 +1450,7 @@ body.plugin-ui-final.plugin-salahnames .stage-img{
 
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after{
-  content:"\2726";
+  content:"✦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(13px,1.8vw,26px);
@@ -1906,10 +1906,8 @@ body.plugin-names .play-btn{
 }
 
 
-/* ================= V5 ISSUE HOTFIX =================
-   Does not touch Quran listen layout.
-   Fixes: Allah Names card proportions, Learn phone cards, visual first-load stability support.
-*/
+/* ================= V5 CACHEBUST HOTFIX CSS ================= */
+/* Allah Names: Quran-style cards, never stretched full-screen */
 body.plugin-names{
   height:auto!important;
   min-height:100vh!important;
@@ -1923,6 +1921,7 @@ body.plugin-names #pageSubtitle{display:block!important;}
 body.plugin-names .grid{
   display:grid!important;
   grid-template-columns:repeat(4,1fr)!important;
+  grid-template-rows:auto!important;
   gap:18px!important;
   width:100%!important;
   max-width:none!important;
@@ -1930,7 +1929,6 @@ body.plugin-names .grid{
   height:auto!important;
   overflow:visible!important;
   flex:1!important;
-  grid-template-rows:auto!important;
 }
 body.plugin-names .card{
   min-height:170px!important;
@@ -1958,16 +1956,13 @@ body.plugin-names .play-btn{
   body.plugin-names .play-btn{padding:9px!important;font-size:.85rem!important;margin-top:8px!important;}
 }
 @media(orientation:landscape) and (max-height:560px){
-  body.plugin-names{
-    padding:8px!important;
-    padding-bottom:42px!important;
-  }
+  body.plugin-names{padding:8px!important;padding-bottom:42px!important;}
   body.plugin-names .grid{
     grid-template-columns:repeat(4,1fr)!important;
+    grid-template-rows:auto!important;
     gap:8px!important;
     height:auto!important;
     overflow:visible!important;
-    grid-template-rows:auto!important;
   }
   body.plugin-names .card{
     min-height:96px!important;
@@ -1980,7 +1975,7 @@ body.plugin-names .play-btn{
   body.plugin-names .english{font-size:.65rem!important;}
   body.plugin-names .play-btn{padding:5px!important;font-size:.65rem!important;margin-top:4px!important;}
 }
-/* Learn mode only; Quran listen remains unchanged */
+/* Learn mode only; Quran Listen layout untouched */
 @media(max-width:768px){
   body.quran-learn-mode:not(.plugin-ui-final) .card{
     min-height:105px!important;
@@ -2004,12 +1999,7 @@ body.plugin-names .play-btn{
   body.quran-learn-mode:not(.plugin-ui-final) .english{font-size:.58rem!important;}
   body.quran-learn-mode:not(.plugin-ui-final) .play-btn{padding:3px!important;font-size:.58rem!important;margin-top:2px!important;}
 }
-
-
-
-/* ================= V5 SPARKLE SYMBOL FIX =================
-   Use Unicode escape so Android WebView/TV browser does not show junk glyphs.
-*/
+/* Safe sparkle glyph */
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after,
 .focus-dot::before,
