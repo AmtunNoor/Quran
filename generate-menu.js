@@ -371,6 +371,9 @@ function buildQuran(plugin, slicesInfo) {
 
   // Slices file.
   addFolderSync(syncFiles, "engines");
+  addFolderSync(syncFiles, "styles");
+  addFolderSync(syncFiles, "engines");
+  addFolderSync(syncFiles, "styles");
   if (slicesInfo.file) addUniqueSync(syncFiles, slicesInfo.file, slicesInfo.file);
 
   return {
@@ -426,6 +429,9 @@ function buildPlugin(plugin, slicesInfo) {
   // Assets.
   addFolderSync(syncFiles, folder);
   addFolderSync(syncFiles, "engines");
+  addFolderSync(syncFiles, "styles");
+  addFolderSync(syncFiles, "engines");
+  addFolderSync(syncFiles, "styles");
 
   // Plugin file.
   if (plugin.__pluginFile) addUniqueSync(syncFiles, plugin.__pluginFile, plugin.__pluginFile);
