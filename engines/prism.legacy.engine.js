@@ -124,6 +124,10 @@ let storyTimer = null;
 
 function params(){return new URLSearchParams(location.search);}
 function getMode(){return document.getElementById("mode").value;}
+function setModeListen(){
+const m = document.getElementById("mode");
+if(m) m.value = "listen";
+}
 
 function speak(text){
 try{
@@ -336,6 +340,7 @@ updateFocus();
 
 /* ================= QURAN VIEW ================= */
 function buildQuran(){
+setModeListen();
 currentView = "quran";
 currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
 document.body.classList.remove("landing-mode");
@@ -426,6 +431,13 @@ hasLearn:!!learn
 const usedNums = new Set(base.map(s=>s.surahNo).filter(Boolean));
 const extraListen = getListenFiles()
 .filter(p => !usedNums.has(surahNumberFromPath(p)))
+.sort((a,b)=>{
+  const sa = surahNumberFromPath(a);
+  const sb = surahNumberFromPath(b);
+  if(sa === "55" && sb !== "55") return 1;
+  if(sb === "55" && sa !== "55") return -1;
+  return Number(sa || 9999) - Number(sb || 9999);
+})
 .map((p,idx)=>{
 const display = makeSurahDisplayFromPath(p, idx);
 const learnMatch = getLearnFiles().find(l => surahNumberFromPath(l) === surahNumberFromPath(p));
@@ -479,7 +491,7 @@ createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
 });
 
 updateFocus();
-prewarmVisibleAudios(24);
+prewarmVisibleAudios(8);
 
 const requested = params().get("id") || params().get("surah");
 if(requested && map[requested]){
@@ -490,6 +502,7 @@ qrFix();
 
 /* ================= PLUGIN ROUTER ================= */
 function buildPlugin(plugin, autoplay){
+setModeListen();
 currentView = "plugin";
 currentPlugin = plugin;
 document.body.classList.remove("landing-mode");
@@ -730,7 +743,7 @@ learningMode:slicesData[file] ? "slices" : "durationChunks"
 createAudioCard(item,idx,theme,false);
 });
 updateFocus();
-prewarmVisibleAudios(12);
+prewarmVisibleAudios(3);
 return;
 }
 
@@ -1244,7 +1257,10 @@ if(currentAudio) currentAudio.loop = loopAll;
 document.getElementById("mode").addEventListener("change",()=>{
 stopAll(false);
 if(currentView === "quran") renderQuranItems();
-if(currentView === "plugin" && currentPlugin && currentPlugin.id === "names"){
+if(currentView === "plugin" && currentPlugin){
+  if(currentPlugin.id !== "names"){
+    setModeListen();
+  }
   updateFocus();
 }
 });
