@@ -252,7 +252,7 @@ const plugin = entry.plugin || {};
 const id = plugin.id || entry.title.toLowerCase().replace(/\s+/g,"-");
 const theme = plugin.theme || id || "default";
 const card = document.createElement("div");
-card.className = "card";
+card.className = "card prism-audio-tile";
 applyImageOrGradient(card, plugin.tileImage, theme);
 card.innerHTML = `
 <div class="card-info-box">
@@ -306,6 +306,7 @@ if(entry.mainUrl){ location.href = entry.mainUrl; }
 function goHome(){
 history.pushState(null,"","index.html");
 buildLanding();
+try{PrismAudioCache.start();}catch(e){}
 }
 
 
@@ -456,7 +457,13 @@ return [...base,...extraListen];
 }
 
 function buildQuranLearnSource(){
-const learns = getLearnFiles();
+const learns = getLearnFiles().sort((a,b)=>{
+const sa = surahNumberFromPath(a);
+const sb = surahNumberFromPath(b);
+if(sa === "55" && sb !== "55") return 1;
+if(sb === "55" && sa !== "55") return -1;
+return Number(sa || 9999) - Number(sb || 9999);
+});
 return learns.map((p,idx)=>{
 const display = makeSurahDisplayFromPath(p, idx);
 return {
@@ -491,7 +498,7 @@ createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
 });
 
 updateFocus();
-prewarmVisibleAudios(8);
+prewarmVisibleAudios(6);
 
 const requested = params().get("id") || params().get("surah");
 if(requested && map[requested]){
@@ -766,7 +773,6 @@ if(plugin.effect && (plugin.effect.waterRays || plugin.effect.bubbles)){
 
 grid.appendChild(wrap);
 if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon();
-requestAnimationFrame(()=>{ if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon(); });
 
 const audio = wrap.querySelector("audio");
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
@@ -786,7 +792,16 @@ if(audio){
 }
 }
 
-if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),400);
+if((autoplay || plugin.autoStart) && audio){
+  const stageImg = wrap.querySelector(".stage-img");
+  const start = ()=>setTimeout(()=>play(plugin.id),250);
+  if(stageImg && (!stageImg.complete || !stageImg.naturalWidth)){
+    stageImg.addEventListener("load", start, {once:true});
+    if(stageImg.decode) stageImg.decode().then(start).catch(()=>{});
+  } else {
+    start();
+  }
+}
 }
 
 let coordinateSpotlightTimer = null;
@@ -1258,9 +1273,7 @@ document.getElementById("mode").addEventListener("change",()=>{
 stopAll(false);
 if(currentView === "quran") renderQuranItems();
 if(currentView === "plugin" && currentPlugin){
-  if(currentPlugin.id !== "names"){
-    setModeListen();
-  }
+  if(currentPlugin.id !== "names") setModeListen();
   updateFocus();
 }
 });
@@ -1483,13 +1496,70 @@ function recalcVisualModuleSoon(){
     }
   };
   requestAnimationFrame(run);
+  requestAnimationFrame(()=>requestAnimationFrame(run));
   [80,220,520,900,1400,2200].forEach(ms=>{
     setTimeout(()=>{
       try{ setPrismViewportHeight(); }catch(e){}
       run();
-    },ms);
+    }, ms);
   });
 }
 window.addEventListener("orientationchange", recalcVisualModuleSoon);
 window.addEventListener("resize", recalcVisualModuleSoon);
 window.addEventListener("load", recalcVisualModuleSoon);
+
+
+/* ================= V6 BACKGROUND AUDIO CACHE ================= */
+const PrismAudioCache = {
+  done:false,
+  queue:[],
+  key:"prism-audio-cache-v6",
+  collect(){
+    const paths = new Set();
+    try{
+      (menuData || []).forEach(entry=>{
+        const p = entry.plugin || {};
+        const title = String(entry.title || p.title || "").toLowerCase();
+        const isTarget = p.id === "quran" || p.id === "names" || title.includes("quran") || title.includes("allah");
+        if(!isTarget) return;
+        (entry.syncFiles || []).forEach(f=>{
+          const path = f.path || "";
+          if(/\.(mp3|m4a|wav|ogg)$/i.test(path)) paths.add(path);
+        });
+        (p.audios || []).forEach(a=>paths.add(a));
+        if(p.primaryAudio) paths.add(p.primaryAudio);
+      });
+    }catch(e){}
+    return [...paths].sort((a,b)=>{
+      const aa = a.includes("55.mp3") ? 1 : 0;
+      const bb = b.includes("55.mp3") ? 1 : 0;
+      return aa-bb || a.localeCompare(b);
+    });
+  },
+  start(){
+    if(this.done) return;
+    this.done = true;
+    this.queue = this.collect();
+    const run = async ()=>{
+      if(!this.queue.length) return;
+      const path = this.queue.shift();
+      try{
+        if("caches" in window){
+          const c = await caches.open(this.key);
+          const hit = await c.match(path);
+          if(!hit){
+            const res = await fetch(path, {cache:"force-cache"});
+            if(res && res.ok) await c.put(path, res.clone());
+          }
+        } else {
+          const a = new Audio(path);
+          a.preload = "auto";
+          a.load();
+        }
+      }catch(e){}
+      setTimeout(run, 220);
+    };
+    setTimeout(run, 800);
+  }
+};
+
