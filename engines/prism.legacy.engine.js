@@ -1,6 +1,5 @@
 /* =========================================================
-   PRISM V3.4 CORRECTED INDEX ENGINE
-   Fixes:
+      Fixes:
    - Quran listen/learn folders merge
    - Learn badge on Quran listen tiles
    - Quran 5x/Hifz from slices.json
@@ -127,6 +126,16 @@ function getMode(){return document.getElementById("mode").value;}
 function setModeListen(){
 const m = document.getElementById("mode");
 if(m) m.value = "listen";
+}
+
+function shouldSuppressSpeech(item){
+const pid = (currentPlugin && currentPlugin.id) ? String(currentPlugin.id).toLowerCase() : "";
+const engine = (currentPlugin && currentPlugin.engine) ? String(currentPlugin.engine).toLowerCase() : "";
+const suppressIds = new Set(["months","numbers","salah-names","salahnames"]);
+if(suppressIds.has(pid)) return true;
+if(engine === "story") return true;
+if(engine === "spotlight" && pid !== "names") return true;
+return false;
 }
 
 function speak(text){
@@ -510,6 +519,7 @@ qrFix();
 /* ================= PLUGIN ROUTER ================= */
 function buildPlugin(plugin, autoplay){
 setModeListen();
+try{ speechSynthesis.cancel(); }catch(e){}
 currentView = "plugin";
 currentPlugin = plugin;
 document.body.classList.remove("landing-mode");
@@ -794,12 +804,15 @@ if(audio){
 
 if((autoplay || plugin.autoStart) && audio){
   const stageImg = wrap.querySelector(".stage-img");
-  const start = ()=>setTimeout(()=>play(plugin.id),250);
-  if(stageImg && (!stageImg.complete || !stageImg.naturalWidth)){
+  const stageBox = wrap.querySelector(".stage,.spotlight-wrap");
+  const start = ()=>setTimeout(()=>play(plugin.id),350);
+  if(stageBox && stageBox.classList.contains("stage-image-ready")){
+    start();
+  } else if(stageImg && (!stageImg.complete || !stageImg.naturalWidth)){
     stageImg.addEventListener("load", start, {once:true});
     if(stageImg.decode) stageImg.decode().then(start).catch(()=>{});
   } else {
-    start();
+    requestAnimationFrame(()=>requestAnimationFrame(start));
   }
 }
 }
@@ -1135,7 +1148,11 @@ item.audio.loop = loopAll;
 item.audio.play().catch(()=>{});
 }
 
-speak(item.s.name || item.s.eng || "");
+if(!shouldSuppressSpeech(item)){
+  speak(item.s.name || item.s.eng || "");
+} else {
+  try{ speechSynthesis.cancel(); }catch(e){}
+}
 }
 
 function toSeconds(t){
@@ -1496,15 +1513,20 @@ function recalcVisualModuleSoon(){
     }
   };
   requestAnimationFrame(run);
+  requestAnimationFrame(()=>run());
   requestAnimationFrame(()=>requestAnimationFrame(run));
-  [80,220,520,900,1400,2200].forEach(ms=>{
+  [80,180,320,650,1000,1600,2400].forEach(ms=>{
     setTimeout(()=>{
       try{ setPrismViewportHeight(); }catch(e){}
       run();
     }, ms);
   });
 }
-window.addEventListener("orientationchange", recalcVisualModuleSoon);
+window.addEventListener("orientationchange", ()=>{
+  setTimeout(recalcVisualModuleSoon,80);
+  setTimeout(recalcVisualModuleSoon,360);
+  setTimeout(recalcVisualModuleSoon,900);
+});
 window.addEventListener("resize", recalcVisualModuleSoon);
 window.addEventListener("load", recalcVisualModuleSoon);
 
