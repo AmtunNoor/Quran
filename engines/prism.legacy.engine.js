@@ -559,7 +559,6 @@ if(imagePath){
   img.decoding = "async";
   img.loading = "eager";
   img.onload = ()=>{ if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon(); };
-  if(img.decode){ img.decode().then(()=>{ if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon(); }).catch(()=>{}); }
   stage.appendChild(img);
 }
 return stage;
@@ -1243,7 +1242,11 @@ if(currentAudio) currentAudio.loop = loopAll;
 }
 
 document.getElementById("mode").addEventListener("change",()=>{
+stopAll(false);
 if(currentView === "quran") renderQuranItems();
+if(currentView === "plugin" && currentPlugin && currentPlugin.id === "names"){
+  updateFocus();
+}
 });
 
 /* ================= NAVIGATION ================= */
@@ -1464,11 +1467,11 @@ function recalcVisualModuleSoon(){
     }
   };
   requestAnimationFrame(run);
-  [80, 220, 520, 900, 1400].forEach(ms=>{
+  [80,220,520,900,1400,2200].forEach(ms=>{
     setTimeout(()=>{
       try{ setPrismViewportHeight(); }catch(e){}
       run();
-    }, ms);
+    },ms);
   });
 }
 window.addEventListener("orientationchange", recalcVisualModuleSoon);
