@@ -2358,3 +2358,143 @@ body.plugin-ui-final.plugin-numbers .coordinate-contain-mode .stage-img{
 .v64-visual-wait .stage-img,.v64-visual-wait .coordinate-focus-dot{visibility:hidden!important;}
 .v64-visual-ready .stage-img,.v64-visual-ready .coordinate-focus-dot{visibility:visible!important;}
 
+
+
+/* ================= PRISM V6.5 AUTO TOPBAR + STORY IMAGE RETRY ================= */
+body.auto-topbar .topbar{
+ display:flex!important;position:fixed!important;left:50%!important;top:8px!important;
+ transform:translateX(-50%) translateY(-135%)!important;z-index:120!important;
+ opacity:0!important;pointer-events:none!important;
+ transition:opacity .25s ease,transform .25s ease!important;
+ background:rgba(15,23,42,.30)!important;border-radius:999px!important;
+ padding:6px 8px!important;backdrop-filter:blur(8px)!important;-webkit-backdrop-filter:blur(8px)!important;
+}
+body.auto-topbar.show-topbar .topbar,
+body.auto-topbar .topbar:hover,
+body.auto-topbar .topbar:focus-within{
+ opacity:1!important;transform:translateX(-50%) translateY(0)!important;pointer-events:auto!important;
+}
+body.auto-topbar.plugin-ui-final.plugin-months .topbar,
+body.auto-topbar.plugin-ui-final.plugin-numbers .topbar,
+body.auto-topbar.plugin-ui-final.plugin-salah-names .topbar,
+body.auto-topbar.plugin-ui-final.plugin-salahnames .topbar{display:flex!important;}
+.story-image-waiting{background:#020617!important;}
+.story-image-ready{background-color:#020617!important;}
+
+
+
+/* ================= PRISM V6.6 FLOATING PRISM CONTROL =================
+   Applies only to Months, Numbers, SalahNames through body.prism-float-control.
+   Quran, Allah Names, and external Salah keep their existing menu bars.
+*/
+
+.prism-control-button{
+  display:none;
+}
+
+body.prism-float-control .prism-control-button{
+  display:flex!important;
+  position:fixed!important;
+  top:10px!important;
+  right:12px!important;
+  width:46px!important;
+  height:46px!important;
+  align-items:center!important;
+  justify-content:center!important;
+  z-index:150!important;
+  border:1px solid rgba(255,255,255,.40)!important;
+  border-radius:50%!important;
+  font-size:1.9rem!important;
+  font-weight:900!important;
+  line-height:1!important;
+  color:#fff7ad!important;
+  background:
+    radial-gradient(circle at 35% 28%,rgba(255,255,255,.70),rgba(255,255,255,.10) 30%,transparent 52%),
+    linear-gradient(135deg,rgba(236,72,153,.82),rgba(99,102,241,.82),rgba(14,165,233,.82))!important;
+  box-shadow:0 0 18px rgba(255,255,255,.45),0 10px 24px rgba(0,0,0,.30)!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+  opacity:.92!important;
+}
+
+body.prism-float-control .prism-control-button::after{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);
+  pointer-events:none;
+}
+
+body.prism-float-control .topbar{
+  display:flex!important;
+  position:fixed!important;
+  left:50%!important;
+  top:10px!important;
+  transform:translateX(-50%) translateY(-140%)!important;
+  z-index:140!important;
+  opacity:0!important;
+  pointer-events:none!important;
+  transition:opacity .25s ease, transform .25s ease!important;
+  background:rgba(15,23,42,.34)!important;
+  border-radius:999px!important;
+  padding:6px 56px 6px 8px!important;
+  backdrop-filter:blur(8px)!important;
+  -webkit-backdrop-filter:blur(8px)!important;
+}
+
+body.prism-float-control.show-topbar .topbar,
+body.prism-float-control .topbar:hover,
+body.prism-float-control .topbar:focus-within{
+  opacity:1!important;
+  transform:translateX(-50%) translateY(0)!important;
+  pointer-events:auto!important;
+}
+
+/* Override older display:none topbar rules only for the chosen floating-control pages. */
+body.prism-float-control.plugin-ui-final.plugin-months .topbar,
+body.prism-float-control.plugin-ui-final.plugin-numbers .topbar,
+body.prism-float-control.plugin-ui-final.plugin-salah-names .topbar,
+body.prism-float-control.plugin-ui-final.plugin-salahnames .topbar{
+  display:flex!important;
+}
+
+
+
+/* ================= PRISM V6.6 FINAL LOCK CSS =================
+   Locked core behavior:
+   - Floating Prism logo control applies only to Months, Numbers, SalahNames.
+   - Quran, Allah Names, external Salah keep existing menu bars.
+   - Future cards must opt into floating control by plugin id/renderer logic, not by editing Quran core.
+*/
+
+body.prism-float-control .prism-control-button{
+  font-size:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+}
+
+body.prism-float-control .prism-control-button img{
+  width:76%!important;
+  height:76%!important;
+  object-fit:contain!important;
+  display:block!important;
+  pointer-events:none!important;
+  filter:drop-shadow(0 0 6px rgba(255,255,255,.65))!important;
+}
+
+body.prism-float-control .prism-control-button::after{
+  inset:5px!important;
+}
+
+/* Numbers phone fallback button */
+.numbers-audio-fallback{
+  min-width:220px!important;
+}
+
+/* SalahNames failed-image retry state stays dark, never white/broken. */
+.story-image-waiting,
+.story-image-ready{
+  background-color:#020617!important;
+}
+
