@@ -2189,3 +2189,133 @@ body.plugin-names .play-btn{margin-top:14px!important;padding:12px!important;fon
   visibility:visible!important;
 }
 
+
+
+/* ================= PRISM V6.2 NO-SW DETERMINISTIC VISUAL RENDERING =================
+   Months/Numbers coordinate visuals: educational image is always contained; only the backdrop covers.
+*/
+.coordinate-contain-mode{
+  background:#020617!important;
+}
+
+.coordinate-contain-mode .stage-bg-cover{
+  display:block!important;
+  position:absolute!important;
+  inset:-5%!important;
+  width:110%!important;
+  height:110%!important;
+  background-size:cover!important;
+  background-position:center center!important;
+  filter:blur(16px) brightness(.70) saturate(1.08)!important;
+  transform:scale(1.04)!important;
+  opacity:.86!important;
+  z-index:0!important;
+}
+
+.coordinate-contain-mode .stage-img{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:translate(-50%,-50%)!important;
+  display:block!important;
+  z-index:1!important;
+}
+
+.coordinate-contain-mode .coordinate-focus-dot{
+  z-index:5!important;
+}
+
+.coordinate-contain-mode.stage-waiting-image .stage-img,
+.coordinate-contain-mode.stage-waiting-image .coordinate-focus-dot{
+  visibility:hidden!important;
+}
+.coordinate-contain-mode.stage-image-ready .stage-img,
+.coordinate-contain-mode.stage-image-ready .coordinate-focus-dot{
+  visibility:visible!important;
+}
+
+
+
+/* ================= PRISM V6.3 MOBILE/VISUAL FINAL PATCH ================= */
+body.plugin-ui-final.plugin-months .topbar,
+body.plugin-ui-final.plugin-numbers .topbar,
+body.plugin-ui-final.plugin-salah-names .topbar,
+body.plugin-ui-final.plugin-salahnames .topbar{
+  display:none!important;
+}
+
+body.plugin-ui-final.plugin-months,
+body.plugin-ui-final.plugin-numbers,
+body.plugin-ui-final.plugin-salah-names,
+body.plugin-ui-final.plugin-salahnames{
+  padding-top:0!important;
+}
+
+body.plugin-ui-final.plugin-months .grid.stage-render,
+body.plugin-ui-final.plugin-numbers .grid.stage-render,
+body.plugin-ui-final.plugin-salah-names .grid.stage-render,
+body.plugin-ui-final.plugin-salahnames .grid.stage-render{
+  height:calc(var(--prism-vh, 100vh) - 52px)!important;
+}
+
+body.plugin-ui-final.plugin-months .coordinate-contain-mode,
+body.plugin-ui-final.plugin-numbers .coordinate-contain-mode{
+  position:relative!important;
+  background:#020617!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final.plugin-months .coordinate-contain-mode .stage-bg-cover,
+body.plugin-ui-final.plugin-numbers .coordinate-contain-mode .stage-bg-cover{
+  display:block!important;
+  position:absolute!important;
+  inset:-5%!important;
+  width:110%!important;
+  height:110%!important;
+  background-size:cover!important;
+  background-position:center center!important;
+  filter:blur(16px) brightness(.70) saturate(1.08)!important;
+  transform:scale(1.04)!important;
+  opacity:.86!important;
+  z-index:0!important;
+}
+
+body.plugin-ui-final.plugin-months .coordinate-contain-mode .stage-img,
+body.plugin-ui-final.plugin-numbers .coordinate-contain-mode .stage-img{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:translate(-50%,-50%)!important;
+  display:block!important;
+  opacity:1!important;
+  z-index:1!important;
+}
+
+.tap-start-overlay{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%)!important;
+  z-index:99!important;
+  border:0!important;
+  border-radius:999px!important;
+  padding:16px 24px!important;
+  font-size:1.2rem!important;
+  font-weight:900!important;
+  color:#111827!important;
+  background:linear-gradient(135deg,#fde68a,#facc15)!important;
+  box-shadow:0 0 28px rgba(255,255,255,.75)!important;
+}
+
