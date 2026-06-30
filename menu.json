@@ -946,13 +946,30 @@
       "audioMode": "single-file-pauses",
       "segmentDetection": "silence",
       "renderer": "visual",
-      "type": "plugin",
-      "tileImage": "numbers/numbers.jpeg",
-      "backgroundImage": "numbers/numbers.jpeg",
       "primaryAudio": "numbers/numbers.mp3",
       "audios": [
         "numbers/numbers.mp3"
       ],
+      "syncMode": "timestamps",
+      "coordinateTiming": {
+        "source": "audio-starts",
+        "unit": "seconds",
+        "starts": {
+          "1": 0,
+          "2": 2.97,
+          "3": 5.85,
+          "4": 9.14,
+          "5": 11.96,
+          "6": 14.26,
+          "7": 16.65,
+          "8": 20.08,
+          "9": 22.8,
+          "10": 25.04
+        }
+      },
+      "type": "plugin",
+      "tileImage": "numbers/numbers.jpeg",
+      "backgroundImage": "numbers/numbers.jpeg",
       "images": [
         "numbers/numbers.jpeg"
       ],
