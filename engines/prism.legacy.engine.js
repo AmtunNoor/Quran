@@ -771,6 +771,44 @@ try{
 }catch(e){}
 }
 
+
+/* ================= PRISM V6.4 STRICT VISUAL LIFECYCLE ================= */
+function waitImageDecodedAndMeasured(img, host){
+return new Promise(resolve=>{
+  let done=false;
+  const finish=()=>{
+    if(done) return;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      const r=img ? img.getBoundingClientRect() : {width:100,height:100};
+      if(r.width>20 && r.height>20){
+        done=true;
+        if(host){host.classList.remove("v64-visual-wait");host.classList.add("v64-visual-ready");}
+        if(typeof recalcVisualModuleSoon==="function") recalcVisualModuleSoon();
+        requestAnimationFrame(()=>{if(typeof recalcVisualModuleSoon==="function") recalcVisualModuleSoon();});
+        resolve();
+      }else setTimeout(finish,80);
+    }));
+  };
+  if(!img) return finish();
+  if(img.complete && img.naturalWidth>0){
+    if(img.decode) img.decode().then(finish).catch(finish); else finish();
+  }else{
+    img.addEventListener("load",()=>{if(img.decode) img.decode().then(finish).catch(finish); else finish();},{once:true});
+    img.addEventListener("error",finish,{once:true});
+  }
+  setTimeout(finish,1800);
+});
+}
+function prepareVisualModuleStrict(wrap, plugin, audio, autoplay){
+const img = wrap ? wrap.querySelector(".stage-img") : null;
+if(wrap) wrap.classList.add("v64-visual-wait");
+return waitImageDecodedAndMeasured(img, wrap).then(()=>{
+  if(typeof recalcVisualModuleSoon==="function") recalcVisualModuleSoon();
+  if(audio){try{audio.preload="auto";audio.load();}catch(e){}}
+  if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),260);
+});
+}
+
 function buildSpotlight(plugin, autoplay){
 clearGrid();
 const mp3s = pluginMp3s(plugin);
@@ -841,9 +879,7 @@ if(audio){
 }
 }
 
-if((autoplay || plugin.autoStart) && audio){
-  waitForStableVisualStage(wrap).then(()=>setTimeout(()=>play(plugin.id),350));
-}
+if(isCoordinateSpotlight){ prepareVisualModuleStrict(wrap, plugin, audio, autoplay); } else if((autoplay || plugin.autoStart) && audio){ setTimeout(()=>play(plugin.id),400); }
 }
 
 let coordinateSpotlightTimer = null;
@@ -931,40 +967,20 @@ coordinateSpotlightTimer = setInterval(()=>advanceCoordinateSpotlight(plugin),14
 
 function startCoordinateSpotlight(plugin,audio){
 stopCoordinateSpotlight();
-const keys = orderedCoordinateKeys(plugin);
+const keys=orderedCoordinateKeys(plugin);
 if(!keys.length) return;
-
-const startsObj = plugin.coordinateTiming && plugin.coordinateTiming.starts ? plugin.coordinateTiming.starts : null;
-const starts = startsObj ? keys.map(k=>Number(startsObj[k])) : [];
-
-function hasValidStarts(){
-  return starts.length === keys.length && starts.every(v=>Number.isFinite(v));
+const startsObj=plugin.coordinateTiming&&plugin.coordinateTiming.starts?plugin.coordinateTiming.starts:null;
+const starts=startsObj?keys.map(k=>Number(startsObj[k])):[];
+function valid(){return starts.length===keys.length&&starts.every(v=>Number.isFinite(v));}
+function idx(t){
+ if(valid()){let x=0;for(let i=0;i<starts.length;i++){if(t>=starts[i]) x=i; else break;}return x;}
+ const d=audio.duration&&isFinite(audio.duration)?audio.duration:0;
+ return d>0?Math.min(keys.length-1,Math.floor((audio.currentTime/d)*keys.length)):0;
 }
-
-function indexFromAudioTime(t){
-  if(hasValidStarts()){
-    let idx = 0;
-    for(let i=0;i<starts.length;i++){
-      if(t >= starts[i]) idx = i;
-      else break;
-    }
-    return idx;
-  }
-  const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
-  if(duration > 0){
-    return Math.min(keys.length-1, Math.floor((audio.currentTime / duration) * keys.length));
-  }
-  return 0;
-}
-
-positionCoordinateFocus(plugin, indexFromAudioTime(audio.currentTime || 0));
-
-coordinateSpotlightTimer = setInterval(()=>{
-  if(!audio || audio.paused || audio.ended){
-    stopCoordinateSpotlight();
-    return;
-  }
-  positionCoordinateFocus(plugin, indexFromAudioTime(audio.currentTime || 0));
+positionCoordinateFocus(plugin,idx(audio.currentTime||0));
+coordinateSpotlightTimer=setInterval(()=>{
+ if(!audio||audio.paused||audio.ended){stopCoordinateSpotlight();return;}
+ positionCoordinateFocus(plugin,idx(audio.currentTime||0));
 },120);
 }
 
