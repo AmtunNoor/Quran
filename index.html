@@ -7,7 +7,7 @@
 <title>My Little Quran Corner!</title>
 <meta name="theme-color" content="#0f172a"/>
 
-<link rel="stylesheet" href="styles/prism.css?v61_20260629_final"/>
+<link rel="stylesheet" href="styles/prism.css?v62_20260629_final"/>
 </head>
 
 <body>
@@ -41,6 +41,15 @@
 </div>
 
 
-<script src="engines/prism.legacy.engine.js?v61_20260629_final"></script>
+<script src="engines/prism.legacy.engine.js?v62_20260629_final"></script>
+
+<script>
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){
+  window.addEventListener("load", ()=>{
+    navigator.serviceWorker.register("sw.js?v=v62").catch(()=>{});
+  });
+}
+</script>
+
 </body>
 </html>
