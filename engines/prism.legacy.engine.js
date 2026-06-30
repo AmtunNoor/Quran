@@ -750,8 +750,7 @@ return new Promise(resolve=>{
     });
   };
   if(!img) return finish();
-  const ready = img.complete && img.naturalWidth > 0;
-  if(ready){
+  if(img.complete && img.naturalWidth > 0){
     if(img.decode){ img.decode().then(finish).catch(finish); }
     else finish();
   }else{
@@ -761,6 +760,15 @@ return new Promise(resolve=>{
     }, {once:true});
   }
 });
+}
+
+
+function primeVisualAudio(audio){
+try{
+  if(!audio) return;
+  audio.preload = "auto";
+  audio.load();
+}catch(e){}
 }
 
 function buildSpotlight(plugin, autoplay){
@@ -815,6 +823,7 @@ grid.appendChild(wrap);
 if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon();
 
 const audio = wrap.querySelector("audio");
+primeVisualAudio(audio);
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
 items.push(item);
 map[plugin.id] = item;
@@ -924,22 +933,39 @@ function startCoordinateSpotlight(plugin,audio){
 stopCoordinateSpotlight();
 const keys = orderedCoordinateKeys(plugin);
 if(!keys.length) return;
-positionCoordinateFocus(plugin,0);
+
+const startsObj = plugin.coordinateTiming && plugin.coordinateTiming.starts ? plugin.coordinateTiming.starts : null;
+const starts = startsObj ? keys.map(k=>Number(startsObj[k])) : [];
+
+function hasValidStarts(){
+  return starts.length === keys.length && starts.every(v=>Number.isFinite(v));
+}
+
+function indexFromAudioTime(t){
+  if(hasValidStarts()){
+    let idx = 0;
+    for(let i=0;i<starts.length;i++){
+      if(t >= starts[i]) idx = i;
+      else break;
+    }
+    return idx;
+  }
+  const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
+  if(duration > 0){
+    return Math.min(keys.length-1, Math.floor((audio.currentTime / duration) * keys.length));
+  }
+  return 0;
+}
+
+positionCoordinateFocus(plugin, indexFromAudioTime(audio.currentTime || 0));
 
 coordinateSpotlightTimer = setInterval(()=>{
-if(!audio || audio.paused || audio.ended){
-stopCoordinateSpotlight();
-return;
-}
-const duration = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
-let i = 0;
-if(duration){
-  i = Math.min(keys.length-1, Math.floor((audio.currentTime / duration) * keys.length));
-} else {
-  i = (Number(document.getElementById("coordinateFocusDot")?.dataset.index || 0) + 1) % keys.length;
-}
-positionCoordinateFocus(plugin,i);
-},250);
+  if(!audio || audio.paused || audio.ended){
+    stopCoordinateSpotlight();
+    return;
+  }
+  positionCoordinateFocus(plugin, indexFromAudioTime(audio.currentTime || 0));
+},120);
 }
 
 function applyAmbientEffect(stage, effect){
@@ -1077,6 +1103,70 @@ try{
 }catch(e){}
 }
 
+
+function attachAudioRecovery(audio, item){
+if(!audio || audio.dataset.recoveryAttached === "1") return;
+audio.dataset.recoveryAttached = "1";
+let recovering = false;
+let lastGoodTime = 0;
+
+audio.addEventListener("timeupdate", ()=>{
+  if(!audio.paused && !audio.seeking && isFinite(audio.currentTime)){
+    lastGoodTime = audio.currentTime;
+  }
+});
+
+const recover = ()=>{
+  if(recovering || audio.ended) return;
+  recovering = true;
+  const wasCurrent = currentAudio === audio;
+  const resumeAt = isFinite(audio.currentTime) ? audio.currentTime : lastGoodTime;
+
+  const tryResume = ()=>{
+    if(!wasCurrent || currentAudio !== audio || audio.ended){
+      recovering = false;
+      return;
+    }
+    try{
+      if(isFinite(resumeAt) && resumeAt > 0 && Math.abs(audio.currentTime - resumeAt) > 1.2){
+        audio.currentTime = resumeAt;
+      }
+    }catch(e){}
+    audio.play().catch(()=>{});
+    recovering = false;
+  };
+
+  if(audio.readyState >= 3){
+    setTimeout(tryResume, 250);
+  }else{
+    const once = ()=>setTimeout(tryResume, 200);
+    audio.addEventListener("canplay", once, {once:true});
+    audio.addEventListener("canplaythrough", once, {once:true});
+    setTimeout(tryResume, 1800);
+  }
+};
+
+["waiting","stalled","suspend","emptied","abort"].forEach(ev=>{
+  audio.addEventListener(ev, recover);
+});
+
+audio.addEventListener("error", ()=>{
+  if(currentAudio !== audio) return;
+  const src = audio.getAttribute("src");
+  const resumeAt = audio.currentTime || lastGoodTime || 0;
+  setTimeout(()=>{
+    try{
+      audio.src = src;
+      audio.load();
+      audio.addEventListener("canplay", ()=>{
+        try{ audio.currentTime = resumeAt; }catch(e){}
+        audio.play().catch(()=>{});
+      }, {once:true});
+    }catch(e){}
+  }, 800);
+});
+}
+
 function createAudioCard(s, idx, theme, showLearnBadge){
 const card = document.createElement("div");
 card.className = "card";
@@ -1099,6 +1189,7 @@ const btn = card.querySelector("button");
 const audio = card.querySelector("audio");
 
 const item = {card,audio,btn,s,index:idx,id:s.id,type:"audio"};
+attachAudioRecovery(audio, item);
 items.push(item);
 map[s.id] = item;
 
@@ -1138,6 +1229,25 @@ updateFocus();
 }
 
 /* ================= AUDIO + LEARN/HIFZ ================= */
+
+function showTapToStartOverlay(audio, label){
+try{
+  const existing = document.getElementById("tapStartOverlay");
+  if(existing) existing.remove();
+  const overlay = document.createElement("button");
+  overlay.id = "tapStartOverlay";
+  overlay.className = "tap-start-overlay";
+  overlay.textContent = label || "▶ Tap to start";
+  overlay.onclick = (e)=>{
+    e.stopPropagation();
+    try{ speechSynthesis.cancel(); }catch(err){}
+    audio.play().then(()=>overlay.remove()).catch(()=>{});
+  };
+  const host = document.querySelector(".spotlight-wrap,.stage,main,#grid") || document.body;
+  host.appendChild(overlay);
+}catch(e){}
+}
+
 function play(id){
 const item = map[id];
 if(!item || item.type !== "audio") return;
@@ -1165,11 +1275,15 @@ if((mode === "repeat5" || mode === "hifz") && (hasSlices || item.s.learningMode 
 runLearningSequence(item, mode, token);
 } else {
 item.audio.loop = loopAll;
-item.audio.play().catch(()=>{});
+item.audio.play().catch(()=>{ if(shouldSuppressSpeech(item)) showTapToStartOverlay(item.audio, "▶ Tap to start audio"); });
 }
 
 if(!shouldSuppressSpeech(item)){
+  if(!shouldSuppressSpeech(item)){
   speak(item.s.name || item.s.eng || "");
+} else {
+  try{ speechSynthesis.cancel(); }catch(e){}
+}
 } else {
   try{ speechSynthesis.cancel(); }catch(e){}
 }
@@ -1233,6 +1347,8 @@ audio.addEventListener("timeupdate",tick);
 }
 
 async function runLearningSequence(item, mode, token){
+attachAudioRecovery(item.audio, item); // V62 recovery
+try{ item.audio.preload = "auto"; item.audio.load(); }catch(e){}
 const audio = item.audio;
 
 if(!audio.duration || !isFinite(audio.duration)){
