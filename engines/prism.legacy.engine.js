@@ -1,5 +1,6 @@
 /* =========================================================
-      Fixes:
+   PRISM V3.4 CORRECTED INDEX ENGINE
+   Fixes:
    - Quran listen/learn folders merge
    - Learn badge on Quran listen tiles
    - Quran 5x/Hifz from slices.json
@@ -30,7 +31,7 @@ const surahs = [
 
 
 const FILE_META = {
-"02":   {name:"البقرة", eng:"Al Baqarah", emoji:"👑", color:"linear-gradient(135deg,#f59e0b,#facc15)"},
+"02":   {name:"آية الكرسي", eng:"Ayat al Kursi", emoji:"👑", color:"linear-gradient(135deg,#f59e0b,#facc15)"},
 "02_1": {name:"البقرة", eng:"Al Baqarah", emoji:"🐄", color:"linear-gradient(135deg,#16a34a,#0ea5e9)"}
 };
 
@@ -734,6 +735,34 @@ if(autoplay && items[0]) setTimeout(()=>play(items[0].id),400);
 }
 
 /* ================= SPOTLIGHT ENGINE ================= */
+
+function waitForStableVisualStage(wrap){
+return new Promise(resolve=>{
+  const img = wrap ? wrap.querySelector(".stage-img") : null;
+  const finish = ()=>{
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        requestAnimationFrame(()=>{
+          if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon();
+          resolve();
+        });
+      });
+    });
+  };
+  if(!img) return finish();
+  const ready = img.complete && img.naturalWidth > 0;
+  if(ready){
+    if(img.decode){ img.decode().then(finish).catch(finish); }
+    else finish();
+  }else{
+    img.addEventListener("load", ()=>{
+      if(img.decode){ img.decode().then(finish).catch(finish); }
+      else finish();
+    }, {once:true});
+  }
+});
+}
+
 function buildSpotlight(plugin, autoplay){
 clearGrid();
 const mp3s = pluginMp3s(plugin);
@@ -771,6 +800,7 @@ const effectType = plugin.effect && plugin.effect.type;
 const isCoordinateSpotlight = effectType === "coordinateSpotlight" || effectType === "numberSpotlight";
 
 const wrap = makeFullVisualStage("spotlight-wrap", bg);
+if(isCoordinateSpotlight) wrap.classList.add("coordinate-contain-mode");
 wrap.innerHTML += `
 ${isCoordinateSpotlight ? `<div class="coordinate-focus-dot" id="coordinateFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
@@ -803,17 +833,7 @@ if(audio){
 }
 
 if((autoplay || plugin.autoStart) && audio){
-  const stageImg = wrap.querySelector(".stage-img");
-  const stageBox = wrap.querySelector(".stage,.spotlight-wrap");
-  const start = ()=>setTimeout(()=>play(plugin.id),350);
-  if(stageBox && stageBox.classList.contains("stage-image-ready")){
-    start();
-  } else if(stageImg && (!stageImg.complete || !stageImg.naturalWidth)){
-    stageImg.addEventListener("load", start, {once:true});
-    if(stageImg.decode) stageImg.decode().then(start).catch(()=>{});
-  } else {
-    requestAnimationFrame(()=>requestAnimationFrame(start));
-  }
+  waitForStableVisualStage(wrap).then(()=>setTimeout(()=>play(plugin.id),350));
 }
 }
 
