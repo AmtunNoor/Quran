@@ -351,6 +351,7 @@ updateFocus();
 
 /* ================= QURAN VIEW ================= */
 function buildQuran(){
+disableAutoTopbar();
 setModeListen();
 currentView = "quran";
 currentPlugin = {id:"quran",title:"Quran",theme:"quran",engine:"learning"};
@@ -518,11 +519,82 @@ qrFix();
 }
 
 /* ================= PLUGIN ROUTER ================= */
+
+
+
+/* ================= PRISM CORE LOCK V6.6 FINAL ================= */
+const PRISM_APP_LOGO_URL = "https://raw.githubusercontent.com/AmtunNoor/AmtunNoor_Prism/main/app/src/main/res/drawable/app_icon.png";
+function prismLogoUrl(){
+  return PRISM_APP_LOGO_URL;
+}
+
+/* ================= PRISM V6.6 FLOATING PRISM CONTROL ================= */
+let prismControlHideTimer = null;
+
+function ensurePrismControlButton(){
+  let btn = document.getElementById("prismControlButton");
+  if(btn) return btn;
+  btn = document.createElement("button");
+  btn.id = "prismControlButton";
+  btn.className = "prism-control-button";
+  btn.type = "button";
+  btn.setAttribute("aria-label", "Prism controls");
+  btn.innerHTML = `<img src="${prismLogoUrl()}" alt="Prism">`;
+  btn.onclick = (e)=>{
+    e.stopPropagation();
+    showPrismControls(true);
+  };
+  document.body.appendChild(btn);
+  return btn;
+}
+
+function showPrismControls(force){
+  const body = document.body;
+  if(!body.classList.contains("prism-float-control")) return;
+  ensurePrismControlButton();
+  body.classList.add("show-topbar");
+  clearTimeout(prismControlHideTimer);
+  prismControlHideTimer = setTimeout(()=>{
+    body.classList.remove("show-topbar");
+  }, force ? 4200 : 2400);
+}
+
+function setupAutoTopbar(){
+  const body = document.body;
+  const bar = document.querySelector(".topbar");
+  if(!bar) return;
+  body.classList.add("auto-topbar","prism-float-control");
+  ensurePrismControlButton();
+
+  const showSmall = ()=>{
+    body.classList.add("show-prism-control");
+    clearTimeout(prismControlHideTimer);
+    prismControlHideTimer = setTimeout(()=>body.classList.remove("show-topbar"),2400);
+  };
+
+  ["mousemove","pointerdown","touchstart","keydown"].forEach(ev=>{
+    window.addEventListener(ev, showSmall, {passive:true});
+  });
+
+  body.classList.add("show-prism-control");
+  showPrismControls(false);
+}
+
+function disableAutoTopbar(){
+  document.body.classList.remove("auto-topbar","prism-float-control","show-topbar","show-prism-control");
+  const btn = document.getElementById("prismControlButton");
+  if(btn) btn.remove();
+  clearTimeout(prismControlHideTimer);
+}
+
+
 function buildPlugin(plugin, autoplay){
 setModeListen();
 try{ speechSynthesis.cancel(); }catch(e){}
 currentView = "plugin";
 currentPlugin = plugin;
+const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames"]);
+if(v66FloatControlIds.has(String(plugin.id||"").toLowerCase())) setupAutoTopbar(); else disableAutoTopbar();
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
 setScreenMode("plugin", plugin.id);
@@ -809,6 +881,48 @@ return waitImageDecodedAndMeasured(img, wrap).then(()=>{
 });
 }
 
+
+/* ================= PRISM V6.6 FINAL NUMBERS AUDIO FALLBACK ================= */
+function showNumbersAudioFallback(audio){
+try{
+  const pid = (currentPlugin && currentPlugin.id) ? String(currentPlugin.id).toLowerCase() : "";
+  if(pid !== "numbers") return;
+  const existing = document.getElementById("numbersAudioFallback");
+  if(existing) existing.remove();
+
+  const overlay = document.createElement("button");
+  overlay.id = "numbersAudioFallback";
+  overlay.className = "tap-start-overlay numbers-audio-fallback";
+  overlay.type = "button";
+  overlay.textContent = "▶ Tap to start numbers";
+  overlay.onclick = (e)=>{
+    e.stopPropagation();
+    try{ speechSynthesis.cancel(); }catch(err){}
+    try{
+      const src = audio.getAttribute("src") || audio.src || "numbers/numbers.mp3";
+      if(!audio.src) audio.src = src;
+      audio.preload = "auto";
+      audio.load();
+      audio.play().then(()=>overlay.remove()).catch(()=>{});
+    }catch(err){}
+  };
+
+  const host = document.querySelector(".spotlight-wrap,.stage,#grid") || document.body;
+  host.appendChild(overlay);
+}catch(e){}
+}
+
+function attachNumbersAudioFallback(audio){
+if(!audio || audio.dataset.numbersFallbackAttached === "1") return;
+audio.dataset.numbersFallbackAttached = "1";
+["error","stalled","suspend","waiting","abort"].forEach(ev=>{
+  audio.addEventListener(ev, ()=>{
+    const pid = (currentPlugin && currentPlugin.id) ? String(currentPlugin.id).toLowerCase() : "";
+    if(pid === "numbers" && audio.paused) setTimeout(()=>showNumbersAudioFallback(audio),700);
+  });
+});
+}
+
 function buildSpotlight(plugin, autoplay){
 clearGrid();
 const mp3s = pluginMp3s(plugin);
@@ -861,6 +975,7 @@ grid.appendChild(wrap);
 if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon();
 
 const audio = wrap.querySelector("audio");
+attachNumbersAudioFallback(audio);
 primeVisualAudio(audio);
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
 items.push(item);
@@ -1002,6 +1117,29 @@ stage.appendChild(layer);
 }
 
 /* ================= STORY ENGINE ================= */
+
+
+/* ================= PRISM V6.6 FINAL STORY IMAGE RETRY ================= */
+function ensureStoryImageLoaded(stage,imagePath){
+ if(!stage||!imagePath) return;
+ const img=stage.querySelector(".stage-img, img");
+ if(!img) return;
+ let tries=0,maxTries=5;
+ const ready=()=>{stage.classList.remove("story-image-waiting");stage.classList.add("story-image-ready");};
+ const retry=()=>{
+  if(img.complete&&img.naturalWidth>0){ready();return;}
+  if(tries>=maxTries){ready();return;}
+  tries++;
+  const sep=imagePath.includes("?")?"&":"?";
+  img.src=imagePath+sep+"retry="+Date.now()+"_"+tries;
+ };
+ stage.classList.add("story-image-waiting");
+ img.addEventListener("load",ready);
+ img.addEventListener("error",()=>setTimeout(retry,450));
+ [1000,2400,4200,7000].forEach(ms=>setTimeout(retry,ms));
+}
+
+
 function buildStory(plugin, autoplay){
 clearGrid();
 setStageGridMode(true);
@@ -1291,7 +1429,10 @@ if((mode === "repeat5" || mode === "hifz") && (hasSlices || item.s.learningMode 
 runLearningSequence(item, mode, token);
 } else {
 item.audio.loop = loopAll;
-item.audio.play().catch(()=>{ if(shouldSuppressSpeech(item)) showTapToStartOverlay(item.audio, "▶ Tap to start audio"); });
+item.audio.play().catch(()=>{
+  if(currentPlugin && String(currentPlugin.id||"").toLowerCase()==="numbers") showNumbersAudioFallback(item.audio);
+  else if(shouldSuppressSpeech(item)) showTapToStartOverlay(item.audio, "▶ Tap to start audio");
+});
 }
 
 if(!shouldSuppressSpeech(item)){
