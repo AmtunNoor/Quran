@@ -1,0 +1,14 @@
+{
+  "id": "dua",
+  "title": "Dua",
+  "type": "plugin",
+  "priority": 3,
+  "folder": "duas",
+  "engine": "gallery",
+  "supports": [
+    "listen"
+  ],
+  "audioMode": "multiple-files",
+  "theme": "dua",
+  "renderer": "grid"
+}

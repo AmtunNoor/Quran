@@ -1,0 +1,141 @@
+{
+  "id": "months",
+  "title": "Islamic Months",
+  "type": "plugin",
+  "priority": 4,
+  "folder": "months",
+  "engine": "spotlight",
+  "supports": [
+    "listen"
+  ],
+  "audioMode": "single-file-pauses",
+  "segmentDetection": "silence",
+  "playFromLanding": false,
+  "theme": "months",
+  "effect": {
+    "type": "coordinateSpotlight",
+    "backgroundStatic": true,
+    "focusOneItem": true,
+    "followAudio": true,
+    "glow": true,
+    "sparkles": true,
+    "float": true,
+    "waterRays": true,
+    "bubbles": true,
+    "bubbleCount": 16
+  },
+  "autoStart": true,
+  "coordinates": {
+    "1": {
+      "x": 13.45,
+      "y": 19.15
+    },
+    "2": {
+      "x": 37.0,
+      "y": 20.4
+    },
+    "3": {
+      "x": 60.3,
+      "y": 20.35
+    },
+    "4": {
+      "x": 83.35,
+      "y": 20.3
+    },
+    "5": {
+      "x": 14.05,
+      "y": 48.0
+    },
+    "6": {
+      "x": 37.1,
+      "y": 48.85
+    },
+    "7": {
+      "x": 60.3,
+      "y": 48.25
+    },
+    "8": {
+      "x": 82.9,
+      "y": 48.4
+    },
+    "9": {
+      "x": 13.8,
+      "y": 75.8
+    },
+    "10": {
+      "x": 36.6,
+      "y": 76.15
+    },
+    "11": {
+      "x": 60.35,
+      "y": 75.85
+    },
+    "12": {
+      "x": 82.75,
+      "y": 76.05
+    }
+  },
+  "items": {
+    "1": {
+      "name": "محرّم",
+      "pulse": true,
+      "float": true
+    },
+    "2": {
+      "name": "صفر",
+      "pulse": true,
+      "float": true
+    },
+    "3": {
+      "name": "ربيع الأول",
+      "pulse": true,
+      "float": true
+    },
+    "4": {
+      "name": "ربيع الآخر",
+      "pulse": true,
+      "float": true
+    },
+    "5": {
+      "name": "جمادى الأولى",
+      "pulse": true,
+      "float": true
+    },
+    "6": {
+      "name": "جمادى الآخرة",
+      "pulse": true,
+      "float": true
+    },
+    "7": {
+      "name": "رجب",
+      "pulse": true,
+      "float": true
+    },
+    "8": {
+      "name": "شعبان",
+      "pulse": true,
+      "float": true
+    },
+    "9": {
+      "name": "رمضان",
+      "pulse": true,
+      "float": true
+    },
+    "10": {
+      "name": "شوّال",
+      "pulse": true,
+      "float": true
+    },
+    "11": {
+      "name": "ذو القعدة",
+      "pulse": true,
+      "float": true
+    },
+    "12": {
+      "name": "ذو الحجة",
+      "pulse": true,
+      "float": true
+    }
+  },
+  "renderer": "visual"
+}

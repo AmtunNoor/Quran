@@ -1,0 +1,21 @@
+{
+  "id": "names",
+  "title": "Allah Names",
+  "type": "plugin",
+  "priority": 5,
+  "folder": "names",
+  "engine": "spotlight",
+  "supports": [
+    "listen",
+    "5x",
+    "hifz"
+  ],
+  "audioMode": "multiple-files",
+  "theme": "names",
+  "chunkMode": {
+    "enabled": true,
+    "namesPerChunk": 4,
+    "repeatCount": 5
+  },
+  "renderer": "grid"
+}

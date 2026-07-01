@@ -1,0 +1,11 @@
+{
+  "id": "salah",
+  "title": "Salah",
+  "type": "core-salah",
+  "priority": 2,
+  "engine": "external",
+  "mainUrl": "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
+  "theme": "salah",
+  "locked": true,
+  "renderer": "external"
+}
