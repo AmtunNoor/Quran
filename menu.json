@@ -829,6 +829,153 @@
     ]
   },
   {
+    "title": "Angels",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=angels",
+    "plugin": {
+      "id": "angels",
+      "title": "Angels",
+      "folder": "angels",
+      "engine": "spotlight",
+      "renderer": "visual",
+      "controls": "floating",
+      "enabled": false,
+      "showOnLanding": false,
+      "backgroundImage": "angels/angels.jpeg",
+      "tileImage": "angels/angels.jpeg",
+      "primaryAudio": null,
+      "effect": {
+        "type": "timedTileFocus",
+        "style": "minimal-active-only",
+        "dimOthers": true,
+        "activeScale": 1.03,
+        "glow": "soft-prism",
+        "tileEffects": {
+          "mikaeel": "softRain",
+          "israfil": "soundWave",
+          "ridwan": "gardenGlow",
+          "munkar": "questionPulse",
+          "jibraeel": "messageLight",
+          "kiraman": "writingSpark"
+        }
+      },
+      "coordinates": {
+        "mikaeel": {
+          "x": 15,
+          "y": 50
+        },
+        "israfil": {
+          "x": 32,
+          "y": 50
+        },
+        "ridwan": {
+          "x": 50,
+          "y": 50
+        },
+        "munkar": {
+          "x": 68,
+          "y": 50
+        },
+        "jibraeel": {
+          "x": 82,
+          "y": 50
+        },
+        "kiraman": {
+          "x": 92,
+          "y": 50
+        }
+      },
+      "coordinateTiming": {
+        "source": "audio-starts",
+        "unit": "seconds",
+        "starts": {
+          "mikaeel": 0,
+          "israfil": 12,
+          "ridwan": 24,
+          "munkar": 36,
+          "jibraeel": 48,
+          "kiraman": 60
+        }
+      },
+      "type": "plugin",
+      "theme": "angels",
+      "audios": [],
+      "images": [
+        "angels/angels.jpeg"
+      ],
+      "playFromLanding": false,
+      "autoStart": false,
+      "directAudio": false,
+      "action": "open-plugin",
+      "supports": [
+        "listen"
+      ],
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
+      "fallback": "duration",
+      "learningMode": null,
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "sequence": [],
+      "numbers": {},
+      "spotlight": null,
+      "displayMode": null,
+      "chunkMode": null,
+      "slices": [],
+      "slicesFile": "learn.master.slices.json",
+      "lockedDesign": true
+    },
+    "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/angels/angels.jpeg",
+        "path": "angels/angels.jpeg"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/angels.plugin.json",
+        "path": "plugins/angels.plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
+        "path": "learn.master.slices.json"
+      }
+    ]
+  },
+  {
     "title": "Arabic Numbers",
     "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers&autoplay=1",
     "plugin": {
