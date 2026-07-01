@@ -1,5 +1,5 @@
 /* =========================================================
-   PRISM V3.4 CORRECTED INDEX ENGINE
+   PRISM V6.8 PLUGIN HOST ENGINE
    Fixes:
    - Quran listen/learn folders merge
    - Learn badge on Quran listen tiles
@@ -167,6 +167,113 @@ return await res.json();
 }catch(e){return fallback;}
 }
 
+
+/* ================= PRISM V6.8 TRUE PLUGIN HOST =================
+   index.html is now only a host. New cards are discovered from:
+   1) plugins/plugins.json registry
+   2) plugins/<id>/plugin.json
+   3) legacy fallback plugins/<id>.plugin.json
+   Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
+*/
+const PRISM_PLUGIN_HOST_VERSION = "v68_plugin_host_20260701";
+
+function cleanPluginId(id){
+  return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
+}
+
+function pluginEntryToId(entry){
+  if(typeof entry === "string") return cleanPluginId(entry);
+  if(entry && typeof entry === "object") return cleanPluginId(entry.id || entry.plugin || entry.folder || entry.name);
+  return "";
+}
+
+function pluginConfigUrls(id){
+  const clean = cleanPluginId(id);
+  const compact = clean.replace(/-/g, "");
+  const urls = [
+    `plugins/${clean}/plugin.json`,
+    `plugins/${clean}/${clean}.plugin.json`,
+    `plugins/${clean}.plugin.json`,
+    `../plugins/${clean}/plugin.json`,
+    `../plugins/${clean}/${clean}.plugin.json`,
+    `../plugins/${clean}.plugin.json`
+  ];
+  if(compact !== clean){
+    urls.push(`plugins/${compact}.plugin.json`, `../plugins/${compact}.plugin.json`);
+  }
+  return [...new Set(urls)];
+}
+
+function normalizePluginEntry(plugin, menuEntry){
+  if(!plugin || !plugin.id) return null;
+  const id = cleanPluginId(plugin.id);
+  const merged = {...plugin, id};
+  if(menuEntry && menuEntry.plugin){
+    Object.keys(menuEntry.plugin).forEach(k=>{
+      if(merged[k] === undefined) merged[k] = menuEntry.plugin[k];
+    });
+  }
+  if(!merged.title) merged.title = id;
+  if(!merged.theme) merged.theme = id;
+  if(merged.enabled === undefined) merged.enabled = true;
+  if(merged.showOnLanding === undefined) merged.showOnLanding = true;
+  if(menuEntry && Array.isArray(menuEntry.syncFiles)) merged.__syncFiles = menuEntry.syncFiles;
+  return {
+    title: merged.title || id,
+    mainUrl: merged.mainUrl || (id === "salah" ? "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html" : `index.html?plugin=${encodeURIComponent(id)}`),
+    plugin: merged,
+    syncFiles: (menuEntry && Array.isArray(menuEntry.syncFiles)) ? menuEntry.syncFiles : []
+  };
+}
+
+async function loadOnePlugin(id, legacyMenu){
+  const clean = cleanPluginId(id);
+  if(!clean) return null;
+  const menuEntry = (legacyMenu || []).find(m => cleanPluginId((m.plugin||{}).id || m.title) === clean);
+  for(const url of pluginConfigUrls(clean)){
+    try{
+      const res = await fetch(url + (url.includes("?") ? "&" : "?") + "v=" + encodeURIComponent(PRISM_PLUGIN_HOST_VERSION), {cache:"no-store"});
+      if(res.ok){
+        const plugin = await res.json();
+        return normalizePluginEntry(plugin, menuEntry);
+      }
+    }catch(e){}
+  }
+  if(menuEntry && menuEntry.plugin) return normalizePluginEntry(menuEntry.plugin, menuEntry);
+  return null;
+}
+
+async function loadPluginRegistry(){
+  const registry = await fetchFirstJson([
+    `plugins/plugins.json?v=${PRISM_PLUGIN_HOST_VERSION}`,
+    `../plugins/plugins.json?v=${PRISM_PLUGIN_HOST_VERSION}`
+  ], null);
+  if(Array.isArray(registry)) return registry.map(pluginEntryToId).filter(Boolean);
+  if(registry && Array.isArray(registry.plugins)) return registry.plugins.map(pluginEntryToId).filter(Boolean);
+  return null;
+}
+
+async function loadPluginHostMenu(legacyMenu){
+  const registry = await loadPluginRegistry();
+  const legacyIds = (legacyMenu || []).map(m => cleanPluginId((m.plugin||{}).id || m.title)).filter(Boolean);
+  const ids = registry && registry.length ? registry : legacyIds;
+  const seen = new Set();
+  const out = [];
+  for(const id of ids){
+    if(!id || seen.has(id)) continue;
+    seen.add(id);
+    const entry = await loadOnePlugin(id, legacyMenu);
+    if(entry) out.push(entry);
+  }
+  out.sort((a,b)=>{
+    const pa = Number((a.plugin||{}).priority ?? 999);
+    const pb = Number((b.plugin||{}).priority ?? 999);
+    if(pa !== pb) return pa - pb;
+    return String(a.title||"").localeCompare(String(b.title||""));
+  });
+  return out.length ? out : (legacyMenu && legacyMenu.length ? legacyMenu : FALLBACK_MENU);
+}
+
 function gradientFor(theme){
 const t = THEME[theme] || THEME.default;
 return `linear-gradient(135deg,${t[0]},${t[1]})`;
@@ -237,7 +344,7 @@ return (q && q.syncFiles) ? q.syncFiles : [];
 }
 
 function pluginSyncFiles(plugin){
-return (pluginEntry(plugin.id).syncFiles || []);
+return (plugin && plugin.__syncFiles) || (pluginEntry(plugin.id).syncFiles || []);
 }
 
 /* ================= LANDING PAGE ================= */
@@ -967,7 +1074,7 @@ audio.dataset.numbersFallbackAttached = "1";
 /* ================= PRISM V6.7 VISUAL AUDIO FALLBACK ================= */
 function isVisualFallbackPlugin(){
 const pid = (currentPlugin && currentPlugin.id) ? String(currentPlugin.id).toLowerCase() : "";
-return pid === "numbers" || pid === "months";
+return pid === "numbers" || pid === "months" || pid === "angels" || pid === "pillars";
 }
 
 function showVisualAudioFallback(audio){
@@ -1056,17 +1163,17 @@ setStageGridMode(true);
 const audioFile = plugin.primaryAudio || mp3s[0] || "";
 const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
 const effectType = plugin.effect && plugin.effect.type;
-const isCoordinateSpotlight = effectType === "coordinateSpotlight" || effectType === "numberSpotlight";
+const isCoordinateSpotlight = hasCoordinateEffect(plugin);
 
 const wrap = makeFullVisualStage("spotlight-wrap", bg);
 if(isCoordinateSpotlight) wrap.classList.add("coordinate-contain-mode");
 wrap.innerHTML += `
-${isCoordinateSpotlight ? `<div class="coordinate-focus-dot" id="coordinateFocusDot"></div>` : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
+${isCoordinateSpotlight ? coordinateEffectMarkup(plugin) : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
 
-// Months can still use water/bubble ambience while using the same coordinate spotlight logic.
-if(plugin.effect && (plugin.effect.waterRays || plugin.effect.bubbles)){
+// Ambient effects are plugin-selected. These never require index.html edits.
+if(plugin.effect){
   applyAmbientEffect(wrap, plugin.effect);
 }
 
@@ -1084,12 +1191,12 @@ updateFocus();
 
 if(isCoordinateSpotlight){
 positionCoordinateFocus(plugin,0);
+// Always show a gentle demo first. If audio exists and starts, the demo switches to audio-timed focus.
+startCoordinateDemo(plugin);
 if(audio){
   audio.addEventListener("play",()=>startCoordinateSpotlight(plugin,audio));
-  audio.addEventListener("pause",()=>stopCoordinateSpotlight());
-  audio.addEventListener("ended",()=>stopCoordinateSpotlight());
-} else {
-  startCoordinateDemo(plugin);
+  audio.addEventListener("pause",()=>{ if(!audio.ended) startCoordinateDemo(plugin); });
+  audio.addEventListener("ended",()=>startCoordinateDemo(plugin));
 }
 }
 
@@ -1106,9 +1213,49 @@ coordinateSpotlightTimer = null;
 }
 }
 
+function hasCoordinateEffect(plugin){
+  const effectType = plugin && plugin.effect && plugin.effect.type ? String(plugin.effect.type) : "";
+  return !!(plugin && plugin.coordinates && (
+    effectType === "coordinateSpotlight" ||
+    effectType === "numberSpotlight" ||
+    effectType === "timedTileFocus" ||
+    effectType === "pillarFocus" ||
+    effectType === "softPulse" ||
+    effectType === "spotlight" ||
+    effectType === "particleField"
+  ));
+}
+
+function coordinateEffectMarkup(plugin){
+  const effectType = prismEffectType(plugin);
+  const keys = orderedCoordinateKeys(plugin);
+  const labels = plugin.labels || plugin.coordinateLabels || {};
+  return `
+    <div class="coordinate-focus-dot" id="coordinateFocusDot"></div>
+    <div class="coordinate-hotspot-layer" data-effect="${effectType}">
+      ${keys.map((key,idx)=>{
+        const label = labels[key] || "";
+        const tileEffect = plugin.effect && plugin.effect.tileEffects ? (plugin.effect.tileEffects[key] || "") : "";
+        return `<div class="coordinate-hotspot" data-key="${key}" data-index="${idx}" data-tile-effect="${tileEffect}"><span>${label}</span></div>`;
+      }).join("")}
+    </div>`;
+}
+
 function orderedCoordinateKeys(plugin){
 const coords = plugin.coordinates || {};
-return Object.keys(coords).sort((a,b)=>Number(a)-Number(b));
+const keys = Object.keys(coords);
+const startsObj = plugin.coordinateTiming && plugin.coordinateTiming.starts ? plugin.coordinateTiming.starts : null;
+if(startsObj){
+  return keys.sort((a,b)=>{
+    const av = Number(startsObj[a]);
+    const bv = Number(startsObj[b]);
+    if(Number.isFinite(av) && Number.isFinite(bv)) return av - bv;
+    if(Number.isFinite(av)) return -1;
+    if(Number.isFinite(bv)) return 1;
+    return a.localeCompare(b, undefined, {numeric:true});
+  });
+}
+return keys.sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
 }
 
 function positionCoordinateFocus(plugin, index){
@@ -1163,9 +1310,38 @@ if(img && stage){
   dot.style.top = p.y + "%";
 }
 
+updateCoordinateHotspots(stage, key, index, p, plugin);
+
 dot.dataset.index = String(index);
 dot.dataset.key = key;
 }
+
+function updateCoordinateHotspots(stage, activeKey, activeIndex, point, plugin){
+  if(!stage) return;
+  const layer = stage.querySelector(".coordinate-hotspot-layer");
+  if(!layer) return;
+  const hotspots = [...layer.querySelectorAll(".coordinate-hotspot")];
+  hotspots.forEach(h=>{
+    const on = h.dataset.key === String(activeKey);
+    h.classList.toggle("active", on);
+    h.classList.toggle("dimmed", !on && !!(plugin && plugin.effect && plugin.effect.dimOthers));
+  });
+  const active = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(activeKey))}"]`);
+  if(active && point){
+    active.style.left = (Number(point.x) || 50) + "%";
+    active.style.top = (Number(point.y) || 50) + "%";
+  }
+  // Position all inactive hotspots too, so cards visibly map to coordinates even before audio starts.
+  const coords = plugin && plugin.coordinates ? plugin.coordinates : {};
+  Object.keys(coords).forEach(k=>{
+    const h = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(k))}"]`);
+    if(h){
+      h.style.left = (Number(coords[k].x) || 50) + "%";
+      h.style.top = (Number(coords[k].y) || 50) + "%";
+    }
+  });
+}
+
 
 function advanceCoordinateSpotlight(plugin){
 coordinateDemoIndex++;
@@ -1199,20 +1375,43 @@ coordinateSpotlightTimer=setInterval(()=>{
 }
 
 function applyAmbientEffect(stage, effect){
+const type = String(effect.type || "");
 const layer = document.createElement("div");
-layer.className = "aquarium-layer";
+layer.className = "prism-ambient-layer";
 
-if(effect.waterRays !== false){
-const rays = document.createElement("div");
-rays.className = "aquarium-water-rays";
-layer.appendChild(rays);
+if(effect.waterRays !== false && (effect.waterRays || type === "aquarium")){
+  const rays = document.createElement("div");
+  rays.className = "aquarium-water-rays";
+  layer.appendChild(rays);
 }
 
-if(effect.bubbles !== false){
-addBubblesToLayer(layer, effect.bubbleCount || 16);
+if(effect.bubbles || type === "aquarium"){
+  addBubblesToLayer(layer, effect.bubbleCount || 16);
+}
+
+if(effect.sparkles || type === "pillarFocus" || type === "softPulse" || type === "particleField"){
+  addSparklesToLayer(layer, effect.sparkleCount || 18);
+}
+
+if(type === "orbit"){
+  const orbit = document.createElement("div");
+  orbit.className = "prism-orbit-ring";
+  layer.appendChild(orbit);
 }
 
 stage.appendChild(layer);
+}
+
+function addSparklesToLayer(layer,count){
+for(let i=0;i<count;i++){
+  const s=document.createElement("div");
+  s.className="prism-sparkle";
+  s.style.left=(5+Math.random()*90)+"%";
+  s.style.top=(8+Math.random()*80)+"%";
+  s.style.animationDelay=(Math.random()*4)+"s";
+  s.style.setProperty("--s", (6+Math.random()*10)+"px");
+  layer.appendChild(s);
+}
 }
 
 /* ================= STORY ENGINE ================= */
@@ -1852,85 +2051,13 @@ window.addEventListener("popstate",()=>route());
 
 
 async function fetchPluginConfigById(pluginId){
-try{
-  const clean = String(pluginId || "").toLowerCase();
-  const urls = [
-    `plugins/${clean}.plugin.json`,
-    `../plugins/${clean}.plugin.json`,
-    `plugins/${clean.replace(/-/g,"")}.plugin.json`,
-    `../plugins/${clean.replace(/-/g,"")}.plugin.json`
-  ];
-  for(const url of urls){
-    try{
-      const res = await fetch(url,{cache:"no-store"});
-      if(res.ok){
-        const plugin = await res.json();
-        if(plugin && plugin.id){
-          return {
-            title: plugin.title || plugin.id,
-            mainUrl: `index.html?plugin=${encodeURIComponent(plugin.id)}`,
-            plugin,
-            syncFiles: []
-          };
-        }
-      }
-    }catch(e){}
-  }
-}catch(e){}
-return null;
+  const legacyMenu = Array.isArray(menuData) ? menuData : [];
+  return await loadOnePlugin(pluginId, legacyMenu);
 }
-
-
-
-/* ================= V6.7 PLUGIN LANDING MERGE ================= */
-const PRISM_KNOWN_PLUGIN_IDS = [
-  "quran",
-  "salah",
-  "dua",
-  "months",
-  "names",
-  "salah-names",
-  "salahnames",
-  "angels",
-  "numbers",
-  "pillars"
-];
-
-function normalizePluginId(id){
-  return String(id || "").toLowerCase().replace(/_/g,"-");
-}
-
-function hasMenuPlugin(list, id){
-  const wanted = normalizePluginId(id);
-  return (list || []).some(entry => normalizePluginId((entry.plugin || {}).id) === wanted);
-}
-
-async function mergeEnabledPluginCards(list){
-  const merged = Array.isArray(list) ? list.slice() : [];
-
-  for(const id of PRISM_KNOWN_PLUGIN_IDS){
-    if(hasMenuPlugin(merged, id)) continue;
-
-    const entry = await fetchPluginConfigById(id);
-    const plugin = entry && entry.plugin ? entry.plugin : null;
-
-    if(plugin && plugin.enabled !== false && plugin.showOnLanding !== false){
-      merged.push({
-        title: plugin.title || plugin.id,
-        mainUrl: `index.html?plugin=${encodeURIComponent(plugin.id)}`,
-        plugin,
-        syncFiles: []
-      });
-    }
-  }
-
-  return merged;
-}
-
 
 async function route(){
-menuData = await fetchFirstJson(["menu.json","../menu.json"], FALLBACK_MENU);
-menuData = await mergeEnabledPluginCards(menuData);
+const legacyMenuData = await fetchFirstJson(["menu.json","../menu.json"], FALLBACK_MENU);
+menuData = await loadPluginHostMenu(legacyMenuData);
 slicesData = await fetchFirstJson(["slices.json","../slices.json","learn.master.slices.json","../learn.master.slices.json"], {});
 if(slicesData && slicesData.QURAN){
   const flat = {};
