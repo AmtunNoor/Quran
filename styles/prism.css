@@ -689,7 +689,7 @@ body.tv-mode.plugin-stage-mode .spotlight-wrap{
 
 .number-focus-dot::before,
 .number-focus-dot::after{
-  content:"✦";
+  content:"âœ¦";
   position:absolute;
   color:#fff7ad;
   font-size:clamp(16px,2vw,30px);
@@ -1070,7 +1070,7 @@ body.plugin-ui-final.plugin-salahnames .stage-img{
 
 .number-focus-dot::before,
 .number-focus-dot::after{
-  content:"✦";
+  content:"âœ¦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(15px,2vw,28px);
@@ -1198,7 +1198,7 @@ body.plugin-ui-final.plugin-names .card{
 }
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after{
-  content:"✦";
+  content:"âœ¦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(15px,2vw,28px);
@@ -1262,7 +1262,7 @@ body.plugin-ui-final.plugin-numbers .stage{
 
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after{
-  content:"✦";
+  content:"âœ¦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(15px,2vw,28px);
@@ -1450,7 +1450,7 @@ body.plugin-ui-final.plugin-salahnames .stage-img{
 
 .coordinate-focus-dot::before,
 .coordinate-focus-dot::after{
-  content:"✦";
+  content:"âœ¦";
   position:absolute;
   color:#fff8b5;
   font-size:clamp(13px,1.8vw,26px);
@@ -2617,3 +2617,131 @@ body.plugin-ui-final.plugin-pillars .coordinate-contain-mode .coordinate-focus-d
   animation-play-state:running;
 }
 
+
+/* =========================================================
+   PRISM V6.8 PLUGIN HOST EFFECT LAYER
+   Effects are selected from each plugin's plugin.json.
+   No index.html changes are needed for future cards.
+   ========================================================= */
+.coordinate-hotspot-layer,
+.prism-ambient-layer{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:8;
+}
+.coordinate-hotspot{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:clamp(52px,8vw,118px);
+  height:clamp(52px,8vw,118px);
+  transform:translate(-50%,-50%) scale(.72);
+  border-radius:999px;
+  opacity:.18;
+  transition:transform .35s ease, opacity .35s ease, filter .35s ease, box-shadow .35s ease;
+  background:radial-gradient(circle, rgba(255,255,255,.88), rgba(168,85,247,.32) 42%, rgba(56,189,248,.08) 72%, transparent 76%);
+  box-shadow:0 0 0 rgba(255,255,255,0);
+  mix-blend-mode:screen;
+}
+.coordinate-hotspot span{
+  display:none;
+}
+.coordinate-hotspot.active{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(var(--active-scale,1.05));
+  filter:drop-shadow(0 0 16px rgba(255,255,255,.9)) drop-shadow(0 0 26px rgba(125,211,252,.72));
+  box-shadow:0 0 28px rgba(255,255,255,.76), 0 0 54px rgba(168,85,247,.48);
+  animation:prismActivePulse 1.2s ease-in-out infinite;
+}
+.coordinate-hotspot.dimmed{opacity:.06;}
+.coordinate-focus-dot{
+  z-index:12;
+  width:clamp(42px,7vw,96px) !important;
+  height:clamp(42px,7vw,96px) !important;
+  opacity:.95;
+  pointer-events:none;
+}
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="softRain"]::after,
+body.plugin-pillars .coordinate-hotspot.active::after{
+  content:"";
+  position:absolute;
+  inset:-30%;
+  border-radius:inherit;
+  background:repeating-linear-gradient(115deg, transparent 0 10px, rgba(186,230,253,.46) 11px 13px, transparent 14px 24px);
+  animation:prismRain 1.2s linear infinite;
+}
+.coordinate-hotspot.active[data-tile-effect="soundWave"]::before{
+  content:"";
+  position:absolute;
+  inset:-18%;
+  border-radius:inherit;
+  border:3px solid rgba(255,255,255,.7);
+  animation:prismSoundWave 1s ease-out infinite;
+}
+.coordinate-hotspot.active[data-tile-effect="gardenGlow"]{
+  background:radial-gradient(circle, rgba(220,252,231,.96), rgba(34,197,94,.42) 44%, rgba(255,255,255,.04) 75%);
+}
+.coordinate-hotspot.active[data-tile-effect="questionPulse"]{
+  background:radial-gradient(circle, rgba(254,249,195,.96), rgba(251,191,36,.38) 44%, rgba(255,255,255,.04) 75%);
+}
+.coordinate-hotspot.active[data-tile-effect="messageLight"]{
+  background:radial-gradient(circle, rgba(255,255,255,.98), rgba(125,211,252,.44) 45%, rgba(255,255,255,.06) 76%);
+}
+.coordinate-hotspot.active[data-tile-effect="writingSpark"]::after{
+  content:"âœ¦";
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  font-size:clamp(28px,4vw,56px);
+  color:white;
+  text-shadow:0 0 14px rgba(255,255,255,.95), 0 0 22px rgba(251,191,36,.8);
+  animation:prismWritingSpark 1.15s ease-in-out infinite;
+}
+body.plugin-pillars .coordinate-hotspot.active{
+  background:radial-gradient(circle, rgba(255,251,235,.96), rgba(251,191,36,.4) 44%, rgba(255,255,255,.05) 76%);
+  filter:drop-shadow(0 0 14px rgba(255,255,255,.92)) drop-shadow(0 0 28px rgba(251,191,36,.72));
+}
+.prism-sparkle{
+  position:absolute;
+  width:var(--s,10px);
+  height:var(--s,10px);
+  border-radius:999px;
+  background:rgba(255,255,255,.86);
+  box-shadow:0 0 14px rgba(255,255,255,.88),0 0 22px rgba(251,191,36,.52);
+  animation:prismSparkleFloat 3.8s ease-in-out infinite;
+}
+.prism-orbit-ring{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(60vw,60vh);
+  height:min(60vw,60vh);
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.22);
+  box-shadow:0 0 34px rgba(125,211,252,.22), inset 0 0 34px rgba(168,85,247,.16);
+  animation:prismOrbitSpin 18s linear infinite;
+}
+@keyframes prismActivePulse{
+  0%,100%{transform:translate(-50%,-50%) scale(1.02)}
+  50%{transform:translate(-50%,-50%) scale(1.12)}
+}
+@keyframes prismRain{to{background-position:0 44px}}
+@keyframes prismSoundWave{
+  0%{transform:scale(.75);opacity:.7}
+  100%{transform:scale(1.55);opacity:0}
+}
+@keyframes prismWritingSpark{
+  0%,100%{opacity:.65;transform:translate(-50%,-50%) rotate(-8deg) scale(.9)}
+  50%{opacity:1;transform:translate(-50%,-50%) rotate(8deg) scale(1.08)}
+}
+@keyframes prismSparkleFloat{
+  0%,100%{opacity:.22;transform:translateY(0) scale(.8)}
+  50%{opacity:.95;transform:translateY(-18px) scale(1.12)}
+}
+@keyframes prismOrbitSpin{
+  to{transform:translate(-50%,-50%) rotate(360deg)}
+}
