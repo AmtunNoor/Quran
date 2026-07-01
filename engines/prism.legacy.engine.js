@@ -1880,8 +1880,57 @@ try{
 return null;
 }
 
+
+
+/* ================= V6.7 PLUGIN LANDING MERGE ================= */
+const PRISM_KNOWN_PLUGIN_IDS = [
+  "quran",
+  "salah",
+  "dua",
+  "months",
+  "names",
+  "salah-names",
+  "salahnames",
+  "angels",
+  "numbers",
+  "pillars"
+];
+
+function normalizePluginId(id){
+  return String(id || "").toLowerCase().replace(/_/g,"-");
+}
+
+function hasMenuPlugin(list, id){
+  const wanted = normalizePluginId(id);
+  return (list || []).some(entry => normalizePluginId((entry.plugin || {}).id) === wanted);
+}
+
+async function mergeEnabledPluginCards(list){
+  const merged = Array.isArray(list) ? list.slice() : [];
+
+  for(const id of PRISM_KNOWN_PLUGIN_IDS){
+    if(hasMenuPlugin(merged, id)) continue;
+
+    const entry = await fetchPluginConfigById(id);
+    const plugin = entry && entry.plugin ? entry.plugin : null;
+
+    if(plugin && plugin.enabled !== false && plugin.showOnLanding !== false){
+      merged.push({
+        title: plugin.title || plugin.id,
+        mainUrl: `index.html?plugin=${encodeURIComponent(plugin.id)}`,
+        plugin,
+        syncFiles: []
+      });
+    }
+  }
+
+  return merged;
+}
+
+
 async function route(){
 menuData = await fetchFirstJson(["menu.json","../menu.json"], FALLBACK_MENU);
+menuData = await mergeEnabledPluginCards(menuData);
 slicesData = await fetchFirstJson(["slices.json","../slices.json","learn.master.slices.json","../learn.master.slices.json"], {});
 if(slicesData && slicesData.QURAN){
   const flat = {};
