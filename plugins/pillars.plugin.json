@@ -5,7 +5,7 @@
   "engine": "spotlight",
   "renderer": "visual",
   "controls": "floating",
-  "enabled": false,
+  "enabled": true,
 
   "backgroundImage": "pillars/pillars.webp",
   "tileImage": "pillars/pillars.webp",
