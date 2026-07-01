@@ -176,25 +176,6 @@
     ]
   },
   {
-    "title": "Salah",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=salah",
-    "plugin": {
-      "id": "salah",
-      "title": "Salah",
-      "type": "core",
-      "engine": "external",
-      "theme": "salah",
-      "externalUrl": "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html",
-      "locked": true
-    },
-    "syncFiles": [
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
-        "path": "index.html"
-      }
-    ]
-  },
-  {
     "title": "Dua",
     "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=dua",
     "plugin": {
