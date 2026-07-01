@@ -1055,7 +1055,6 @@
       "enabled": true,
       "backgroundImage": "pillars/pillars.jpeg",
       "tileImage": "pillars/pillars.jpeg",
-      "primaryAudio": null,
       "effect": {
         "type": "coordinateSpotlight",
         "sparkles": true,
@@ -1084,19 +1083,9 @@
           "y": 50
         }
       },
-      "coordinateTiming": {
-        "source": "audio-starts",
-        "unit": "seconds",
-        "starts": {
-          "shahadah": 0,
-          "salah": 2,
-          "zakat": 4,
-          "sawm": 6,
-          "hajj": 8
-        }
-      },
       "type": "plugin",
       "theme": "pillars",
+      "primaryAudio": null,
       "audios": [],
       "images": [
         "pillars/pillars.jpeg"
