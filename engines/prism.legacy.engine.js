@@ -255,7 +255,9 @@ stopAll(false);
 setHeader("🌙 Mariam & Hamza's 🌙","✨Choose Your Prism Adventure!✨");
 setTopbar(false,false);
 
-const cards = menuData.length ? menuData : FALLBACK_MENU;
+const cards = (menuData.length ? menuData : FALLBACK_MENU)
+.filter(entry => (entry.plugin || {}).enabled !== false)
+.filter(entry => (entry.plugin || {}).showOnLanding !== false);
 
 cards.forEach((entry,idx)=>{
 const plugin = entry.plugin || {};
@@ -518,6 +520,43 @@ qrFix();
 }
 }
 
+
+/* ================= PRISM V6.7 FINAL EFFECT LIBRARY =================
+   Locked reusable built-in effect names for future plugin-only cards.
+
+   Current active engines:
+   - spotlight          : image + focus/glow based on coordinates/timestamps
+   - aquarium           : months-style ambient water/bubbles/fish layer
+   - storyTimeline      : SalahNames-style time-based visual transition
+   - timedTileFocus     : future Angels-style active tile cueing
+   - pillarFocus        : future Five Pillars-style active pillar cueing
+   - particleField      : reusable soft sparkles/bubbles/stars background
+   - softPulse          : gentle active object pulse
+   - orbit              : reserved for future Allah Names / grouped concepts
+   - carousel           : reserved for future card sets
+
+   New cards must select an effect in plugin JSON.
+   Do not edit core files for normal new cards.
+*/
+const PRISM_EFFECT_LIBRARY = Object.freeze([
+  "spotlight",
+  "aquarium",
+  "storyTimeline",
+  "timedTileFocus",
+  "pillarFocus",
+  "particleField",
+  "softPulse",
+  "orbit",
+  "carousel"
+]);
+
+function prismEffectType(plugin){
+  const type = plugin && plugin.effect && plugin.effect.type ? String(plugin.effect.type) : "";
+  if(type === "coordinateSpotlight" || type === "numberSpotlight") return "spotlight";
+  if(type === "timeStory") return "storyTimeline";
+  return type || "spotlight";
+}
+
 /* ================= PLUGIN ROUTER ================= */
 
 
@@ -594,7 +633,8 @@ try{ speechSynthesis.cancel(); }catch(e){}
 currentView = "plugin";
 currentPlugin = plugin;
 const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames"]);
-if(v66FloatControlIds.has(String(plugin.id||"").toLowerCase())) setupAutoTopbar(); else disableAutoTopbar();
+const wantsFloating = String(plugin.controls || "").toLowerCase() === "floating" || v66FloatControlIds.has(String(plugin.id||"").toLowerCase());
+if(wantsFloating) setupAutoTopbar(); else disableAutoTopbar();
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
 setScreenMode("plugin", plugin.id);
@@ -923,6 +963,65 @@ audio.dataset.numbersFallbackAttached = "1";
 });
 }
 
+
+/* ================= PRISM V6.7 VISUAL AUDIO FALLBACK ================= */
+function isVisualFallbackPlugin(){
+const pid = (currentPlugin && currentPlugin.id) ? String(currentPlugin.id).toLowerCase() : "";
+return pid === "numbers" || pid === "months";
+}
+
+function showVisualAudioFallback(audio){
+try{
+  if(!audio || !isVisualFallbackPlugin()) return;
+  if(!audio.paused && !audio.ended) return;
+
+  const existing = document.getElementById("visualAudioFallback");
+  if(existing) existing.remove();
+
+  const pid = String(currentPlugin.id).toLowerCase();
+  const overlay = document.createElement("button");
+  overlay.id = "visualAudioFallback";
+  overlay.className = "tap-start-overlay visual-audio-fallback";
+  overlay.type = "button";
+  overlay.textContent = pid === "numbers" ? "▶ Tap to start numbers" : "▶ Tap to start audio";
+
+  overlay.onclick = (e)=>{
+    e.stopPropagation();
+    try{ speechSynthesis.cancel(); }catch(err){}
+    if(!audio.paused && !audio.ended){
+      overlay.remove();
+      return;
+    }
+    try{
+      audio.preload = "auto";
+      audio.play().then(()=>overlay.remove()).catch(()=>{});
+    }catch(err){}
+  };
+
+  const host = document.querySelector(".spotlight-wrap,.stage,#grid") || document.body;
+  host.appendChild(overlay);
+}catch(e){}
+}
+
+function attachVisualAudioFallback(audio){
+if(!audio || audio.dataset.visualFallbackAttached === "1") return;
+audio.dataset.visualFallbackAttached = "1";
+
+audio.addEventListener("playing", ()=>{
+  const existing = document.getElementById("visualAudioFallback");
+  if(existing) existing.remove();
+});
+
+audio.addEventListener("error", ()=>{
+  if(isVisualFallbackPlugin()) setTimeout(()=>showVisualAudioFallback(audio),450);
+});
+
+audio.addEventListener("ended", ()=>{
+  const existing = document.getElementById("visualAudioFallback");
+  if(existing) existing.remove();
+});
+}
+
 function buildSpotlight(plugin, autoplay){
 clearGrid();
 const mp3s = pluginMp3s(plugin);
@@ -975,7 +1074,7 @@ grid.appendChild(wrap);
 if(typeof recalcVisualModuleSoon === "function") recalcVisualModuleSoon();
 
 const audio = wrap.querySelector("audio");
-attachNumbersAudioFallback(audio);
+attachVisualAudioFallback(audio);
 primeVisualAudio(audio);
 const item = {id:plugin.id,card:wrap,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Spotlight",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "spotlight"};
 items.push(item);
@@ -1430,7 +1529,7 @@ runLearningSequence(item, mode, token);
 } else {
 item.audio.loop = loopAll;
 item.audio.play().catch(()=>{
-  if(currentPlugin && String(currentPlugin.id||"").toLowerCase()==="numbers") showNumbersAudioFallback(item.audio);
+  if(isVisualFallbackPlugin()) showVisualAudioFallback(item.audio);
   else if(shouldSuppressSpeech(item)) showTapToStartOverlay(item.audio, "▶ Tap to start audio");
 });
 }
@@ -1751,6 +1850,36 @@ document.getElementById("overlay").onclick = ()=>handleOverlayDismissal();
 
 window.addEventListener("popstate",()=>route());
 
+
+async function fetchPluginConfigById(pluginId){
+try{
+  const clean = String(pluginId || "").toLowerCase();
+  const urls = [
+    `plugins/${clean}.plugin.json`,
+    `../plugins/${clean}.plugin.json`,
+    `plugins/${clean.replace(/-/g,"")}.plugin.json`,
+    `../plugins/${clean.replace(/-/g,"")}.plugin.json`
+  ];
+  for(const url of urls){
+    try{
+      const res = await fetch(url,{cache:"no-store"});
+      if(res.ok){
+        const plugin = await res.json();
+        if(plugin && plugin.id){
+          return {
+            title: plugin.title || plugin.id,
+            mainUrl: `index.html?plugin=${encodeURIComponent(plugin.id)}`,
+            plugin,
+            syncFiles: []
+          };
+        }
+      }
+    }catch(e){}
+  }
+}catch(e){}
+return null;
+}
+
 async function route(){
 menuData = await fetchFirstJson(["menu.json","../menu.json"], FALLBACK_MENU);
 slicesData = await fetchFirstJson(["slices.json","../slices.json","learn.master.slices.json","../learn.master.slices.json"], {});
@@ -1772,7 +1901,8 @@ return;
 }
 
 if(pluginId && pluginId !== "landing"){
-const foundEntry = menuData.find(m => (m.plugin||{}).id === pluginId);
+let foundEntry = menuData.find(m => (m.plugin||{}).id === pluginId);
+if(!foundEntry) foundEntry = await fetchPluginConfigById(pluginId);
 const found = foundEntry ? foundEntry.plugin : null;
 if(pluginId === "quran") buildQuran();
 else if(pluginId === "salah" && foundEntry) buildExternalBridge(foundEntry);
