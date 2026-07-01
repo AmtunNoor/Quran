@@ -838,14 +838,25 @@
       "engine": "spotlight",
       "renderer": "visual",
       "controls": "floating",
-      "enabled": false,
+      "enabled": true,
+      "showOnLanding": true,
       "backgroundImage": "angels/angels.jpeg",
       "tileImage": "angels/angels.jpeg",
       "primaryAudio": null,
       "effect": {
         "type": "timedTileFocus",
-        "sparkles": true,
-        "activeScale": 1.03
+        "style": "minimal-active-only",
+        "dimOthers": true,
+        "activeScale": 1.03,
+        "glow": "soft-prism",
+        "tileEffects": {
+          "mikaeel": "softRain",
+          "israfil": "soundWave",
+          "ridwan": "gardenGlow",
+          "munkar": "questionPulse",
+          "jibraeel": "messageLight",
+          "kiraman": "writingSpark"
+        }
       },
       "coordinates": {
         "mikaeel": {
