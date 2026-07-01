@@ -2498,3 +2498,122 @@ body.prism-float-control .prism-control-button::after{
   background-color:#020617!important;
 }
 
+
+
+/* ================= PRISM V6.7 PLUGIN-DYNAMIC FINAL ================= */
+body.prism-float-control.plugin-ui-final .topbar{
+  display:flex!important;
+}
+
+body.plugin-ui-final.plugin-pillars .grid.stage-render{
+  height:calc(var(--prism-vh,100vh) - 52px)!important;
+  min-height:calc(var(--prism-vh,100vh) - 52px)!important;
+  display:block!important;
+  overflow:hidden!important;
+}
+
+body.plugin-ui-final.plugin-pillars .coordinate-contain-mode{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:100%!important;
+  background:#020617!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+}
+
+body.plugin-ui-final.plugin-pillars .coordinate-contain-mode .stage-bg-cover{
+  display:block!important;
+  position:absolute!important;
+  inset:-6%!important;
+  width:112%!important;
+  height:112%!important;
+  background-size:cover!important;
+  background-position:center center!important;
+  filter:blur(16px) brightness(.68) saturate(1.08)!important;
+  transform:scale(1.04)!important;
+  opacity:.90!important;
+  z-index:0!important;
+}
+
+body.plugin-ui-final.plugin-pillars .coordinate-contain-mode .stage-img{
+  position:absolute!important;
+  left:50%!important;
+  top:50%!important;
+  width:auto!important;
+  height:auto!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:translate(-50%,-50%)!important;
+  display:block!important;
+  opacity:1!important;
+  z-index:1!important;
+}
+
+body.plugin-ui-final.plugin-pillars .coordinate-contain-mode .coordinate-focus-dot{
+  z-index:5!important;
+}
+
+.visual-audio-fallback{
+  min-width:220px!important;
+}
+
+
+
+/* ================= PRISM V6.7 FINAL EFFECT LIBRARY CSS =================
+   Generic base classes for future plugin-only effects.
+   These do not alter Quran, Allah Names, Months, Numbers, or SalahNames unless a future plugin uses these classes.
+*/
+
+.prism-effect-particle{
+  position:absolute;
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+  pointer-events:none;
+  opacity:.75;
+  animation:prismParticleFloat 5s linear infinite;
+}
+
+@keyframes prismParticleFloat{
+  0%{transform:translateY(0) scale(.35);opacity:0;}
+  25%{opacity:.9;}
+  100%{transform:translateY(-72px) scale(1.2);opacity:0;}
+}
+
+.prism-soft-pulse{
+  animation:prismSoftPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes prismSoftPulse{
+  0%,100%{transform:scale(1);filter:brightness(1);}
+  50%{transform:scale(1.035);filter:brightness(1.08) drop-shadow(0 0 12px rgba(255,220,120,.65));}
+}
+
+.prism-timed-tile,
+.prism-pillar-tile{
+  opacity:.72;
+  transform:scale(1);
+  transition:transform .45s ease, opacity .45s ease, filter .45s ease;
+}
+
+.prism-timed-tile.active,
+.prism-pillar-tile.active{
+  opacity:1;
+  transform:scale(1.035);
+  filter:drop-shadow(0 0 12px rgba(255,220,120,.78)) brightness(1.08);
+}
+
+.prism-timed-tile .effect,
+.prism-pillar-tile .effect{
+  animation-play-state:paused;
+}
+
+.prism-timed-tile.active .effect,
+.prism-pillar-tile.active .effect{
+  animation-play-state:running;
+}
+
