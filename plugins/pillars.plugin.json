@@ -5,39 +5,34 @@
   "engine": "spotlight",
   "renderer": "visual",
   "controls": "floating",
-  "enabled": true,
-  "showOnLanding": true,
-
+  "enabled": false,
   "backgroundImage": "pillars/pillars.jpeg",
   "tileImage": "pillars/pillars.jpeg",
-
   "effect": {
     "type": "pillarFocus",
-    "style": "soft-sparkle-focus",
-    "dimOthers": true,
-    "activeScale": 1.04,
-    "glow": "soft-gold",
     "sparkles": true,
-    "sparkleRate": 900
+    "glow": "soft-gold"
   },
-
   "coordinates": {
-    "shahadah": { "x": 15, "y": 50 },
-    "salah": { "x": 32, "y": 50 },
-    "zakat": { "x": 50, "y": 50 },
-    "sawm": { "x": 68, "y": 50 },
-    "hajj": { "x": 85, "y": 50 }
-  },
-
-  "coordinateTiming": {
-    "source": "audio-starts",
-    "unit": "seconds",
-    "starts": {
-      "shahadah": 0,
-      "salah": 4,
-      "zakat": 8,
-      "sawm": 12,
-      "hajj": 16
+    "shahadah": {
+      "x": 15,
+      "y": 50
+    },
+    "salah": {
+      "x": 32,
+      "y": 50
+    },
+    "zakat": {
+      "x": 50,
+      "y": 50
+    },
+    "sawm": {
+      "x": 68,
+      "y": 50
+    },
+    "hajj": {
+      "x": 85,
+      "y": 50
     }
   }
 }
