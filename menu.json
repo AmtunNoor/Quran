@@ -1364,5 +1364,289 @@
         "path": "learn.master.slices.json"
       }
     ]
+  },
+  {
+    "title": "Arabic Alphabets",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=letters",
+    "plugin": {
+      "id": "letters",
+      "title": "Arabic Alphabets",
+      "folder": "letters",
+      "engine": "gallery",
+      "mode": "catchTile",
+      "character": "bunny",
+      "enabled": true,
+      "showOnLanding": true,
+      "backgroundImage": "letters/letters.webp",
+      "tileImage": "letters/letters.webp",
+      "audioMode": "single-file-pauses",
+      "primaryAudio": null,
+      "landingTileImage": false,
+      "effect": {
+        "type": "guidedInteraction",
+        "mode": "catchTile",
+        "idle": "bunnyCalm",
+        "active": "catchTile",
+        "maxActiveLetters": 1,
+        "useCanvas": false,
+        "useParticles": false
+      },
+      "catchPoint": {
+        "x": 28,
+        "y": 56
+      },
+      "tileWidth": 8.5,
+      "tileHeight": 10,
+      "letters": [
+        {
+          "l": "ا",
+          "x": 82.5,
+          "y": 26.5
+        },
+        {
+          "l": "ب",
+          "x": 72.5,
+          "y": 26.5
+        },
+        {
+          "l": "ت",
+          "x": 62.5,
+          "y": 26.5
+        },
+        {
+          "l": "ث",
+          "x": 52.5,
+          "y": 26.5
+        },
+        {
+          "l": "ج",
+          "x": 42.5,
+          "y": 26.5
+        },
+        {
+          "l": "ح",
+          "x": 82.5,
+          "y": 38.5
+        },
+        {
+          "l": "خ",
+          "x": 72.5,
+          "y": 38.5
+        },
+        {
+          "l": "د",
+          "x": 62.5,
+          "y": 38.5
+        },
+        {
+          "l": "ذ",
+          "x": 52.5,
+          "y": 38.5
+        },
+        {
+          "l": "ر",
+          "x": 42.5,
+          "y": 38.5
+        },
+        {
+          "l": "ز",
+          "x": 82.5,
+          "y": 50.5
+        },
+        {
+          "l": "س",
+          "x": 72.5,
+          "y": 50.5
+        },
+        {
+          "l": "ش",
+          "x": 62.5,
+          "y": 50.5
+        },
+        {
+          "l": "ص",
+          "x": 52.5,
+          "y": 50.5
+        },
+        {
+          "l": "ض",
+          "x": 42.5,
+          "y": 50.5
+        },
+        {
+          "l": "ط",
+          "x": 82.5,
+          "y": 62.5
+        },
+        {
+          "l": "ظ",
+          "x": 72.5,
+          "y": 62.5
+        },
+        {
+          "l": "ع",
+          "x": 62.5,
+          "y": 62.5
+        },
+        {
+          "l": "غ",
+          "x": 52.5,
+          "y": 62.5
+        },
+        {
+          "l": "ف",
+          "x": 42.5,
+          "y": 62.5
+        },
+        {
+          "l": "ق",
+          "x": 82.5,
+          "y": 74.5
+        },
+        {
+          "l": "ك",
+          "x": 72.5,
+          "y": 74.5
+        },
+        {
+          "l": "ل",
+          "x": 62.5,
+          "y": 74.5
+        },
+        {
+          "l": "م",
+          "x": 52.5,
+          "y": 74.5
+        },
+        {
+          "l": "ن",
+          "x": 42.5,
+          "y": 74.5
+        },
+        {
+          "l": "ه",
+          "x": 66.5,
+          "y": 86.5
+        },
+        {
+          "l": "و",
+          "x": 56.5,
+          "y": 86.5
+        },
+        {
+          "l": "ي",
+          "x": 46.5,
+          "y": 86.5
+        }
+      ],
+      "timings": [
+        0,
+        2.2,
+        4.4,
+        6.6,
+        8.8,
+        11,
+        13.2,
+        15.4,
+        17.6,
+        19.8,
+        22,
+        24.2,
+        26.4,
+        28.6,
+        30.8,
+        33,
+        35.2,
+        37.4,
+        39.6,
+        41.8,
+        44,
+        46.2,
+        48.4,
+        50.6,
+        52.8,
+        55,
+        57.2,
+        59.4
+      ],
+      "type": "plugin",
+      "theme": "letters",
+      "renderer": "gallery",
+      "audios": [],
+      "images": [
+        "letters/letters.webp"
+      ],
+      "playFromLanding": false,
+      "autoStart": false,
+      "directAudio": false,
+      "action": "open-plugin",
+      "supports": [
+        "listen"
+      ],
+      "segmentDetection": "silence",
+      "fallback": "duration",
+      "learningMode": null,
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "sequence": [],
+      "coordinates": {},
+      "numbers": {},
+      "spotlight": null,
+      "displayMode": null,
+      "chunkMode": null,
+      "slices": [],
+      "slicesFile": "learn.master.slices.json",
+      "lockedDesign": true
+    },
+    "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/letters/letters.webp",
+        "path": "letters/letters.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/letters/plugin.json",
+        "path": "plugins/letters/plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
+        "path": "learn.master.slices.json"
+      }
+    ]
   }
 ]
