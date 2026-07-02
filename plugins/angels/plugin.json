@@ -9,7 +9,6 @@
   "showOnLanding": true,
   "backgroundImage": "angels/angels.jpeg",
   "tileImage": "angels/angels.jpeg",
-  "primaryAudio": "angels/angels.mp3",
   "effect": {
     "type": "referenceAngels",
     "activeScale": 1.015,
@@ -83,5 +82,7 @@
       "kiraman": 60,
       "paradise": 72
     }
-  }
+  },
+  "landingTileImage": false,
+  "aspectRatio": "3/2"
 }
