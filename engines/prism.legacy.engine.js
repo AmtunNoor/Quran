@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v6812_consolidated_reference_20260702";
+const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_release_20260702";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -754,6 +754,7 @@ setTopbar(true,true);
 
 const engine = plugin.engine || "gallery";
 if(engine === "directAudio") return buildDirectAudio(plugin, autoplay);
+if(engine === "guidedInteraction" || (plugin.effect && plugin.effect.type === "guidedInteraction")) return buildGuidedInteraction(plugin, autoplay);
 if(engine === "spotlight") return buildSpotlight(plugin, autoplay);
 if(engine === "story") return buildStory(plugin, autoplay || plugin.autoStart === true || plugin.id === "salah-names" || plugin.id === "salahnames");
 return buildGallery(plugin, autoplay);
@@ -1083,6 +1084,8 @@ return pid === "numbers" || pid === "months" || pid === "angels" || pid === "pil
 function showVisualAudioFallback(audio){
 try{
   if(!audio || !isVisualFallbackPlugin()) return;
+  const src = audio.currentSrc || audio.getAttribute("src") || "";
+  if(!src.trim()) return;
   if(!audio.paused && !audio.ended) return;
 
   const existing = document.getElementById("visualAudioFallback");
@@ -1123,13 +1126,99 @@ audio.addEventListener("playing", ()=>{
 });
 
 audio.addEventListener("error", ()=>{
-  if(isVisualFallbackPlugin()) setTimeout(()=>showVisualAudioFallback(audio),450);
+  // Audio missing/404 = visual-only mode. Do not show Tap overlay unless playback of an existing audio was blocked.
+  const existing = document.getElementById("visualAudioFallback");
+  if(existing) existing.remove();
 });
 
 audio.addEventListener("ended", ()=>{
   const existing = document.getElementById("visualAudioFallback");
   if(existing) existing.remove();
 });
+}
+
+
+/* ================= GUIDED INTERACTION ENGINE (V6.9 FROZEN) =================
+   First mode: catchTile for Arabic Alphabets.
+   Image/effects work without audio. Cue animations run only when valid audio plays.
+*/
+function buildGuidedInteraction(plugin, autoplay){
+  clearGrid();
+  setStageGridMode(true);
+  const bg = plugin.backgroundImage || plugin.tileImage || plugin.image || "";
+  const mp3s = pluginMp3s(plugin);
+  const audioFile = plugin.primaryAudio || mp3s[0] || "";
+  const stage = document.createElement("div");
+  stage.className = "guided-interaction-stage";
+  stage.innerHTML = `
+    ${bg ? `<img class="guided-scene" src="${bg}" alt="${plugin.title || "Guided learning"}">` : ""}
+    <div class="guided-letter-glow"></div>
+    <div class="guided-flying-tile"></div>
+    ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
+  `;
+  grid.appendChild(stage);
+
+  const audio = stage.querySelector("audio");
+  const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Guided",plugin},index:0,type:audio ? "audio" : "guided"};
+  items.push(item); map[plugin.id]=item;
+  updateFocus();
+
+  const glow = stage.querySelector(".guided-letter-glow");
+  const flyingTile = stage.querySelector(".guided-flying-tile");
+  const coordinates = plugin.coordinates || {};
+  const letters = Array.isArray(plugin.letters) ? plugin.letters : orderedCoordinateKeys(plugin).map(k=>({key:k,l:(plugin.labels&&plugin.labels[k])||k,...coordinates[k]}));
+  const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
+  const catchPoint = plugin.catchPoint || {x:28,y:56};
+  let active = -1;
+
+  function setTileBox(el, x, y){
+    el.style.left = Number(x) + "%";
+    el.style.top = Number(y) + "%";
+    el.style.width = (plugin.tileWidth || 8.5) + "%";
+    el.style.height = (plugin.tileHeight || 10) + "%";
+  }
+
+  function playGuidedEffect(index){
+    const item = letters[index];
+    if(!item) return;
+    const x = Number(item.x); const y = Number(item.y);
+    if(!Number.isFinite(x) || !Number.isFinite(y)) return;
+    setTileBox(glow,x,y);
+    setTileBox(flyingTile,x,y);
+    flyingTile.textContent = item.l || item.label || item.key || "";
+    flyingTile.style.fontSize = "min(6.5vw, 7.5vh)";
+    glow.animate([
+      {opacity:0,transform:"translate(-50%,-50%) scale(.85)"},
+      {opacity:1,transform:"translate(-50%,-50%) scale(1.08)"},
+      {opacity:1,transform:"translate(-50%,-50%) scale(1)"}
+    ],{duration:420,easing:"ease-out",fill:"forwards"});
+    flyingTile.animate([
+      {opacity:0,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(.85) rotate(0deg)"},
+      {opacity:1,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(1.08) rotate(-2deg)"},
+      {opacity:1,left:((x+catchPoint.x)/2)+"%",top:(Math.min(y,catchPoint.y)-14)+"%",transform:"translate(-50%,-50%) scale(1.1) rotate(5deg)"},
+      {opacity:1,left:catchPoint.x+"%",top:catchPoint.y+"%",transform:"translate(-50%,-50%) scale(1.02) rotate(0deg)"},
+      {opacity:1,left:catchPoint.x+"%",top:catchPoint.y+"%",transform:"translate(-50%,-50%) scale(1) rotate(0deg)"},
+      {opacity:1,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(.96) rotate(0deg)"},
+      {opacity:0,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(.88)"}
+    ],{duration:1900,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
+    stage.classList.remove("bunnyJump");
+    void stage.offsetWidth;
+    stage.classList.add("bunnyJump");
+    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},1950);
+  }
+
+  window.playArabicLetterEffect = playGuidedEffect;
+  if(audio){
+    audio.addEventListener("timeupdate",()=>{
+      const t = audio.currentTime || 0;
+      for(let i=timings.length-1;i>=0;i--){
+        if(t >= timings[i] && active !== i){ active = i; playGuidedEffect(i); break; }
+      }
+    });
+    audio.addEventListener("ended",()=>{ active=-1; glow.style.opacity=0; flyingTile.style.opacity=0; });
+    stage.onclick=()=>play(plugin.id);
+    if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
+  }
 }
 
 function buildSpotlight(plugin, autoplay){
@@ -1452,6 +1541,7 @@ if(img && stage){
 
 updateCoordinateHotspots(stage, key, index, p, plugin);
 
+dot.style.opacity = "1";
 dot.dataset.index = String(index);
 dot.dataset.key = key;
 }
@@ -1523,9 +1613,10 @@ positionCoordinateFocus(plugin, coordinateDemoIndex);
 function startCoordinateDemo(plugin){
   stopCoordinateSpotlight();
   coordinateDemoIndex = 0;
-  // Keep the first focus glyph anchored, but do not auto-cycle before audio starts.
-  // This prevents multiple effects from appearing out of sync on phone/tablet/laptop/TV.
-  positionCoordinateFocus(plugin,0);
+  // No pre-audio focus. Idle ambience may run, but cue effects wait for real audio/timing.
+  const dot = document.getElementById("coordinateFocusDot");
+  if(dot) dot.style.opacity = "0";
+  document.querySelectorAll(".coordinate-hotspot").forEach(h=>h.classList.remove("active","dimmed"));
 }
 
 
