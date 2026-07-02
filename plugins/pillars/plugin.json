@@ -15,7 +15,8 @@
     "dimOthers": true,
     "border": "colorful",
     "sparkles": true,
-    "sparkleRate": 1000
+    "sparkleRate": 1000,
+    "maxScale": 1.035
   },
   "coordinates": {
     "shahadah": {
