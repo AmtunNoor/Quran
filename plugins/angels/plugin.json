@@ -15,14 +15,17 @@
     "activeScale": 1.015,
     "border": "colorful",
     "tileEffects": {
-      "mikaeel": "lightRay",
+      "mikaeel": "softRain",
       "israfil": "soundWave",
-      "malik": "lightRay",
+      "malik": "gardenGlow",
       "munkar": "questionGlow",
-      "jibraeel": "lightRay",
-      "kiraman": "lightRay",
-      "paradise": "lightRay"
-    }
+      "jibraeel": "messageLight",
+      "kiraman": "writingSpark",
+      "paradise": "gardenGlow"
+    },
+    "idleGlow": 0.18,
+    "activeGlow": 0.75,
+    "maxScale": 1.015
   },
   "coordinates": {
     "mikaeel": {
