@@ -61,5 +61,6 @@
       "hajj": 16
     }
   },
-  "primaryAudio": "pillars/pillars.mp3"
+  "landingTileImage": false,
+  "aspectRatio": "3/2"
 }
