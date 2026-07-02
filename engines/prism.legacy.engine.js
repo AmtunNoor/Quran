@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v68_plugin_host_20260701";
+const PRISM_PLUGIN_HOST_VERSION = "v681_reference_restore_20260702";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -217,15 +217,13 @@ function normalizePluginEntry(plugin, menuEntry){
   if(!merged.theme) merged.theme = id;
   if(merged.enabled === undefined) merged.enabled = true;
   if(merged.showOnLanding === undefined) merged.showOnLanding = true;
-  const ownSyncFiles = Array.isArray(merged.syncFiles) ? merged.syncFiles : [];
-  const menuSyncFiles = (menuEntry && Array.isArray(menuEntry.syncFiles)) ? menuEntry.syncFiles : [];
-  const resolvedSyncFiles = menuSyncFiles.length ? menuSyncFiles : ownSyncFiles;
-  if(resolvedSyncFiles.length) merged.__syncFiles = resolvedSyncFiles;
+  if(menuEntry && Array.isArray(menuEntry.syncFiles)) merged.__syncFiles = menuEntry.syncFiles;
+  if(!merged.syncFiles && Array.isArray((plugin||{}).syncFiles)) merged.syncFiles = plugin.syncFiles;
   return {
     title: merged.title || id,
     mainUrl: merged.mainUrl || (id === "salah" ? "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html" : `index.html?plugin=${encodeURIComponent(id)}`),
     plugin: merged,
-    syncFiles: resolvedSyncFiles
+    syncFiles: (menuEntry && Array.isArray(menuEntry.syncFiles)) ? menuEntry.syncFiles : []
   };
 }
 
@@ -343,11 +341,11 @@ return menuData.find(m => (m.plugin||{}).id === pluginId) || {};
 
 function quranSyncFiles(){
 const q = menuData.find(m => (m.plugin||{}).id === "quran" || m.title === "Quran");
-return (q && q.syncFiles) ? q.syncFiles : [];
+return (q && ((q.plugin && q.plugin.syncFiles) || q.syncFiles)) ? ((q.plugin && q.plugin.syncFiles) || q.syncFiles) : [];
 }
 
 function pluginSyncFiles(plugin){
-return (plugin && plugin.__syncFiles) || (pluginEntry(plugin.id).syncFiles || []);
+return (plugin && (plugin.__syncFiles || plugin.syncFiles)) || (pluginEntry(plugin.id).syncFiles || []);
 }
 
 /* ================= LANDING PAGE ================= */
@@ -1137,6 +1135,10 @@ clearGrid();
 const mp3s = pluginMp3s(plugin);
 const theme = plugin.theme || plugin.id;
 
+if(plugin && (plugin.id === "angels" || plugin.id === "pillars") && plugin.renderer === "reference-visual"){
+  return buildReferenceVisualPlugin(plugin, autoplay);
+}
+
 if(plugin.id === "names" && mp3s.length){
 document.body.classList.remove("plugin-ui-final");
 document.body.classList.remove("plugin-stage-mode");
@@ -1170,12 +1172,10 @@ const isCoordinateSpotlight = hasCoordinateEffect(plugin);
 
 const wrap = makeFullVisualStage("spotlight-wrap", bg);
 if(isCoordinateSpotlight) wrap.classList.add("coordinate-contain-mode");
-applyReferenceStageClass(wrap, plugin);
 wrap.innerHTML += `
 ${isCoordinateSpotlight ? coordinateEffectMarkup(plugin) : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
-if(plugin && plugin.id === "pillars") ensurePillarSparkles(wrap, plugin);
 
 // Ambient effects are plugin-selected. These never require index.html edits.
 if(plugin.effect){
@@ -1208,6 +1208,135 @@ if(audio){
 if(isCoordinateSpotlight){ prepareVisualModuleStrict(wrap, plugin, audio, autoplay); } else if((autoplay || plugin.autoStart) && audio){ setTimeout(()=>play(plugin.id),400); }
 }
 
+
+/* ================= REFERENCE VISUAL PLUGINS: ANGELS + PILLARS =================
+   Uses exact hotspot rectangles from plugin.json. Does not alter Quran, Salah,
+   Landing, Months, Numbers, Names, or SalahNames behavior.
+*/
+let referenceDemoTimer = null;
+function stopReferenceDemo(){ if(referenceDemoTimer){ clearInterval(referenceDemoTimer); referenceDemoTimer=null; } }
+
+function buildReferenceVisualPlugin(plugin, autoplay){
+  clearGrid();
+  setStageGridMode(true);
+  const pid = String(plugin.id || "").toLowerCase();
+  const bg = typeof plugin.backgroundImage === "string" ? plugin.backgroundImage : (typeof plugin.tileImage === "string" ? plugin.tileImage : "");
+  const mp3s = pluginMp3s(plugin);
+  const audioFile = plugin.primaryAudio || mp3s[0] || "";
+  const keys = orderedCoordinateKeys(plugin);
+  const stage = document.createElement("div");
+  stage.className = `reference-stage reference-${pid}-stage`;
+  const canvas = document.createElement("div");
+  canvas.className = `reference-canvas ${pid}-canvas`;
+  canvas.innerHTML = `${bg ? `<img class="reference-bg" src="${bg}" alt="${plugin.title || pid}">` : ""}<div class="reference-hotspot-layer"></div><div class="reference-sparkles" id="referenceSparkles"></div>${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}`;
+  stage.appendChild(canvas);
+  grid.appendChild(stage);
+
+  const layer = canvas.querySelector(".reference-hotspot-layer");
+  const effectMap = (plugin.effect && plugin.effect.tileEffects) || {};
+  const colorMap = referenceColorMap(pid);
+  keys.forEach((key, idx)=>{
+    const r = plugin.coordinates && plugin.coordinates[key] ? plugin.coordinates[key] : null;
+    if(!r) return;
+    const hot = document.createElement("div");
+    hot.className = `reference-hotspot ${pid === "angels" ? "angel-hotspot" : "pillar-hotspot"}`;
+    hot.dataset.key = key;
+    hot.dataset.index = String(idx);
+    hot.dataset.effect = effectMap[key] || "";
+    hot.style.left = Number(r.left ?? r.x ?? 0) + "%";
+    hot.style.top = Number(r.top ?? r.y ?? 0) + "%";
+    hot.style.width = Number(r.width ?? r.w ?? 12) + "%";
+    hot.style.height = Number(r.height ?? r.h ?? 12) + "%";
+    hot.style.setProperty("--focus-color", colorMap[key] || "#facc15");
+    hot.innerHTML = referenceEffectMarkup(pid, effectMap[key] || "");
+    layer.appendChild(hot);
+  });
+
+  const audio = canvas.querySelector("audio");
+  const item = {id:plugin.id, card:stage, audio, btn:null, s:{...plugin,file:audioFile,name:plugin.title,eng:""}, index:0, type:audio ? "audio" : "reference"};
+  items.push(item); map[plugin.id]=item;
+  stage.onclick = ()=>{ if(audio) play(plugin.id); };
+  updateFocus();
+  attachVisualAudioFallback(audio);
+  if(audio){
+    primeVisualAudio(audio);
+    audio.addEventListener("play",()=>startReferenceAudioFocus(plugin,audio,stage));
+    audio.addEventListener("pause",()=>{ if(!audio.ended) startReferenceDemo(plugin,stage); });
+    audio.addEventListener("ended",()=>{ clearReferenceFocus(stage); startReferenceDemo(plugin,stage); });
+  }
+  if(pid === "pillars") startReferenceSparkles(stage);
+  startReferenceDemo(plugin,stage);
+  if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
+}
+
+function referenceEffectMarkup(pid, effect){
+  if(pid === "angels"){
+    if(effect === "soundWave") return '<div class="reference-effect sound-wave"></div>';
+    if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"></div>';
+    return '<div class="reference-effect light-ray"></div>';
+  }
+  return '<div class="reference-effect pillar-glow"></div>';
+}
+
+function referenceColorMap(pid){
+  if(pid === "angels") return {mikaeel:"#86efac",israfil:"#fde68a",malik:"#c4b5fd",ridwan:"#bbf7d0",paradise:"#bbf7d0",munkar:"#fbbf24",jibraeel:"#bae6fd",kiraman:"#67e8f9"};
+  return {shahadah:"#fbbf24",salah:"#60a5fa",zakat:"#86efac",sawm:"#c084fc",hajj:"#f97316"};
+}
+
+function referenceKeysForPlugin(plugin){ return orderedCoordinateKeys(plugin); }
+function referenceIndexForTime(plugin,audio){
+  const keys = referenceKeysForPlugin(plugin);
+  const startsObj = plugin.coordinateTiming && plugin.coordinateTiming.starts ? plugin.coordinateTiming.starts : null;
+  if(startsObj){
+    let x = 0;
+    for(let i=0;i<keys.length;i++) if((audio.currentTime||0) >= Number(startsObj[keys[i]])) x=i;
+    return x;
+  }
+  const d = audio.duration && isFinite(audio.duration) ? audio.duration : 0;
+  return d>0 ? Math.min(keys.length-1, Math.floor((audio.currentTime/d)*keys.length)) : 0;
+}
+
+function setReferenceFocus(stage, plugin, index){
+  const keys = referenceKeysForPlugin(plugin);
+  if(!keys.length) return;
+  const activeKey = keys[((index % keys.length)+keys.length)%keys.length];
+  const dimOthers = !!(plugin.effect && plugin.effect.dimOthers);
+  stage.querySelectorAll(".reference-hotspot").forEach(el=>{
+    const on = el.dataset.key === activeKey;
+    el.classList.toggle("active", on);
+    el.classList.toggle("dim", !on && dimOthers);
+  });
+}
+function clearReferenceFocus(stage){ if(stage) stage.querySelectorAll(".reference-hotspot").forEach(el=>el.classList.remove("active","dim")); }
+function startReferenceDemo(plugin, stage){
+  stopReferenceDemo();
+  let i=0;
+  setReferenceFocus(stage, plugin, 0);
+  referenceDemoTimer=setInterval(()=>{ i++; setReferenceFocus(stage, plugin, i); }, 1600);
+}
+function startReferenceAudioFocus(plugin,audio,stage){
+  stopReferenceDemo();
+  setReferenceFocus(stage, plugin, referenceIndexForTime(plugin,audio));
+  referenceDemoTimer=setInterval(()=>{
+    if(!audio || audio.paused || audio.ended){ stopReferenceDemo(); return; }
+    setReferenceFocus(stage, plugin, referenceIndexForTime(plugin,audio));
+  },120);
+}
+function startReferenceSparkles(stage){
+  const box = stage.querySelector(".reference-sparkles");
+  if(!box || box.dataset.started === "1") return;
+  box.dataset.started="1";
+  setInterval(()=>{
+    if(!document.body.contains(box)) return;
+    const s=document.createElement("div");
+    s.className="reference-sparkle";
+    s.style.left=(8+Math.random()*84)+"%";
+    s.style.top=(10+Math.random()*55)+"%";
+    box.appendChild(s);
+    setTimeout(()=>s.remove(),5000);
+  },1000);
+}
+
 let coordinateSpotlightTimer = null;
 let coordinateDemoIndex = 0;
 
@@ -1231,38 +1360,10 @@ function hasCoordinateEffect(plugin){
   ));
 }
 
-function applyReferenceStageClass(stage, plugin){
-  if(!stage || !plugin) return;
-  const id = String(plugin.id || "").toLowerCase();
-  if(id === "angels") stage.classList.add("angels-stage-ref","night-prism-stage");
-  if(id === "pillars") stage.classList.add("pillars-stage-ref","night-prism-stage");
-}
-
 function coordinateEffectMarkup(plugin){
   const effectType = prismEffectType(plugin);
   const keys = orderedCoordinateKeys(plugin);
   const labels = plugin.labels || plugin.coordinateLabels || {};
-  const id = String(plugin.id || "").toLowerCase();
-  if(id === "angels"){
-    return `
-      <div class="coordinate-hotspot-layer angels-hotspot-layer" data-effect="${effectType}">
-        ${keys.map((key,idx)=>{
-          const box = plugin.hotspots && plugin.hotspots[key] ? plugin.hotspots[key] : (plugin.coordinates || {})[key] || {};
-          const tileEffect = plugin.effect && plugin.effect.tileEffects ? (plugin.effect.tileEffects[key] || "lightRay") : "lightRay";
-          const cls = angelEffectClass(tileEffect);
-          return `<div class="angel-hotspot coordinate-hotspot" data-key="${key}" data-angel="${key}" data-index="${idx}" data-tile-effect="${tileEffect}" style="left:${box.left ?? box.x ?? 50}%;top:${box.top ?? box.y ?? 50}%;width:${box.width ?? box.w ?? 12}%;height:${box.height ?? box.h ?? 12}%;"><div class="effect ${cls}"></div><span>${labels[key] || ""}</span></div>`;
-        }).join("")}
-      </div>`;
-  }
-  if(id === "pillars"){
-    return `
-      <div class="coordinate-hotspot-layer pillars-hotspot-layer" data-effect="${effectType}">
-        ${keys.map((key,idx)=>{
-          const box = plugin.hotspots && plugin.hotspots[key] ? plugin.hotspots[key] : (plugin.coordinates || {})[key] || {};
-          return `<div id="pillar-${key}" class="pillar-hotspot coordinate-hotspot" data-key="${key}" data-pillar="${key}" data-index="${idx}" style="left:${box.left ?? box.x ?? 50}%;top:${box.top ?? box.y ?? 50}%;width:${box.width ?? box.w ?? 12}%;height:${box.height ?? box.h ?? 12}%;"><span>${labels[key] || ""}</span></div>`;
-        }).join("")}
-      </div>`;
-  }
   return `
     <div class="coordinate-focus-dot" id="coordinateFocusDot"></div>
     <div class="coordinate-hotspot-layer" data-effect="${effectType}">
@@ -1272,31 +1373,6 @@ function coordinateEffectMarkup(plugin){
         return `<div class="coordinate-hotspot" data-key="${key}" data-index="${idx}" data-tile-effect="${tileEffect}"><span>${label}</span></div>`;
       }).join("")}
     </div>`;
-}
-
-function angelEffectClass(name){
-  const n = String(name || "").toLowerCase();
-  if(n === "soundwave" || n === "sound-wave") return "sound-wave";
-  if(n === "questionpulse" || n === "question-glow") return "question-glow";
-  return "light-ray";
-}
-
-function ensurePillarSparkles(stage, plugin){
-  if(!stage || stage.querySelector("#sparkles")) return;
-  const box = document.createElement("div");
-  box.id = "sparkles";
-  box.className = "pillar-sparkles";
-  stage.appendChild(box);
-  const rate = Number(plugin && plugin.effect && plugin.effect.sparkleRate) || 1000;
-  const timer = setInterval(()=>{
-    if(!document.body.contains(stage)){ clearInterval(timer); return; }
-    const s = document.createElement("div");
-    s.className = "sparkle";
-    s.style.left = (8 + Math.random() * 84) + "%";
-    s.style.top = (10 + Math.random() * 55) + "%";
-    box.appendChild(s);
-    setTimeout(()=>s.remove(),5000);
-  }, rate);
 }
 
 function orderedCoordinateKeys(plugin){
@@ -1317,19 +1393,10 @@ return keys.sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
 }
 
 function positionCoordinateFocus(plugin, index){
-const stageFromHotspots = document.querySelector(".angels-stage-ref,.pillars-stage-ref");
-const keys = orderedCoordinateKeys(plugin);
-if(stageFromHotspots && plugin && (plugin.id === "angels" || plugin.id === "pillars")){
-  if(!keys.length) return;
-  const key = keys[((index % keys.length) + keys.length) % keys.length];
-  updateCoordinateHotspots(stageFromHotspots, key, index, (plugin.coordinates || {})[key] || {}, plugin);
-  return;
-}
-
 const dot = document.getElementById("coordinateFocusDot");
 if(!dot) return;
 
-
+const keys = orderedCoordinateKeys(plugin);
 if(!keys.length) return;
 
 const key = keys[((index % keys.length) + keys.length) % keys.length];
@@ -1393,7 +1460,6 @@ function updateCoordinateHotspots(stage, activeKey, activeIndex, point, plugin){
     h.classList.toggle("active", on);
     h.classList.toggle("dimmed", !on && !!(plugin && plugin.effect && plugin.effect.dimOthers));
   });
-  if(layer.classList.contains("angels-hotspot-layer") || layer.classList.contains("pillars-hotspot-layer")) return;
   const active = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(activeKey))}"]`);
   if(active && point){
     active.style.left = (Number(point.x) || 50) + "%";
