@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v68_plugin_host_20260701";
+const PRISM_PLUGIN_HOST_VERSION = "v68_visual_polish_20260701";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -1258,6 +1258,57 @@ if(startsObj){
 return keys.sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
 }
 
+function coordinateStagePoint(stage, point){
+  if(!stage || !point) return null;
+  const img = stage.querySelector(".stage-img");
+  if(!img || !img.naturalWidth){
+    return {x:(Number(point.x)||50) + "%", y:(Number(point.y)||50) + "%", mode:"percent"};
+  }
+
+  const stageRect = stage.getBoundingClientRect();
+  const naturalW = img.naturalWidth || 16;
+  const naturalH = img.naturalHeight || 9;
+  const stageW = stageRect.width;
+  const stageH = stageRect.height;
+  const imageRatio = naturalW / naturalH;
+  const stageRatio = stageW / stageH;
+  let renderW, renderH, offsetX, offsetY;
+
+  // This mirrors .stage-img { object-fit: contain }. The focus dot and every
+  // plugin effect now share this same rendered-image rectangle, so effects sit
+  // exactly where the existing focus glyph sits on phone, tablet, laptop and TV.
+  if(stageRatio > imageRatio){
+    renderH = stageH;
+    renderW = renderH * imageRatio;
+    offsetX = (stageW - renderW) / 2;
+    offsetY = 0;
+  } else {
+    renderW = stageW;
+    renderH = renderW / imageRatio;
+    offsetX = 0;
+    offsetY = (stageH - renderH) / 2;
+  }
+
+  return {
+    x: offsetX + (Number(point.x) / 100) * renderW,
+    y: offsetY + (Number(point.y) / 100) * renderH,
+    mode:"px"
+  };
+}
+
+function placeCoordinateElement(el, stage, point){
+  if(!el || !point) return;
+  const pos = coordinateStagePoint(stage, point);
+  if(!pos) return;
+  if(pos.mode === "px"){
+    el.style.left = pos.x + "px";
+    el.style.top = pos.y + "px";
+  } else {
+    el.style.left = pos.x;
+    el.style.top = pos.y;
+  }
+}
+
 function positionCoordinateFocus(plugin, index){
 const dot = document.getElementById("coordinateFocusDot");
 if(!dot) return;
@@ -1271,45 +1322,11 @@ if(!p) return;
 
 const stage = dot.closest(".spotlight-wrap,.stage");
 const img = stage ? stage.querySelector(".stage-img") : null;
-
-if(img && stage){
-  if(!img.complete || !img.naturalWidth){
-    img.onload = ()=>positionCoordinateFocus(plugin,index);
-  }
-
-  const stageRect = stage.getBoundingClientRect();
-  const naturalW = img.naturalWidth || 16;
-  const naturalH = img.naturalHeight || 9;
-  const stageW = stageRect.width;
-  const stageH = stageRect.height;
-
-  const imageRatio = naturalW / naturalH;
-  const stageRatio = stageW / stageH;
-
-  let renderW, renderH, offsetX, offsetY;
-
-  if(stageRatio > imageRatio){
-    renderH = stageH;
-    renderW = renderH * imageRatio;
-    offsetX = (stageW - renderW) / 2;
-    offsetY = 0;
-  } else {
-    renderW = stageW;
-    renderH = renderW / imageRatio;
-    offsetX = 0;
-    offsetY = (stageH - renderH) / 2;
-  }
-
-  const x = offsetX + (Number(p.x) / 100) * renderW;
-  const y = offsetY + (Number(p.y) / 100) * renderH;
-
-  dot.style.left = x + "px";
-  dot.style.top = y + "px";
-} else {
-  dot.style.left = p.x + "%";
-  dot.style.top = p.y + "%";
+if(img && (!img.complete || !img.naturalWidth)){
+  img.onload = ()=>positionCoordinateFocus(plugin,index);
 }
 
+placeCoordinateElement(dot, stage, p);
 updateCoordinateHotspots(stage, key, index, p, plugin);
 
 dot.dataset.index = String(index);
@@ -1326,19 +1343,14 @@ function updateCoordinateHotspots(stage, activeKey, activeIndex, point, plugin){
     h.classList.toggle("active", on);
     h.classList.toggle("dimmed", !on && !!(plugin && plugin.effect && plugin.effect.dimOthers));
   });
-  const active = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(activeKey))}"]`);
-  if(active && point){
-    active.style.left = (Number(point.x) || 50) + "%";
-    active.style.top = (Number(point.y) || 50) + "%";
-  }
-  // Position all inactive hotspots too, so cards visibly map to coordinates even before audio starts.
+
+  // Position every effect marker with the same pixel mapping used by the focus dot.
+  // This removes the old mismatch where hotspots used raw %, while the focus glyph
+  // used the actual rendered image rectangle.
   const coords = plugin && plugin.coordinates ? plugin.coordinates : {};
   Object.keys(coords).forEach(k=>{
     const h = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(k))}"]`);
-    if(h){
-      h.style.left = (Number(coords[k].x) || 50) + "%";
-      h.style.top = (Number(coords[k].y) || 50) + "%";
-    }
+    if(h) placeCoordinateElement(h, stage, coords[k]);
   });
 }
 
