@@ -135,17 +135,45 @@ function addFolderSync(syncFiles, folder) {
   folderFiles(folder).forEach(f => addUniqueSync(syncFiles, f, f));
 }
 
+function pluginEntryToId(entry) {
+  if (typeof entry === "string") return entry.trim();
+  if (entry && typeof entry === "object") return String(entry.id || entry.plugin || entry.folder || entry.name || "").trim();
+  return "";
+}
+
 function loadPlugins() {
   if (!exists("plugins")) return [];
-  return walkDir("plugins")
-    .filter(f => f.endsWith(".plugin.json"))
-    .map(f => {
-      const rel = `plugins/${f}`;
+
+  // V6.9: plugins/plugins.json is the registry. Root-level *.plugin.json files
+  // are legacy and are intentionally ignored because stale placeholder files
+  // caused broken menu.json generation.
+  let ids = [];
+  const registry = readJson("plugins/plugins.json", null);
+  if (Array.isArray(registry)) ids = registry.map(pluginEntryToId).filter(Boolean);
+  else if (registry && Array.isArray(registry.plugins)) ids = registry.plugins.map(pluginEntryToId).filter(Boolean);
+
+  if (!ids.length) {
+    ids = fs.readdirSync(PLUGINS_DIR, { withFileTypes: true })
+      .filter(d => d.isDirectory())
+      .map(d => d.name)
+      .filter(id => exists(`plugins/${id}/plugin.json`));
+  }
+
+  const seen = new Set();
+  return ids
+    .filter(id => {
+      if (!id || seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    })
+    .map(id => {
+      const rel = `plugins/${id}/plugin.json`;
       const data = readJson(rel, null);
       if (data) data.__pluginFile = rel;
       return data;
     })
     .filter(Boolean)
+    .filter(p => p.enabled !== false)
     .sort((a, b) => (a.priority || 999) - (b.priority || 999));
 }
 
