@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v68_visual_polish_20260701";
+const PRISM_PLUGIN_HOST_VERSION = "v68_plugin_host_20260701";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -217,12 +217,15 @@ function normalizePluginEntry(plugin, menuEntry){
   if(!merged.theme) merged.theme = id;
   if(merged.enabled === undefined) merged.enabled = true;
   if(merged.showOnLanding === undefined) merged.showOnLanding = true;
-  if(menuEntry && Array.isArray(menuEntry.syncFiles)) merged.__syncFiles = menuEntry.syncFiles;
+  const ownSyncFiles = Array.isArray(merged.syncFiles) ? merged.syncFiles : [];
+  const menuSyncFiles = (menuEntry && Array.isArray(menuEntry.syncFiles)) ? menuEntry.syncFiles : [];
+  const resolvedSyncFiles = menuSyncFiles.length ? menuSyncFiles : ownSyncFiles;
+  if(resolvedSyncFiles.length) merged.__syncFiles = resolvedSyncFiles;
   return {
     title: merged.title || id,
     mainUrl: merged.mainUrl || (id === "salah" ? "https://busymommh.github.io/SalahSteps/SalahStepsIndex.html" : `index.html?plugin=${encodeURIComponent(id)}`),
     plugin: merged,
-    syncFiles: (menuEntry && Array.isArray(menuEntry.syncFiles)) ? menuEntry.syncFiles : []
+    syncFiles: resolvedSyncFiles
   };
 }
 
@@ -1167,10 +1170,12 @@ const isCoordinateSpotlight = hasCoordinateEffect(plugin);
 
 const wrap = makeFullVisualStage("spotlight-wrap", bg);
 if(isCoordinateSpotlight) wrap.classList.add("coordinate-contain-mode");
+applyReferenceStageClass(wrap, plugin);
 wrap.innerHTML += `
 ${isCoordinateSpotlight ? coordinateEffectMarkup(plugin) : `<div class="spotlight-number" id="spotlightText">${iconFor(theme)}</div>`}
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
+if(plugin && plugin.id === "pillars") ensurePillarSparkles(wrap, plugin);
 
 // Ambient effects are plugin-selected. These never require index.html edits.
 if(plugin.effect){
@@ -1226,10 +1231,38 @@ function hasCoordinateEffect(plugin){
   ));
 }
 
+function applyReferenceStageClass(stage, plugin){
+  if(!stage || !plugin) return;
+  const id = String(plugin.id || "").toLowerCase();
+  if(id === "angels") stage.classList.add("angels-stage-ref","night-prism-stage");
+  if(id === "pillars") stage.classList.add("pillars-stage-ref","night-prism-stage");
+}
+
 function coordinateEffectMarkup(plugin){
   const effectType = prismEffectType(plugin);
   const keys = orderedCoordinateKeys(plugin);
   const labels = plugin.labels || plugin.coordinateLabels || {};
+  const id = String(plugin.id || "").toLowerCase();
+  if(id === "angels"){
+    return `
+      <div class="coordinate-hotspot-layer angels-hotspot-layer" data-effect="${effectType}">
+        ${keys.map((key,idx)=>{
+          const box = plugin.hotspots && plugin.hotspots[key] ? plugin.hotspots[key] : (plugin.coordinates || {})[key] || {};
+          const tileEffect = plugin.effect && plugin.effect.tileEffects ? (plugin.effect.tileEffects[key] || "lightRay") : "lightRay";
+          const cls = angelEffectClass(tileEffect);
+          return `<div class="angel-hotspot coordinate-hotspot" data-key="${key}" data-angel="${key}" data-index="${idx}" data-tile-effect="${tileEffect}" style="left:${box.left ?? box.x ?? 50}%;top:${box.top ?? box.y ?? 50}%;width:${box.width ?? box.w ?? 12}%;height:${box.height ?? box.h ?? 12}%;"><div class="effect ${cls}"></div><span>${labels[key] || ""}</span></div>`;
+        }).join("")}
+      </div>`;
+  }
+  if(id === "pillars"){
+    return `
+      <div class="coordinate-hotspot-layer pillars-hotspot-layer" data-effect="${effectType}">
+        ${keys.map((key,idx)=>{
+          const box = plugin.hotspots && plugin.hotspots[key] ? plugin.hotspots[key] : (plugin.coordinates || {})[key] || {};
+          return `<div id="pillar-${key}" class="pillar-hotspot coordinate-hotspot" data-key="${key}" data-pillar="${key}" data-index="${idx}" style="left:${box.left ?? box.x ?? 50}%;top:${box.top ?? box.y ?? 50}%;width:${box.width ?? box.w ?? 12}%;height:${box.height ?? box.h ?? 12}%;"><span>${labels[key] || ""}</span></div>`;
+        }).join("")}
+      </div>`;
+  }
   return `
     <div class="coordinate-focus-dot" id="coordinateFocusDot"></div>
     <div class="coordinate-hotspot-layer" data-effect="${effectType}">
@@ -1239,6 +1272,31 @@ function coordinateEffectMarkup(plugin){
         return `<div class="coordinate-hotspot" data-key="${key}" data-index="${idx}" data-tile-effect="${tileEffect}"><span>${label}</span></div>`;
       }).join("")}
     </div>`;
+}
+
+function angelEffectClass(name){
+  const n = String(name || "").toLowerCase();
+  if(n === "soundwave" || n === "sound-wave") return "sound-wave";
+  if(n === "questionpulse" || n === "question-glow") return "question-glow";
+  return "light-ray";
+}
+
+function ensurePillarSparkles(stage, plugin){
+  if(!stage || stage.querySelector("#sparkles")) return;
+  const box = document.createElement("div");
+  box.id = "sparkles";
+  box.className = "pillar-sparkles";
+  stage.appendChild(box);
+  const rate = Number(plugin && plugin.effect && plugin.effect.sparkleRate) || 1000;
+  const timer = setInterval(()=>{
+    if(!document.body.contains(stage)){ clearInterval(timer); return; }
+    const s = document.createElement("div");
+    s.className = "sparkle";
+    s.style.left = (8 + Math.random() * 84) + "%";
+    s.style.top = (10 + Math.random() * 55) + "%";
+    box.appendChild(s);
+    setTimeout(()=>s.remove(),5000);
+  }, rate);
 }
 
 function orderedCoordinateKeys(plugin){
@@ -1258,11 +1316,32 @@ if(startsObj){
 return keys.sort((a,b)=>a.localeCompare(b, undefined, {numeric:true}));
 }
 
-function coordinateStagePoint(stage, point){
-  if(!stage || !point) return null;
-  const img = stage.querySelector(".stage-img");
-  if(!img || !img.naturalWidth){
-    return {x:(Number(point.x)||50) + "%", y:(Number(point.y)||50) + "%", mode:"percent"};
+function positionCoordinateFocus(plugin, index){
+const stageFromHotspots = document.querySelector(".angels-stage-ref,.pillars-stage-ref");
+const keys = orderedCoordinateKeys(plugin);
+if(stageFromHotspots && plugin && (plugin.id === "angels" || plugin.id === "pillars")){
+  if(!keys.length) return;
+  const key = keys[((index % keys.length) + keys.length) % keys.length];
+  updateCoordinateHotspots(stageFromHotspots, key, index, (plugin.coordinates || {})[key] || {}, plugin);
+  return;
+}
+
+const dot = document.getElementById("coordinateFocusDot");
+if(!dot) return;
+
+
+if(!keys.length) return;
+
+const key = keys[((index % keys.length) + keys.length) % keys.length];
+const p = plugin.coordinates[key];
+if(!p) return;
+
+const stage = dot.closest(".spotlight-wrap,.stage");
+const img = stage ? stage.querySelector(".stage-img") : null;
+
+if(img && stage){
+  if(!img.complete || !img.naturalWidth){
+    img.onload = ()=>positionCoordinateFocus(plugin,index);
   }
 
   const stageRect = stage.getBoundingClientRect();
@@ -1270,13 +1349,12 @@ function coordinateStagePoint(stage, point){
   const naturalH = img.naturalHeight || 9;
   const stageW = stageRect.width;
   const stageH = stageRect.height;
+
   const imageRatio = naturalW / naturalH;
   const stageRatio = stageW / stageH;
+
   let renderW, renderH, offsetX, offsetY;
 
-  // This mirrors .stage-img { object-fit: contain }. The focus dot and every
-  // plugin effect now share this same rendered-image rectangle, so effects sit
-  // exactly where the existing focus glyph sits on phone, tablet, laptop and TV.
   if(stageRatio > imageRatio){
     renderH = stageH;
     renderW = renderH * imageRatio;
@@ -1289,44 +1367,16 @@ function coordinateStagePoint(stage, point){
     offsetY = (stageH - renderH) / 2;
   }
 
-  return {
-    x: offsetX + (Number(point.x) / 100) * renderW,
-    y: offsetY + (Number(point.y) / 100) * renderH,
-    mode:"px"
-  };
+  const x = offsetX + (Number(p.x) / 100) * renderW;
+  const y = offsetY + (Number(p.y) / 100) * renderH;
+
+  dot.style.left = x + "px";
+  dot.style.top = y + "px";
+} else {
+  dot.style.left = p.x + "%";
+  dot.style.top = p.y + "%";
 }
 
-function placeCoordinateElement(el, stage, point){
-  if(!el || !point) return;
-  const pos = coordinateStagePoint(stage, point);
-  if(!pos) return;
-  if(pos.mode === "px"){
-    el.style.left = pos.x + "px";
-    el.style.top = pos.y + "px";
-  } else {
-    el.style.left = pos.x;
-    el.style.top = pos.y;
-  }
-}
-
-function positionCoordinateFocus(plugin, index){
-const dot = document.getElementById("coordinateFocusDot");
-if(!dot) return;
-
-const keys = orderedCoordinateKeys(plugin);
-if(!keys.length) return;
-
-const key = keys[((index % keys.length) + keys.length) % keys.length];
-const p = plugin.coordinates[key];
-if(!p) return;
-
-const stage = dot.closest(".spotlight-wrap,.stage");
-const img = stage ? stage.querySelector(".stage-img") : null;
-if(img && (!img.complete || !img.naturalWidth)){
-  img.onload = ()=>positionCoordinateFocus(plugin,index);
-}
-
-placeCoordinateElement(dot, stage, p);
 updateCoordinateHotspots(stage, key, index, p, plugin);
 
 dot.dataset.index = String(index);
@@ -1343,14 +1393,20 @@ function updateCoordinateHotspots(stage, activeKey, activeIndex, point, plugin){
     h.classList.toggle("active", on);
     h.classList.toggle("dimmed", !on && !!(plugin && plugin.effect && plugin.effect.dimOthers));
   });
-
-  // Position every effect marker with the same pixel mapping used by the focus dot.
-  // This removes the old mismatch where hotspots used raw %, while the focus glyph
-  // used the actual rendered image rectangle.
+  if(layer.classList.contains("angels-hotspot-layer") || layer.classList.contains("pillars-hotspot-layer")) return;
+  const active = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(activeKey))}"]`);
+  if(active && point){
+    active.style.left = (Number(point.x) || 50) + "%";
+    active.style.top = (Number(point.y) || 50) + "%";
+  }
+  // Position all inactive hotspots too, so cards visibly map to coordinates even before audio starts.
   const coords = plugin && plugin.coordinates ? plugin.coordinates : {};
   Object.keys(coords).forEach(k=>{
     const h = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(k))}"]`);
-    if(h) placeCoordinateElement(h, stage, coords[k]);
+    if(h){
+      h.style.left = (Number(coords[k].x) || 50) + "%";
+      h.style.top = (Number(coords[k].y) || 50) + "%";
+    }
   });
 }
 
