@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_release_20260702";
+const PRISM_PLUGIN_HOST_VERSION = "v690_rc1_frozen_release_20260703";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -189,19 +189,11 @@ function pluginEntryToId(entry){
 
 function pluginConfigUrls(id){
   const clean = cleanPluginId(id);
-  const compact = clean.replace(/-/g, "");
-  const urls = [
-    `plugins/${clean}/plugin.json`,
-    `plugins/${clean}/${clean}.plugin.json`,
-    `plugins/${clean}.plugin.json`,
-    `../plugins/${clean}/plugin.json`,
-    `../plugins/${clean}/${clean}.plugin.json`,
-    `../plugins/${clean}.plugin.json`
-  ];
-  if(compact !== clean){
-    urls.push(`plugins/${compact}.plugin.json`, `../plugins/${compact}.plugin.json`);
-  }
-  return [...new Set(urls)];
+  // V6.9 RC1: clean plugin host. The single supported manifest path is:
+  // plugins/<plugin-id>/plugin.json
+  // Old root-level plugins/<id>.plugin.json fallbacks are intentionally disabled
+  // because stale placeholder files caused broken plugins to override good folders.
+  return clean ? [`plugins/${clean}/plugin.json`, `../plugins/${clean}/plugin.json`] : [];
 }
 
 function normalizePluginEntry(plugin, menuEntry){
