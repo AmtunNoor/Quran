@@ -3,7 +3,7 @@
   "title": "Angels",
   "folder": "angels",
   "engine": "spotlight",
-  "renderer": "visual",
+  "renderer": "reference-visual",
   "controls": "floating",
   "enabled": true,
   "showOnLanding": true,
@@ -11,21 +11,20 @@
   "tileImage": "angels/angels.jpeg",
   "primaryAudio": "angels/angels.mp3",
   "effect": {
-    "type": "timedTileFocus",
-    "style": "reference-hotspots",
-    "dimOthers": false,
+    "type": "referenceAngels",
     "activeScale": 1.015,
+    "border": "colorful",
     "tileEffects": {
       "mikaeel": "lightRay",
       "israfil": "soundWave",
       "malik": "lightRay",
-      "munkar": "questionPulse",
+      "munkar": "questionGlow",
       "jibraeel": "lightRay",
       "kiraman": "lightRay",
       "paradise": "lightRay"
     }
   },
-  "hotspots": {
+  "coordinates": {
     "mikaeel": {
       "left": 4.6,
       "top": 18.4,
@@ -67,36 +66,6 @@
       "top": 61.5,
       "width": 25.5,
       "height": 35.5
-    }
-  },
-  "coordinates": {
-    "mikaeel": {
-      "x": 15.85,
-      "y": 39.15
-    },
-    "israfil": {
-      "x": 39.35,
-      "y": 39.15
-    },
-    "malik": {
-      "x": 62.85,
-      "y": 39.15
-    },
-    "munkar": {
-      "x": 86.35,
-      "y": 39.15
-    },
-    "jibraeel": {
-      "x": 24.75,
-      "y": 79.25
-    },
-    "kiraman": {
-      "x": 51.65,
-      "y": 79.25
-    },
-    "paradise": {
-      "x": 78.55,
-      "y": 79.25
     }
   },
   "coordinateTiming": {
