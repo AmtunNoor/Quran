@@ -17,5 +17,17 @@
     "namesPerChunk": 4,
     "repeatCount": 5
   },
-  "renderer": "grid"
+  "renderer": "grid",
+  "enabled": true,
+  "showOnLanding": true,
+  "backgroundImage": "names/names.jpeg",
+  "tileImage": "names/names.jpeg",
+  "audios": [
+    "names/1_27.mp3",
+    "names/28_36.mp3",
+    "names/37_45.mp3",
+    "names/46_60.mp3",
+    "names/61_76.mp3",
+    "names/77_99.mp3"
+  ]
 }
