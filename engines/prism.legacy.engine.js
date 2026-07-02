@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v681_reference_restore_20260702";
+const PRISM_PLUGIN_HOST_VERSION = "v6812_consolidated_reference_20260702";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -373,7 +373,8 @@ const id = plugin.id || entry.title.toLowerCase().replace(/\s+/g,"-");
 const theme = plugin.theme || id || "default";
 const card = document.createElement("div");
 card.className = "card prism-audio-tile";
-applyImageOrGradient(card, plugin.tileImage, theme);
+const landingImageAllowed = plugin.landingTileImage === true || ["months","names","salah-names","salahnames"].includes(String(id).toLowerCase());
+applyImageOrGradient(card, landingImageAllowed ? plugin.tileImage : null, theme);
 card.innerHTML = `
 <div class="card-info-box">
   <div class="emoji">${iconFor(theme)}</div>
@@ -919,6 +920,7 @@ if(plugin.effect && plugin.effect.type){
 }
 
 grid.appendChild(stage);
+ensureStoryImageLoaded(stage, bg);
 
 const audio = stage.querySelector("audio");
 const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:""},index:0,type:"audio"};
@@ -1261,8 +1263,8 @@ function buildReferenceVisualPlugin(plugin, autoplay){
   if(audio){
     primeVisualAudio(audio);
     audio.addEventListener("play",()=>startReferenceAudioFocus(plugin,audio,stage));
-    audio.addEventListener("pause",()=>{ if(!audio.ended) startReferenceDemo(plugin,stage); });
-    audio.addEventListener("ended",()=>{ clearReferenceFocus(stage); startReferenceDemo(plugin,stage); });
+    audio.addEventListener("pause",()=>{ if(!audio.ended) clearReferenceFocus(stage); });
+    audio.addEventListener("ended",()=>{ clearReferenceFocus(stage); stopReferenceDemo(); });
   }
   if(pid === "pillars") startReferenceSparkles(stage);
   startReferenceDemo(plugin,stage);
@@ -1273,6 +1275,10 @@ function referenceEffectMarkup(pid, effect){
   if(pid === "angels"){
     if(effect === "soundWave") return '<div class="reference-effect sound-wave"></div>';
     if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"></div>';
+    if(effect === "softRain") return '<div class="reference-effect soft-rain"></div>';
+    if(effect === "gardenGlow") return '<div class="reference-effect garden-glow"></div>';
+    if(effect === "messageLight") return '<div class="reference-effect message-light"></div>';
+    if(effect === "writingSpark") return '<div class="reference-effect writing-spark"></div>';
     return '<div class="reference-effect light-ray"></div>';
   }
   return '<div class="reference-effect pillar-glow"></div>';
@@ -1310,10 +1316,10 @@ function setReferenceFocus(stage, plugin, index){
 function clearReferenceFocus(stage){ if(stage) stage.querySelectorAll(".reference-hotspot").forEach(el=>el.classList.remove("active","dim")); }
 function startReferenceDemo(plugin, stage){
   stopReferenceDemo();
-  let i=0;
-  setReferenceFocus(stage, plugin, 0);
-  referenceDemoTimer=setInterval(()=>{ i++; setReferenceFocus(stage, plugin, i); }, 1600);
+  // No pre-audio cycling. The reference modules activate only from audio cues.
+  clearReferenceFocus(stage);
 }
+
 function startReferenceAudioFocus(plugin,audio,stage){
   stopReferenceDemo();
   setReferenceFocus(stage, plugin, referenceIndexForTime(plugin,audio));
@@ -1455,26 +1461,58 @@ function updateCoordinateHotspots(stage, activeKey, activeIndex, point, plugin){
   const layer = stage.querySelector(".coordinate-hotspot-layer");
   if(!layer) return;
   const hotspots = [...layer.querySelectorAll(".coordinate-hotspot")];
+  const img = stage.querySelector(".stage-img");
+  let mapper = null;
+
+  if(img && img.naturalWidth && stage){
+    const stageRect = stage.getBoundingClientRect();
+    const naturalW = img.naturalWidth || 16;
+    const naturalH = img.naturalHeight || 9;
+    const stageW = stageRect.width;
+    const stageH = stageRect.height;
+    const imageRatio = naturalW / naturalH;
+    const stageRatio = stageW / stageH;
+    let renderW, renderH, offsetX, offsetY;
+    if(stageRatio > imageRatio){
+      renderH = stageH;
+      renderW = renderH * imageRatio;
+      offsetX = (stageW - renderW) / 2;
+      offsetY = 0;
+    }else{
+      renderW = stageW;
+      renderH = renderW / imageRatio;
+      offsetX = 0;
+      offsetY = (stageH - renderH) / 2;
+    }
+    mapper = (p)=>({
+      x: offsetX + (Number(p.x) / 100) * renderW,
+      y: offsetY + (Number(p.y) / 100) * renderH
+    });
+  }
+
   hotspots.forEach(h=>{
     const on = h.dataset.key === String(activeKey);
     h.classList.toggle("active", on);
     h.classList.toggle("dimmed", !on && !!(plugin && plugin.effect && plugin.effect.dimOthers));
   });
-  const active = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(activeKey))}"]`);
-  if(active && point){
-    active.style.left = (Number(point.x) || 50) + "%";
-    active.style.top = (Number(point.y) || 50) + "%";
-  }
-  // Position all inactive hotspots too, so cards visibly map to coordinates even before audio starts.
+
   const coords = plugin && plugin.coordinates ? plugin.coordinates : {};
   Object.keys(coords).forEach(k=>{
     const h = layer.querySelector(`.coordinate-hotspot[data-key="${CSS.escape(String(k))}"]`);
-    if(h){
-      h.style.left = (Number(coords[k].x) || 50) + "%";
-      h.style.top = (Number(coords[k].y) || 50) + "%";
+    const p = coords[k];
+    if(h && p){
+      if(mapper){
+        const xy = mapper(p);
+        h.style.left = xy.x + "px";
+        h.style.top = xy.y + "px";
+      }else{
+        h.style.left = (Number(p.x) || 50) + "%";
+        h.style.top = (Number(p.y) || 50) + "%";
+      }
     }
   });
 }
+
 
 
 function advanceCoordinateSpotlight(plugin){
@@ -1483,11 +1521,13 @@ positionCoordinateFocus(plugin, coordinateDemoIndex);
 }
 
 function startCoordinateDemo(plugin){
-stopCoordinateSpotlight();
-coordinateDemoIndex = 0;
-positionCoordinateFocus(plugin,0);
-coordinateSpotlightTimer = setInterval(()=>advanceCoordinateSpotlight(plugin),1400);
+  stopCoordinateSpotlight();
+  coordinateDemoIndex = 0;
+  // Keep the first focus glyph anchored, but do not auto-cycle before audio starts.
+  // This prevents multiple effects from appearing out of sync on phone/tablet/laptop/TV.
+  positionCoordinateFocus(plugin,0);
 }
+
 
 function startCoordinateSpotlight(plugin,audio){
 stopCoordinateSpotlight();
@@ -1513,11 +1553,7 @@ const type = String(effect.type || "");
 const layer = document.createElement("div");
 layer.className = "prism-ambient-layer";
 
-if(effect.waterRays !== false && (effect.waterRays || type === "aquarium")){
-  const rays = document.createElement("div");
-  rays.className = "aquarium-water-rays";
-  layer.appendChild(rays);
-}
+// Slanted/water-ray overlays are disabled in V6.8.1 because they block the learning image.
 
 if(effect.bubbles || type === "aquarium"){
   addBubblesToLayer(layer, effect.bubbleCount || 16);
@@ -1593,6 +1629,7 @@ stage.innerHTML += `
 ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
 `;
 grid.appendChild(stage);
+ensureStoryImageLoaded(stage, bg);
 
 const audio = stage.querySelector("audio");
 const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:"Story",plugin,learningMode:plugin.segmentDetection==="silence" ? "silence" : "durationChunks"},index:0,type:audio ? "audio" : "story"};
