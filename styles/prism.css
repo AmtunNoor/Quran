@@ -2941,3 +2941,246 @@ body.plugin-ui-final.plugin-pillars .grid.stage-render::before{
     max-width:100vw!important;
   }
 }
+
+
+/* =========================================================
+   PRISM V6.8.1 CONSOLIDATED RESTORE
+   Scope: fixes effect sync/rendering regressions only.
+   - No blue slanted streaks anywhere.
+   - Coordinate effects use the exact focus glyph anchor.
+   - Reference Angels/Pillars stay clipped inside supplied hotspots.
+   - No landing tile image backgrounds unless explicitly allowed by engine.
+   ========================================================= */
+.aquarium-water-rays,
+.coordinate-hotspot::before,
+.coordinate-hotspot::after{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+
+.coordinate-hotspot-layer{pointer-events:none!important;}
+.coordinate-hotspot{
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  opacity:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  border:0!important;
+  overflow:visible!important;
+  transform:translate(-50%,-50%)!important;
+}
+.coordinate-hotspot span{display:none!important;}
+.coordinate-hotspot.active{opacity:0!important;animation:none!important;}
+.coordinate-hotspot.dimmed{opacity:0!important;}
+
+.coordinate-focus-dot{
+  z-index:12!important;
+  transform:translate(-50%,-50%)!important;
+}
+
+body.plugin-ui-final.plugin-angels .grid.stage-render,
+body.plugin-ui-final.plugin-pillars .grid.stage-render{
+  position:relative!important;
+  height:calc(var(--prism-vh,100vh) - 52px)!important;
+  min-height:calc(var(--prism-vh,100vh) - 52px)!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 15% 12%,rgba(56,189,248,.18),transparent 27%),
+    radial-gradient(circle at 82% 18%,rgba(168,85,247,.18),transparent 31%),
+    radial-gradient(circle at 50% 105%,rgba(250,204,21,.09),transparent 35%),
+    #020617!important;
+}
+body.plugin-ui-final.plugin-angels .grid.stage-render::before,
+body.plugin-ui-final.plugin-pillars .grid.stage-render::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.92) 0 1px,transparent 1.6px),
+    radial-gradient(circle,rgba(186,230,253,.55) 0 1px,transparent 1.7px)!important;
+  background-size:96px 96px,145px 145px!important;
+  background-position:0 0,36px 24px!important;
+  opacity:.52!important;
+  animation:prismStarsDrift 18s linear infinite!important;
+  z-index:0!important;
+}
+.reference-stage{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:transparent!important;
+  overflow:hidden!important;
+  z-index:1!important;
+}
+.reference-canvas{
+  position:relative!important;
+  aspect-ratio:3/2!important;
+  width:min(100%, calc((var(--prism-vh,100vh) - 64px) * 1.5), 1536px)!important;
+  height:auto!important;
+  max-height:100%!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+  background:#101633!important;
+  box-shadow:0 0 18px rgba(255,255,255,.10)!important;
+}
+.reference-bg{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  z-index:1!important;
+}
+.reference-hotspot-layer,
+.reference-sparkles{
+  position:absolute!important;
+  inset:0!important;
+  z-index:3!important;
+  pointer-events:none!important;
+  overflow:hidden!important;
+}
+.reference-sparkles{z-index:2!important;}
+.reference-hotspot{
+  position:absolute!important;
+  overflow:hidden!important;
+  pointer-events:none!important;
+  opacity:1!important;
+  border-radius:7%!important;
+  background:transparent!important;
+  transform:none!important;
+  transition:transform .45s ease, opacity .45s ease, filter .45s ease!important;
+}
+.reference-hotspot.dim{
+  opacity:.58!important;
+  filter:saturate(.72) brightness(.9)!important;
+}
+.reference-hotspot::before{
+  content:""!important;
+  display:block!important;
+  position:absolute!important;
+  inset:3%!important;
+  border-radius:inherit!important;
+  opacity:.18!important;
+  border:2px solid var(--focus-color,#facc15)!important;
+  box-shadow:0 0 12px 3px color-mix(in srgb, var(--focus-color,#facc15) 35%, transparent)!important;
+  transition:opacity .25s ease!important;
+}
+.reference-hotspot.active::before{
+  opacity:.78!important;
+  border-width:3px!important;
+  box-shadow:
+    0 0 20px 6px color-mix(in srgb, var(--focus-color,#facc15) 72%, transparent),
+    inset 0 0 18px color-mix(in srgb, var(--focus-color,#facc15) 42%, transparent)!important;
+}
+.angel-hotspot.active{
+  animation:angelFocus 1.8s ease-in-out infinite!important;
+  filter:brightness(1.04) drop-shadow(0 0 10px color-mix(in srgb, var(--focus-color,#facc15) 55%, transparent))!important;
+}
+@keyframes angelFocus{0%,100%{transform:scale(1);}50%{transform:scale(1.015);}}
+.pillar-hotspot{border-radius:18px!important;}
+.pillar-hotspot.active{
+  transform:scale(1.035) translateY(-.6%)!important;
+  filter:
+    drop-shadow(0 0 14px color-mix(in srgb, var(--focus-color,#facc15) 85%, transparent))
+    drop-shadow(0 0 28px rgba(255,185,65,.42))
+    brightness(1.08)!important;
+}
+.pillar-hotspot::before{border-radius:18px!important;}
+.reference-effect{
+  position:absolute!important;
+  inset:8%!important;
+  opacity:0!important;
+  z-index:2!important;
+  pointer-events:none!important;
+}
+.active .reference-effect{opacity:1!important;}
+.light-ray,
+.message-light{
+  background:linear-gradient(180deg,rgba(255,245,160,.72),transparent)!important;
+  animation:glowRay 2s ease-in-out infinite!important;
+}
+@keyframes glowRay{0%,100%{opacity:.2;}50%{opacity:.8;}}
+.sound-wave::after{
+  content:")))"!important;
+  position:absolute!important;
+  right:8%!important;
+  top:22%!important;
+  font-size:clamp(24px,16%,70px)!important;
+  color:#ffe38a!important;
+  text-shadow:0 0 12px rgba(255,227,138,.9)!important;
+  animation:soundWave 1.4s ease-out infinite!important;
+}
+@keyframes soundWave{0%{opacity:0;transform:scale(.8);}50%{opacity:1;}100%{opacity:0;transform:scale(1.35);}}
+.question-glow::after{
+  content:"?"!important;
+  position:absolute!important;
+  right:20%!important;
+  top:18%!important;
+  font-size:clamp(30px,18%,80px)!important;
+  color:#fff3c8!important;
+  text-shadow:0 0 14px rgba(255,243,200,.95)!important;
+  animation:qPulse 1.6s ease-in-out infinite!important;
+}
+@keyframes qPulse{0%,100%{opacity:.25;transform:scale(.9);}50%{opacity:1;transform:scale(1.08);}}
+.soft-rain::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background:repeating-linear-gradient(180deg,transparent 0 10%,rgba(147,197,253,.52) 11%,transparent 13%)!important;
+  opacity:.55!important;
+  animation:softRainFall 2.4s linear infinite!important;
+}
+@keyframes softRainFall{from{transform:translateY(-12%);}to{transform:translateY(12%);}}
+.garden-glow{box-shadow:inset 0 0 35px rgba(134,239,172,.5)!important;animation:prismSoftPulse 2.4s ease-in-out infinite!important;}
+.writing-spark::after{
+  content:""!important;
+  position:absolute!important;
+  left:20%!important;top:62%!important;width:44%!important;height:2px!important;
+  background:linear-gradient(90deg,transparent,#fff7ad,transparent)!important;
+  animation:writeLine 1.8s ease-in-out infinite!important;
+}
+@keyframes writeLine{0%{transform:scaleX(.1);opacity:.15;}50%{transform:scaleX(1);opacity:1;}100%{transform:scaleX(.1);opacity:.15;}}
+.pillar-glow{
+  inset:-3%!important;
+  border-radius:18px!important;
+  box-shadow:
+    0 0 22px 8px color-mix(in srgb, var(--focus-color,#facc15) 55%, transparent),
+    inset 0 0 18px rgba(255,245,190,.45)!important;
+  animation:prismSoftPulse 1.8s ease-in-out infinite!important;
+}
+@keyframes prismSoftPulse{0%,100%{opacity:.32;}50%{opacity:.82;}}
+.reference-sparkle{
+  position:absolute!important;
+  width:5px!important;
+  height:5px!important;
+  border-radius:50%!important;
+  background:rgba(255,255,255,.9)!important;
+  box-shadow:0 0 10px rgba(255,230,140,.9)!important;
+  animation:floatSparkle 5s linear forwards!important;
+}
+@keyframes floatSparkle{0%{transform:translateY(0) scale(.3);opacity:0;}20%{opacity:.8;}100%{transform:translateY(-75px) scale(1.2);opacity:0;}}
+
+/* Story image must be visible when asset exists. */
+.story-stage .stage-img{display:block!important;visibility:visible!important;opacity:1!important;object-fit:cover!important;}
+.story-stage .stage-bg-cover{display:none!important;}
+
+/* Allah Names: force Quran-style audio grid, never a single stretched visual panel. */
+body.plugin-names .grid{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:18px!important;
+  height:auto!important;
+  min-height:0!important;
+  overflow:visible!important;
+}
+body.plugin-names .card{display:flex!important;min-height:170px!important;}
+@media(max-width:768px){body.plugin-names .grid{grid-template-columns:repeat(2,1fr)!important;}}
