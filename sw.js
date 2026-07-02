@@ -1,4 +1,4 @@
-const PRISM_CACHE = "prism-v6812-consolidated-reference";
+const PRISM_CACHE = "prism-v690-frozen-release";
 const AUDIO_RE = /\.(mp3|m4a|wav|ogg)$/i;
 const ASSET_RE = /\.(png|jpg|jpeg|webp|gif|svg|ttf|woff2?)$/i;
 const CODE_RE = /\.(css|js)$/i;
