@@ -59,5 +59,13 @@
       ]
     }
   ],
-  "renderer": "story"
+  "renderer": "story",
+  "enabled": true,
+  "showOnLanding": true,
+  "backgroundImage": "salahnames/salahnames.jpeg",
+  "tileImage": "salahnames/salahnames.jpeg",
+  "primaryAudio": "salahnames/salahnames.mp3",
+  "audios": [
+    "salahnames/salahnames.mp3"
+  ]
 }
