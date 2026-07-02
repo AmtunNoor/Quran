@@ -7,47 +7,109 @@
   "controls": "floating",
   "enabled": true,
   "showOnLanding": true,
-
   "backgroundImage": "angels/angels.jpeg",
   "tileImage": "angels/angels.jpeg",
   "primaryAudio": "angels/angels.mp3",
-
   "effect": {
     "type": "timedTileFocus",
-    "style": "minimal-active-only",
-    "dimOthers": true,
-    "activeScale": 1.03,
-    "glow": "soft-prism",
-
+    "style": "reference-hotspots",
+    "dimOthers": false,
+    "activeScale": 1.015,
     "tileEffects": {
-      "mikaeel": "softRain",
+      "mikaeel": "lightRay",
       "israfil": "soundWave",
-      "ridwan": "gardenGlow",
+      "malik": "lightRay",
       "munkar": "questionPulse",
-      "jibraeel": "messageLight",
-      "kiraman": "writingSpark"
+      "jibraeel": "lightRay",
+      "kiraman": "lightRay",
+      "paradise": "lightRay"
     }
   },
-
-  "coordinates": {
-    "mikaeel": { "x": 15, "y": 50 },
-    "israfil": { "x": 32, "y": 50 },
-    "ridwan": { "x": 50, "y": 50 },
-    "munkar": { "x": 68, "y": 50 },
-    "jibraeel": { "x": 82, "y": 50 },
-    "kiraman": { "x": 92, "y": 50 }
+  "hotspots": {
+    "mikaeel": {
+      "left": 4.6,
+      "top": 18.4,
+      "width": 22.5,
+      "height": 41.5
+    },
+    "israfil": {
+      "left": 28.1,
+      "top": 18.4,
+      "width": 22.5,
+      "height": 41.5
+    },
+    "malik": {
+      "left": 51.6,
+      "top": 18.4,
+      "width": 22.5,
+      "height": 41.5
+    },
+    "munkar": {
+      "left": 75.1,
+      "top": 18.4,
+      "width": 22.5,
+      "height": 41.5
+    },
+    "jibraeel": {
+      "left": 12.0,
+      "top": 61.5,
+      "width": 25.5,
+      "height": 35.5
+    },
+    "kiraman": {
+      "left": 38.9,
+      "top": 61.5,
+      "width": 25.5,
+      "height": 35.5
+    },
+    "paradise": {
+      "left": 65.8,
+      "top": 61.5,
+      "width": 25.5,
+      "height": 35.5
+    }
   },
-
+  "coordinates": {
+    "mikaeel": {
+      "x": 15.85,
+      "y": 39.15
+    },
+    "israfil": {
+      "x": 39.35,
+      "y": 39.15
+    },
+    "malik": {
+      "x": 62.85,
+      "y": 39.15
+    },
+    "munkar": {
+      "x": 86.35,
+      "y": 39.15
+    },
+    "jibraeel": {
+      "x": 24.75,
+      "y": 79.25
+    },
+    "kiraman": {
+      "x": 51.65,
+      "y": 79.25
+    },
+    "paradise": {
+      "x": 78.55,
+      "y": 79.25
+    }
+  },
   "coordinateTiming": {
     "source": "audio-starts",
     "unit": "seconds",
     "starts": {
       "mikaeel": 0,
       "israfil": 12,
-      "ridwan": 24,
+      "malik": 24,
       "munkar": 36,
       "jibraeel": 48,
-      "kiraman": 60
+      "kiraman": 60,
+      "paradise": 72
     }
   }
 }
