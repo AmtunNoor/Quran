@@ -1381,8 +1381,27 @@
       "character": "bunny",
       "enabled": true,
       "showOnLanding": true,
-      "backgroundImage": "letters/letters.webp",
-      "tileImage": "letters/letters.webp",
+      "backgroundImage": {
+        "type": "gradient",
+        "style": "soft",
+        "colors": [
+          "#fff1eb",
+          "#ace0f9",
+          "#fbc2eb"
+        ]
+      },
+      "tileImage": {
+        "type": "gradient",
+        "style": "colorful",
+        "colors": [
+          "#ff9a9e",
+          "#fad0c4",
+          "#fbc2eb",
+          "#a18cd1"
+        ],
+        "icon": "✨",
+        "label": "Arabic Alphabets"
+      },
       "audioMode": "single-file-pauses",
       "primaryAudio": null,
       "landingTileImage": false,
@@ -1577,9 +1596,7 @@
       "theme": "letters",
       "renderer": "gallery",
       "audios": [],
-      "images": [
-        "letters/letters.webp"
-      ],
+      "images": [],
       "playFromLanding": false,
       "autoStart": false,
       "directAudio": false,
@@ -1614,10 +1631,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/letters/letters.webp",
-        "path": "letters/letters.webp"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
