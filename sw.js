@@ -1,4 +1,4 @@
-const PRISM_CACHE = "prism-v6-8-night-stage-cache-20260701";
+const PRISM_CACHE = "prism-v6-8-plugin-host-cache-20260701";
 const AUDIO_RE = /\.(mp3|m4a|wav|ogg)$/i;
 const ASSET_RE = /\.(png|jpg|jpeg|webp|gif|svg|ttf|woff2?)$/i;
 const CODE_RE = /\.(css|js)$/i;
