@@ -1,4 +1,4 @@
-# Prism V6.7 Final Frozen Effect Library
+# Prism V6.7 Final Frozen Effect Library 
 
 Core files are locked:
 
