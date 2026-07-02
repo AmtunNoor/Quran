@@ -2745,3 +2745,239 @@ body.plugin-pillars .coordinate-hotspot.active{
 @keyframes prismOrbitSpin{
   to{transform:translate(-50%,-50%) rotate(360deg)}
 }
+
+/* ================= PRISM V6.8 VISUAL POLISH PATCH =================
+   Scope: visual plugins only (months, numbers, angels, pillars).
+   - Effects use the same rendered-image coordinates as the focus glyph.
+   - Removes blue/slanted ray overlays.
+   - Gives Angels/Pillars unique local tile cues instead of the same round focus.
+   - Removes black side bars by filling unused space with blurred artwork + night-sky feel.
+   - Keeps all images undistorted with object-fit: contain.
+   ================================================================ */
+
+/* No blocking blue/slanted lines. Bubbles/sparkles remain gentle. */
+.aquarium-water-rays{display:none!important;}
+
+body.plugin-ui-final .stage.full-visual,
+body.plugin-ui-final .spotlight-wrap.full-visual{
+  background:
+    radial-gradient(circle at 18% 18%, rgba(125,211,252,.20), transparent 30%),
+    radial-gradient(circle at 82% 12%, rgba(168,85,247,.18), transparent 34%),
+    radial-gradient(circle at center, rgba(15,23,42,.20), rgba(2,6,23,.88))!important;
+}
+
+body.plugin-ui-final .stage-bg-cover{
+  inset:-28px!important;
+  opacity:.82!important;
+  filter:blur(18px) saturate(1.18) brightness(.72)!important;
+  transform:scale(1.08)!important;
+}
+
+body.plugin-ui-final.plugin-angels .stage-bg-cover,
+body.plugin-ui-final.plugin-pillars .stage-bg-cover{
+  opacity:.92!important;
+  filter:blur(16px) saturate(1.15) brightness(.78)!important;
+}
+
+body.plugin-ui-final.plugin-angels .stage-img,
+body.plugin-ui-final.plugin-pillars .stage-img,
+body.plugin-ui-final.plugin-months .stage-img,
+body.plugin-ui-final.plugin-numbers .stage-img{
+  object-fit:contain!important;
+  object-position:center!important;
+}
+
+/* The dot remains the simple shared focus glyph. */
+.coordinate-focus-dot{
+  width:clamp(40px,5.6vw,88px)!important;
+  height:clamp(40px,5.6vw,88px)!important;
+  z-index:13!important;
+}
+
+/* Default coordinate plugins stay clean and light. */
+.coordinate-hotspot{
+  mix-blend-mode:screen;
+  background:radial-gradient(circle, rgba(255,255,255,.62), rgba(250,204,21,.18) 48%, transparent 74%)!important;
+}
+.coordinate-hotspot.dimmed{opacity:.035!important;}
+
+/* Angels: a local tile lift/glow cue, not the same Months/Numbers circle. */
+body.plugin-angels .coordinate-hotspot{
+  width:clamp(88px,13vw,190px)!important;
+  height:clamp(66px,9vw,132px)!important;
+  border-radius:24px!important;
+  opacity:.03;
+  background:radial-gradient(circle at 50% 45%, rgba(255,255,255,.44), rgba(125,211,252,.18) 46%, rgba(168,85,247,.09) 72%, transparent 82%)!important;
+  box-shadow:none!important;
+}
+body.plugin-angels .coordinate-hotspot.active{
+  opacity:1!important;
+  transform:translate(-50%,-50%) scale(1.10)!important;
+  filter:drop-shadow(0 0 18px rgba(255,255,255,.75)) drop-shadow(0 0 34px rgba(125,211,252,.55))!important;
+  box-shadow:0 0 30px rgba(255,255,255,.34), inset 0 0 34px rgba(255,255,255,.14)!important;
+  animation:angelTileLift 1.25s ease-in-out infinite!important;
+}
+@keyframes angelTileLift{
+  0%,100%{transform:translate(-50%,-50%) scale(1.04);}
+  50%{transform:translate(-50%,-54%) scale(1.12);}
+}
+
+/* Remove old rain-line effect. Use dots/halos instead. */
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="softRain"]::after{
+  content:""!important;
+  position:absolute!important;
+  inset:-18%!important;
+  border-radius:inherit!important;
+  background:
+    radial-gradient(circle at 28% 28%, rgba(186,230,253,.78) 0 3px, transparent 4px),
+    radial-gradient(circle at 48% 62%, rgba(186,230,253,.62) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 38%, rgba(186,230,253,.72) 0 3px, transparent 4px)!important;
+  animation:angelSoftRain 1.35s ease-in-out infinite!important;
+}
+@keyframes angelSoftRain{
+  0%{transform:translateY(-5px);opacity:.22;}
+  50%{opacity:.8;}
+  100%{transform:translateY(8px);opacity:.18;}
+}
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="soundWave"]::before{
+  inset:-24%!important;
+  border:2px solid rgba(255,255,255,.55)!important;
+  box-shadow:0 0 20px rgba(125,211,252,.45)!important;
+}
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="gardenGlow"]{
+  background:radial-gradient(circle, rgba(220,252,231,.78), rgba(34,197,94,.30) 50%, transparent 78%)!important;
+}
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="questionPulse"]{
+  background:radial-gradient(circle, rgba(254,249,195,.80), rgba(251,191,36,.28) 50%, transparent 78%)!important;
+}
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="messageLight"]{
+  background:linear-gradient(180deg, rgba(255,255,255,.45), rgba(125,211,252,.18), transparent 78%)!important;
+}
+body.plugin-angels .coordinate-hotspot.active[data-tile-effect="writingSpark"]::after{
+  content:"✦"!important;
+}
+
+/* Pillars: steady golden pillar focus, not a generic spotlight. */
+body.plugin-pillars .coordinate-hotspot{
+  width:clamp(92px,12vw,170px)!important;
+  height:clamp(86px,11vw,160px)!important;
+  border-radius:30px!important;
+  opacity:.035;
+  background:radial-gradient(circle, rgba(255,251,235,.50), rgba(251,191,36,.16) 50%, transparent 78%)!important;
+}
+body.plugin-pillars .coordinate-hotspot.active{
+  opacity:1!important;
+  transform:translate(-50%,-50%) scale(1.08)!important;
+  background:radial-gradient(circle, rgba(255,251,235,.78), rgba(251,191,36,.34) 52%, rgba(255,255,255,.04) 78%)!important;
+  filter:drop-shadow(0 0 16px rgba(255,255,255,.78)) drop-shadow(0 0 34px rgba(251,191,36,.58))!important;
+  box-shadow:0 0 28px rgba(251,191,36,.38), inset 0 0 30px rgba(255,255,255,.12)!important;
+  animation:pillarBreath 1.55s ease-in-out infinite!important;
+}
+@keyframes pillarBreath{
+  0%,100%{transform:translate(-50%,-50%) scale(1.02);}
+  50%{transform:translate(-50%,-50%) scale(1.10);}
+}
+body.plugin-pillars .coordinate-hotspot.active::after{
+  content:""!important;
+  position:absolute!important;
+  inset:-20%!important;
+  border-radius:inherit!important;
+  background:
+    radial-gradient(circle at 22% 25%, rgba(255,255,255,.92) 0 2px, transparent 3px),
+    radial-gradient(circle at 78% 32%, rgba(255,245,157,.88) 0 2px, transparent 3px),
+    radial-gradient(circle at 42% 80%, rgba(255,255,255,.82) 0 2px, transparent 3px)!important;
+  animation:pillarSparkle 1.2s ease-in-out infinite!important;
+}
+@keyframes pillarSparkle{
+  0%,100%{opacity:.30;transform:scale(.96) rotate(0deg);}
+  50%{opacity:.95;transform:scale(1.06) rotate(8deg);}
+}
+
+/* Months and Numbers keep the precise focus glyph, without extra blocking effects. */
+body.plugin-months .coordinate-hotspot,
+body.plugin-numbers .coordinate-hotspot{
+  width:clamp(44px,6vw,92px)!important;
+  height:clamp(44px,6vw,92px)!important;
+  border-radius:999px!important;
+}
+body.plugin-months .coordinate-hotspot.active,
+body.plugin-numbers .coordinate-hotspot.active{
+  transform:translate(-50%,-50%) scale(1.04)!important;
+  animation:coordinatePulse 1.1s ease-in-out infinite!important;
+}
+
+/* Do not let the bottom credits become a black bar over visual plugins. */
+body.plugin-ui-final.plugin-angels .credits,
+body.plugin-ui-final.plugin-pillars .credits,
+body.plugin-ui-final.plugin-months .credits,
+body.plugin-ui-final.plugin-numbers .credits{
+  background:rgba(2,6,23,.08)!important;
+  border-top:1px solid rgba(255,255,255,.04)!important;
+}
+
+/* ================= PRISM V6.8 ANGELS/PILLARS NIGHT-STAGE FIX =================
+   Scope only: Angels + Pillars plugin visual pages.
+   Does NOT change Quran, landing/index cards, Months, Numbers, Salah, or Salah Names.
+   Removes blurred/semi-transparent image background and uses Prism night-sky/star stage.
+   ================================================================ */
+body.plugin-ui-final.plugin-angels .stage.full-visual,
+body.plugin-ui-final.plugin-angels .spotlight-wrap.full-visual,
+body.plugin-ui-final.plugin-pillars .stage.full-visual,
+body.plugin-ui-final.plugin-pillars .spotlight-wrap.full-visual{
+  background:
+    radial-gradient(circle at 18% 16%, rgba(56,189,248,.18), transparent 28%),
+    radial-gradient(circle at 82% 12%, rgba(244,114,182,.14), transparent 32%),
+    radial-gradient(circle at 50% 0%, rgba(30,64,175,.34), transparent 42%),
+    radial-gradient(circle at top, #172554, #020617 72%)!important;
+}
+
+/* No blurred artwork behind Angels/Pillars. */
+body.plugin-ui-final.plugin-angels .stage-bg-cover,
+body.plugin-ui-final.plugin-pillars .stage-bg-cover{
+  display:none!important;
+  opacity:0!important;
+  filter:none!important;
+  background-image:none!important;
+}
+
+/* Star field inside the plugin stage, matching the Quran/landing night feel. */
+body.plugin-ui-final.plugin-angels .stage.full-visual::before,
+body.plugin-ui-final.plugin-angels .spotlight-wrap.full-visual::before,
+body.plugin-ui-final.plugin-pillars .stage.full-visual::before,
+body.plugin-ui-final.plugin-pillars .spotlight-wrap.full-visual::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  z-index:0!important;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.92) 0 1.5px, transparent 2px),
+    radial-gradient(circle, rgba(255,255,255,.72) 0 1px, transparent 1.8px),
+    radial-gradient(circle, rgba(186,230,253,.72) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 22% 18%, rgba(250,204,21,.18), transparent 18%),
+    radial-gradient(circle at 82% 78%, rgba(56,189,248,.12), transparent 22%);
+  background-size: 92px 92px, 138px 138px, 184px 184px, 100% 100%, 100% 100%;
+  background-position: 12px 18px, 48px 54px, 80px 22px, center, center;
+  animation:prismNightStarsDrift 24s linear infinite!important;
+  opacity:.86!important;
+}
+
+@keyframes prismNightStarsDrift{
+  from{background-position:12px 18px,48px 54px,80px 22px,center,center;}
+  to{background-position:12px -74px,48px -84px,80px -162px,center,center;}
+}
+
+/* Keep the plugin artwork fully visible and undistorted over the night stage. */
+body.plugin-ui-final.plugin-angels .stage-img,
+body.plugin-ui-final.plugin-pillars .stage-img{
+  object-fit:contain!important;
+  object-position:center!important;
+  z-index:1!important;
+}
+
+body.plugin-ui-final.plugin-angels .coordinate-hotspot,
+body.plugin-ui-final.plugin-pillars .coordinate-hotspot,
+body.plugin-ui-final.plugin-angels .coordinate-focus-dot,
+body.plugin-ui-final.plugin-pillars .coordinate-focus-dot{
+  z-index:12!important;
+}
