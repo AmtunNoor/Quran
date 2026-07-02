@@ -12,5 +12,135 @@
   "audioMode": "single-file-or-sliced",
   "useSlices": true,
   "locked": true,
-  "renderer": "quran"
+  "renderer": "quran",
+  "syncFiles": [
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A10.mp3",
+      "path": "A10.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A11.mp3",
+      "path": "A11.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A12.mp3",
+      "path": "A12.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A13.mp3",
+      "path": "A13.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A14.mp3",
+      "path": "A14.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A15.mp3",
+      "path": "A15.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A16.mp3",
+      "path": "A16.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A17.mp3",
+      "path": "A17.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A18.mp3",
+      "path": "A18.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A19.mp3",
+      "path": "A19.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A20.mp3",
+      "path": "A20.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A5.mp3",
+      "path": "A5.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A6.mp3",
+      "path": "A6.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A7.mp3",
+      "path": "A7.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A8.mp3",
+      "path": "A8.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/A9.mp3",
+      "path": "A9.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/02.mp3",
+      "path": "listen/02.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/02_1.mp3",
+      "path": "listen/02_1.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/100.mp3",
+      "path": "listen/100.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/101.mp3",
+      "path": "listen/101.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/102.mp3",
+      "path": "listen/102.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/103.mp3",
+      "path": "listen/103.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/104.mp3",
+      "path": "listen/104.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/55.mp3",
+      "path": "listen/55.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/94.mp3",
+      "path": "listen/94.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/95.mp3",
+      "path": "listen/95.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/96.mp3",
+      "path": "listen/96.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/97.mp3",
+      "path": "listen/97.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/98.mp3",
+      "path": "listen/98.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/listen/99.mp3",
+      "path": "listen/99.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn/102.mp3",
+      "path": "learn/102.mp3"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
+      "path": "learn.master.slices.json"
+    }
+  ]
 }
