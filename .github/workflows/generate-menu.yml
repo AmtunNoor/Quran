@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "plugins/**"
+      - "generate-menu.js"
   workflow_dispatch:
 
 permissions:
