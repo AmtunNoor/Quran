@@ -2747,10 +2747,23 @@ body.plugin-pillars .coordinate-hotspot.active{
 }
 
 /* =========================================================
-   PRISM V6.8 STRICT REFERENCE EFFECT PATCH
-   Scope: Angels + Five Pillars only.
-   Quran, Salah, landing, Months, Numbers remain untouched.
+   PRISM V6.8.1 REFERENCE EFFECTS RESTORE
+   Scope: Angels + Pillars reference visual pages only.
+   Quran, Salah, Landing, Months, Numbers, Names, SalahNames are not redesigned.
    ========================================================= */
+/* Remove unwanted blue slanted/streak lines globally. */
+.aquarium-water-rays,
+body.plugin-angels .coordinate-hotspot::after,
+body.plugin-pillars .coordinate-hotspot::after{
+  display:none!important;
+}
+
+body.plugin-ui-final.plugin-angels,
+body.plugin-ui-final.plugin-pillars{
+  padding-top:0!important;
+  background:#020617!important;
+}
+
 body.plugin-ui-final.plugin-angels .grid.stage-render,
 body.plugin-ui-final.plugin-pillars .grid.stage-render{
   height:calc(var(--prism-vh,100vh) - 52px)!important;
@@ -2759,11 +2772,12 @@ body.plugin-ui-final.plugin-pillars .grid.stage-render{
   align-items:center!important;
   justify-content:center!important;
   overflow:hidden!important;
+  padding:0!important;
   background:
-    radial-gradient(circle at 18% 12%, rgba(251,191,36,.20), transparent 18%),
-    radial-gradient(circle at 82% 18%, rgba(147,197,253,.14), transparent 22%),
-    radial-gradient(circle at 50% 110%, rgba(124,58,237,.18), transparent 38%),
-    #101633!important;
+    radial-gradient(circle at 18% 16%,rgba(56,189,248,.16),transparent 28%),
+    radial-gradient(circle at 82% 18%,rgba(168,85,247,.18),transparent 30%),
+    radial-gradient(circle at 50% 100%,rgba(251,191,36,.10),transparent 32%),
+    #020617!important;
 }
 
 body.plugin-ui-final.plugin-angels .grid.stage-render::before,
@@ -2773,202 +2787,143 @@ body.plugin-ui-final.plugin-pillars .grid.stage-render::before{
   inset:0;
   pointer-events:none;
   background-image:
-    radial-gradient(circle, rgba(255,255,255,.9) 0 1px, transparent 1.8px),
-    radial-gradient(circle, rgba(255,255,255,.55) 0 1px, transparent 1.7px);
-  background-size:72px 72px, 116px 116px;
-  background-position:8px 16px, 42px 30px;
-  opacity:.38;
+    radial-gradient(circle,rgba(255,255,255,.9) 0 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(186,230,253,.55) 0 1px,transparent 1.7px);
+  background-size:96px 96px,145px 145px;
+  background-position:0 0,36px 24px;
+  opacity:.58;
+  animation:prismStarsDrift 18s linear infinite;
   z-index:0;
 }
 
-body.plugin-ui-final.plugin-angels .night-prism-stage,
-body.plugin-ui-final.plugin-pillars .night-prism-stage{
+.reference-stage{
   position:relative!important;
   width:100%!important;
-  max-height:100%!important;
-  margin:auto!important;
+  height:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
   overflow:hidden!important;
-  background:#101633!important;
-  border-radius:0!important;
-  box-shadow:none!important;
   z-index:1!important;
+  background:transparent!important;
 }
-
-body.plugin-ui-final.plugin-angels .angels-stage-ref{
-  max-width:1536px!important;
+.reference-canvas{
+  position:relative!important;
+  width:min(100vw, calc((var(--prism-vh,100vh) - 56px) * 1.5), 1536px)!important;
+  max-width:100%!important;
   aspect-ratio:3/2!important;
+  max-height:100%!important;
+  overflow:hidden!important;
+  border-radius:0!important;
+  background:#101633!important;
+  box-shadow:0 0 22px rgba(255,255,255,.10)!important;
 }
-
-body.plugin-ui-final.plugin-pillars .pillars-stage-ref{
-  max-width:1536px!important;
-  aspect-ratio:16/10!important;
-}
-
-body.plugin-ui-final.plugin-angels .night-prism-stage .stage-bg-cover,
-body.plugin-ui-final.plugin-pillars .night-prism-stage .stage-bg-cover{
-  display:none!important;
-}
-
-body.plugin-ui-final.plugin-angels .night-prism-stage .stage-img,
-body.plugin-ui-final.plugin-pillars .night-prism-stage .stage-img{
+.reference-bg{
   position:absolute!important;
   inset:0!important;
   width:100%!important;
   height:100%!important;
   object-fit:cover!important;
   object-position:center center!important;
-  transform:none!important;
-  opacity:1!important;
-  visibility:visible!important;
   z-index:1!important;
 }
-
-body.plugin-ui-final.plugin-angels .angels-hotspot-layer,
-body.plugin-ui-final.plugin-pillars .pillars-hotspot-layer{
+.reference-hotspot-layer,
+.reference-sparkles{
   position:absolute!important;
   inset:0!important;
   z-index:3!important;
   pointer-events:none!important;
   overflow:hidden!important;
 }
-
-body.plugin-ui-final.plugin-angels .angel-hotspot{
+.reference-sparkles{z-index:2!important;}
+.reference-hotspot{
   position:absolute!important;
   overflow:hidden!important;
-  border-radius:7%!important;
   pointer-events:none!important;
+  border-radius:7%!important;
   opacity:1!important;
   transform:none!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  filter:none!important;
+  transition:transform .45s ease, opacity .45s ease, filter .45s ease!important;
   mix-blend-mode:normal!important;
-  transition:none!important;
+  background:transparent!important;
 }
-
-body.plugin-ui-final.plugin-angels .angel-hotspot::before{
+.reference-hotspot.dim{
+  opacity:.58!important;
+  filter:saturate(.72) brightness(.9)!important;
+}
+.reference-hotspot::before{
   content:""!important;
   position:absolute!important;
-  inset:4%!important;
-  border-radius:7%!important;
+  inset:3%!important;
+  border-radius:inherit!important;
   opacity:0!important;
-  box-shadow:0 0 28px 10px rgba(255,255,255,.8)!important;
+  border:3px solid var(--focus-color,#facc15)!important;
+  box-shadow:
+    0 0 18px 5px color-mix(in srgb, var(--focus-color,#facc15) 80%, transparent),
+    inset 0 0 18px color-mix(in srgb, var(--focus-color,#facc15) 45%, transparent)!important;
   transition:opacity .25s ease!important;
-  background:transparent!important;
-  border:0!important;
-  animation:none!important;
 }
-
-body.plugin-ui-final.plugin-angels .angel-hotspot.active::before{opacity:1!important;}
-
-body.plugin-ui-final.plugin-angels .angel-hotspot.active{
+.reference-hotspot.active::before{opacity:1!important;}
+.angel-hotspot.active{
   animation:angelFocus 1.8s ease-in-out infinite!important;
+  filter:brightness(1.05) drop-shadow(0 0 10px color-mix(in srgb, var(--focus-color,#facc15) 70%, transparent))!important;
 }
-
-@keyframes angelFocus{
-  0%,100%{transform:scale(1);}
-  50%{transform:scale(1.015);}
+@keyframes angelFocus{0%,100%{transform:scale(1);}50%{transform:scale(1.015);}}
+.pillar-hotspot{
+  border-radius:18px!important;
 }
-
-body.plugin-ui-final.plugin-angels .angel-hotspot .effect{
+.pillar-hotspot.active{
+  opacity:1!important;
+  transform:scale(1.035) translateY(-.6%)!important;
+  filter:
+    drop-shadow(0 0 14px color-mix(in srgb, var(--focus-color,#facc15) 85%, transparent))
+    drop-shadow(0 0 28px rgba(255,185,65,.42))
+    brightness(1.08)!important;
+}
+.pillar-hotspot::before{border-radius:18px!important;}
+.reference-effect{
   position:absolute!important;
   inset:8%!important;
   opacity:0!important;
-  background:transparent;
-  pointer-events:none!important;
+  z-index:2!important;
 }
-body.plugin-ui-final.plugin-angels .angel-hotspot.active .effect{opacity:1!important;}
-
-body.plugin-ui-final.plugin-angels .sound-wave::after{
+.active .reference-effect{opacity:1!important;}
+.sound-wave::after{
   content:")))"!important;
   position:absolute!important;
   right:8%!important;
   top:22%!important;
   font-size:clamp(28px,4vw,70px)!important;
   color:#ffe38a!important;
-  text-shadow:0 0 16px rgba(255,227,138,.75)!important;
+  text-shadow:0 0 12px rgba(255,227,138,.9)!important;
   animation:soundWave 1.4s ease-out infinite!important;
 }
-@keyframes soundWave{
-  0%{opacity:0;transform:scale(.8);}
-  50%{opacity:1;}
-  100%{opacity:0;transform:scale(1.35);}
-}
-
-body.plugin-ui-final.plugin-angels .light-ray{
-  background:linear-gradient(180deg,rgba(255,245,160,.75),transparent)!important;
+@keyframes soundWave{0%{opacity:0;transform:scale(.8);}50%{opacity:1;}100%{opacity:0;transform:scale(1.35);}}
+.light-ray{
+  background:linear-gradient(180deg,rgba(255,245,160,.72),transparent)!important;
   animation:glowRay 2s ease-in-out infinite!important;
 }
-@keyframes glowRay{
-  0%,100%{opacity:.2;}
-  50%{opacity:.8;}
-}
-
-body.plugin-ui-final.plugin-angels .question-glow::after{
+@keyframes glowRay{0%,100%{opacity:.2;}50%{opacity:.8;}}
+.question-glow::after{
   content:"?"!important;
   position:absolute!important;
   right:20%!important;
   top:18%!important;
   font-size:clamp(35px,5vw,80px)!important;
   color:#fff3c8!important;
-  text-shadow:0 0 16px rgba(255,243,200,.75)!important;
+  text-shadow:0 0 14px rgba(255,243,200,.95)!important;
   animation:qPulse 1.6s ease-in-out infinite!important;
 }
-@keyframes qPulse{
-  0%,100%{opacity:.25;transform:scale(.9);}
-  50%{opacity:1;transform:scale(1.08);}
-}
-
-body.plugin-ui-final.plugin-pillars .pillar-hotspot{
-  position:absolute!important;
-  z-index:3!important;
-  pointer-events:none!important;
-  border-radius:18px!important;
-  background:transparent!important;
-  box-shadow:none!important;
-  opacity:1!important;
-  transform:none!important;
-  mix-blend-mode:normal!important;
-  transition:transform .45s ease, opacity .45s ease, filter .45s ease!important;
-}
-
-body.plugin-ui-final.plugin-pillars .pillar-hotspot.dimmed,
-body.plugin-ui-final.plugin-pillars .pillar-hotspot.dim{
-  opacity:.58!important;
-  filter:saturate(.72) brightness(.9)!important;
-}
-
-body.plugin-ui-final.plugin-pillars .pillar-hotspot.active{
-  opacity:1!important;
-  transform:scale(1.035) translateY(-.6%)!important;
-  filter:drop-shadow(0 0 14px rgba(255,225,130,.95)) drop-shadow(0 0 28px rgba(255,185,65,.65)) brightness(1.08)!important;
-  animation:none!important;
-}
-
-body.plugin-ui-final.plugin-pillars .pillar-hotspot::before{
-  content:""!important;
-  position:absolute!important;
+@keyframes qPulse{0%,100%{opacity:.25;transform:scale(.9);}50%{opacity:1;transform:scale(1.08);}}
+.pillar-glow{
   inset:-3%!important;
   border-radius:18px!important;
-  opacity:0!important;
-  pointer-events:none!important;
-  box-shadow:0 0 22px 8px rgba(255,225,130,.65), inset 0 0 18px rgba(255,245,190,.45)!important;
-  transition:opacity .45s ease!important;
-  background:transparent!important;
-  animation:none!important;
+  box-shadow:
+    0 0 22px 8px color-mix(in srgb, var(--focus-color,#facc15) 55%, transparent),
+    inset 0 0 18px rgba(255,245,190,.45)!important;
+  animation:prismSoftPulse 1.8s ease-in-out infinite!important;
 }
-
-body.plugin-ui-final.plugin-pillars .pillar-hotspot.active::before{opacity:1!important;}
-
-body.plugin-ui-final.plugin-pillars .pillar-sparkles{
-  position:absolute!important;
-  inset:0!important;
-  z-index:2!important;
-  pointer-events:none!important;
-  overflow:hidden!important;
-}
-
-body.plugin-ui-final.plugin-pillars .sparkle{
+.reference-sparkle{
   position:absolute!important;
   width:5px!important;
   height:5px!important;
@@ -2977,8 +2932,12 @@ body.plugin-ui-final.plugin-pillars .sparkle{
   box-shadow:0 0 10px rgba(255,230,140,.9)!important;
   animation:floatSparkle 5s linear forwards!important;
 }
-@keyframes floatSparkle{
-  0%{transform:translateY(0) scale(.3);opacity:0;}
-  20%{opacity:.8;}
-  100%{transform:translateY(-75px) scale(1.2);opacity:0;}
+@keyframes floatSparkle{0%{transform:translateY(0) scale(.3);opacity:0;}20%{opacity:.8;}100%{transform:translateY(-75px) scale(1.2);opacity:0;}}
+@keyframes prismStarsDrift{from{background-position:0 0,36px 24px;}to{background-position:96px 96px,181px 169px;}}
+
+@media (orientation:portrait){
+  .reference-canvas{
+    width:100vw!important;
+    max-width:100vw!important;
+  }
 }
