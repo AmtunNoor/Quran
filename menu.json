@@ -754,6 +754,7 @@
       "audios": [
         "salahnames/salahnames.mp3"
       ],
+      "landingTileImage": true,
       "images": [
         "salahnames/salahnames.jpeg"
       ],
