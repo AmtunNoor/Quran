@@ -862,7 +862,8 @@
         "activeScale": 1.25,
         "glow": true,
         "sparkles": true,
-        "float": true
+        "float": true,
+        "waterRays": false
       },
       "coordinates": {
         "1": {
@@ -974,9 +975,9 @@
         }
       },
       "landingTileImage": false,
-      "type": "plugin",
-      "tileImage": "numbers/numbers.jpeg",
       "backgroundImage": "numbers/numbers.jpeg",
+      "tileImage": "numbers/numbers.jpeg",
+      "type": "plugin",
       "images": [
         "numbers/numbers.jpeg"
       ],
