@@ -20,7 +20,7 @@
     "glow": true,
     "sparkles": true,
     "float": true,
-    "waterRays": true,
+    "waterRays": false,
     "bubbles": true,
     "bubbleCount": 16
   },
@@ -137,5 +137,8 @@
       "float": true
     }
   },
-  "renderer": "visual"
+  "renderer": "visual",
+  "landingTileImage": true,
+  "backgroundImage": "months/months_background.jpeg",
+  "tileImage": "months/months_icon.jpeg"
 }
