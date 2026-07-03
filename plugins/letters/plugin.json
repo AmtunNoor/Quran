@@ -7,10 +7,10 @@
   "character": "bunny",
   "enabled": true,
   "showOnLanding": true,
-  "backgroundImage": "letters/letters.webp",
-  "tileImage": "letters/letters.webp",
+  "backgroundImage": "plugins/letters/letters.webp",
+  "tileImage": "plugins/letters/letters.webp",
   "audioMode": "single-file-pauses",
-  "primaryAudio": "letters/letters.mp3",
+  "primaryAudio": null,
   "landingTileImage": false,
   "effect": {
     "type": "guidedInteraction",
