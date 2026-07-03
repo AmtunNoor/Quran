@@ -1381,27 +1381,8 @@
       "character": "bunny",
       "enabled": true,
       "showOnLanding": true,
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Arabic Alphabets"
-      },
+      "backgroundImage": "plugins/letters/letters.webp",
+      "tileImage": "plugins/letters/letters.webp",
       "audioMode": "single-file-pauses",
       "primaryAudio": null,
       "landingTileImage": false,
