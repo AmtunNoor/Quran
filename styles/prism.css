@@ -3364,3 +3364,126 @@ body.plugin-names .grid .card{min-height:150px!important;}
 .guided-flying-tile{z-index:5;opacity:0;background:rgba(255,255,245,.96);display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif;font-weight:900;color:#111;box-shadow:0 10px 22px rgba(0,0,0,.25),0 0 24px rgba(255,224,80,.9);will-change:transform,opacity;}
 .guided-interaction-stage.bunnyJump .guided-scene{animation:bunnySceneJump 900ms cubic-bezier(.22,.72,.26,1);transform-origin:25% 68%;}
 @keyframes bunnySceneJump{0%{transform:scale(1) translateY(0)}14%{transform:scale(1.012,.988) translateY(0)}38%{transform:scale(.99,1.018) translateY(-1.1%)}58%{transform:scale(1.01,.99) translateY(-1.5%)}80%{transform:scale(.998,1.006) translateY(-.35%)}100%{transform:scale(1) translateY(0)}}
+
+/* ================= PRISM V6.9 RC2 TARGETED FIX =================
+   Scope: fixes reported after RC1 without touching Quran/Salah internals.
+   =============================================================== */
+/* External Salah bridge: remove Prism focus outline/white lines around iframe. */
+body.plugin-external .external-bridge,
+body.plugin-external .external-bridge.remote-focus,
+body.plugin-external .external-bridge:focus,
+body.plugin-external .external-bridge:focus-visible{
+  outline:0!important;
+  outline-offset:0!important;
+  box-shadow:none!important;
+  transform:none!important;
+  border:0!important;
+}
+body.plugin-external .external-bridge iframe{
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+}
+
+/* Remove blue/slanted/water-ray overlays everywhere. */
+.aquarium-water-rays,
+.prism-ray,
+.water-ray,
+.blue-ray,
+.coordinate-hotspot::after,
+.coordinate-hotspot::before{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  box-shadow:none!important;
+  border:0!important;
+}
+
+/* Coordinate pages use only the existing focus glyph as the visible effect anchor. */
+.coordinate-hotspot{
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  opacity:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  animation:none!important;
+}
+.coordinate-hotspot.active,
+.coordinate-hotspot.dimmed{opacity:0!important;animation:none!important;}
+.coordinate-hotspot span{display:none!important;}
+.coordinate-focus-dot{z-index:12!important;}
+
+/* No background artwork on these landing tiles; they should remain icon/gradient cards. */
+body.landing-mode .card[data-plugin-id="angels"],
+body.landing-mode .card[data-plugin-id="pillars"]{
+  /* Angels/Pillars never use full module artwork as landing tile.
+     A dedicated *_icon.webp may still be used by the engine if supplied later. */
+}
+
+/* Reference effects: keep hotspot rectangles intact, only tune inner animations. */
+body.plugin-angels .question-glow::after{
+  color:#ef4444!important;
+  text-shadow:0 0 12px rgba(239,68,68,.95), 0 0 22px rgba(255,255,255,.35)!important;
+}
+body.plugin-angels .writing-spark::before{
+  content:"✦"!important;
+  position:absolute!important;
+  left:18%!important;
+  top:30%!important;
+  font-size:min(18%,42px)!important;
+  color:#fff7ad!important;
+  text-shadow:0 0 12px rgba(255,247,173,.9)!important;
+  animation:writeFeatherDot 1.8s ease-in-out infinite!important;
+}
+body.plugin-angels .writing-spark::after{
+  content:""!important;
+  position:absolute!important;
+  left:18%!important;
+  top:62%!important;
+  width:48%!important;
+  height:2px!important;
+  background:linear-gradient(90deg,transparent,#fff7ad,transparent)!important;
+  transform-origin:left center!important;
+  animation:writeLine 1.8s ease-in-out infinite!important;
+}
+@keyframes writeFeatherDot{0%,100%{opacity:.2;transform:translateX(0);}50%{opacity:1;transform:translateX(55%);}}
+
+/* If audio is intentionally missing for visual modules, never show a tap fallback. */
+body.plugin-angels #visualAudioFallback,
+body.plugin-pillars #visualAudioFallback,
+body.plugin-letters #visualAudioFallback{
+  display:none!important;
+}
+
+
+/* ================= PRISM V6.9 RC2 FINAL FREEZE OVERRIDES ================= */
+body.plugin-external .external-bridge,
+body.plugin-external .external-bridge.remote-focus,
+body.plugin-external .external-bridge:focus,
+body.plugin-external .external-bridge:focus-visible{
+  outline:0!important; outline-offset:0!important; box-shadow:none!important; border:0!important; transform:none!important;
+}
+body.plugin-external .external-bridge iframe{border:0!important;outline:0!important;box-shadow:none!important;}
+
+/* Landing images are optional. If an icon fails to load, the engine leaves the gradient fallback. */
+body.landing-mode .card[data-tile-image-status="gradient"]{background-image:none;}
+
+/* Angels refinements: red question mark and feather-writing line without changing tile rectangles. */
+body.plugin-angels .question-glow::after{
+  color:#ef4444!important;
+  text-shadow:0 0 12px rgba(239,68,68,.95), 0 0 22px rgba(255,255,255,.35)!important;
+}
+body.plugin-angels .writing-spark::before{
+  content:"✦"!important; position:absolute!important; left:18%!important; top:30%!important;
+  font-size:min(18%,42px)!important; color:#fff7ad!important;
+  text-shadow:0 0 12px rgba(255,247,173,.9)!important; animation:writeFeatherDot 1.8s ease-in-out infinite!important;
+}
+body.plugin-angels .writing-spark::after{
+  content:""!important; position:absolute!important; left:18%!important; top:62%!important; width:48%!important; height:2px!important;
+  background:linear-gradient(90deg,transparent,#fff7ad,transparent)!important; transform-origin:left center!important;
+  animation:writeLine 1.8s ease-in-out infinite!important;
+}
+@keyframes writeFeatherDot{0%,100%{opacity:.2;transform:translateX(0);}50%{opacity:1;transform:translateX(55%);}}
