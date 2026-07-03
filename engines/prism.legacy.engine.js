@@ -175,7 +175,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v690_rc1_frozen_release_20260703";
+const PRISM_PLUGIN_HOST_VERSION = "v690_rc2_final_freeze_20260703";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -189,10 +189,8 @@ function pluginEntryToId(entry){
 
 function pluginConfigUrls(id){
   const clean = cleanPluginId(id);
-  // V6.9 RC1: clean plugin host. The single supported manifest path is:
-  // plugins/<plugin-id>/plugin.json
-  // Old root-level plugins/<id>.plugin.json fallbacks are intentionally disabled
-  // because stale placeholder files caused broken plugins to override good folders.
+  // V6.9 RC2: clean plugin host only.
+  // Old root-level plugins/*.plugin.json files are ignored to prevent stale configs.
   return clean ? [`plugins/${clean}/plugin.json`, `../plugins/${clean}/plugin.json`] : [];
 }
 
@@ -277,14 +275,55 @@ return (THEME[theme] || THEME.default)[2];
 }
 
 function applyImageOrGradient(card, image, theme){
-if(typeof image === "string" && image.trim()){
-card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${image}')`;
-card.style.backgroundColor = "transparent";
-} else if(image && image.type === "gradient" && Array.isArray(image.colors)){
-card.style.background = `linear-gradient(135deg,${image.colors.join(",")})`;
-} else {
-card.style.background = gradientFor(theme);
+  const setGradient = ()=>{ card.style.background = gradientFor(theme); card.dataset.tileImageStatus = "gradient"; };
+  if(image && image.type === "gradient" && Array.isArray(image.colors)){
+    card.style.background = `linear-gradient(135deg,${image.colors.join(",")})`;
+    card.dataset.tileImageStatus = "gradient";
+    return;
+  }
+  const candidates = (Array.isArray(image) ? image : [image])
+    .filter(v => typeof v === "string" && v.trim())
+    .map(v => v.trim());
+  if(!candidates.length){ setGradient(); return; }
+
+  setGradient();
+  let i = 0;
+  const tryNext = ()=>{
+    if(i >= candidates.length) return;
+    const src = candidates[i++];
+    const probe = new Image();
+    probe.onload = ()=>{
+      card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${src}')`;
+      card.style.backgroundColor = "transparent";
+      card.dataset.tileImageStatus = "image";
+    };
+    probe.onerror = tryNext;
+    probe.src = src + (src.includes("?") ? "&" : "?") + "v=" + encodeURIComponent(PRISM_PLUGIN_HOST_VERSION);
+  };
+  tryNext();
 }
+
+function landingTileCandidates(plugin, id){
+  const clean = cleanPluginId(id || plugin.id || plugin.folder || "");
+  const folder = String(plugin.folder || clean || "").replace(/^\/+|\/+$/g,"");
+  const out = [];
+  const add = (v)=>{ if(typeof v === "string" && v.trim() && !out.includes(v.trim())) out.push(v.trim()); };
+
+  // Explicit image wins, but must still gracefully fall back if missing.
+  if(typeof plugin.landingTileImage === "string") add(plugin.landingTileImage);
+
+  // Convention for plugin icons: either root module folder or self-contained plugin folder.
+  if(folder && clean){
+    add(`${folder}/${clean}_icon.webp`);
+    add(`plugins/${clean}/${clean}_icon.webp`);
+  }
+  if(clean) add(`${clean}/${clean}_icon.webp`);
+
+  // Some existing modules intentionally use tile artwork on landing.
+  const canUseTileImage = plugin.landingTileImage === true || ["months","names","salah-names","salahnames"].includes(String(clean).toLowerCase());
+  if(canUseTileImage) add(plugin.tileImage);
+
+  return out;
 }
 
 function setHeader(title, subtitle){
@@ -365,8 +404,9 @@ const id = plugin.id || entry.title.toLowerCase().replace(/\s+/g,"-");
 const theme = plugin.theme || id || "default";
 const card = document.createElement("div");
 card.className = "card prism-audio-tile";
-const landingImageAllowed = plugin.landingTileImage === true || ["months","names","salah-names","salahnames"].includes(String(id).toLowerCase());
-applyImageOrGradient(card, landingImageAllowed ? plugin.tileImage : null, theme);
+card.dataset.pluginId = id;
+const tileCandidates = landingTileCandidates(plugin, id);
+applyImageOrGradient(card, tileCandidates, theme);
 card.innerHTML = `
 <div class="card-info-box">
   <div class="emoji">${iconFor(theme)}</div>
@@ -845,11 +885,7 @@ function applyAquariumEffect(stage, effect){
 const layer = document.createElement("div");
 layer.className = "aquarium-layer";
 
-if(effect.waterRays !== false){
-const rays = document.createElement("div");
-rays.className = "aquarium-water-rays";
-layer.appendChild(rays);
-}
+// V6.9 RC2: slanted/water-ray overlays disabled.
 
 if(effect.bubbles !== false){
 addBubblesToLayer(layer, effect.bubbleCount || 16);
