@@ -138,7 +138,5 @@
     }
   },
   "renderer": "visual",
-  "landingTileImage": true,
-  "backgroundImage": "months/months_background.jpeg",
-  "tileImage": ""
+  "landingTileImage": true
 }
