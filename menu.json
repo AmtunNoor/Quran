@@ -975,9 +975,9 @@
         }
       },
       "landingTileImage": false,
-      "backgroundImage": "numbers/numbers.jpeg",
-      "tileImage": "numbers/numbers.jpeg",
       "type": "plugin",
+      "tileImage": "numbers/numbers.jpeg",
+      "backgroundImage": "numbers/numbers.jpeg",
       "images": [
         "numbers/numbers.jpeg"
       ],
