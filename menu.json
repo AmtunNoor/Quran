@@ -1141,9 +1141,9 @@
       },
       "landingTileImage": false,
       "aspectRatio": "3/2",
+      "primaryAudio": null,
       "type": "plugin",
       "theme": "angels",
-      "primaryAudio": null,
       "audios": [],
       "images": [
         "angels/angels.jpeg"
