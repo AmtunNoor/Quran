@@ -1,6 +1,6 @@
 # Prism V6.7 Final Frozen Effect Library 
 
-Core files are locked:
+Core files are locked: 
 
 - index.html
 - engines/prism.legacy.engine.js
