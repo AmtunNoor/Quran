@@ -67,6 +67,5 @@
   "primaryAudio": "salahnames/salahnames.mp3",
   "audios": [
     "salahnames/salahnames.mp3"
-  ],
-  "landingTileImage": true
+  ]
 }
