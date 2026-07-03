@@ -20,47 +20,73 @@
   },
   "coordinates": {
     "shahadah": {
-      "left": 11.5,
-      "top": 20.5,
-      "width": 17,
-      "height": 67
+      "left": 11.15,
+      "top": 60.15,
+      "width": 7.7,
+      "height": 11.1
     },
     "salah": {
-      "left": 27.8,
-      "top": 19.5,
-      "width": 16,
-      "height": 68
+      "left": 29.75,
+      "top": 60.15,
+      "width": 7.7,
+      "height": 11.1
     },
     "zakat": {
-      "left": 43.0,
-      "top": 19.5,
-      "width": 17,
-      "height": 68
+      "left": 47.55,
+      "top": 60.15,
+      "width": 7.7,
+      "height": 11.1
     },
     "sawm": {
-      "left": 59.6,
-      "top": 20.0,
-      "width": 16,
-      "height": 67
+      "left": 63.85,
+      "top": 60.15,
+      "width": 7.7,
+      "height": 11.1
     },
     "hajj": {
-      "left": 75.3,
-      "top": 20.0,
-      "width": 17,
-      "height": 67
+      "left": 82.25,
+      "top": 60.15,
+      "width": 7.7,
+      "height": 11.1
     }
   },
   "coordinateTiming": {
     "source": "audio-starts",
     "unit": "seconds",
     "starts": {
-      "shahadah": 0,
-      "salah": 4,
-      "zakat": 8,
-      "sawm": 12,
-      "hajj": 16
+      "shahadah": 0.0,
+      "salah": 13.5,
+      "zakat": 20.28,
+      "sawm": 25.57,
+      "hajj": 34.01
+    },
+    "ranges": {
+      "shahadah": [
+        0.0,
+        12.8
+      ],
+      "salah": [
+        13.5,
+        20.2
+      ],
+      "zakat": [
+        20.28,
+        25.3
+      ],
+      "sawm": [
+        25.57,
+        32.96
+      ],
+      "hajj": [
+        34.01,
+        40.63
+      ]
     }
   },
   "landingTileImage": false,
-  "aspectRatio": "3/2"
+  "aspectRatio": "3/2",
+  "primaryAudio": "pillars/pillars.mp3",
+  "audios": [
+    "pillars/pillars.mp3"
+  ]
 }
