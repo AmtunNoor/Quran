@@ -8,10 +8,10 @@
   "enabled": true,
   "showOnLanding": true,
   "backgroundImage": "plugins/letters/letters.webp",
-  "tileImage": "plugins/letters/letters.webp",
+  "tileImage": "plugins/letters/letters_icon.webp",
   "audioMode": "single-file-pauses",
   "primaryAudio": null,
-  "landingTileImage": false,
+  "landingTileImage": true,
   "effect": {
     "type": "guidedInteraction",
     "mode": "catchTile",
