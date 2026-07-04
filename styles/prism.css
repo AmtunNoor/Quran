@@ -3487,3 +3487,74 @@ body.plugin-angels .writing-spark::after{
   animation:writeLine 1.8s ease-in-out infinite!important;
 }
 @keyframes writeFeatherDot{0%,100%{opacity:.2;transform:translateX(0);}50%{opacity:1;transform:translateX(55%);}}
+
+/* ================= PRISM V6.9 FROZEN RELEASE FINAL OVERRIDES ================= */
+/* Landing: if a dedicated icon loads, show icon only. If it fails, gradient + emoji/title remains. */
+body.landing-mode .card[data-icon-only="true"] .card-info-box{
+  display:none!important;
+}
+body.landing-mode .card[data-icon-only="true"]{
+  background-size:cover!important;
+  background-position:center!important;
+}
+body.landing-mode .card[data-tile-image-status="gradient"] .card-info-box{
+  display:flex!important;
+}
+body.landing-mode .card[data-plugin-id="angels"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#312e81 0%,#2563eb 52%,#06b6d4 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="pillars"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#f59e0b 0%,#7c3aed 50%,#14b8a6 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="letters"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#a855f7 0%,#2563eb 55%,#14b8a6 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="numbers"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#f97316 0%,#a855f7 50%,#22c55e 100%)!important;
+}
+
+/* Reference pages remain centered with contain rendering and calm Prism night around them. */
+body.plugin-ui-final.plugin-angels .grid.stage-render,
+body.plugin-ui-final.plugin-pillars .grid.stage-render{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.reference-stage{align-items:center!important;justify-content:center!important;}
+.reference-canvas{margin:auto!important;}
+
+/* If audio exists but playback is blocked, the fallback button may show. Missing audio creates no element. */
+body.plugin-angels #visualAudioFallback,
+body.plugin-pillars #visualAudioFallback,
+body.plugin-letters #visualAudioFallback{
+  display:flex!important;
+}
+
+/* Guided Interaction: visible idle effect + active cue effect. */
+.guided-butterfly{
+  position:absolute;
+  z-index:4;
+  left:-8%;
+  top:28%;
+  font-size:clamp(18px,4vw,42px);
+  opacity:.72;
+  pointer-events:none;
+  animation:guidedButterfly 13s ease-in-out infinite;
+}
+@keyframes guidedButterfly{
+  0%{transform:translateX(0) translateY(0) rotate(0deg);opacity:0;}
+  10%{opacity:.75;}
+  45%{transform:translateX(58vw) translateY(-6vh) rotate(8deg);opacity:.75;}
+  75%{transform:translateX(102vw) translateY(4vh) rotate(-8deg);opacity:.55;}
+  100%{transform:translateX(118vw) translateY(0) rotate(0deg);opacity:0;}
+}
+.guided-interaction-stage::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:2;
+  background:radial-gradient(circle at 20% 70%,rgba(255,255,255,.10),transparent 18%),radial-gradient(circle at 84% 24%,rgba(255,255,255,.08),transparent 16%);
+  animation:guidedCalmGlow 5.5s ease-in-out infinite;
+}
+@keyframes guidedCalmGlow{0%,100%{opacity:.35;}50%{opacity:.72;}}
