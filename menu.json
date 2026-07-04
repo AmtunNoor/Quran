@@ -986,9 +986,9 @@
           "10": 25.04
         }
       },
-      "landingTileImage": false,
+      "landingTileImage": true,
+      "tileImage": "plugins/numbers/numbers_icon.webp",
       "type": "plugin",
-      "tileImage": "numbers/numbers.jpeg",
       "backgroundImage": "numbers/numbers.jpeg",
       "images": [
         "numbers/numbers.jpeg"
