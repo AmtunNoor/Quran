@@ -3601,3 +3601,57 @@ body.plugin-angels .question-glow::after{
 .guided-letter-glow,.guided-flying-tile{will-change:transform,opacity,left,top!important;}
 .guided-flying-tile{z-index:7!important;}
 .guided-letter-glow{z-index:6!important;}
+
+
+/* ================= PRISM V6.9 FINAL POLISH 20260704 ================= */
+/* Restore rich colourful gradients for legacy landing cards when no artwork/icon loads. */
+body.landing-mode .card[data-plugin-id="quran"][data-tile-image-status="gradient"]{
+  background:
+    radial-gradient(circle at 28% 18%,rgba(255,255,255,.28),transparent 28%),
+    linear-gradient(135deg,#f59e0b 0%,#ef4444 50%,#8b5cf6 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="salah"][data-tile-image-status="gradient"]{
+  background:
+    radial-gradient(circle at 28% 18%,rgba(255,255,255,.26),transparent 28%),
+    linear-gradient(135deg,#22c55e 0%,#0ea5e9 52%,#6366f1 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="dua"][data-tile-image-status="gradient"]{
+  background:
+    radial-gradient(circle at 28% 18%,rgba(255,255,255,.27),transparent 28%),
+    linear-gradient(135deg,#f472b6 0%,#8b5cf6 52%,#0ea5e9 100%)!important;
+}
+/* Angels Munkar: one red question mark at a time, random position is set by JS. */
+body.plugin-angels .question-glow::after{content:none!important;display:none!important;}
+body.plugin-angels .floating-question{
+  position:absolute!important;
+  display:block!important;
+  color:#ef4444!important;
+  font-weight:900!important;
+  font-size:clamp(28px,18%,76px)!important;
+  line-height:1!important;
+  text-shadow:0 0 12px rgba(239,68,68,.95),0 0 22px rgba(255,255,255,.35)!important;
+  transform:translate(-50%,-50%) scale(.6)!important;
+  opacity:0!important;
+  pointer-events:none!important;
+}
+@keyframes floatingQuestionPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}
+  24%{opacity:1;transform:translate(-50%,-50%) scale(1.10)}
+  62%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
+}
+/* Letters: keep existing artwork stable; tiny bunny-area hop only, no visible whole-image twitch. */
+.guided-interaction-stage.bunnyJump .guided-scene{
+  animation:bunnySceneJumpSoft 1450ms cubic-bezier(.22,.72,.26,1)!important;
+  transform-origin:23% 64%!important;
+}
+@keyframes bunnySceneJumpSoft{
+  0%,100%{transform:scale(1) translateY(0)}
+  32%{transform:scale(1.002,.998) translateY(-.18%)}
+  62%{transform:scale(.999,1.001) translateY(-.10%)}
+}
+.guided-flying-tile{
+  border-radius:16px!important;
+  background:rgba(255,255,245,.92)!important;
+  box-shadow:0 8px 20px rgba(0,0,0,.18),0 0 28px rgba(255,224,80,.88)!important;
+}
