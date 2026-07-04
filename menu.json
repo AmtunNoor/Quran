@@ -1253,38 +1253,39 @@
         "border": "colorful",
         "sparkles": true,
         "sparkleRate": 1000,
-        "maxScale": 1.035
+        "maxScale": 1.025,
+        "wholePillarFocus": true
       },
       "coordinates": {
         "shahadah": {
-          "left": 11.15,
-          "top": 60.150000000000006,
-          "width": 7.7,
-          "height": 11.1
+          "left": 11.5,
+          "top": 20.5,
+          "width": 17,
+          "height": 67
         },
         "salah": {
-          "left": 29.75,
-          "top": 60.150000000000006,
-          "width": 7.7,
-          "height": 11.1
-        },
-        "zakat": {
-          "left": 47.55,
-          "top": 60.150000000000006,
-          "width": 7.7,
-          "height": 11.1
+          "left": 27.8,
+          "top": 19.5,
+          "width": 16,
+          "height": 68
         },
         "sawm": {
-          "left": 63.85,
-          "top": 60.150000000000006,
-          "width": 7.7,
-          "height": 11.1
+          "left": 43,
+          "top": 19.5,
+          "width": 17,
+          "height": 68
+        },
+        "zakat": {
+          "left": 59.6,
+          "top": 20,
+          "width": 16,
+          "height": 67
         },
         "hajj": {
-          "left": 82.25,
-          "top": 60.150000000000006,
-          "width": 7.7,
-          "height": 11.1
+          "left": 75.3,
+          "top": 20,
+          "width": 17,
+          "height": 67
         }
       },
       "coordinateTiming": {
@@ -1293,8 +1294,8 @@
         "starts": {
           "shahadah": 0,
           "salah": 13.5,
-          "zakat": 20.28,
-          "sawm": 25.57,
+          "sawm": 20.28,
+          "zakat": 25.57,
           "hajj": 34.01
         },
         "ranges": {
@@ -1306,11 +1307,11 @@
             13.5,
             20.2
           ],
-          "zakat": [
+          "sawm": [
             20.28,
             25.3
           ],
-          "sawm": [
+          "zakat": [
             25.57,
             32.96
           ],
