@@ -85,9 +85,11 @@
   },
   "landingTileImage": true,
   "aspectRatio": "3/2",
-  "primaryAudio": "pillars/pillars.mp3",
+  "primaryAudio": "plugins/pillars/pillars.mp3",
   "audios": [
+    "plugins/pillars/pillars.mp3",
     "pillars/pillars.mp3"
   ],
-  "theme": "pillars"
+  "theme": "pillars",
+  "autoStart": true
 }
