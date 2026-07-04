@@ -177,7 +177,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_hotfix_20260704";
+const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_last_polish_20260704";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -269,7 +269,8 @@ async function loadPluginHostMenu(legacyMenu){
 
 function gradientFor(theme){
 const t = THEME[theme] || THEME.default;
-return `linear-gradient(135deg,${t[0]},${t[1]})`;
+const a=t[0], b=t[1], c=t[3] || t[1];
+return `radial-gradient(circle at 28% 18%,rgba(255,255,255,.24),transparent 28%), linear-gradient(135deg,${a} 0%,${b} 52%,${c} 100%)`;
 }
 
 function iconFor(theme){
@@ -1224,11 +1225,41 @@ function buildGuidedInteraction(plugin, autoplay){
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
 
+  function imageToStagePercent(x, y){
+    const img = stage.querySelector(".guided-scene");
+    const stageRect = stage.getBoundingClientRect();
+    if(!img || !stageRect.width || !stageRect.height || !img.naturalWidth || !img.naturalHeight){
+      return {x:Number(x), y:Number(y), w:(plugin.tileWidth||8.5), h:(plugin.tileHeight||10)};
+    }
+    const imageRatio = img.naturalWidth / img.naturalHeight;
+    const stageRatio = stageRect.width / stageRect.height;
+    let renderW, renderH, offsetX, offsetY;
+    if(stageRatio > imageRatio){
+      renderH = stageRect.height;
+      renderW = renderH * imageRatio;
+      offsetX = (stageRect.width - renderW) / 2;
+      offsetY = 0;
+    }else{
+      renderW = stageRect.width;
+      renderH = renderW / imageRatio;
+      offsetX = 0;
+      offsetY = (stageRect.height - renderH) / 2;
+    }
+    return {
+      x: ((offsetX + (Number(x)/100)*renderW) / stageRect.width) * 100,
+      y: ((offsetY + (Number(y)/100)*renderH) / stageRect.height) * 100,
+      w: ((plugin.tileWidth||8.5) * renderW / stageRect.width),
+      h: ((plugin.tileHeight||10) * renderH / stageRect.height)
+    };
+  }
+
   function setTileBox(el, x, y){
-    el.style.left = Number(x) + "%";
-    el.style.top = Number(y) + "%";
-    el.style.width = (plugin.tileWidth || 8.5) + "%";
-    el.style.height = (plugin.tileHeight || 10) + "%";
+    const p = imageToStagePercent(x,y);
+    el.style.left = p.x + "%";
+    el.style.top = p.y + "%";
+    el.style.width = p.w + "%";
+    el.style.height = p.h + "%";
+    return p;
   }
 
   function playGuidedEffect(index){
@@ -1236,28 +1267,36 @@ function buildGuidedInteraction(plugin, autoplay){
     if(!item) return;
     const x = Number(item.x); const y = Number(item.y);
     if(!Number.isFinite(x) || !Number.isFinite(y)) return;
-    setTileBox(glow,x,y);
+    const p = setTileBox(glow,x,y);
     setTileBox(flyingTile,x,y);
     flyingTile.textContent = item.l || item.label || item.key || "";
-    flyingTile.style.fontSize = "min(6.5vw, 7.5vh)";
+    flyingTile.style.fontSize = "min(5.2vw, 5.9vh)";
+
+    const holdSometimes = index % 4 === 1; // occasional “bunny holds it” backup behaviour
+    const bunny = imageToStagePercent((catchPoint && catchPoint.x) || 28, (catchPoint && catchPoint.y) || 56);
+    const liftY = Math.max(5, p.y - 7);
+    const midX = holdSometimes ? (p.x * .72 + bunny.x * .28) : p.x;
+    const midY = holdSometimes ? (p.y * .76 + bunny.y * .24) : liftY;
+
     glow.animate([
-      {opacity:0,transform:"translate(-50%,-50%) scale(.85)"},
-      {opacity:1,transform:"translate(-50%,-50%) scale(1.08)"},
-      {opacity:1,transform:"translate(-50%,-50%) scale(1)"}
-    ],{duration:420,easing:"ease-out",fill:"forwards"});
+      {opacity:0,transform:"translate(-50%,-50%) scale(.92)"},
+      {opacity:1,transform:"translate(-50%,-50%) scale(1.04)"},
+      {opacity:.9,transform:"translate(-50%,-50%) scale(1)"},
+      {opacity:0,transform:"translate(-50%,-50%) scale(.98)"}
+    ],{duration:3000,easing:"ease-in-out",fill:"forwards"});
+
     flyingTile.animate([
-      {opacity:0,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(.85) rotate(0deg)"},
-      {opacity:1,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(1.08) rotate(-2deg)"},
-      {opacity:1,left:((x+catchPoint.x)/2)+"%",top:(Math.min(y,catchPoint.y)-14)+"%",transform:"translate(-50%,-50%) scale(1.1) rotate(5deg)"},
-      {opacity:1,left:catchPoint.x+"%",top:catchPoint.y+"%",transform:"translate(-50%,-50%) scale(1.02) rotate(0deg)"},
-      {opacity:1,left:catchPoint.x+"%",top:catchPoint.y+"%",transform:"translate(-50%,-50%) scale(1) rotate(0deg)"},
-      {opacity:1,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(.96) rotate(0deg)"},
-      {opacity:0,left:x+"%",top:y+"%",transform:"translate(-50%,-50%) scale(.88)"}
-    ],{duration:1900,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
+      {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.86) rotate(0deg)"},
+      {opacity:1,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(1.04) rotate(-1deg)"},
+      {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.02) rotate(2deg)"},
+      {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.00) rotate(0deg)"},
+      {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.90) rotate(0deg)"}
+    ],{duration:3300,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
+
     stage.classList.remove("bunnyJump");
     void stage.offsetWidth;
     stage.classList.add("bunnyJump");
-    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},1950);
+    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},3350);
   }
 
 
@@ -1268,7 +1307,7 @@ function buildGuidedInteraction(plugin, autoplay){
     setInterval(()=>{
       if(!document.body.contains(stage)) return;
       playGuidedEffect(i++ % letters.length);
-    }, 2600);
+    }, 4200);
   }
 
   window.playArabicLetterEffect = playGuidedEffect;
@@ -1429,7 +1468,7 @@ function buildReferenceVisualPlugin(plugin, autoplay){
 function referenceEffectMarkup(pid, effect){
   if(pid === "angels"){
     if(effect === "soundWave") return '<div class="reference-effect sound-wave"></div>';
-    if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"></div>';
+    if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"><span class="floating-question">?</span></div>';
     if(effect === "softRain") return '<div class="reference-effect soft-rain"></div>';
     if(effect === "gardenGlow") return '<div class="reference-effect garden-glow"></div>';
     if(effect === "messageLight") return '<div class="reference-effect message-light"></div>';
@@ -1466,6 +1505,18 @@ function setReferenceFocus(stage, plugin, index){
     const on = el.dataset.key === activeKey;
     el.classList.toggle("active", on);
     el.classList.toggle("dim", !on && dimOthers);
+    if(on && el.dataset.effect === "questionGlow"){
+      const q = el.querySelector(".floating-question");
+      if(q){
+        const x = 16 + Math.random() * 68;
+        const y = 18 + Math.random() * 58;
+        q.style.left = x + "%";
+        q.style.top = y + "%";
+        q.style.animation = "none";
+        void q.offsetWidth;
+        q.style.animation = "floatingQuestionPop 2.6s ease-in-out 1";
+      }
+    }
   });
 }
 function clearReferenceFocus(stage){ if(stage) stage.querySelectorAll(".reference-hotspot").forEach(el=>el.classList.remove("active","dim")); }
