@@ -177,7 +177,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_release_20260704";
+const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_hotfix_20260704";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -345,7 +345,7 @@ function landingTileCandidates(plugin, id){
 
   // Existing legacy modules intentionally keep their artwork + title.
   const canUseTileImage = plugin.landingTileImage === true || keepText;
-  if(canUseTileImage) add(plugin.tileImage, false);
+  if(canUseTileImage) add(plugin.tileImage, !keepText);
 
   return out;
 }
@@ -1282,6 +1282,8 @@ function buildGuidedInteraction(plugin, autoplay){
     audio.addEventListener("ended",()=>{ active=-1; glow.style.opacity=0; flyingTile.style.opacity=0; });
     stage.onclick=()=>play(plugin.id);
     if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
+  }else{
+    startGuidedVisualDemo();
   }
 }
 
