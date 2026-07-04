@@ -85,5 +85,6 @@
   },
   "landingTileImage": false,
   "aspectRatio": "3/2",
-  "primaryAudio": null
+  "primaryAudio": null,
+  "theme": "angels"
 }
