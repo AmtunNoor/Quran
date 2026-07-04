@@ -3558,3 +3558,46 @@ body.plugin-letters #visualAudioFallback{
   animation:guidedCalmGlow 5.5s ease-in-out infinite;
 }
 @keyframes guidedCalmGlow{0%,100%{opacity:.35;}50%{opacity:.72;}}
+
+
+/* ================= PRISM V6.9 FROZEN HOTFIX 20260704 ================= */
+/* Pillars now has audio, so its browser-blocked fallback must be visible if play() is rejected. */
+body.plugin-pillars #visualAudioFallback{
+  display:inline-flex!important;
+}
+/* If a plugin icon loads, it is icon-only. If it fails, engine leaves gradient + emoji/title. */
+body.landing-mode .card[data-icon-only="true"] .card-info-box{display:none!important;}
+body.landing-mode .card[data-icon-only="true"]{background-size:cover!important;background-position:center!important;}
+body.landing-mode .card[data-tile-image-status="gradient"] .card-info-box{display:flex!important;}
+body.landing-mode .card[data-tile-image-status="gradient"]{background-image:none!important;}
+/* Richer fallback gradients matching Quran/Salah/Dua family. */
+body.landing-mode .card[data-plugin-id="angels"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#312e81 0%,#7c3aed 45%,#06b6d4 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="pillars"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#f59e0b 0%,#8b5cf6 52%,#14b8a6 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="letters"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#ec4899 0%,#7c3aed 52%,#0ea5e9 100%)!important;
+}
+body.landing-mode .card[data-plugin-id="numbers"][data-tile-image-status="gradient"]{
+  background:linear-gradient(135deg,#f97316 0%,#a855f7 50%,#22c55e 100%)!important;
+}
+/* Angels: several red question marks, slower, still clipped inside Munkar tile. */
+body.plugin-angels .question-glow::after{
+  content:"?  ?  ?"!important;
+  color:#ef4444!important;
+  right:10%!important;
+  top:15%!important;
+  width:80%!important;
+  font-size:clamp(24px,12%,64px)!important;
+  letter-spacing:.08em!important;
+  text-align:center!important;
+  white-space:pre!important;
+  text-shadow:0 0 12px rgba(239,68,68,.95),0 0 22px rgba(255,255,255,.35)!important;
+  animation:qPulse 2.8s ease-in-out infinite!important;
+}
+/* Guided Interaction: demo must visibly run even before audio exists. */
+.guided-letter-glow,.guided-flying-tile{will-change:transform,opacity,left,top!important;}
+.guided-flying-tile{z-index:7!important;}
+.guided-letter-glow{z-index:6!important;}
