@@ -135,5 +135,6 @@
       "10": 25.04
     }
   },
-  "landingTileImage": false
+  "landingTileImage": true,
+  "tileImage": "plugins/numbers/numbers_icon.webp"
 }
