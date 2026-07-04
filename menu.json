@@ -448,7 +448,7 @@
         }
       },
       "renderer": "visual",
-      "landingTileImage": true,
+      "landingTileImage": "months/months_icon.jpeg",
       "tileImage": "months/months_icon.jpeg",
       "backgroundImage": "months/months_background.jpeg",
       "primaryAudio": "months/months.mp3",
