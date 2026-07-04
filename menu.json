@@ -562,8 +562,27 @@
       "renderer": "grid",
       "enabled": true,
       "showOnLanding": true,
-      "backgroundImage": "names/names.jpeg",
-      "tileImage": "names/names.jpeg",
+      "backgroundImage": {
+        "type": "gradient",
+        "style": "soft",
+        "colors": [
+          "#fff1eb",
+          "#ace0f9",
+          "#fbc2eb"
+        ]
+      },
+      "tileImage": {
+        "type": "gradient",
+        "style": "colorful",
+        "colors": [
+          "#ff9a9e",
+          "#fad0c4",
+          "#fbc2eb",
+          "#a18cd1"
+        ],
+        "icon": "✨",
+        "label": "Allah Names"
+      },
       "audios": [
         "names/1_27.mp3",
         "names/28_36.mp3",
@@ -573,9 +592,7 @@
         "names/77_99.mp3"
       ],
       "primaryAudio": "names/1_27.mp3",
-      "images": [
-        "names/names.jpeg"
-      ],
+      "images": [],
       "playFromLanding": false,
       "autoStart": false,
       "directAudio": false,
@@ -641,10 +658,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/index.html",
         "path": "names/index.html"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/names/names.jpeg",
-        "path": "names/names.jpeg"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
