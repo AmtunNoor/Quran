@@ -1234,7 +1234,7 @@
   },
   {
     "title": "Five Pillars",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=pillars",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=pillars&autoplay=1",
     "plugin": {
       "id": "pillars",
       "title": "Five Pillars",
@@ -1322,15 +1322,15 @@
       },
       "landingTileImage": true,
       "aspectRatio": "3/2",
-      "primaryAudio": null,
+      "primaryAudio": "plugins/pillars/pillars.mp3",
       "audios": [],
       "theme": "pillars",
+      "autoStart": true,
       "type": "plugin",
       "images": [
         "pillars/pillars.jpeg"
       ],
       "playFromLanding": false,
-      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "supports": [
