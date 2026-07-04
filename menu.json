@@ -1593,8 +1593,8 @@
         57.2,
         59.4
       ],
-      "type": "plugin",
       "theme": "letters",
+      "type": "plugin",
       "renderer": "gallery",
       "audios": [],
       "images": [],
