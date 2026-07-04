@@ -78,7 +78,9 @@ months:["#38bdf8","#6366f1","🗓"],
 names:["#facc15","#fb7185","ﷲ"],
 numbers:["#f97316","#22c55e","🔢"],
 "salah-names":["#fb923c","#1d4ed8","🌙"],
-angels:["#e0f2fe","#a78bfa","🕊"],
+angels:["#312e81","#06b6d4","🪽"],
+pillars:["#f59e0b","#14b8a6","🏛️"],
+letters:["#a855f7","#0ea5e9","🔠"],
 default:["#a78bfa","#22d3ee","✨"]
 };
 
@@ -175,7 +177,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v690_rc2_final_freeze_20260703";
+const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_release_20260704";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -275,27 +277,37 @@ return (THEME[theme] || THEME.default)[2];
 }
 
 function applyImageOrGradient(card, image, theme){
-  const setGradient = ()=>{ card.style.background = gradientFor(theme); card.dataset.tileImageStatus = "gradient"; };
+  const setGradient = ()=>{
+    card.style.background = gradientFor(theme);
+    card.style.backgroundImage = "";
+    card.dataset.tileImageStatus = "gradient";
+    card.dataset.iconOnly = "false";
+  };
   if(image && image.type === "gradient" && Array.isArray(image.colors)){
     card.style.background = `linear-gradient(135deg,${image.colors.join(",")})`;
     card.dataset.tileImageStatus = "gradient";
+    card.dataset.iconOnly = "false";
     return;
   }
-  const candidates = (Array.isArray(image) ? image : [image])
-    .filter(v => typeof v === "string" && v.trim())
-    .map(v => v.trim());
+  const raw = Array.isArray(image) ? image : [image];
+  const candidates = raw
+    .map(v => typeof v === "string" ? {src:v, iconOnly:false} : v)
+    .filter(v => v && typeof v.src === "string" && v.src.trim())
+    .map(v => ({src:v.src.trim(), iconOnly:!!v.iconOnly}));
   if(!candidates.length){ setGradient(); return; }
 
   setGradient();
   let i = 0;
   const tryNext = ()=>{
     if(i >= candidates.length) return;
-    const src = candidates[i++];
+    const cand = candidates[i++];
+    const src = cand.src;
     const probe = new Image();
     probe.onload = ()=>{
-      card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.25)), url('${src}')`;
+      card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.04),rgba(2,6,23,.12)), url('${src}')`;
       card.style.backgroundColor = "transparent";
       card.dataset.tileImageStatus = "image";
+      card.dataset.iconOnly = cand.iconOnly ? "true" : "false";
     };
     probe.onerror = tryNext;
     probe.src = src + (src.includes("?") ? "&" : "?") + "v=" + encodeURIComponent(PRISM_PLUGIN_HOST_VERSION);
@@ -307,21 +319,33 @@ function landingTileCandidates(plugin, id){
   const clean = cleanPluginId(id || plugin.id || plugin.folder || "");
   const folder = String(plugin.folder || clean || "").replace(/^\/+|\/+$/g,"");
   const out = [];
-  const add = (v)=>{ if(typeof v === "string" && v.trim() && !out.includes(v.trim())) out.push(v.trim()); };
+  const add = (src, iconOnly=false)=>{
+    if(typeof src !== "string" || !src.trim()) return;
+    const entry = {src:src.trim(), iconOnly};
+    if(!out.some(x=>x.src === entry.src)) out.push(entry);
+  };
 
-  // Explicit image wins, but must still gracefully fall back if missing.
-  if(typeof plugin.landingTileImage === "string") add(plugin.landingTileImage);
+  const keepTextModules = new Set(["quran","salah","dua","salah-names","salahnames"]);
+  const keepText = keepTextModules.has(clean);
 
-  // Convention for plugin icons: either root module folder or self-contained plugin folder.
+  // Explicit landing tile image. If it loads, most plugins use icon-only.
+  if(typeof plugin.landingTileImage === "string") add(plugin.landingTileImage, !keepText);
+
+  // Future-proof convention: folder/folder_icon.webp/jpeg/png.
   if(folder && clean){
-    add(`${folder}/${clean}_icon.webp`);
-    add(`plugins/${clean}/${clean}_icon.webp`);
+    add(`${folder}/${clean}_icon.webp`, !keepText);
+    add(`${folder}/${clean}_icon.jpeg`, !keepText);
+    add(`${folder}/${clean}_icon.jpg`, !keepText);
+    add(`${folder}/${clean}_icon.png`, !keepText);
+    add(`plugins/${clean}/${clean}_icon.webp`, !keepText);
+    add(`plugins/${clean}/${clean}_icon.jpeg`, !keepText);
+    add(`plugins/${clean}/${clean}_icon.jpg`, !keepText);
+    add(`plugins/${clean}/${clean}_icon.png`, !keepText);
   }
-  if(clean) add(`${clean}/${clean}_icon.webp`);
 
-  // Some existing modules intentionally use tile artwork on landing.
-  const canUseTileImage = plugin.landingTileImage === true || ["months","names","salah-names","salahnames"].includes(String(clean).toLowerCase());
-  if(canUseTileImage) add(plugin.tileImage);
+  // Existing legacy modules intentionally keep their artwork + title.
+  const canUseTileImage = plugin.landingTileImage === true || keepText;
+  if(canUseTileImage) add(plugin.tileImage, false);
 
   return out;
 }
@@ -952,10 +976,10 @@ grid.appendChild(stage);
 ensureStoryImageLoaded(stage, bg);
 
 const audio = stage.querySelector("audio");
-const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:""},index:0,type:"audio"};
+const item = {id:plugin.id,card:stage,audio,btn:null,s:{...plugin,file:audioFile,name:plugin.title,eng:""},index:0,type:audio ? "audio" : "visual"};
 items.push(item);
 map[plugin.id]=item;
-stage.onclick = ()=>play(plugin.id);
+stage.onclick = ()=>{ if(audio) play(plugin.id); };
 updateFocus();
 if(autoplay || params().get("autoplay")==="1") setTimeout(()=>play(plugin.id),400);
 }
@@ -1182,6 +1206,7 @@ function buildGuidedInteraction(plugin, autoplay){
     ${bg ? `<img class="guided-scene" src="${bg}" alt="${plugin.title || "Guided learning"}">` : ""}
     <div class="guided-letter-glow"></div>
     <div class="guided-flying-tile"></div>
+    <div class="guided-butterfly" aria-hidden="true">🦋</div>
     ${audioFile ? `<audio src="${audioFile}" preload="auto"></audio>` : ""}
   `;
   grid.appendChild(stage);
@@ -1233,6 +1258,17 @@ function buildGuidedInteraction(plugin, autoplay){
     void stage.offsetWidth;
     stage.classList.add("bunnyJump");
     setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},1950);
+  }
+
+
+  function startGuidedVisualDemo(){
+    if(audio || !letters.length) return;
+    let i = 0;
+    setTimeout(()=>playGuidedEffect(i++), 900);
+    setInterval(()=>{
+      if(!document.body.contains(stage)) return;
+      playGuidedEffect(i++ % letters.length);
+    }, 2600);
   }
 
   window.playArabicLetterEffect = playGuidedEffect;
@@ -1433,8 +1469,16 @@ function setReferenceFocus(stage, plugin, index){
 function clearReferenceFocus(stage){ if(stage) stage.querySelectorAll(".reference-hotspot").forEach(el=>el.classList.remove("active","dim")); }
 function startReferenceDemo(plugin, stage){
   stopReferenceDemo();
-  // No pre-audio cycling. The reference modules activate only from audio cues.
-  clearReferenceFocus(stage);
+  const audio = stage ? stage.querySelector("audio") : null;
+  if(audio){ clearReferenceFocus(stage); return; }
+  // Visual-only mode: effects are allowed to run gently even before audio is added.
+  // One active hotspot at a time; no global effects, no full image movement.
+  let i = 0;
+  setReferenceFocus(stage, plugin, i++);
+  referenceDemoTimer = setInterval(()=>{
+    if(!stage || !document.body.contains(stage)){ stopReferenceDemo(); return; }
+    setReferenceFocus(stage, plugin, i++);
+  }, 2400);
 }
 
 function startReferenceAudioFocus(plugin,audio,stage){
