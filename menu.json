@@ -1245,31 +1245,31 @@
       "coordinates": {
         "shahadah": {
           "left": 11.15,
-          "top": 60.15,
+          "top": 60.150000000000006,
           "width": 7.7,
           "height": 11.1
         },
         "salah": {
           "left": 29.75,
-          "top": 60.15,
+          "top": 60.150000000000006,
           "width": 7.7,
           "height": 11.1
         },
         "zakat": {
           "left": 47.55,
-          "top": 60.15,
+          "top": 60.150000000000006,
           "width": 7.7,
           "height": 11.1
         },
         "sawm": {
           "left": 63.85,
-          "top": 60.15,
+          "top": 60.150000000000006,
           "width": 7.7,
           "height": 11.1
         },
         "hajj": {
           "left": 82.25,
-          "top": 60.15,
+          "top": 60.150000000000006,
           "width": 7.7,
           "height": 11.1
         }
@@ -1307,12 +1307,12 @@
           ]
         }
       },
-      "landingTileImage": false,
+      "landingTileImage": true,
       "aspectRatio": "3/2",
       "primaryAudio": null,
       "audios": [],
-      "type": "plugin",
       "theme": "pillars",
+      "type": "plugin",
       "images": [
         "pillars/pillars.jpeg"
       ],
