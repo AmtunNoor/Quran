@@ -584,6 +584,34 @@ const fromSlices = Object.keys(slicesData || {}).filter(k=>/^learn\/.+\.(mp3|m4a
 return [...new Set([...fromSync,...fromSlices])];
 }
 
+function quranSyncPathSet(){
+  return new Set(quranSyncFiles().map(f=>f.path));
+}
+
+function listenPathForLearnPath(path){
+  return String(path || "").replace(/^learn\//,"listen/");
+}
+
+function effectiveLearnAudioPath(path){
+  const p = String(path || "");
+  if(!/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(p)) return p;
+  const set = quranSyncPathSet();
+  if(set.has(p)) return p;
+  const listenPath = listenPathForLearnPath(p);
+  if(set.has(listenPath)) return listenPath;
+  return p;
+}
+
+function isLearnReusingListenAudio(path){
+  const p = String(path || "");
+  return /^learn\//i.test(p) && effectiveLearnAudioPath(p) !== p;
+}
+
+function autoLearnColor(display, path, idx){
+  if(isLearnReusingListenAudio(path)) return display.color;
+  return DEFAULT_PALETTE[(idx + 3) % DEFAULT_PALETTE.length];
+}
+
 function findLearnForSurah(s){
 const learns = getLearnFiles();
 const candidates = [];
@@ -649,8 +677,10 @@ return {
 id:`learn-${normalizeFileName(p) || idx}`,
 ...display,
 emoji:display.emoji || "🎓",
-file:p,
+color:autoLearnColor(display, p, idx),
+file:effectiveLearnAudioPath(p),
 learnFile:p,
+reusedListenAudio:isLearnReusingListenAudio(p),
 slices:slicesData[p] || null,
 learningMode:slicesData[p] ? "slices" : "durationChunks",
 hasLearn:true
@@ -672,7 +702,7 @@ if(!source.length) source = surahs;
 source.forEach((s,idx)=>{
 const item = {...s};
 if(isMainListen && item.listenFile) item.file = item.listenFile;
-if(!isMainListen && item.learnFile) item.file = item.learnFile;
+if(!isMainListen && item.learnFile) item.file = effectiveLearnAudioPath(item.learnFile);
 createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
 });
 
@@ -798,7 +828,7 @@ setModeListen();
 try{ speechSynthesis.cancel(); }catch(e){}
 currentView = "plugin";
 currentPlugin = plugin;
-const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames"]);
+const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames","letters"]);
 const wantsFloating = String(plugin.controls || "").toLowerCase() === "floating" || v66FloatControlIds.has(String(plugin.id||"").toLowerCase());
 if(wantsFloating) setupAutoTopbar(); else disableAutoTopbar();
 document.body.classList.remove("landing-mode");
@@ -1224,6 +1254,28 @@ function buildGuidedInteraction(plugin, autoplay){
   const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
+  let letterAudio = null;
+
+  function resolveLetterAudio(item){
+    if(!item || !plugin.audioMap) return "";
+    const key = item.l || item.label || item.key || "";
+    const mapped = plugin.audioMap[key];
+    if(!mapped) return "";
+    const base = plugin.audioBase || "plugins/letters/audio/";
+    if(/^https?:\/\//i.test(mapped) || mapped.startsWith("/")) return mapped;
+    return String(base).replace(/\/?$/, "/") + mapped;
+  }
+
+  function playLetterAudio(item){
+    const src = resolveLetterAudio(item);
+    if(!src) return;
+    try{
+      if(letterAudio){ letterAudio.pause(); letterAudio.currentTime = 0; }
+      letterAudio = new Audio(src);
+      letterAudio.preload = "auto";
+      letterAudio.play().catch(()=>{});
+    }catch(e){}
+  }
 
   function imageToStagePercent(x, y){
     const img = stage.querySelector(".guided-scene");
@@ -1265,6 +1317,7 @@ function buildGuidedInteraction(plugin, autoplay){
   function playGuidedEffect(index){
     const item = letters[index];
     if(!item) return;
+    playLetterAudio(item);
     const x = Number(item.x); const y = Number(item.y);
     if(!Number.isFinite(x) || !Number.isFinite(y)) return;
     const p = setTileBox(glow,x,y);
@@ -1322,6 +1375,10 @@ function buildGuidedInteraction(plugin, autoplay){
     stage.onclick=()=>play(plugin.id);
     if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
   }else{
+    let manualGuidedIndex = 0;
+    stage.onclick = ()=>{
+      playGuidedEffect(manualGuidedIndex++ % Math.max(letters.length,1));
+    };
     startGuidedVisualDemo();
   }
 }
@@ -1470,6 +1527,8 @@ function referenceEffectMarkup(pid, effect){
     if(effect === "soundWave") return '<div class="reference-effect sound-wave"></div>';
     if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"><span class="floating-question">?</span></div>';
     if(effect === "softRain") return '<div class="reference-effect soft-rain"></div>';
+    if(effect === "malikFire") return '<div class="reference-effect malik-fire"></div><div class="reference-effect malik-heat"></div>';
+    if(effect === "ridwanGlow") return '<div class="reference-effect ridwan-glow"></div><div class="reference-effect ridwan-sparkle"></div>';
     if(effect === "gardenGlow") return '<div class="reference-effect garden-glow"></div>';
     if(effect === "messageLight") return '<div class="reference-effect message-light"></div>';
     if(effect === "writingSpark") return '<div class="reference-effect writing-spark"></div>';
@@ -1479,8 +1538,8 @@ function referenceEffectMarkup(pid, effect){
 }
 
 function referenceColorMap(pid){
-  if(pid === "angels") return {mikaeel:"#86efac",israfil:"#fde68a",malik:"#c4b5fd",ridwan:"#bbf7d0",paradise:"#bbf7d0",munkar:"#fbbf24",jibraeel:"#bae6fd",kiraman:"#67e8f9"};
-  return {shahadah:"#fbbf24",salah:"#60a5fa",zakat:"#86efac",sawm:"#c084fc",hajj:"#f97316"};
+  if(pid === "angels") return {mikaeel:"#86efac",israfil:"#fde68a",malik:"#fb7185",ridwan:"#fde68a",paradise:"#fde68a",munkar:"#f97316",jibraeel:"#facc15",kiraman:"#f472b6"};
+  return {shahadah:"#14b8a6",salah:"#f59e0b",sawm:"#a855f7",zakat:"#22c55e",hajj:"#3b82f6"};
 }
 
 function referenceKeysForPlugin(plugin){ return orderedCoordinateKeys(plugin); }
@@ -1508,13 +1567,18 @@ function setReferenceFocus(stage, plugin, index){
     if(on && el.dataset.effect === "questionGlow"){
       const q = el.querySelector(".floating-question");
       if(q){
-        const x = 16 + Math.random() * 68;
-        const y = 18 + Math.random() * 58;
-        q.style.left = x + "%";
-        q.style.top = y + "%";
-        q.style.animation = "none";
-        void q.offsetWidth;
-        q.style.animation = "floatingQuestionPop 2.6s ease-in-out 1";
+        const now = Date.now();
+        const next = Number(q.dataset.nextPop || 0);
+        if(now >= next){
+          const x = 18 + Math.random() * 64;
+          const y = 20 + Math.random() * 56;
+          q.style.left = x + "%";
+          q.style.top = y + "%";
+          q.style.animation = "none";
+          void q.offsetWidth;
+          q.style.animation = "floatingQuestionPop 3.4s ease-in-out 1";
+          q.dataset.nextPop = String(now + 3600 + Math.random() * 900);
+        }
       }
     }
   });
