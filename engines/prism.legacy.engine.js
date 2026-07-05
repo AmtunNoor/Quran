@@ -580,36 +580,10 @@ return quranSyncFiles().map(f=>f.path).filter(p=>/^listen\/.+\.(mp3|m4a|wav|ogg)
 
 function getLearnFiles(){
 const fromSync = quranSyncFiles().map(f=>f.path).filter(p=>/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(p));
-const fromSlices = Object.keys(slicesData || {}).filter(k=>/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(k));
+// Frozen V6.9.1 rule: learn tiles may reuse existing listen audio when slices exist.
+// Existing entries never move/rename root or listen audio; this only exposes them in Learn mode.
+const fromSlices = Object.keys(slicesData || {}).filter(k=>/^(learn|listen)\/.+\.(mp3|m4a|wav|ogg)$/i.test(k));
 return [...new Set([...fromSync,...fromSlices])];
-}
-
-function quranSyncPathSet(){
-  return new Set(quranSyncFiles().map(f=>f.path));
-}
-
-function listenPathForLearnPath(path){
-  return String(path || "").replace(/^learn\//,"listen/");
-}
-
-function effectiveLearnAudioPath(path){
-  const p = String(path || "");
-  if(!/^learn\/.+\.(mp3|m4a|wav|ogg)$/i.test(p)) return p;
-  const set = quranSyncPathSet();
-  if(set.has(p)) return p;
-  const listenPath = listenPathForLearnPath(p);
-  if(set.has(listenPath)) return listenPath;
-  return p;
-}
-
-function isLearnReusingListenAudio(path){
-  const p = String(path || "");
-  return /^learn\//i.test(p) && effectiveLearnAudioPath(p) !== p;
-}
-
-function autoLearnColor(display, path, idx){
-  if(isLearnReusingListenAudio(path)) return display.color;
-  return DEFAULT_PALETTE[(idx + 3) % DEFAULT_PALETTE.length];
 }
 
 function findLearnForSurah(s){
@@ -624,6 +598,23 @@ if(hit) return hit;
 return null;
 }
 
+function sliceEntryForPath(path){
+const entry = (slicesData || {})[path];
+if(!entry) return {slices:null, mode:null, reuseListenAudio:false};
+if(Array.isArray(entry)) return {slices:entry, mode:null, reuseListenAudio:false};
+return {
+  slices:Array.isArray(entry.slices) ? entry.slices : null,
+  mode:entry.mode || entry.sliceMode || null,
+  reuseListenAudio:entry.reuseListenAudio === true
+};
+}
+
+function learningModeForSliceEntry(path, entry){
+  if(entry && (entry.mode === "starts" || entry.mode === "sliceStarts")) return "sliceStarts";
+  if(/^listen\//i.test(path) && entry && Array.isArray(entry.slices)) return "sliceStarts";
+  return entry && Array.isArray(entry.slices) ? "slices" : "durationChunks";
+}
+
 function buildQuranListenSource(){
 const base = surahs.map(s=>{
 const learn = findLearnForSurah(s);
@@ -631,7 +622,7 @@ return {
 ...s,
 listenFile:s.file,
 learnFile:learn,
-slices:learn ? slicesData[learn] : null,
+...(()=>{ const se = learn ? sliceEntryForPath(learn) : {slices:null,mode:null,reuseListenAudio:false}; return {slices:se.slices, sliceMode:se.mode, reuseListenAudio:se.reuseListenAudio, learningMode:learn ? learningModeForSliceEntry(learn,se) : null}; })(),
 hasLearn:!!learn
 };
 });
@@ -655,7 +646,7 @@ id:`listen-${normalizeFileName(p) || idx}`,
 file:p,
 listenFile:p,
 learnFile:learnMatch,
-slices:learnMatch ? slicesData[learnMatch] : null,
+...(()=>{ const se = learnMatch ? sliceEntryForPath(learnMatch) : {slices:null,mode:null,reuseListenAudio:false}; return {slices:se.slices, sliceMode:se.mode, reuseListenAudio:se.reuseListenAudio, learningMode:learnMatch ? learningModeForSliceEntry(learnMatch,se) : null}; })(),
 hasLearn:!!learnMatch
 };
 });
@@ -673,16 +664,17 @@ return Number(sa || 9999) - Number(sb || 9999);
 });
 return learns.map((p,idx)=>{
 const display = makeSurahDisplayFromPath(p, idx);
+const se = sliceEntryForPath(p);
 return {
 id:`learn-${normalizeFileName(p) || idx}`,
 ...display,
 emoji:display.emoji || "🎓",
-color:autoLearnColor(display, p, idx),
-file:effectiveLearnAudioPath(p),
+file:p,
 learnFile:p,
-reusedListenAudio:isLearnReusingListenAudio(p),
-slices:slicesData[p] || null,
-learningMode:slicesData[p] ? "slices" : "durationChunks",
+slices:se.slices,
+sliceMode:se.mode,
+reuseListenAudio:se.reuseListenAudio || /^listen\//i.test(p),
+learningMode:learningModeForSliceEntry(p,se),
 hasLearn:true
 };
 });
@@ -702,7 +694,7 @@ if(!source.length) source = surahs;
 source.forEach((s,idx)=>{
 const item = {...s};
 if(isMainListen && item.listenFile) item.file = item.listenFile;
-if(!isMainListen && item.learnFile) item.file = effectiveLearnAudioPath(item.learnFile);
+if(!isMainListen && item.learnFile) item.file = item.learnFile;
 createAudioCard(item,idx,"quran", isMainListen && item.hasLearn);
 });
 
@@ -828,7 +820,7 @@ setModeListen();
 try{ speechSynthesis.cancel(); }catch(e){}
 currentView = "plugin";
 currentPlugin = plugin;
-const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames","letters"]);
+const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames"]);
 const wantsFloating = String(plugin.controls || "").toLowerCase() === "floating" || v66FloatControlIds.has(String(plugin.id||"").toLowerCase());
 if(wantsFloating) setupAutoTopbar(); else disableAutoTopbar();
 document.body.classList.remove("landing-mode");
@@ -1254,28 +1246,6 @@ function buildGuidedInteraction(plugin, autoplay){
   const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
-  let letterAudio = null;
-
-  function resolveLetterAudio(item){
-    if(!item || !plugin.audioMap) return "";
-    const key = item.l || item.label || item.key || "";
-    const mapped = plugin.audioMap[key];
-    if(!mapped) return "";
-    const base = plugin.audioBase || "plugins/letters/audio/";
-    if(/^https?:\/\//i.test(mapped) || mapped.startsWith("/")) return mapped;
-    return String(base).replace(/\/?$/, "/") + mapped;
-  }
-
-  function playLetterAudio(item){
-    const src = resolveLetterAudio(item);
-    if(!src) return;
-    try{
-      if(letterAudio){ letterAudio.pause(); letterAudio.currentTime = 0; }
-      letterAudio = new Audio(src);
-      letterAudio.preload = "auto";
-      letterAudio.play().catch(()=>{});
-    }catch(e){}
-  }
 
   function imageToStagePercent(x, y){
     const img = stage.querySelector(".guided-scene");
@@ -1317,7 +1287,6 @@ function buildGuidedInteraction(plugin, autoplay){
   function playGuidedEffect(index){
     const item = letters[index];
     if(!item) return;
-    playLetterAudio(item);
     const x = Number(item.x); const y = Number(item.y);
     if(!Number.isFinite(x) || !Number.isFinite(y)) return;
     const p = setTileBox(glow,x,y);
@@ -1336,7 +1305,7 @@ function buildGuidedInteraction(plugin, autoplay){
       {opacity:1,transform:"translate(-50%,-50%) scale(1.04)"},
       {opacity:.9,transform:"translate(-50%,-50%) scale(1)"},
       {opacity:0,transform:"translate(-50%,-50%) scale(.98)"}
-    ],{duration:3000,easing:"ease-in-out",fill:"forwards"});
+    ],{duration:2400,easing:"ease-in-out",fill:"forwards"});
 
     flyingTile.animate([
       {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.86) rotate(0deg)"},
@@ -1344,12 +1313,12 @@ function buildGuidedInteraction(plugin, autoplay){
       {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.02) rotate(2deg)"},
       {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.00) rotate(0deg)"},
       {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.90) rotate(0deg)"}
-    ],{duration:3300,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
+    ],{duration:2600,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
 
     stage.classList.remove("bunnyJump");
     void stage.offsetWidth;
     stage.classList.add("bunnyJump");
-    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},3350);
+    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},2650);
   }
 
 
@@ -1360,7 +1329,7 @@ function buildGuidedInteraction(plugin, autoplay){
     setInterval(()=>{
       if(!document.body.contains(stage)) return;
       playGuidedEffect(i++ % letters.length);
-    }, 4200);
+    }, 3300);
   }
 
   window.playArabicLetterEffect = playGuidedEffect;
@@ -1375,10 +1344,6 @@ function buildGuidedInteraction(plugin, autoplay){
     stage.onclick=()=>play(plugin.id);
     if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
   }else{
-    let manualGuidedIndex = 0;
-    stage.onclick = ()=>{
-      playGuidedEffect(manualGuidedIndex++ % Math.max(letters.length,1));
-    };
     startGuidedVisualDemo();
   }
 }
@@ -1467,7 +1432,29 @@ if(isCoordinateSpotlight){ prepareVisualModuleStrict(wrap, plugin, audio, autopl
    Landing, Months, Numbers, Names, or SalahNames behavior.
 */
 let referenceDemoTimer = null;
+let referenceQuestionTimer = null;
 function stopReferenceDemo(){ if(referenceDemoTimer){ clearInterval(referenceDemoTimer); referenceDemoTimer=null; } }
+function stopReferenceQuestionTimer(){ if(referenceQuestionTimer){ clearInterval(referenceQuestionTimer); referenceQuestionTimer=null; } }
+function popRandomQuestion(tile){
+  if(!tile) return;
+  const q = tile.querySelector(".floating-question");
+  if(!q) return;
+  const x = 20 + Math.random() * 60;
+  const y = 18 + Math.random() * 62;
+  q.style.left = x + "%";
+  q.style.top = y + "%";
+  q.style.animation = "none";
+  void q.offsetWidth;
+  q.style.animation = "floatingQuestionPop 1.35s ease-in-out 1";
+}
+function startReferenceQuestionTimer(tile){
+  stopReferenceQuestionTimer();
+  popRandomQuestion(tile);
+  referenceQuestionTimer = setInterval(()=>{
+    if(!tile || !document.body.contains(tile) || !tile.classList.contains("active")){ stopReferenceQuestionTimer(); return; }
+    popRandomQuestion(tile);
+  }, 1800 + Math.random()*500);
+}
 
 function buildReferenceVisualPlugin(plugin, autoplay){
   clearGrid();
@@ -1538,8 +1525,8 @@ function referenceEffectMarkup(pid, effect){
 }
 
 function referenceColorMap(pid){
-  if(pid === "angels") return {mikaeel:"#86efac",israfil:"#fde68a",malik:"#fb7185",ridwan:"#fde68a",paradise:"#fde68a",munkar:"#f97316",jibraeel:"#facc15",kiraman:"#f472b6"};
-  return {shahadah:"#14b8a6",salah:"#f59e0b",sawm:"#a855f7",zakat:"#22c55e",hajj:"#3b82f6"};
+  if(pid === "angels") return {mikaeel:"#86efac",israfil:"#fde68a",malik:"#fb923c",ridwan:"#fef08a",paradise:"#fef08a",munkar:"#f59e0b",jibraeel:"#fde68a",kiraman:"#f472b6"};
+  return {shahadah:"#fbbf24",salah:"#60a5fa",zakat:"#86efac",sawm:"#c084fc",hajj:"#f97316"};
 }
 
 function referenceKeysForPlugin(plugin){ return orderedCoordinateKeys(plugin); }
@@ -1565,25 +1552,14 @@ function setReferenceFocus(stage, plugin, index){
     el.classList.toggle("active", on);
     el.classList.toggle("dim", !on && dimOthers);
     if(on && el.dataset.effect === "questionGlow"){
+      startReferenceQuestionTimer(el);
+    }else if(!on && el.dataset.effect === "questionGlow"){
       const q = el.querySelector(".floating-question");
-      if(q){
-        const now = Date.now();
-        const next = Number(q.dataset.nextPop || 0);
-        if(now >= next){
-          const x = 18 + Math.random() * 64;
-          const y = 20 + Math.random() * 56;
-          q.style.left = x + "%";
-          q.style.top = y + "%";
-          q.style.animation = "none";
-          void q.offsetWidth;
-          q.style.animation = "floatingQuestionPop 3.4s ease-in-out 1";
-          q.dataset.nextPop = String(now + 3600 + Math.random() * 900);
-        }
-      }
+      if(q){ q.style.opacity = 0; q.style.animation = "none"; }
     }
   });
 }
-function clearReferenceFocus(stage){ if(stage) stage.querySelectorAll(".reference-hotspot").forEach(el=>el.classList.remove("active","dim")); }
+function clearReferenceFocus(stage){ stopReferenceQuestionTimer(); if(stage) stage.querySelectorAll(".reference-hotspot").forEach(el=>el.classList.remove("active","dim")); }
 function startReferenceDemo(plugin, stage){
   stopReferenceDemo();
   const audio = stage ? stage.querySelector("audio") : null;
@@ -2231,6 +2207,18 @@ const step = duration / chunks;
 return Array.from({length:chunks},(_,i)=>Math.min(duration, step*(i+1)));
 }
 
+function getChunkSegments(item){
+const duration = item.audio && item.audio.duration && isFinite(item.audio.duration) ? item.audio.duration : 0;
+if(Array.isArray(item.s.slices) && item.s.slices.length && item.s.learningMode === "sliceStarts"){
+  const starts = item.s.slices.map(toSeconds).filter(v=>Number.isFinite(v));
+  return starts.map((start,i)=>({start, end: Math.max(start + 0.35, i < starts.length-1 ? starts[i+1] : duration)}));
+}
+const ends = getChunkEnds(item);
+if(!ends.length) return [];
+const starts = [0].concat(ends.slice(0,-1));
+return ends.map((end,i)=>({start:starts[i], end}));
+}
+
 function playSegment(audio,start,end,token){
 return new Promise(resolve=>{
 if(token !== sequenceCancelToken) return resolve();
@@ -2264,34 +2252,33 @@ audio.load();
 });
 }
 
-const ends = getChunkEnds(item);
-if(!ends.length){
+const segments = getChunkSegments(item);
+if(!segments.length){
 audio.play().catch(()=>{});
 return;
 }
 
-const starts = [0].concat(ends.slice(0,-1));
 const repeat = ((item.s.plugin || currentPlugin || {}).chunkMode || {}).repeatCount || 5;
 
 if(mode === "repeat5"){
-for(let i=0;i<ends.length;i++){
+for(let i=0;i<segments.length;i++){
 for(let r=0;r<repeat;r++){
 if(token !== sequenceCancelToken) return;
-await playSegment(audio,starts[i],ends[i],token);
+await playSegment(audio,segments[i].start,segments[i].end,token);
 await sleep(250);
 }
 }
 }
 
 if(mode === "hifz"){
-for(let upto=0;upto<ends.length;upto++){
+for(let upto=0;upto<segments.length;upto++){
 for(let r=0;r<repeat;r++){
 if(token !== sequenceCancelToken) return;
-await playSegment(audio,starts[upto],ends[upto],token);
+await playSegment(audio,segments[upto].start,segments[upto].end,token);
 await sleep(250);
 }
 if(token !== sequenceCancelToken) return;
-await playSegment(audio,0,ends[upto],token);
+await playSegment(audio,segments[0].start,segments[upto].end,token);
 await sleep(450);
 }
 }
