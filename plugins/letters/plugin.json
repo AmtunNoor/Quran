@@ -9,7 +9,7 @@
   "showOnLanding": true,
   "backgroundImage": "plugins/letters/letters.webp",
   "tileImage": "plugins/letters/letters_icon.webp",
-  "audioMode": "per-letter",
+  "audioMode": "per-letter-optional",
   "primaryAudio": null,
   "landingTileImage": true,
   "effect": {
@@ -21,7 +21,7 @@
     "useCanvas": false,
     "useParticles": false,
     "fallback": "guidedInteractionFlyingTileFallback",
-    "speed": "slowToddlerFriendly",
+    "speed": "moderateToddlerFriendly",
     "animatePrintedBunny": "subtleArtworkBunnyArea"
   },
   "catchPoint": {
@@ -212,14 +212,14 @@
     "ج": "jeem.mp3",
     "ح": "haa.mp3",
     "خ": "kha.mp3",
-    "د": "dal.mp3",
+    "د": "daal.mp3",
     "ذ": "zaal.mp3",
     "ر": "raa.mp3",
     "ز": "zaa.mp3",
     "س": "seen.mp3",
     "ش": "sheen.mp3",
     "ص": "saad.mp3",
-    "ض": "daad.mp3",
+    "ض": "dad.mp3",
     "ط": "toa.mp3",
     "ظ": "zoa.mp3",
     "ع": "ain.mp3",
@@ -233,6 +233,5 @@
     "ه": "ha.mp3",
     "و": "waw.mp3",
     "ي": "yaa.mp3"
-  },
-  "controls": "floating"
+  }
 }
