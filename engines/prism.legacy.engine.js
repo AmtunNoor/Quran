@@ -610,8 +610,11 @@ return {
 }
 
 function learningModeForSliceEntry(path, entry){
+  // Frozen V6.9.1 rule:
+  // - Explicit mode:"starts"/"sliceStarts" means the array contains ayah start times.
+  // - Otherwise arrays are treated as slice END times, preserving old working Learn behavior.
+  // - Reusing Listen audio must not reinterpret existing slice files as starts.
   if(entry && (entry.mode === "starts" || entry.mode === "sliceStarts")) return "sliceStarts";
-  if(/^listen\//i.test(path) && entry && Array.isArray(entry.slices)) return "sliceStarts";
   return entry && Array.isArray(entry.slices) ? "slices" : "durationChunks";
 }
 
@@ -1225,6 +1228,7 @@ function buildGuidedInteraction(plugin, autoplay){
   const audioFile = plugin.primaryAudio || mp3s[0] || "";
   const stage = document.createElement("div");
   stage.className = "guided-interaction-stage";
+  if(bg) stage.style.setProperty("--guided-bg-image", `url('${bg}')`);
   stage.innerHTML = `
     ${bg ? `<img class="guided-scene" src="${bg}" alt="${plugin.title || "Guided learning"}">` : ""}
     <div class="guided-letter-glow"></div>
@@ -1246,6 +1250,29 @@ function buildGuidedInteraction(plugin, autoplay){
   const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
+  let guidedLetterAudio = null;
+
+  function resolveGuidedLetterAudio(letterItem){
+    const key = letterItem && (letterItem.l || letterItem.label || letterItem.key);
+    const map = plugin.audioMap || {};
+    const file = map[key];
+    if(!file) return "";
+    if(/^https?:\/\//i.test(file) || /^\//.test(file)) return file;
+    const base = plugin.audioBase || plugin.audioBasePath || "";
+    if(base) return String(base).replace(/\/?$/, "/") + file;
+    return `plugins/${plugin.folder || plugin.id}/audio/${file}`;
+  }
+
+  function playGuidedLetterAudio(letterItem){
+    const src = resolveGuidedLetterAudio(letterItem);
+    if(!src) return;
+    try{
+      if(guidedLetterAudio){ guidedLetterAudio.pause(); guidedLetterAudio.currentTime = 0; }
+      guidedLetterAudio = new Audio(src);
+      guidedLetterAudio.preload = "auto";
+      guidedLetterAudio.play().catch(()=>{});
+    }catch(e){}
+  }
 
   function imageToStagePercent(x, y){
     const img = stage.querySelector(".guided-scene");
@@ -1287,6 +1314,7 @@ function buildGuidedInteraction(plugin, autoplay){
   function playGuidedEffect(index){
     const item = letters[index];
     if(!item) return;
+    playGuidedLetterAudio(item);
     const x = Number(item.x); const y = Number(item.y);
     if(!Number.isFinite(x) || !Number.isFinite(y)) return;
     const p = setTileBox(glow,x,y);
@@ -1305,7 +1333,7 @@ function buildGuidedInteraction(plugin, autoplay){
       {opacity:1,transform:"translate(-50%,-50%) scale(1.04)"},
       {opacity:.9,transform:"translate(-50%,-50%) scale(1)"},
       {opacity:0,transform:"translate(-50%,-50%) scale(.98)"}
-    ],{duration:2400,easing:"ease-in-out",fill:"forwards"});
+    ],{duration:1900,easing:"ease-in-out",fill:"forwards"});
 
     flyingTile.animate([
       {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.86) rotate(0deg)"},
@@ -1313,12 +1341,12 @@ function buildGuidedInteraction(plugin, autoplay){
       {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.02) rotate(2deg)"},
       {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.00) rotate(0deg)"},
       {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.90) rotate(0deg)"}
-    ],{duration:2600,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
+    ],{duration:2050,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
 
     stage.classList.remove("bunnyJump");
     void stage.offsetWidth;
     stage.classList.add("bunnyJump");
-    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},2650);
+    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},2120);
   }
 
 
@@ -1329,7 +1357,7 @@ function buildGuidedInteraction(plugin, autoplay){
     setInterval(()=>{
       if(!document.body.contains(stage)) return;
       playGuidedEffect(i++ % letters.length);
-    }, 3300);
+    }, 2600);
   }
 
   window.playArabicLetterEffect = playGuidedEffect;
@@ -1437,15 +1465,22 @@ function stopReferenceDemo(){ if(referenceDemoTimer){ clearInterval(referenceDem
 function stopReferenceQuestionTimer(){ if(referenceQuestionTimer){ clearInterval(referenceQuestionTimer); referenceQuestionTimer=null; } }
 function popRandomQuestion(tile){
   if(!tile) return;
-  const q = tile.querySelector(".floating-question");
-  if(!q) return;
-  const x = 20 + Math.random() * 60;
-  const y = 18 + Math.random() * 62;
+  let q = tile.querySelector(".floating-question");
+  if(!q){
+    q = document.createElement("span");
+    q.className = "floating-question";
+    q.textContent = "?";
+    tile.appendChild(q);
+  }
+  // Random but safely inside the Munkar tile. Only one is visible at any moment.
+  const x = 22 + Math.random() * 56;
+  const y = 22 + Math.random() * 52;
   q.style.left = x + "%";
   q.style.top = y + "%";
+  q.style.opacity = "0";
   q.style.animation = "none";
   void q.offsetWidth;
-  q.style.animation = "floatingQuestionPop 1.35s ease-in-out 1";
+  q.style.animation = "floatingQuestionPop 1.55s ease-in-out 1";
 }
 function startReferenceQuestionTimer(tile){
   stopReferenceQuestionTimer();
@@ -1453,7 +1488,7 @@ function startReferenceQuestionTimer(tile){
   referenceQuestionTimer = setInterval(()=>{
     if(!tile || !document.body.contains(tile) || !tile.classList.contains("active")){ stopReferenceQuestionTimer(); return; }
     popRandomQuestion(tile);
-  }, 1800 + Math.random()*500);
+  }, 2100 + Math.random()*700);
 }
 
 function buildReferenceVisualPlugin(plugin, autoplay){
@@ -1526,7 +1561,7 @@ function referenceEffectMarkup(pid, effect){
 
 function referenceColorMap(pid){
   if(pid === "angels") return {mikaeel:"#86efac",israfil:"#fde68a",malik:"#fb923c",ridwan:"#fef08a",paradise:"#fef08a",munkar:"#f59e0b",jibraeel:"#fde68a",kiraman:"#f472b6"};
-  return {shahadah:"#fbbf24",salah:"#60a5fa",zakat:"#86efac",sawm:"#c084fc",hajj:"#f97316"};
+  return {shahadah:"#14b8a6",salah:"#f59e0b",sawm:"#a855f7",zakat:"#84cc16",hajj:"#2563eb"};
 }
 
 function referenceKeysForPlugin(plugin){ return orderedCoordinateKeys(plugin); }
@@ -2500,7 +2535,13 @@ slicesData = await fetchFirstJson(["slices.json","../slices.json","learn.master.
 if(slicesData && slicesData.QURAN){
   const flat = {};
   Object.values(slicesData.QURAN).forEach(entry=>{
-    if(entry && entry.file && Array.isArray(entry.slices)) flat[entry.file] = entry.slices;
+    if(entry && entry.file && Array.isArray(entry.slices)){
+      flat[entry.file] = {
+        mode: entry.mode || entry.sliceMode || null,
+        reuseListenAudio: entry.reuseListenAudio === true,
+        slices: entry.slices
+      };
+    }
   });
   slicesData = flat;
 }
