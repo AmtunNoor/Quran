@@ -21,7 +21,7 @@
     "useCanvas": false,
     "useParticles": false,
     "fallback": "guidedInteractionFlyingTileFallback",
-    "speed": "moderateToddlerFriendly",
+    "speed": "slightlyFasterToddlerFriendly",
     "animatePrintedBunny": "subtleArtworkBunnyArea"
   },
   "catchPoint": {
