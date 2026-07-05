@@ -1074,27 +1074,8 @@
       "controls": "floating",
       "enabled": true,
       "showOnLanding": true,
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Angels"
-      },
+      "backgroundImage": "plugins/angels/angels.jpeg",
+      "tileImage": "plugins/angels/angels.jpeg",
       "effect": {
         "type": "referenceAngels",
         "activeScale": 1.015,
