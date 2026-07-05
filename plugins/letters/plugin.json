@@ -9,7 +9,7 @@
   "showOnLanding": true,
   "backgroundImage": "plugins/letters/letters.webp",
   "tileImage": "plugins/letters/letters_icon.webp",
-  "audioMode": "per-letter-optional",
+  "audioMode": "per-letter",
   "primaryAudio": null,
   "landingTileImage": true,
   "effect": {
@@ -233,5 +233,6 @@
     "ه": "ha.mp3",
     "و": "waw.mp3",
     "ي": "yaa.mp3"
-  }
+  },
+  "controls": "floating"
 }
