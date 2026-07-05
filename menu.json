@@ -1083,11 +1083,11 @@
         "tileEffects": {
           "mikaeel": "softRain",
           "israfil": "soundWave",
-          "malik": "gardenGlow",
+          "malik": "malikFire",
           "munkar": "questionGlow",
           "jibraeel": "messageLight",
           "kiraman": "writingSpark",
-          "paradise": "gardenGlow"
+          "ridwan": "ridwanGlow"
         },
         "idleGlow": 0.18,
         "activeGlow": 0.75,
@@ -1130,7 +1130,7 @@
           "width": 25.5,
           "height": 35.5
         },
-        "paradise": {
+        "ridwan": {
           "left": 65.8,
           "top": 61.5,
           "width": 25.5,
@@ -1143,19 +1143,49 @@
         "starts": {
           "mikaeel": 0,
           "israfil": 12,
-          "malik": 24,
-          "munkar": 36,
-          "jibraeel": 48,
-          "kiraman": 60,
-          "paradise": 72
+          "malik": 21.9,
+          "munkar": 33.5,
+          "jibraeel": 70,
+          "kiraman": 83,
+          "ridwan": 113
+        },
+        "ranges": {
+          "mikaeel": [
+            0,
+            11
+          ],
+          "israfil": [
+            12,
+            20.23
+          ],
+          "malik": [
+            21.9,
+            32.55
+          ],
+          "munkar": [
+            33.5,
+            69
+          ],
+          "jibraeel": [
+            70,
+            81
+          ],
+          "kiraman": [
+            83,
+            112
+          ],
+          "ridwan": [
+            113,
+            134
+          ]
         }
       },
       "landingTileImage": false,
       "aspectRatio": "3/2",
-      "primaryAudio": null,
+      "primaryAudio": "plugins/angels/angels.mp3",
       "theme": "angels",
-      "type": "plugin",
       "audios": [],
+      "type": "plugin",
       "images": [
         "angels/angels.jpeg"
       ],
