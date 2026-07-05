@@ -7,8 +7,8 @@
   "controls": "floating",
   "enabled": true,
   "showOnLanding": true,
-  "backgroundImage": "angels/angels.jpeg",
-  "tileImage": "angels/angels.jpeg",
+  "backgroundImage": "plugins/angels/angels.jpeg",
+  "tileImage": "plugins/angels/angels.jpeg",
   "effect": {
     "type": "referenceAngels",
     "activeScale": 1.015,
