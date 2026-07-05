@@ -1274,8 +1274,8 @@
       "controls": "floating",
       "enabled": true,
       "showOnLanding": true,
-      "backgroundImage": "pillars/pillars.jpeg",
-      "tileImage": "pillars/pillars.jpeg",
+      "backgroundImage": "plugins/pillars/pillars.jpeg",
+      "tileImage": "plugins/pillars/pillars_icon.jpeg",
       "effect": {
         "type": "referencePillars",
         "style": "pillarFocus-soft-sparkle-idle",
@@ -1284,7 +1284,8 @@
         "sparkles": true,
         "sparkleRate": 1000,
         "maxScale": 1.025,
-        "wholePillarFocus": true
+        "wholePillarFocus": true,
+        "colorByPillar": true
       },
       "coordinates": {
         "shahadah": {
