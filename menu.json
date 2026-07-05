@@ -1074,8 +1074,27 @@
       "controls": "floating",
       "enabled": true,
       "showOnLanding": true,
-      "backgroundImage": "angels/angels.jpeg",
-      "tileImage": "angels/angels.jpeg",
+      "backgroundImage": {
+        "type": "gradient",
+        "style": "soft",
+        "colors": [
+          "#fff1eb",
+          "#ace0f9",
+          "#fbc2eb"
+        ]
+      },
+      "tileImage": {
+        "type": "gradient",
+        "style": "colorful",
+        "colors": [
+          "#ff9a9e",
+          "#fad0c4",
+          "#fbc2eb",
+          "#a18cd1"
+        ],
+        "icon": "✨",
+        "label": "Angels"
+      },
       "effect": {
         "type": "referenceAngels",
         "activeScale": 1.015,
@@ -1186,9 +1205,7 @@
       "theme": "angels",
       "audios": [],
       "type": "plugin",
-      "images": [
-        "angels/angels.jpeg"
-      ],
+      "images": [],
       "playFromLanding": false,
       "autoStart": false,
       "directAudio": false,
@@ -1223,10 +1240,6 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
         "path": "index.html"
-      },
-      {
-        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/angels/angels.jpeg",
-        "path": "angels/angels.jpeg"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
