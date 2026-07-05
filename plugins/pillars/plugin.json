@@ -21,31 +21,31 @@
   },
   "coordinates": {
     "shahadah": {
-      "left": 7.2,
+      "left": 9.4,
       "top": 20.5,
       "width": 17.0,
       "height": 67.0
     },
     "salah": {
-      "left": 24.1,
+      "left": 26.4,
       "top": 19.5,
       "width": 16.0,
       "height": 68.0
     },
     "sawm": {
-      "left": 39.7,
+      "left": 43.0,
       "top": 19.5,
       "width": 17.0,
       "height": 68.0
     },
     "zakat": {
-      "left": 56.0,
+      "left": 59.6,
       "top": 20.0,
       "width": 16.0,
       "height": 67.0
     },
     "hajj": {
-      "left": 72.4,
+      "left": 75.3,
       "top": 20.0,
       "width": 17.0,
       "height": 67.0
