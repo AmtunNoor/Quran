@@ -235,5 +235,7 @@
     "ي": "yaa.mp3"
   },
   "controls": "floating",
-  "autoStart": true
+  "autoStart": true,
+  "audioPlaybackRate": 1.08,
+  "backgroundMode": "same-as-months-numbers-blur"
 }
