@@ -3782,3 +3782,54 @@ body.plugin-angels .reference-hotspot.active .floating-question{
   visibility:visible!important;
   z-index:999!important;
 }
+
+
+/* === PRISM V6.9.6 FINAL ISOLATED FIXES === */
+/* Letters: show blurred version of the same artwork behind the contained image.
+   This does NOT change object-fit or coordinate mapping. */
+.guided-interaction-stage{
+  isolation:isolate!important;
+}
+.guided-interaction-stage::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background-image:var(--guided-bg-url)!important;
+  background-size:cover!important;
+  background-position:center!important;
+  filter:blur(24px) brightness(.54) saturate(1.08)!important;
+  transform:scale(1.10)!important;
+  opacity:.88!important;
+  z-index:0!important;
+  pointer-events:none!important;
+}
+.guided-scene{z-index:1!important;}
+.guided-interaction-stage::after{z-index:2!important;}
+.guided-letter-glow,.guided-flying-tile,.guided-butterfly{z-index:6!important;}
+
+/* Angels: restore Malik as orange/red fire behind the gate, not pale yellow wash. */
+body.plugin-angels .malik-fire{
+  inset:16% 13% 28% 13%!important;
+  border-radius:16px!important;
+  background:
+    radial-gradient(circle at 50% 80%, rgba(255,70,0,.92), transparent 30%),
+    radial-gradient(circle at 42% 68%, rgba(255,170,20,.82), transparent 23%),
+    radial-gradient(circle at 60% 62%, rgba(180,20,0,.72), transparent 28%),
+    linear-gradient(180deg, transparent 0%, rgba(255,95,0,.55) 72%, rgba(120,0,0,.65) 100%)!important;
+  filter:blur(2.5px)!important;
+  mix-blend-mode:screen!important;
+  opacity:.85!important;
+  animation:malikFireFlickerStrong 2.2s ease-in-out infinite!important;
+}
+body.plugin-angels .malik-heat{
+  inset:18% 12% 34% 12%!important;
+  background:linear-gradient(90deg,transparent,rgba(255,180,80,.22),transparent)!important;
+  filter:blur(7px)!important;
+  opacity:.32!important;
+  animation:malikHeatShimmer 3s ease-in-out infinite!important;
+}
+@keyframes malikFireFlickerStrong{
+  0%,100%{opacity:.62;transform:scale(1) translateY(0)}
+  35%{opacity:.95;transform:scale(1.035) translateY(-1%)}
+  65%{opacity:.78;transform:scale(.99) translateY(1%)}
+}
