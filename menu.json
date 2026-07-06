@@ -1668,6 +1668,8 @@
       },
       "controls": "floating",
       "autoStart": true,
+      "audioPlaybackRate": 1.08,
+      "backgroundMode": "same-as-months-numbers-blur",
       "type": "plugin",
       "renderer": "gallery",
       "audios": [],
