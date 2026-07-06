@@ -1064,7 +1064,7 @@
   },
   {
     "title": "Angels",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=angels",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=angels&autoplay=1",
     "plugin": {
       "id": "angels",
       "title": "Angels",
@@ -1087,6 +1087,7 @@
           "munkar": "questionGlow",
           "jibraeel": "messageLight",
           "kiraman": "writingSpark",
+          "paradise": "ridwanGlow",
           "ridwan": "ridwanGlow"
         },
         "idleGlow": 0.18,
@@ -1130,7 +1131,7 @@
           "width": 25.5,
           "height": 35.5
         },
-        "ridwan": {
+        "paradise": {
           "left": 65.8,
           "top": 61.5,
           "width": 25.5,
@@ -1147,7 +1148,7 @@
           "munkar": 33.5,
           "jibraeel": 70,
           "kiraman": 83,
-          "ridwan": 113
+          "paradise": 113
         },
         "ranges": {
           "mikaeel": [
@@ -1174,7 +1175,7 @@
             83,
             112
           ],
-          "ridwan": [
+          "paradise": [
             113,
             134
           ]
@@ -1185,10 +1186,10 @@
       "primaryAudio": "plugins/angels/angels.mp3",
       "theme": "angels",
       "audios": [],
+      "autoStart": true,
       "type": "plugin",
       "images": [],
       "playFromLanding": false,
-      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "supports": [
