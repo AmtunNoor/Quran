@@ -3656,115 +3656,9 @@ body.plugin-angels .floating-question{
   box-shadow:0 8px 20px rgba(0,0,0,.18),0 0 28px rgba(255,224,80,.88)!important;
 }
 
-/* ================= PRISM V6.9.1 FINAL LOCK PATCH ================= */
-/* Letters page: keep Prism night/star background around the contained artwork. */
-.guided-interaction-stage{
-  background:
-    radial-gradient(circle at 15% 12%,rgba(56,189,248,.16),transparent 27%),
-    radial-gradient(circle at 82% 18%,rgba(168,85,247,.18),transparent 31%),
-    radial-gradient(circle at 50% 105%,rgba(250,204,21,.08),transparent 35%),
-    #020617!important;
-}
-.guided-interaction-stage::before{
-  content:""!important;
-  position:absolute!important;
-  inset:0!important;
-  z-index:0!important;
-  pointer-events:none!important;
-  background-image:
-    radial-gradient(circle,rgba(255,255,255,.92) 0 1px,transparent 1.7px),
-    radial-gradient(circle,rgba(186,230,253,.55) 0 1px,transparent 1.8px)!important;
-  background-size:96px 96px,145px 145px!important;
-  background-position:0 0,36px 24px!important;
-  opacity:.48!important;
-  animation:prismStarsDrift 18s linear infinite!important;
-}
-.guided-scene{z-index:1!important;}
-.guided-letter-glow,.guided-flying-tile,.guided-butterfly{z-index:6!important;}
-.guided-butterfly{z-index:5!important;}
 
-/* Angels: Malik fire flicker and Ridwan Paradise glow are clipped inside their exact tiles. */
-.malik-fire{
-  background:
-    radial-gradient(circle at 50% 70%, rgba(255,120,20,.85), transparent 32%),
-    radial-gradient(circle at 42% 62%, rgba(255,210,70,.65), transparent 22%),
-    radial-gradient(circle at 60% 58%, rgba(220,40,20,.55), transparent 26%)!important;
-  filter:blur(3px)!important;
-  mix-blend-mode:screen!important;
-  animation:malikFireFlicker 2.4s ease-in-out infinite!important;
-}
-.malik-heat{
-  inset:18% 12% 35% 12%!important;
-  background:linear-gradient(90deg,transparent,rgba(255,210,120,.18),transparent)!important;
-  filter:blur(8px)!important;
-  animation:malikHeatShimmer 3s ease-in-out infinite!important;
-}
-@keyframes malikFireFlicker{0%,100%{opacity:.55;transform:scale(1)}35%{opacity:.9;transform:scale(1.03)}65%{opacity:.7;transform:scale(.98)}}
-@keyframes malikHeatShimmer{0%,100%{opacity:.15;transform:translateX(-8%)}50%{opacity:.38;transform:translateX(8%)}}
-.ridwan-glow{
-  background:radial-gradient(circle at 50% 45%,rgba(255,245,170,.9),rgba(255,215,100,.35) 28%,transparent 58%)!important;
-  mix-blend-mode:screen!important;
-  animation:ridwanGlowPulse 3.8s ease-in-out infinite!important;
-}
-.ridwan-sparkle::before,.ridwan-sparkle::after{
-  content:"✦"!important;
-  position:absolute!important;
-  color:rgba(255,245,170,.95)!important;
-  font-size:clamp(16px,2vw,34px)!important;
-  animation:ridwanSparkle 4s ease-in-out infinite!important;
-}
-.ridwan-sparkle::before{left:28%!important;top:28%!important;}
-.ridwan-sparkle::after{right:24%!important;top:44%!important;animation-delay:1.6s!important;}
-@keyframes ridwanGlowPulse{0%,100%{opacity:.35;transform:scale(1)}50%{opacity:.78;transform:scale(1.04)}}
-@keyframes ridwanSparkle{0%,100%{opacity:0;transform:translateY(6px) scale(.75)}45%{opacity:1;transform:translateY(-4px) scale(1)}70%{opacity:.4}}
-
-/* Munkar: random red question mark is JS-positioned; no fixed line pattern. */
-body.plugin-angels .question-glow::after{content:none!important;display:none!important;}
-body.plugin-angels .floating-question{
-  position:absolute!important;
-  display:block!important;
-  color:#ef4444!important;
-  font-weight:900!important;
-  font-size:clamp(30px,20%,78px)!important;
-  line-height:1!important;
-  text-shadow:0 0 12px rgba(239,68,68,.95),0 0 22px rgba(255,255,255,.35)!important;
-  transform:translate(-50%,-50%) scale(.6)!important;
-  opacity:0!important;
-  pointer-events:none!important;
-}
-@keyframes floatingQuestionPop{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}
-  22%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}
-  64%{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  100%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
-}
-
-
-/* ================= PRISM V6.9.1 FINAL STABILITY PATCH ================= */
-/* Letters: use blurred artwork side/background instead of black or separate night sky. */
-.guided-interaction-stage{
-  background:#020617!important;
-}
-.guided-interaction-stage::before{
-  content:""!important;
-  position:absolute!important;
-  inset:-5%!important;
-  background-image:var(--guided-bg-image)!important;
-  background-size:cover!important;
-  background-position:center!important;
-  filter:blur(24px) brightness(.42) saturate(1.18)!important;
-  transform:scale(1.08)!important;
-  opacity:.72!important;
-  z-index:0!important;
-  pointer-events:none!important;
-  display:block!important;
-}
-.guided-interaction-stage::after{
-  z-index:2!important;
-}
-.guided-scene{z-index:1!important;}
-.guided-letter-glow,.guided-flying-tile,.guided-butterfly{z-index:6!important;}
-/* Munkar question mark: JS controls random positions; CSS only controls look/pop. */
+/* ================= PRISM V6.9.2 FINAL STABILITY LOCK ================= */
+/* Munkar: JS positions exactly one red question mark inside the active tile. */
 body.plugin-angels .question-glow::after{content:none!important;display:none!important;}
 body.plugin-angels .floating-question{
   position:absolute!important;
@@ -3773,7 +3667,7 @@ body.plugin-angels .floating-question{
   font-weight:900!important;
   font-size:clamp(30px,18%,78px)!important;
   line-height:1!important;
-  text-shadow:0 0 12px rgba(239,68,68,.95),0 0 22px rgba(255,255,255,.35)!important;
+  text-shadow:0 0 12px rgba(239,68,68,.95),0 0 22px rgba(255,255,255,.42)!important;
   transform:translate(-50%,-50%) scale(.6)!important;
   opacity:0!important;
   pointer-events:none!important;
@@ -3781,7 +3675,45 @@ body.plugin-angels .floating-question{
 }
 @keyframes floatingQuestionPop{
   0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}
-  22%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}
-  64%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  22%{opacity:1;transform:translate(-50%,-50%) scale(1.10)}
+  66%{opacity:1;transform:translate(-50%,-50%) scale(1)}
   100%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
 }
+/* Malik and Ridwan final tile effects; clipped by .angel-hotspot overflow:hidden. */
+body.plugin-angels .malik-fire{
+  background:
+    radial-gradient(circle at 50% 70%, rgba(255,120,20,.85), transparent 32%),
+    radial-gradient(circle at 42% 62%, rgba(255,210,70,.65), transparent 22%),
+    radial-gradient(circle at 60% 58%, rgba(220,40,20,.55), transparent 26%)!important;
+  filter:blur(3px)!important;
+  mix-blend-mode:screen!important;
+  animation:malikFireFlicker 2.4s ease-in-out infinite!important;
+}
+body.plugin-angels .malik-heat{
+  inset:18% 12% 35% 12%!important;
+  background:linear-gradient(90deg,transparent,rgba(255,210,120,.18),transparent)!important;
+  filter:blur(8px)!important;
+  animation:malikHeatShimmer 3s ease-in-out infinite!important;
+}
+@keyframes malikFireFlicker{0%,100%{opacity:.55;transform:scale(1);}35%{opacity:.9;transform:scale(1.03);}65%{opacity:.7;transform:scale(.98);}}
+@keyframes malikHeatShimmer{0%,100%{opacity:.15;transform:translateX(-8%);}50%{opacity:.38;transform:translateX(8%);}}
+body.plugin-angels .ridwan-glow{
+  background:radial-gradient(circle at 50% 45%,rgba(255,245,170,.9),rgba(255,215,100,.35) 28%,transparent 58%)!important;
+  mix-blend-mode:screen!important;
+  animation:ridwanGlowPulse 3.8s ease-in-out infinite!important;
+}
+body.plugin-angels .ridwan-sparkle::before,
+body.plugin-angels .ridwan-sparkle::after{
+  content:"✦"!important;
+  position:absolute!important;
+  color:rgba(255,245,170,.95)!important;
+  font-size:clamp(16px,12%,34px)!important;
+  animation:ridwanSparkle 4s ease-in-out infinite!important;
+}
+body.plugin-angels .ridwan-sparkle::before{left:28%!important;top:28%!important;}
+body.plugin-angels .ridwan-sparkle::after{right:24%!important;top:44%!important;animation-delay:1.6s!important;}
+@keyframes ridwanGlowPulse{0%,100%{opacity:.35;transform:scale(1);}50%{opacity:.78;transform:scale(1.04);}}
+@keyframes ridwanSparkle{0%,100%{opacity:0;transform:translateY(6px) scale(.75);}45%{opacity:1;transform:translateY(-4px) scale(1);}70%{opacity:.4;}}
+/* Letters: keep stable contain rendering; show Prism icon floating control, hide topbar until icon is opened. */
+body.plugin-letters.auto-topbar:not(.show-topbar) #topbar{display:none!important;}
+body.plugin-letters .guided-interaction-stage{background:#020617!important;}
