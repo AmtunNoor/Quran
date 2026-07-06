@@ -1429,7 +1429,7 @@
   },
   {
     "title": "Arabic Alphabets",
-    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=letters",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=letters&autoplay=1",
     "plugin": {
       "id": "letters",
       "title": "Arabic Alphabets",
@@ -1667,12 +1667,12 @@
         "ي": "yaa.mp3"
       },
       "controls": "floating",
+      "autoStart": true,
       "type": "plugin",
       "renderer": "gallery",
       "audios": [],
       "images": [],
       "playFromLanding": false,
-      "autoStart": false,
       "directAudio": false,
       "action": "open-plugin",
       "supports": [
