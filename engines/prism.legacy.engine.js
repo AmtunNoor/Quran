@@ -1219,6 +1219,7 @@ function buildGuidedInteraction(plugin, autoplay){
   const audioFile = plugin.primaryAudio || mp3s[0] || "";
   const stage = document.createElement("div");
   stage.className = "guided-interaction-stage";
+  if(bg){ stage.style.setProperty("--guided-bg-url", `url("${bg}")`); }
   stage.innerHTML = `
     ${bg ? `<div class="stage-bg-cover guided-bg-cover" style="background-image:url('${bg}')"></div><img class="guided-scene" src="${bg}" alt="${plugin.title || "Guided learning"}">` : ""}
     <div class="guided-letter-glow"></div>
@@ -1240,7 +1241,7 @@ function buildGuidedInteraction(plugin, autoplay){
   const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
-  let audioUnlocked = false;
+  let audioUnlocked = true; // V6.9.6: per-letter audio should attempt immediately after card selection
   let currentLetterAudio = null;
   function letterAudioSrc(item){
     if(!item) return "";
@@ -1323,7 +1324,7 @@ function buildGuidedInteraction(plugin, autoplay){
       {opacity:1,transform:"translate(-50%,-50%) scale(1.04)"},
       {opacity:.9,transform:"translate(-50%,-50%) scale(1)"},
       {opacity:0,transform:"translate(-50%,-50%) scale(.98)"}
-    ],{duration:2450,easing:"ease-in-out",fill:"forwards"});
+    ],{duration:2600,easing:"ease-in-out",fill:"forwards"});
 
     flyingTile.animate([
       {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.86) rotate(0deg)"},
@@ -1331,12 +1332,12 @@ function buildGuidedInteraction(plugin, autoplay){
       {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.02) rotate(2deg)"},
       {opacity:1,left:midX+"%",top:midY+"%",transform:"translate(-50%,-50%) scale(1.00) rotate(0deg)"},
       {opacity:0,left:p.x+"%",top:p.y+"%",transform:"translate(-50%,-50%) scale(.90) rotate(0deg)"}
-    ],{duration:2700,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
+    ],{duration:2850,easing:"cubic-bezier(.22,.75,.25,1)",fill:"forwards"});
 
     stage.classList.remove("bunnyJump");
     void stage.offsetWidth;
     stage.classList.add("bunnyJump");
-    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},2750);
+    setTimeout(()=>{glow.style.opacity=0;stage.classList.remove("bunnyJump");},2900);
   }
 
 
@@ -1347,7 +1348,7 @@ function buildGuidedInteraction(plugin, autoplay){
     setInterval(()=>{
       if(!document.body.contains(stage)) return;
       playGuidedEffect(i++ % letters.length);
-    }, 3400);
+    }, 3700);
   }
 
   window.playArabicLetterEffect = playGuidedEffect;
@@ -1510,7 +1511,7 @@ function referenceEffectMarkup(pid, effect){
     if(effect === "soundWave") return '<div class="reference-effect sound-wave"></div>';
     if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"><span class="floating-question">?</span></div>';
     if(effect === "softRain") return '<div class="reference-effect soft-rain"></div>';
-    if(effect === "malikFire") return '<div class="reference-effect malik-fire"></div><div class="reference-effect malik-heat"></div>';
+    if(effect === "malikFire" || effect === "fireHeat") return '<div class="reference-effect malik-fire"></div><div class="reference-effect malik-heat"></div>';
     if(effect === "ridwanGlow") return '<div class="reference-effect ridwan-glow"></div><div class="reference-effect ridwan-sparkle"></div>';
     if(effect === "gardenGlow") return '<div class="reference-effect garden-glow"></div>';
     if(effect === "messageLight") return '<div class="reference-effect message-light"></div>';
@@ -1566,10 +1567,18 @@ function setReferenceFocus(stage, plugin, index){
       if(firstForKey || now - last > 950){
         q.style.left = (18 + Math.random() * 64) + "%";
         q.style.top = (20 + Math.random() * 54) + "%";
-        q.style.opacity = "1";
         q.style.animation = "none";
+        q.style.setProperty("opacity", "1", "important");
+        q.style.setProperty("transform", "translate(-50%,-50%) scale(1.08)", "important");
         void q.offsetWidth;
         q.style.animation = "floatingQuestionPop 1.15s ease-in-out 1";
+        clearTimeout(el._munkarQuestionHideTimer);
+        el._munkarQuestionHideTimer = setTimeout(()=>{
+          try{
+            q.style.setProperty("opacity", "0", "important");
+            q.style.setProperty("transform", "translate(-50%,-50%) scale(.72)", "important");
+          }catch(e){}
+        }, 1050);
         el.dataset.lastQuestionPop = String(now);
       }
     }
@@ -2228,11 +2237,14 @@ function playSegment(audio,start,end,token){
 return new Promise(resolve=>{
   if(token !== sequenceCancelToken) return resolve();
   start = Math.max(0, Number(start) || 0);
-  end = Math.max(start + 0.18, Number(end) || start + 0.18);
+  end = Math.max(start + 0.25, Number(end) || start + 0.25);
+  const expectedMs = Math.max(350, (end - start) * 1000);
   let done = false;
-  let timer = null;
+  let watchdog = null;
+  let tick = null;
   const cleanup = ()=>{
-    if(timer) clearInterval(timer);
+    if(watchdog) clearTimeout(watchdog);
+    if(tick) clearInterval(tick);
     audio.removeEventListener("ended", finish);
     audio.removeEventListener("error", finish);
   };
@@ -2246,33 +2258,42 @@ return new Promise(resolve=>{
   const check = ()=>{
     if(done) return;
     if(token !== sequenceCancelToken) return finish();
-    if((audio.currentTime || 0) >= end - 0.025) return finish();
+    const t = Number(audio.currentTime || 0);
+    if(t >= end - 0.035) return finish();
   };
   const begin = ()=>{
-    if(done) return;
+    if(done || token !== sequenceCancelToken) return finish();
     audio.loop = false;
     audio.addEventListener("ended", finish);
     audio.addEventListener("error", finish);
-    timer = setInterval(check, 40);
+    tick = setInterval(check, 35);
+    watchdog = setTimeout(finish, expectedMs + 900);
     const p = audio.play();
     if(p && p.catch) p.catch(()=>finish());
   };
-  try{ audio.pause(); }catch(e){}
-  try{ audio.currentTime = start; }catch(e){}
-  // Give mobile browsers a moment to complete the seek before playing the segment.
-  setTimeout(begin, 90);
+  const seekAndBegin = ()=>{
+    try{ audio.pause(); }catch(e){}
+    const onSeeked = ()=>{ audio.removeEventListener("seeked", onSeeked); setTimeout(begin, 40); };
+    audio.addEventListener("seeked", onSeeked, {once:true});
+    try{ audio.currentTime = start; }catch(e){ audio.removeEventListener("seeked", onSeeked); }
+    setTimeout(()=>{ if(!done) begin(); }, 220);
+  };
+  seekAndBegin();
 });
 }
 
 async function runLearningSequence(item, mode, token){
 attachAudioRecovery(item.audio, item); // V62 recovery
-try{ item.audio.preload = "auto"; item.audio.load(); }catch(e){}
 const audio = item.audio;
+try{ item.audio.preload = "auto"; }catch(e){}
 
 if(!audio.duration || !isFinite(audio.duration)){
 await new Promise(resolve=>{
-audio.addEventListener("loadedmetadata",resolve,{once:true});
-audio.load();
+  let done=false;
+  const finish=()=>{ if(done) return; done=true; resolve(); };
+  audio.addEventListener("loadedmetadata",finish,{once:true});
+  audio.addEventListener("canplay",finish,{once:true});
+  setTimeout(finish, 1200);
 });
 }
 
