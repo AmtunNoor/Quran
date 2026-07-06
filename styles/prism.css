@@ -3717,3 +3717,43 @@ body.plugin-angels .ridwan-sparkle::after{right:24%!important;top:44%!important;
 /* Letters: keep stable contain rendering; show Prism icon floating control, hide topbar until icon is opened. */
 body.plugin-letters.auto-topbar:not(.show-topbar) #topbar{display:none!important;}
 body.plugin-letters .guided-interaction-stage{background:#020617!important;}
+
+
+/* === PRISM V6.9.3 FINAL STABILITY PATCH === */
+/* Munkar question mark must be controlled by JS animation, not held invisible by !important. */
+body.plugin-angels .floating-question{
+  position:absolute!important;
+  display:block!important;
+  color:#ef4444!important;
+  font-weight:900!important;
+  font-size:clamp(30px,18%,82px)!important;
+  text-shadow:0 0 12px rgba(239,68,68,.95),0 0 24px rgba(255,255,255,.35)!important;
+  transform:translate(-50%,-50%) scale(.7);
+  opacity:0;
+  pointer-events:none!important;
+  z-index:10!important;
+}
+body.plugin-angels .question-glow{overflow:hidden!important;}
+
+/* Letters keeps object-fit:contain for coordinate safety, but side areas use blurred artwork instead of black/night bars. */
+body.plugin-letters .guided-interaction-stage{
+  background:#040817!important;
+}
+body.plugin-letters .guided-interaction-stage::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:var(--guided-bg-url);
+  background-size:cover;
+  background-position:center;
+  filter:blur(20px) brightness(.45) saturate(1.05);
+  transform:scale(1.08);
+  opacity:.72;
+  z-index:0;
+}
+body.plugin-letters .guided-scene{z-index:1!important;}
+body.plugin-letters .guided-letter-glow,
+body.plugin-letters .guided-flying-tile,
+body.plugin-letters .guided-butterfly{z-index:5!important;}
+/* Letters page should use the Prism corner icon only, not the floating control menu. */
+body.plugin-letters .topbar{display:none!important;}
