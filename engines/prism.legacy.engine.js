@@ -643,21 +643,30 @@ return [...base,...extraListen];
 }
 
 function buildQuranLearnSource(){
-const learns = getLearnFiles().sort((a,b)=>{
+const learnPaths = getLearnFiles().sort((a,b)=>{
 const sa = surahNumberFromPath(a);
 const sb = surahNumberFromPath(b);
 if(sa === "55" && sb !== "55") return 1;
 if(sb === "55" && sa !== "55") return -1;
 return Number(sa || 9999) - Number(sb || 9999);
 });
-return learns.map((p,idx)=>{
+const existingAudio = new Set(quranSyncFiles().map(f=>f.path));
+const listenFiles = getListenFiles();
+return learnPaths.map((p,idx)=>{
 const display = makeSurahDisplayFromPath(p, idx);
+const surahNo = surahNumberFromPath(p);
+const hasOwnLearnRecording = /^learn\//i.test(p) && existingAudio.has(p);
+const listenFallback = listenFiles.find(l => surahNumberFromPath(l) === surahNo);
+const playbackFile = hasOwnLearnRecording ? p : (listenFallback || p);
 return {
 id:`learn-${normalizeFileName(p) || idx}`,
 ...display,
 emoji:display.emoji || "🎓",
-file:p,
-learnFile:p,
+file:playbackFile,
+listenFile:listenFallback || playbackFile,
+learnFile:playbackFile,
+learnConfigKey:p,
+reuseListenAudio:!hasOwnLearnRecording,
 slices:slicesData[p] || null,
 learningMode:slicesData[p] ? "slices" : "durationChunks",
 hasLearn:true
@@ -1231,6 +1240,27 @@ function buildGuidedInteraction(plugin, autoplay){
   const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
+  let audioUnlocked = false;
+  let currentLetterAudio = null;
+  function letterAudioSrc(item){
+    if(!item) return "";
+    const map = plugin.audioMap || {};
+    const key = item.l || item.label || item.key || "";
+    const file = item.audio || map[key] || map[item.key] || "";
+    if(!file) return "";
+    const base = plugin.audioBase || "";
+    return /^https?:\/\//i.test(file) ? file : (base ? base.replace(/\/$/,"/") + file.replace(/^\//,"") : file);
+  }
+  function playLetterAudio(item){
+    const src = letterAudioSrc(item);
+    if(!src || !audioUnlocked) return;
+    try{
+      if(currentLetterAudio){ currentLetterAudio.pause(); currentLetterAudio.currentTime = 0; }
+      currentLetterAudio = new Audio(src);
+      currentLetterAudio.preload = "auto";
+      currentLetterAudio.play().catch(()=>{});
+    }catch(e){}
+  }
 
   function imageToStagePercent(x, y){
     const img = stage.querySelector(".guided-scene");
@@ -1272,6 +1302,7 @@ function buildGuidedInteraction(plugin, autoplay){
   function playGuidedEffect(index){
     const item = letters[index];
     if(!item) return;
+    playLetterAudio(item);
     const x = Number(item.x); const y = Number(item.y);
     if(!Number.isFinite(x) || !Number.isFinite(y)) return;
     const p = setTileBox(glow,x,y);
@@ -1326,8 +1357,8 @@ function buildGuidedInteraction(plugin, autoplay){
       }
     });
     audio.addEventListener("ended",()=>{ active=-1; glow.style.opacity=0; flyingTile.style.opacity=0; });
-    stage.onclick=()=>play(plugin.id);
-    if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
+    stage.onclick=()=>{ audioUnlocked = true; if(audio) play(plugin.id); else playGuidedEffect(active >= 0 ? active : 0); };
+    if(audio && (autoplay || plugin.autoStart || plugin.id === "angels" || plugin.id === "pillars")) setTimeout(()=>play(plugin.id),420);
   }else{
     startGuidedVisualDemo();
   }
@@ -1469,7 +1500,7 @@ function buildReferenceVisualPlugin(plugin, autoplay){
   }
   if(pid === "pillars") startReferenceSparkles(stage);
   startReferenceDemo(plugin,stage);
-  if((autoplay || plugin.autoStart) && audio) setTimeout(()=>play(plugin.id),420);
+  if(audio && (autoplay || plugin.autoStart || plugin.id === "angels" || plugin.id === "pillars")) setTimeout(()=>play(plugin.id),420);
 }
 
 function referenceEffectMarkup(pid, effect){
@@ -1516,24 +1547,28 @@ function setReferenceFocus(stage, plugin, index){
     const on = el.dataset.key === activeKey;
     el.classList.toggle("active", on);
     el.classList.toggle("dim", !on && dimOthers);
+    if(!on) return;
 
-    // Munkar/Nakeer: one red ? at a time, random position, strictly clipped inside the tile.
-    if(on && el.dataset.effect === "questionGlow"){
-      const q = el.querySelector(".floating-question");
-      if(q){
-        const last = Number(el.dataset.lastQuestionPop || 0);
-        const firstForKey = stage.dataset.lastActiveKey !== activeKey;
-        if(firstForKey || now - last > 1150){
-          const x = 20 + Math.random() * 60;
-          const y = 18 + Math.random() * 60;
-          q.style.left = x + "%";
-          q.style.top = y + "%";
-          q.style.animation = "none";
-          q.style.opacity = "0";
-          void q.offsetWidth;
-          q.style.animation = "floatingQuestionPop 1.05s ease-in-out 1";
-          el.dataset.lastQuestionPop = String(now);
-        }
+    // Munkar/Nakeer: exactly one red question mark, random position, clipped inside the tile.
+    if(el.dataset.effect === "questionGlow"){
+      let q = el.querySelector(".floating-question");
+      if(!q){
+        const fx = el.querySelector(".question-glow") || el;
+        q = document.createElement("span");
+        q.className = "floating-question";
+        q.textContent = "?";
+        fx.appendChild(q);
+      }
+      const last = Number(el.dataset.lastQuestionPop || 0);
+      const firstForKey = stage.dataset.lastActiveKey !== activeKey;
+      if(firstForKey || now - last > 950){
+        q.style.left = (18 + Math.random() * 64) + "%";
+        q.style.top = (20 + Math.random() * 54) + "%";
+        q.style.opacity = "1";
+        q.style.animation = "none";
+        void q.offsetWidth;
+        q.style.animation = "floatingQuestionPop 1.15s ease-in-out 1";
+        el.dataset.lastQuestionPop = String(now);
       }
     }
   });
@@ -2191,28 +2226,39 @@ function playSegment(audio,start,end,token){
 return new Promise(resolve=>{
   if(token !== sequenceCancelToken) return resolve();
   start = Math.max(0, Number(start) || 0);
-  end = Math.max(start + 0.15, Number(end) || start + 0.15);
-  audio.pause();
-  audio.loop = false;
+  end = Math.max(start + 0.18, Number(end) || start + 0.18);
   let done = false;
-  let interval = null;
+  let timer = null;
+  const cleanup = ()=>{
+    if(timer) clearInterval(timer);
+    audio.removeEventListener("ended", finish);
+    audio.removeEventListener("error", finish);
+  };
   const finish = ()=>{
     if(done) return;
     done = true;
-    if(interval) clearInterval(interval);
-    audio.removeEventListener("ended", finish);
-    audio.pause();
+    cleanup();
+    try{ audio.pause(); }catch(e){}
     resolve();
   };
   const check = ()=>{
+    if(done) return;
     if(token !== sequenceCancelToken) return finish();
-    if(audio.currentTime >= end - 0.035) return finish();
+    if((audio.currentTime || 0) >= end - 0.025) return finish();
   };
+  const begin = ()=>{
+    if(done) return;
+    audio.loop = false;
+    audio.addEventListener("ended", finish);
+    audio.addEventListener("error", finish);
+    timer = setInterval(check, 40);
+    const p = audio.play();
+    if(p && p.catch) p.catch(()=>finish());
+  };
+  try{ audio.pause(); }catch(e){}
   try{ audio.currentTime = start; }catch(e){}
-  audio.addEventListener("ended", finish);
-  interval = setInterval(check, 35);
-  const p = audio.play();
-  if(p && p.catch) p.catch(()=>finish());
+  // Give mobile browsers a moment to complete the seek before playing the segment.
+  setTimeout(begin, 90);
 });
 }
 
