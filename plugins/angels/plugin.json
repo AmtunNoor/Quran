@@ -20,6 +20,7 @@
       "munkar": "questionGlow",
       "jibraeel": "messageLight",
       "kiraman": "writingSpark",
+      "paradise": "ridwanGlow",
       "ridwan": "ridwanGlow"
     },
     "idleGlow": 0.18,
@@ -63,7 +64,7 @@
       "width": 25.5,
       "height": 35.5
     },
-    "ridwan": {
+    "paradise": {
       "left": 65.8,
       "top": 61.5,
       "width": 25.5,
@@ -80,11 +81,11 @@
       "munkar": 33.5,
       "jibraeel": 70.0,
       "kiraman": 83.0,
-      "ridwan": 113.0
+      "paradise": 113.0
     },
     "ranges": {
       "mikaeel": [
-        0.0,
+        0,
         11.0
       ],
       "israfil": [
@@ -107,7 +108,7 @@
         83.0,
         112.0
       ],
-      "ridwan": [
+      "paradise": [
         113.0,
         134.0
       ]
@@ -119,5 +120,6 @@
   "theme": "angels",
   "audios": [
     "plugins/angels/angels.mp3"
-  ]
+  ],
+  "autoStart": true
 }
