@@ -1083,12 +1083,11 @@
         "tileEffects": {
           "mikaeel": "softRain",
           "israfil": "soundWave",
-          "malik": "malikFire",
+          "malik": "fireHeat",
           "munkar": "questionGlow",
           "jibraeel": "messageLight",
           "kiraman": "writingSpark",
-          "paradise": "ridwanGlow",
-          "ridwan": "ridwanGlow"
+          "ridwan": "gardenGlow"
         },
         "idleGlow": 0.18,
         "activeGlow": 0.75,
@@ -1131,7 +1130,7 @@
           "width": 25.5,
           "height": 35.5
         },
-        "paradise": {
+        "ridwan": {
           "left": 65.8,
           "top": 61.5,
           "width": 25.5,
@@ -1148,7 +1147,7 @@
           "munkar": 33.5,
           "jibraeel": 70,
           "kiraman": 83,
-          "paradise": 113
+          "ridwan": 113
         },
         "ranges": {
           "mikaeel": [
@@ -1175,7 +1174,7 @@
             83,
             112
           ],
-          "paradise": [
+          "ridwan": [
             113,
             134
           ]
