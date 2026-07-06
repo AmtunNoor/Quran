@@ -1241,7 +1241,7 @@ function buildGuidedInteraction(plugin, autoplay){
   const timings = (plugin.coordinateTiming && plugin.coordinateTiming.starts) ? orderedCoordinateKeys(plugin).map(k=>Number(plugin.coordinateTiming.starts[k])) : (Array.isArray(plugin.timings) ? plugin.timings.map(Number) : []);
   const catchPoint = plugin.catchPoint || {x:28,y:56};
   let active = -1;
-  let audioUnlocked = false;
+  let audioUnlocked = true; // V6.9.6: per-letter audio should attempt immediately after card selection
   let currentLetterAudio = null;
   function letterAudioSrc(item){
     if(!item) return "";
@@ -1509,7 +1509,7 @@ function referenceEffectMarkup(pid, effect){
     if(effect === "soundWave") return '<div class="reference-effect sound-wave"></div>';
     if(effect === "questionGlow" || effect === "questionPulse") return '<div class="reference-effect question-glow"><span class="floating-question">?</span></div>';
     if(effect === "softRain") return '<div class="reference-effect soft-rain"></div>';
-    if(effect === "malikFire") return '<div class="reference-effect malik-fire"></div><div class="reference-effect malik-heat"></div>';
+    if(effect === "malikFire" || effect === "fireHeat") return '<div class="reference-effect malik-fire"></div><div class="reference-effect malik-heat"></div>';
     if(effect === "ridwanGlow") return '<div class="reference-effect ridwan-glow"></div><div class="reference-effect ridwan-sparkle"></div>';
     if(effect === "gardenGlow") return '<div class="reference-effect garden-glow"></div>';
     if(effect === "messageLight") return '<div class="reference-effect message-light"></div>';
