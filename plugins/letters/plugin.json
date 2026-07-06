@@ -21,7 +21,7 @@
     "useCanvas": false,
     "useParticles": false,
     "fallback": "guidedInteractionFlyingTileFallback",
-    "speed": "slightlyFasterToddlerFriendly",
+    "speed": "balancedToddlerFriendly",
     "animatePrintedBunny": "subtleArtworkBunnyArea"
   },
   "catchPoint": {
@@ -233,5 +233,6 @@
     "ه": "ha.mp3",
     "و": "waw.mp3",
     "ي": "yaa.mp3"
-  }
+  },
+  "controls": "floating"
 }
