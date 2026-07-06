@@ -3757,3 +3757,28 @@ body.plugin-letters .guided-flying-tile,
 body.plugin-letters .guided-butterfly{z-index:5!important;}
 /* Letters page should use the Prism corner icon only, not the floating control menu. */
 body.plugin-letters .topbar{display:none!important;}
+
+
+/* === PRISM V6.9.5 STABILITY PATCH === */
+/* Letters: blurred side/background from the same artwork; coordinates remain object-fit:contain. */
+body.plugin-letters .guided-interaction-stage::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  background-image:var(--guided-bg-url)!important;
+  background-size:cover!important;
+  background-position:center!important;
+  filter:blur(22px) brightness(.50) saturate(1.08)!important;
+  transform:scale(1.08)!important;
+  opacity:.82!important;
+  z-index:0!important;
+}
+body.plugin-letters .guided-scene{position:absolute!important;z-index:1!important;object-fit:contain!important;}
+body.plugin-letters .guided-interaction-stage{background:#050816!important;}
+
+/* Angels: make JS-controlled Munkar question visible despite older CSS locks. */
+body.plugin-angels .reference-hotspot.active .floating-question{
+  display:block!important;
+  visibility:visible!important;
+  z-index:999!important;
+}
