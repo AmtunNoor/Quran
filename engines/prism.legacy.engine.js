@@ -1219,6 +1219,7 @@ function buildGuidedInteraction(plugin, autoplay){
   const audioFile = plugin.primaryAudio || mp3s[0] || "";
   const stage = document.createElement("div");
   stage.className = "guided-interaction-stage";
+  if(bg){ stage.style.setProperty("--guided-bg-url", `url("${bg}")`); }
   stage.innerHTML = `
     ${bg ? `<img class="guided-scene" src="${bg}" alt="${plugin.title || "Guided learning"}">` : ""}
     <div class="guided-letter-glow"></div>
@@ -1564,10 +1565,18 @@ function setReferenceFocus(stage, plugin, index){
       if(firstForKey || now - last > 950){
         q.style.left = (18 + Math.random() * 64) + "%";
         q.style.top = (20 + Math.random() * 54) + "%";
-        q.style.opacity = "1";
         q.style.animation = "none";
+        q.style.setProperty("opacity", "1", "important");
+        q.style.setProperty("transform", "translate(-50%,-50%) scale(1.08)", "important");
         void q.offsetWidth;
         q.style.animation = "floatingQuestionPop 1.15s ease-in-out 1";
+        clearTimeout(el._munkarQuestionHideTimer);
+        el._munkarQuestionHideTimer = setTimeout(()=>{
+          try{
+            q.style.setProperty("opacity", "0", "important");
+            q.style.setProperty("transform", "translate(-50%,-50%) scale(.72)", "important");
+          }catch(e){}
+        }, 1050);
         el.dataset.lastQuestionPop = String(now);
       }
     }
@@ -2226,11 +2235,14 @@ function playSegment(audio,start,end,token){
 return new Promise(resolve=>{
   if(token !== sequenceCancelToken) return resolve();
   start = Math.max(0, Number(start) || 0);
-  end = Math.max(start + 0.18, Number(end) || start + 0.18);
+  end = Math.max(start + 0.25, Number(end) || start + 0.25);
+  const expectedMs = Math.max(350, (end - start) * 1000);
   let done = false;
-  let timer = null;
+  let watchdog = null;
+  let tick = null;
   const cleanup = ()=>{
-    if(timer) clearInterval(timer);
+    if(watchdog) clearTimeout(watchdog);
+    if(tick) clearInterval(tick);
     audio.removeEventListener("ended", finish);
     audio.removeEventListener("error", finish);
   };
@@ -2244,33 +2256,42 @@ return new Promise(resolve=>{
   const check = ()=>{
     if(done) return;
     if(token !== sequenceCancelToken) return finish();
-    if((audio.currentTime || 0) >= end - 0.025) return finish();
+    const t = Number(audio.currentTime || 0);
+    if(t >= end - 0.035) return finish();
   };
   const begin = ()=>{
-    if(done) return;
+    if(done || token !== sequenceCancelToken) return finish();
     audio.loop = false;
     audio.addEventListener("ended", finish);
     audio.addEventListener("error", finish);
-    timer = setInterval(check, 40);
+    tick = setInterval(check, 35);
+    watchdog = setTimeout(finish, expectedMs + 900);
     const p = audio.play();
     if(p && p.catch) p.catch(()=>finish());
   };
-  try{ audio.pause(); }catch(e){}
-  try{ audio.currentTime = start; }catch(e){}
-  // Give mobile browsers a moment to complete the seek before playing the segment.
-  setTimeout(begin, 90);
+  const seekAndBegin = ()=>{
+    try{ audio.pause(); }catch(e){}
+    const onSeeked = ()=>{ audio.removeEventListener("seeked", onSeeked); setTimeout(begin, 40); };
+    audio.addEventListener("seeked", onSeeked, {once:true});
+    try{ audio.currentTime = start; }catch(e){ audio.removeEventListener("seeked", onSeeked); }
+    setTimeout(()=>{ if(!done) begin(); }, 220);
+  };
+  seekAndBegin();
 });
 }
 
 async function runLearningSequence(item, mode, token){
 attachAudioRecovery(item.audio, item); // V62 recovery
-try{ item.audio.preload = "auto"; item.audio.load(); }catch(e){}
 const audio = item.audio;
+try{ item.audio.preload = "auto"; }catch(e){}
 
 if(!audio.duration || !isFinite(audio.duration)){
 await new Promise(resolve=>{
-audio.addEventListener("loadedmetadata",resolve,{once:true});
-audio.load();
+  let done=false;
+  const finish=()=>{ if(done) return; done=true; resolve(); };
+  audio.addEventListener("loadedmetadata",finish,{once:true});
+  audio.addEventListener("canplay",finish,{once:true});
+  setTimeout(finish, 1200);
 });
 }
 
