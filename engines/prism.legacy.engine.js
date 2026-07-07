@@ -2022,6 +2022,7 @@ audio.addEventListener("timeupdate", ()=>{
 });
 
 const recover = ()=>{
+  if(audio.dataset && audio.dataset.learningActive === "1") return;
   if(recovering || audio.ended) return;
   recovering = true;
   const wasCurrent = currentAudio === audio;
@@ -2236,101 +2237,141 @@ return Array.from({length:chunks},(_,i)=>Math.min(duration, step*(i+1)));
 function playSegment(audio,start,end,token){
 return new Promise(resolve=>{
   if(token !== sequenceCancelToken) return resolve();
+
   start = Math.max(0, Number(start) || 0);
-  end = Math.max(start + 0.25, Number(end) || start + 0.25);
-  const expectedMs = Math.max(350, (end - start) * 1000);
+  end = Math.max(start + 0.35, Number(end) || start + 0.35);
+
   let done = false;
+  let started = false;
+  let monitor = null;
   let watchdog = null;
-  let tick = null;
-  const cleanup = ()=>{
+  let seekGuard = null;
+
+  const clear = ()=>{
+    if(monitor) clearInterval(monitor);
     if(watchdog) clearTimeout(watchdog);
-    if(tick) clearInterval(tick);
+    if(seekGuard) clearTimeout(seekGuard);
+    audio.removeEventListener("seeked", onSeeked);
+    audio.removeEventListener("canplay", onCanPlay);
     audio.removeEventListener("ended", finish);
     audio.removeEventListener("error", finish);
   };
+
   const finish = ()=>{
     if(done) return;
     done = true;
-    cleanup();
+    clear();
     try{ audio.pause(); }catch(e){}
     resolve();
   };
+
   const check = ()=>{
     if(done) return;
     if(token !== sequenceCancelToken) return finish();
     const t = Number(audio.currentTime || 0);
-    if(t >= end - 0.035) return finish();
+    if(t >= end - 0.025) return finish();
   };
+
   const begin = ()=>{
-    if(done || token !== sequenceCancelToken) return finish();
+    if(done || started) return;
+    if(token !== sequenceCancelToken) return finish();
+    started = true;
     audio.loop = false;
-    audio.addEventListener("ended", finish);
-    audio.addEventListener("error", finish);
-    tick = setInterval(check, 35);
-    watchdog = setTimeout(finish, expectedMs + 900);
+    audio.addEventListener("ended", finish, {once:true});
+    audio.addEventListener("error", finish, {once:true});
+    monitor = setInterval(check, 25);
+    watchdog = setTimeout(finish, Math.max(900, (end - start) * 1000 + 1200));
     const p = audio.play();
-    if(p && p.catch) p.catch(()=>finish());
+    if(p && p.catch){
+      p.catch(()=>{
+        // Browser blocked playback: resolve cleanly instead of entering a repeat loop.
+        finish();
+      });
+    }
   };
-  const seekAndBegin = ()=>{
-    try{ audio.pause(); }catch(e){}
-    const onSeeked = ()=>{ audio.removeEventListener("seeked", onSeeked); setTimeout(begin, 40); };
-    audio.addEventListener("seeked", onSeeked, {once:true});
-    try{ audio.currentTime = start; }catch(e){ audio.removeEventListener("seeked", onSeeked); }
-    setTimeout(()=>{ if(!done) begin(); }, 220);
-  };
-  seekAndBegin();
+
+  function onCanPlay(){ begin(); }
+  function onSeeked(){ begin(); }
+
+  try{ audio.pause(); }catch(e){}
+  audio.addEventListener("seeked", onSeeked, {once:true});
+  audio.addEventListener("canplay", onCanPlay, {once:true});
+
+  try{
+    audio.currentTime = start;
+  }catch(e){
+    audio.removeEventListener("seeked", onSeeked);
+  }
+
+  // Some WebViews do not fire seeked reliably for cached MP3s.
+  seekGuard = setTimeout(begin, 180);
 });
 }
 
 async function runLearningSequence(item, mode, token){
-attachAudioRecovery(item.audio, item); // V62 recovery
 const audio = item.audio;
 try{ item.audio.preload = "auto"; }catch(e){}
+try{ audio.dataset.learningActive = "1"; }catch(e){}
 
+try{
 if(!audio.duration || !isFinite(audio.duration)){
 await new Promise(resolve=>{
   let done=false;
   const finish=()=>{ if(done) return; done=true; resolve(); };
   audio.addEventListener("loadedmetadata",finish,{once:true});
   audio.addEventListener("canplay",finish,{once:true});
-  setTimeout(finish, 1200);
+  try{ audio.load(); }catch(e){}
+  setTimeout(finish, 1500);
 });
 }
 
-const ends = getChunkEnds(item);
+const ends = getChunkEnds(item)
+  .map(Number)
+  .filter(v=>isFinite(v) && v > 0)
+  .sort((a,b)=>a-b);
+
 if(!ends.length){
-audio.play().catch(()=>{});
+await audio.play().catch(()=>{});
 return;
 }
 
-const starts = [0].concat(ends.slice(0,-1));
-const repeat = ((item.s.plugin || currentPlugin || {}).chunkMode || {}).repeatCount || 5;
+const duration = audio.duration && isFinite(audio.duration) ? audio.duration : Math.max(...ends);
+const safeEnds = ends.map((v,i)=>Math.min(v, duration || v)).filter((v,i,a)=> i===0 || v > a[i-1] + 0.25);
+const starts = [0].concat(safeEnds.slice(0,-1));
+const repeat = Number(((item.s.plugin || currentPlugin || {}).chunkMode || {}).repeatCount || 5);
+const reps = Math.max(1, repeat || 5);
 
 if(mode === "repeat5"){
-for(let i=0;i<ends.length;i++){
-for(let r=0;r<repeat;r++){
-if(token !== sequenceCancelToken) return;
-await playSegment(audio,starts[i],ends[i],token);
-await sleep(250);
-}
+for(let i=0;i<safeEnds.length;i++){
+  for(let r=0;r<reps;r++){
+    if(token !== sequenceCancelToken) return;
+    await playSegment(audio,starts[i],safeEnds[i],token);
+    if(token !== sequenceCancelToken) return;
+    await sleep(220);
+  }
 }
 }
 
 if(mode === "hifz"){
-for(let upto=0;upto<ends.length;upto++){
-for(let r=0;r<repeat;r++){
-if(token !== sequenceCancelToken) return;
-await playSegment(audio,starts[upto],ends[upto],token);
-await sleep(250);
-}
-if(token !== sequenceCancelToken) return;
-await playSegment(audio,0,ends[upto],token);
-await sleep(450);
+for(let upto=0;upto<safeEnds.length;upto++){
+  for(let r=0;r<reps;r++){
+    if(token !== sequenceCancelToken) return;
+    await playSegment(audio,starts[upto],safeEnds[upto],token);
+    if(token !== sequenceCancelToken) return;
+    await sleep(220);
+  }
+  if(token !== sequenceCancelToken) return;
+  await playSegment(audio,0,safeEnds[upto],token);
+  if(token !== sequenceCancelToken) return;
+  await sleep(400);
 }
 }
 
 if(loopAll && token === sequenceCancelToken){
 runLearningSequence(item,mode,token);
+}
+} finally {
+  try{ audio.dataset.learningActive = "0"; }catch(e){}
 }
 }
 
