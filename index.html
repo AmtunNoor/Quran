@@ -42,5 +42,51 @@
 
 
 <script src="engines/prism.legacy.engine.js?v690_frozen_release_20260702"></script>
+
+<script>
+/* Prism V6.9 loader self-heal: fixes rare first-load topbar mount race without changing UI. */
+(function(){
+  const HIDE_FOR = new Set(["plugin-months","plugin-numbers","plugin-salah-names","plugin-salahnames","plugin-angels","plugin-pillars","plugin-letters"]);
+  let timer = null;
+  function shouldShowTopbar(){
+    const b = document.body;
+    if(!b) return false;
+    if(b.classList.contains("landing-mode")) return false;
+    for(const c of HIDE_FOR){ if(b.classList.contains(c)) return false; }
+    // Quran/listen/learn pages + Allah Names + Dua + external Salah keep the existing fixed topbar.
+    return true;
+  }
+  function healTopbar(){
+    const top = document.getElementById("topbar");
+    if(!top) return;
+    if(shouldShowTopbar()){
+      top.classList.add("prism-topbar-ready");
+      top.style.display = "flex";
+      top.style.visibility = "visible";
+      top.style.opacity = "1";
+    }else{
+      top.classList.remove("prism-topbar-ready");
+      top.style.display = "";
+      top.style.visibility = "";
+      top.style.opacity = "";
+    }
+  }
+  function schedule(){
+    clearTimeout(timer);
+    healTopbar();
+    [120, 350, 700, 1200, 2200].forEach(ms=>setTimeout(healTopbar, ms));
+  }
+  window.__prismHealTopbar = schedule;
+  document.addEventListener("DOMContentLoaded", schedule);
+  window.addEventListener("load", schedule);
+  window.addEventListener("pageshow", schedule);
+  const startObserver = ()=>{
+    if(!document.body) return setTimeout(startObserver, 50);
+    new MutationObserver(schedule).observe(document.body,{attributes:true,attributeFilter:["class"]});
+    schedule();
+  };
+  startObserver();
+})();
+</script>
 </body>
 </html>
