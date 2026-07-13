@@ -1,0 +1,56 @@
+name: Generate Prism Snapshot
+
+on:
+  workflow_run:
+    workflows: ["Generate Prism Menu"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prism-snapshot
+  cancel-in-progress: true
+
+jobs:
+  generate-snapshot:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate and validate snapshot
+        run: |
+          node generate-snapshot.js
+          node - <<'NODE'
+          const fs = require('fs');
+          const crypto = require('crypto');
+          const s = JSON.parse(fs.readFileSync('snapshot.json','utf8'));
+          if (s.schema !== 1 || !/^[a-f0-9]{64}$/.test(s.version) || !Array.isArray(s.files)) process.exit(1);
+          const seen = new Set();
+          for (const f of s.files) {
+            if (seen.has(f.path) || !fs.existsSync(f.path)) process.exit(1);
+            seen.add(f.path);
+            const b = fs.readFileSync(f.path);
+            if (b.length !== f.size || crypto.createHash('sha256').update(b).digest('hex') !== f.sha256) process.exit(1);
+          }
+          for (const required of ['index.html','menu.json','styles/prism.css','engines/prism.legacy.engine.js']) {
+            if (!seen.has(required)) process.exit(1);
+          }
+          console.log(`Validated ${s.files.length} files`);
+          NODE
+
+      - name: Commit snapshot.json
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-update Prism snapshot.json"
+          file_pattern: snapshot.json
