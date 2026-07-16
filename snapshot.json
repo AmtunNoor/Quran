@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "07a78d14f609ec9159911d86419af53e23f65c56dda1d645d9e3bde6954116c8",
+  "version": "843400cce7ddd774b89b269a9240ddf36b9e6b3347d9b6d527c2e3014dc0a5cc",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -175,8 +175,8 @@
     {
       "path": "engines/interactive.hotspots.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
-      "size": 1702,
-      "sha256": "9730454cde52bc30526ed22266d4f43eca000963ab1ebdf48945d373b1e4a530",
+      "size": 7559,
+      "sha256": "2aedc3a3a41f53cba05613796566064868f48f27724a10ee4b28419ae325c773",
       "priority": 0,
       "lane": "general"
     },
@@ -191,8 +191,8 @@
     {
       "path": "engines/prism.legacy.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
-      "size": 99485,
-      "sha256": "ab6f9d24cc54bb8ede0e740e053524ee564770e7a798593f33669782144ec50f",
+      "size": 100719,
+      "sha256": "a8367ebe6d935242672dd1e98f84fbfb183b29a2e3b9a6eb3200bd67f37e4ffb",
       "priority": 0,
       "lane": "general"
     },
