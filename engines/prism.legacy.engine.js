@@ -178,7 +178,7 @@ return await res.json();
    3) legacy fallback plugins/<id>.plugin.json
    Add a future card by adding its plugin folder + plugin.json and listing id in plugins/plugins.json.
 */
-const PRISM_PLUGIN_HOST_VERSION = "v690_frozen_last_polish_20260704";
+const PRISM_PLUGIN_HOST_VERSION = "v700_generic_freeze_20260716";
 
 function cleanPluginId(id){
   return String(id || "").trim().toLowerCase().replace(/[^a-z0-9_-]/g, "");
@@ -282,6 +282,9 @@ function applyImageOrGradient(card, image, theme){
   const setGradient = ()=>{
     card.style.background = gradientFor(theme);
     card.style.backgroundImage = "";
+    card.style.backgroundSize = "";
+    card.style.backgroundRepeat = "";
+    card.style.backgroundPosition = "";
     card.dataset.tileImageStatus = "gradient";
     card.dataset.iconOnly = "false";
   };
@@ -308,6 +311,10 @@ function applyImageOrGradient(card, image, theme){
     probe.onload = ()=>{
       card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.04),rgba(2,6,23,.12)), url('${src}')`;
       card.style.backgroundColor = "transparent";
+      const tileFit = String(card.dataset.tileFit || "cover").toLowerCase() === "contain" ? "contain" : "cover";
+      card.style.backgroundSize = `100% 100%, ${tileFit}`;
+      card.style.backgroundRepeat = "no-repeat, no-repeat";
+      card.style.backgroundPosition = "center, center";
       card.dataset.tileImageStatus = "image";
       card.dataset.iconOnly = cand.iconOnly ? "true" : "false";
     };
@@ -358,8 +365,15 @@ document.getElementById("pageSubtitle").innerText = subtitle;
 }
 
 function setTopbar(show, showHome){
-document.getElementById("topbar").style.display = show ? "flex" : "none";
-document.getElementById("btnBack").style.display = showHome ? "inline-block" : "none";
+const topbar = document.getElementById("topbar");
+const back = document.getElementById("btnBack");
+if(topbar){
+  topbar.style.display = show ? "flex" : "none";
+  topbar.style.visibility = show ? "visible" : "";
+  topbar.style.opacity = show ? "1" : "";
+  topbar.classList.toggle("prism-topbar-ready", !!show);
+}
+if(back) back.style.display = showHome ? "inline-block" : "none";
 }
 
 function clearGrid(){
@@ -433,6 +447,7 @@ const theme = plugin.theme || id || "default";
 const card = document.createElement("div");
 card.className = "card prism-audio-tile";
 card.dataset.pluginId = id;
+card.dataset.tileFit = String(plugin.landingTileFit || "cover").toLowerCase();
 const tileCandidates = landingTileCandidates(plugin, id);
 applyImageOrGradient(card, tileCandidates, theme);
 card.innerHTML = `
@@ -840,13 +855,26 @@ if(engine === "selectableScene" && window.PrismEngines && window.PrismEngines.se
     setFocusable:(el)=>{ items=[{id:plugin.id,card:el,index:0,type:"interaction"}]; map[plugin.id]=items[0]; updateFocus(); },
     onSelection:()=>{}
   };
-  Promise.resolve(window.PrismEngines.selectableScene.mount(context)).then(instance=>{ activeInteractionEngine=instance; if(autoplay && instance && typeof instance.playMode === "function") instance.playMode(); });
+  Promise.resolve(window.PrismEngines.selectableScene.mount(context)).then(instance=>{
+    if(currentView !== "plugin" || currentPlugin !== plugin){ try{ instance?.destroy?.(); }catch(e){} return; }
+    activeInteractionEngine=instance;
+    if(autoplay && instance && typeof instance.playMode === "function") instance.playMode();
+  }).catch(err=>console.error("Prism selectableScene mount failed",err));
   return;
 }
 if(engine === "interactiveHotspots" && window.PrismEngines && window.PrismEngines.interactiveHotspots){
   clearGrid(); setStageGridMode(true);
-  const context={plugin,host:grid,isActive:()=>currentView === "plugin" && currentPlugin === plugin,setFocusable:(el)=>{items=[{id:plugin.id,card:el,index:0,type:"interaction"}];map[plugin.id]=items[0];updateFocus();}};
-  Promise.resolve(window.PrismEngines.interactiveHotspots.mount(context)).then(instance=>{activeInteractionEngine=instance;});
+  const context={
+    plugin,host:grid,
+    getMode:()=>getMode(), isLoop:()=>loopAll,
+    isActive:()=>currentView === "plugin" && currentPlugin === plugin,
+    setFocusable:(el)=>{items=[{id:plugin.id,card:el,index:0,type:"interaction"}];map[plugin.id]=items[0];updateFocus();}
+  };
+  Promise.resolve(window.PrismEngines.interactiveHotspots.mount(context)).then(instance=>{
+    if(currentView !== "plugin" || currentPlugin !== plugin){ try{ instance?.destroy?.(); }catch(e){} return; }
+    activeInteractionEngine=instance;
+    if(autoplay && instance && typeof instance.playMode === "function") instance.playMode();
+  }).catch(err=>console.error("Prism interactiveHotspots mount failed",err));
   return;
 }
 if(engine === "spotlight") return buildSpotlight(plugin, autoplay);
