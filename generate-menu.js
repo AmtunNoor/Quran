@@ -303,6 +303,9 @@ function normalizeEngine(plugin) {
   if (id === "quran" || plugin.type === "core-quran") return "learning";
   if (id === "salah" || plugin.type === "core-salah") return "external";
   if (raw === "directAudio" || raw === "direct-audio") return "directAudio";
+  if (raw === "guidedInteraction") return "guidedInteraction";
+  if (raw === "selectableScene") return "selectableScene";
+  if (raw === "interactiveHotspots") return "interactiveHotspots";
   if (raw === "spotlight" || id === "numbers" || id === "names") return "spotlight";
   if (raw === "story" || id === "salahnames" || id === "salah-names") return "story";
   if (raw === "sequence") return "sequence";
