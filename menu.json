@@ -919,27 +919,8 @@
       "enabled": true,
       "showOnLanding": true,
       "landingTileImage": "plugins/azan/azan_icon.webp",
-      "tileImage": {
-        "type": "gradient",
-        "style": "colorful",
-        "colors": [
-          "#ff9a9e",
-          "#fad0c4",
-          "#fbc2eb",
-          "#a18cd1"
-        ],
-        "icon": "✨",
-        "label": "Azan"
-      },
-      "backgroundImage": {
-        "type": "gradient",
-        "style": "soft",
-        "colors": [
-          "#fff1eb",
-          "#ace0f9",
-          "#fbc2eb"
-        ]
-      },
+      "tileImage": "plugins/azan/azan_icon.webp",
+      "backgroundImage": "plugins/azan/azan.png",
       "supports": [
         "listen",
         "repeat5",
