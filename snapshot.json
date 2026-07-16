@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "784bce318703115a0314c26af9a48a92fb481019a9ea3cce5bc07aef1c74053c",
+  "version": "07a78d14f609ec9159911d86419af53e23f65c56dda1d645d9e3bde6954116c8",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -231,8 +231,8 @@
     {
       "path": "index.html",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
-      "size": 3395,
-      "sha256": "025cfee5ed9039b23352898e7bcfbe290af0379dcabe3b3e936020a3fef3187c",
+      "size": 3558,
+      "sha256": "f04a82efab6d0ff62cf7851a182ee07af2fb4c9b86ae2cffc09c6b649f158727",
       "priority": 0,
       "lane": "general"
     },
