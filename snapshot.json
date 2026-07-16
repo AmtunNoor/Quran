@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "583fff4d08cdd49b281d694ecc72b33f43c1d90570957af366a5cb8484dccc2b",
+  "version": "c4abe4e2c204cef05da4b2f9241b81d1fa3c938cae1c489898a6a468b8077a1c",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -506,6 +506,46 @@
       "size": 2288,
       "sha256": "e7de390d3e9d11720ba74312b1a5b47cb21f9e40b38230c1d4f6cd45233d5c28",
       "priority": 0,
+      "lane": "general"
+    },
+    {
+      "path": "plugins/animals/animals.webp",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/animals.webp",
+      "size": 295910,
+      "sha256": "9b8685277452e49382a686f9964e71bc15e8f663bbb096447fad8ac5f5282330",
+      "priority": 1,
+      "lane": "general"
+    },
+    {
+      "path": "plugins/animals/birds.webp",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/birds.webp",
+      "size": 356978,
+      "sha256": "f6384a45fdeaf0f0bea840b3f1eb22f60c67afad954b887f3bc84d956f79f5fc",
+      "priority": 1,
+      "lane": "general"
+    },
+    {
+      "path": "plugins/animals/insects.webp",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/insects.webp",
+      "size": 343626,
+      "sha256": "a2ad80cbcce52da0cb2aa63b6fbe7bb028f6194821224da695a90f263a585efe",
+      "priority": 1,
+      "lane": "general"
+    },
+    {
+      "path": "plugins/animals/land.webp",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/land.webp",
+      "size": 527216,
+      "sha256": "71df9bb012fa5c48e5bfd18a69d66a85058502c8466bbd56f75276276610258f",
+      "priority": 1,
+      "lane": "general"
+    },
+    {
+      "path": "plugins/animals/water.webp",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/water.webp",
+      "size": 385988,
+      "sha256": "1078e00fcfc466801b8512c1a0989867345b1d127623f29407e668bc49f41a17",
+      "priority": 1,
       "lane": "general"
     },
     {
