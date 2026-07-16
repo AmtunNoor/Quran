@@ -990,7 +990,7 @@
         "type": "carouselFocus",
         "dimOthers": true,
         "inactiveOpacity": 0.35,
-        "activeScale": 1.05,
+        "activeScale": 1.035,
         "halo": {
           "borderRadiusPercent": 13
         },
@@ -1015,12 +1015,13 @@
           "name": "Makkah",
           "enabled": true,
           "bounds": {
-            "centerX": 21.5,
-            "centerY": 52.35,
-            "width": 24.7,
-            "height": 49
+            "x": 9.2,
+            "y": 27.9,
+            "width": 24.85,
+            "height": 49.45
           },
-          "supports": []
+          "supports": [],
+          "effectColor": "warmGold"
         },
         {
           "id": "madinah",
@@ -1029,10 +1030,10 @@
           "audio": "madina.mp3",
           "segmentsFile": "madinah-segments.json",
           "bounds": {
-            "centerX": 49.55,
-            "centerY": 52.35,
-            "width": 24.55,
-            "height": 49
+            "x": 37.02,
+            "y": 27.83,
+            "width": 24.93,
+            "height": 49.52
           },
           "supports": [
             "listen",
@@ -1043,21 +1044,29 @@
             "yourTurn": {
               "enabled": true
             }
-          }
+          },
+          "effectColor": "softCyan"
         },
         {
           "id": "world",
           "name": "World",
           "enabled": true,
           "bounds": {
-            "centerX": 77.25,
-            "centerY": 52.35,
-            "width": 24.45,
-            "height": 49
+            "x": 64.9,
+            "y": 27.83,
+            "width": 24.55,
+            "height": 49.52
           },
-          "supports": []
+          "supports": [],
+          "effectColor": "softViolet"
         }
       ],
+      "landingTileFit": "contain",
+      "display": {
+        "fit": "contain",
+        "blurBackground": true,
+        "coordinateSpace": "source-image-percent"
+      },
       "type": "plugin",
       "renderer": "selectableScene",
       "primaryAudio": null,
