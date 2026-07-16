@@ -123,6 +123,7 @@ let currentView = "landing";
 let currentPlugin = null;
 let sequenceCancelToken = 0;
 let storyTimer = null;
+let activeInteractionEngine = null;
 
 function params(){return new URLSearchParams(location.search);}
 function getMode(){return document.getElementById("mode").value;}
@@ -362,6 +363,8 @@ document.getElementById("btnBack").style.display = showHome ? "inline-block" : "
 }
 
 function clearGrid(){
+if(activeInteractionEngine && typeof activeInteractionEngine.destroy === "function"){ try{ activeInteractionEngine.destroy(); }catch(e){} }
+activeInteractionEngine = null;
 Object.keys(map).forEach(k=>delete map[k]);
 items = [];
 grid.innerHTML = "";
@@ -828,6 +831,24 @@ setTopbar(true,true);
 const engine = plugin.engine || "gallery";
 if(engine === "directAudio") return buildDirectAudio(plugin, autoplay);
 if(engine === "guidedInteraction" || (plugin.effect && plugin.effect.type === "guidedInteraction")) return buildGuidedInteraction(plugin, autoplay);
+if(engine === "selectableScene" && window.PrismEngines && window.PrismEngines.selectableScene){
+  clearGrid(); setStageGridMode(true);
+  const context = {
+    plugin, host:grid,
+    getMode:()=>getMode(), isLoop:()=>loopAll,
+    isActive:()=>currentView === "plugin" && currentPlugin === plugin,
+    setFocusable:(el)=>{ items=[{id:plugin.id,card:el,index:0,type:"interaction"}]; map[plugin.id]=items[0]; updateFocus(); },
+    onSelection:()=>{}
+  };
+  Promise.resolve(window.PrismEngines.selectableScene.mount(context)).then(instance=>{ activeInteractionEngine=instance; if(autoplay && instance && typeof instance.playMode === "function") instance.playMode(); });
+  return;
+}
+if(engine === "interactiveHotspots" && window.PrismEngines && window.PrismEngines.interactiveHotspots){
+  clearGrid(); setStageGridMode(true);
+  const context={plugin,host:grid,isActive:()=>currentView === "plugin" && currentPlugin === plugin,setFocusable:(el)=>{items=[{id:plugin.id,card:el,index:0,type:"interaction"}];map[plugin.id]=items[0];updateFocus();}};
+  Promise.resolve(window.PrismEngines.interactiveHotspots.mount(context)).then(instance=>{activeInteractionEngine=instance;});
+  return;
+}
 if(engine === "spotlight") return buildSpotlight(plugin, autoplay);
 if(engine === "story") return buildStory(plugin, autoplay || plugin.autoStart === true || plugin.id === "salah-names" || plugin.id === "salahnames");
 return buildGallery(plugin, autoplay);
@@ -2384,6 +2405,7 @@ if(currentAudio){ currentAudio.pause(); }
 
 function stopAll(clearFocus=true){
 sequenceCancelToken++;
+if(activeInteractionEngine && typeof activeInteractionEngine.stop === "function"){try{activeInteractionEngine.stop();}catch(e){}}
 if(currentAudio){
 currentAudio.pause();
 currentAudio.currentTime = 0;
@@ -2400,9 +2422,14 @@ function toggleLoopAll(){
 loopAll = !loopAll;
 document.getElementById("loopBtn").innerText = loopAll ? "🔁 Loop ON" : "🔁 Loop OFF";
 if(currentAudio) currentAudio.loop = loopAll;
+if(activeInteractionEngine && typeof activeInteractionEngine.onLoopChange === "function") activeInteractionEngine.onLoopChange();
 }
 
 document.getElementById("mode").addEventListener("change",()=>{
+if(currentView === "plugin" && currentPlugin && (currentPlugin.engine === "selectableScene" || currentPlugin.engine === "interactiveHotspots")){
+  if(activeInteractionEngine && typeof activeInteractionEngine.onModeChange === "function") activeInteractionEngine.onModeChange();
+  return;
+}
 stopAll(false);
 if(currentView === "quran") renderQuranItems();
 if(currentView === "plugin" && currentPlugin){
