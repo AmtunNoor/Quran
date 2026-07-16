@@ -1,0 +1,239 @@
+{
+  "id": "madinah",
+  "audio": "plugins/azan/madina.mp3",
+  "version": 1,
+  "status": "ready-for-app-test",
+  "analysis": {
+    "sourceDurationSeconds": 232.548,
+    "method": "Natural phrase gaps plus low-energy melodic resting points",
+    "note": "Phrase boundaries are high-confidence. Internal toddler splits are recommended starting points and should be checked once in the actual Prism 5x playback."
+  },
+  "learningSegments": [
+    {
+      "id": "m01a",
+      "start": 0.23,
+      "end": 8.51,
+      "phrase": "p01"
+    },
+    {
+      "id": "m01b",
+      "start": 8.51,
+      "end": 14.65,
+      "phrase": "p01"
+    },
+    {
+      "id": "m02a",
+      "start": 16.35,
+      "end": 25.07,
+      "phrase": "p02"
+    },
+    {
+      "id": "m02b",
+      "start": 25.07,
+      "end": 35.11,
+      "phrase": "p02"
+    },
+    {
+      "id": "m03a",
+      "start": 37.2,
+      "end": 45.24,
+      "phrase": "p03"
+    },
+    {
+      "id": "m03b",
+      "start": 45.24,
+      "end": 53.05,
+      "phrase": "p03"
+    },
+    {
+      "id": "m04a",
+      "start": 55.52,
+      "end": 64.33,
+      "phrase": "p04"
+    },
+    {
+      "id": "m04b",
+      "start": 64.33,
+      "end": 75.73,
+      "phrase": "p04"
+    },
+    {
+      "id": "m05a",
+      "start": 77.48,
+      "end": 87.77,
+      "phrase": "p05"
+    },
+    {
+      "id": "m05b",
+      "start": 87.77,
+      "end": 95.34,
+      "phrase": "p05"
+    },
+    {
+      "id": "m06a",
+      "start": 97.13,
+      "end": 110.02,
+      "phrase": "p06"
+    },
+    {
+      "id": "m06b",
+      "start": 110.02,
+      "end": 117.52,
+      "phrase": "p06"
+    },
+    {
+      "id": "m07a",
+      "start": 119.01,
+      "end": 129.04,
+      "phrase": "p07"
+    },
+    {
+      "id": "m07b",
+      "start": 129.04,
+      "end": 137.0,
+      "phrase": "p07"
+    },
+    {
+      "id": "m08a",
+      "start": 139.25,
+      "end": 149.39,
+      "phrase": "p08"
+    },
+    {
+      "id": "m08b",
+      "start": 149.39,
+      "end": 156.56,
+      "phrase": "p08"
+    },
+    {
+      "id": "m09a",
+      "start": 158.38,
+      "end": 168.24,
+      "phrase": "p09"
+    },
+    {
+      "id": "m09b",
+      "start": 168.24,
+      "end": 175.72,
+      "phrase": "p09"
+    },
+    {
+      "id": "m10a",
+      "start": 177.39,
+      "end": 188.45,
+      "phrase": "p10"
+    },
+    {
+      "id": "m10b",
+      "start": 188.45,
+      "end": 194.75,
+      "phrase": "p10"
+    },
+    {
+      "id": "m11a",
+      "start": 197.17,
+      "end": 206.7,
+      "phrase": "p11"
+    },
+    {
+      "id": "m11b",
+      "start": 206.7,
+      "end": 213.5,
+      "phrase": "p11"
+    },
+    {
+      "id": "m12",
+      "start": 214.78,
+      "end": 232.54,
+      "phrase": "p12"
+    }
+  ],
+  "phrases": [
+    {
+      "id": "p01",
+      "start": 0.23,
+      "end": 14.65
+    },
+    {
+      "id": "p02",
+      "start": 16.35,
+      "end": 35.11
+    },
+    {
+      "id": "p03",
+      "start": 37.2,
+      "end": 53.05
+    },
+    {
+      "id": "p04",
+      "start": 55.52,
+      "end": 75.73
+    },
+    {
+      "id": "p05",
+      "start": 77.48,
+      "end": 95.34
+    },
+    {
+      "id": "p06",
+      "start": 97.13,
+      "end": 117.52
+    },
+    {
+      "id": "p07",
+      "start": 119.01,
+      "end": 137.0
+    },
+    {
+      "id": "p08",
+      "start": 139.25,
+      "end": 156.56
+    },
+    {
+      "id": "p09",
+      "start": 158.38,
+      "end": 175.72
+    },
+    {
+      "id": "p10",
+      "start": 177.39,
+      "end": 194.75
+    },
+    {
+      "id": "p11",
+      "start": 197.17,
+      "end": 213.5
+    },
+    {
+      "id": "p12",
+      "start": 214.78,
+      "end": 232.54
+    }
+  ],
+  "repeat": {
+    "count": 5,
+    "pauseBetweenRepeatsMs": 450,
+    "preserveNaturalAudioTail": true,
+    "crossfade": false,
+    "restartFromExactSegmentStart": true
+  },
+  "yourTurn": {
+    "enabled": true,
+    "default": false,
+    "pauseRatio": 0.85,
+    "minimumPauseMs": 1800,
+    "maximumPauseMs": 5000,
+    "showAnimatedMicrophone": true,
+    "actualRecording": false
+  },
+  "hifz": {
+    "enabled": true,
+    "progression": [
+      "learningSegment",
+      "completePhrase",
+      "joinedPhrases",
+      "fullAudio"
+    ],
+    "joinedRangePlayback": true
+  }
+}
