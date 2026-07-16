@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "c4abe4e2c204cef05da4b2f9241b81d1fa3c938cae1c489898a6a468b8077a1c",
+  "version": "784bce318703115a0314c26af9a48a92fb481019a9ea3cce5bc07aef1c74053c",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -506,6 +506,14 @@
       "size": 2288,
       "sha256": "e7de390d3e9d11720ba74312b1a5b47cb21f9e40b38230c1d4f6cd45233d5c28",
       "priority": 0,
+      "lane": "general"
+    },
+    {
+      "path": "plugins/animals/animals_icon.webp",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/animals_icon.webp",
+      "size": 467360,
+      "sha256": "3a36c647b0f8f240d41e400b89b1f9809ce79b9f90fc0e72f1dd0f99e615b3c4",
+      "priority": 1,
       "lane": "general"
     },
     {
