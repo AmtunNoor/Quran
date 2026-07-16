@@ -1,0 +1,56 @@
+{
+  "id": "azan",
+  "title": "Azan",
+  "priority": 13,
+  "folder": "azan",
+  "theme": "azan",
+  "engine": "selectableScene",
+  "enabled": true,
+  "showOnLanding": true,
+  "landingTileImage": "plugins/azan/azan_icon.webp",
+  "tileImage": "plugins/azan/azan_icon.webp",
+  "backgroundImage": "plugins/azan/azan.png",
+  "supports": ["listen", "repeat5", "hifz"],
+  "effect": {
+    "type": "carouselFocus",
+    "dimOthers": true,
+    "inactiveOpacity": 0.35,
+    "activeScale": 1.05,
+    "halo": {"borderRadiusPercent": 13},
+    "breathing": true,
+    "minimalSparkle": true
+  },
+  "practice": {
+    "repeatCount": 5,
+    "autoAdvance": false,
+    "afterRepeat": "waitForChoice",
+    "progressOn": "next",
+    "yourTurn": {"enabled": true, "default": false, "cue": "microphone", "actualRecording": false}
+  },
+  "items": [
+    {
+      "id": "makkah",
+      "name": "Makkah",
+      "enabled": true,
+      "bounds": {"centerX": 21.5, "centerY": 52.35, "width": 24.7, "height": 49.0},
+      "supports": []
+    },
+    {
+      "id": "madinah",
+      "name": "Madinah",
+      "enabled": true,
+      "audio": "madina.mp3",
+      "segmentsFile": "madinah-segments.json",
+      "bounds": {"centerX": 49.55, "centerY": 52.35, "width": 24.55, "height": 49.0},
+      "supports": ["listen", "repeat5", "hifz"],
+      "practice": {"yourTurn": {"enabled": true}}
+    },
+    {
+      "id": "world",
+      "name": "World",
+      "enabled": true,
+      "bounds": {"centerX": 77.25, "centerY": 52.35, "width": 24.45, "height": 49.0},
+      "supports": []
+    }
+  ]
+}
