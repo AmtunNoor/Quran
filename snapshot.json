@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "c4abe4e2c204cef05da4b2f9241b81d1fa3c938cae1c489898a6a468b8077a1c",
+  "version": "e973508be18f44346549f73c2c4a85c0d6c0553812b7c7c5007c5872e8a9b2c9",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -155,6 +155,14 @@
       "sha256": "8126b75aa65b678f4bf0d87cbc99cb3c849263c3be5a007810e80d7b991a475b",
       "priority": 2,
       "lane": "quran-audio"
+    },
+    {
+      "path": "animals_icon.png",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/animals_icon.png",
+      "size": 2655994,
+      "sha256": "9f4084ecdfe2f6e7c2692e397481d700c7ad5921ad6d32fe1a211433363d697c",
+      "priority": 1,
+      "lane": "general"
     },
     {
       "path": "duas/index.html",
