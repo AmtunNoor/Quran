@@ -150,12 +150,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -276,12 +288,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -508,12 +532,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -664,12 +700,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -817,12 +865,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -1033,12 +1093,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -1227,12 +1299,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -1398,12 +1482,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
@@ -1713,12 +1809,24 @@
         "path": "engines/grid.engine.js"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
         "path": "engines/prism.legacy.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
         "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
