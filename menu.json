@@ -182,6 +182,10 @@
         "path": "styles/prism.css"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
         "path": "learn.master.slices.json"
       }
@@ -318,6 +322,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
         "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/dua/plugin.json",
@@ -564,6 +572,10 @@
         "path": "styles/prism.css"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/months/plugin.json",
         "path": "plugins/months/plugin.json"
       },
@@ -732,6 +744,10 @@
         "path": "styles/prism.css"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/names/plugin.json",
         "path": "plugins/names/plugin.json"
       },
@@ -895,6 +911,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
         "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/salah-names/plugin.json",
@@ -1071,6 +1091,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
         "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/azan/plugin.json",
@@ -1301,6 +1325,10 @@
         "path": "styles/prism.css"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/numbers/plugin.json",
         "path": "plugins/numbers/plugin.json"
       },
@@ -1507,6 +1535,10 @@
         "path": "styles/prism.css"
       },
       {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
+      },
+      {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/angels/plugin.json",
         "path": "plugins/angels/plugin.json"
       },
@@ -1688,6 +1720,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
         "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/pillars/plugin.json",
@@ -2015,6 +2051,10 @@
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
         "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
       },
       {
         "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/letters/plugin.json",
