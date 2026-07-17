@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "1e6d4b54f5b2a148e90012a883cf67e6c32597fc11ed1b093b5580a39fc1dd09",
+  "version": "7ccf4b0bfa8ac852e986b57a0e1b559e00966dc7f6d8a4df69e50fadb0839f55",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -191,8 +191,8 @@
     {
       "path": "engines/prism.legacy.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
-      "size": 100719,
-      "sha256": "a8367ebe6d935242672dd1e98f84fbfb183b29a2e3b9a6eb3200bd67f37e4ffb",
+      "size": 101604,
+      "sha256": "7128de1a558a802cedc67bc0a10d667a6faab5e12fa6a9fb43b020df7820f89d",
       "priority": 0,
       "lane": "general"
     },
