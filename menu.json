@@ -1006,7 +1006,16 @@
           "enabled": true,
           "default": false,
           "cue": "microphone",
-          "actualRecording": false
+          "actualRecording": false,
+          "cueConfig": {
+            "type": "microphone",
+            "placement": "sceneCenter",
+            "size": "large",
+            "color": "warmGold",
+            "waveColor": "golden",
+            "label": "Your Turn",
+            "actualRecording": false
+          }
         }
       },
       "items": [
@@ -1061,11 +1070,27 @@
           "effectColor": "softViolet"
         }
       ],
-      "landingTileFit": "contain",
+      "landingTileFit": "smartContain",
       "display": {
         "fit": "contain",
-        "blurBackground": true,
-        "coordinateSpace": "source-image-percent"
+        "coordinateSpace": "source-image-percent",
+        "backgroundFill": {
+          "enabled": true,
+          "source": "sameImage",
+          "fit": "cover",
+          "blurPx": 22,
+          "scale": 1.08,
+          "brightness": 0.72,
+          "saturation": 1.05,
+          "overlayOpacity": 0.1
+        }
+      },
+      "menu": {
+        "mode": "persistentTopbar",
+        "showHome": true,
+        "showStop": true,
+        "showLoop": true,
+        "showLearningModes": true
       },
       "type": "plugin",
       "renderer": "selectableScene",
