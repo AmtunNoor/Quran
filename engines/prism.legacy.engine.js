@@ -311,10 +311,20 @@ function applyImageOrGradient(card, image, theme){
     probe.onload = ()=>{
       card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.04),rgba(2,6,23,.12)), url('${src}')`;
       card.style.backgroundColor = "transparent";
-      const tileFit = String(card.dataset.tileFit || "cover").toLowerCase() === "contain" ? "contain" : "cover";
-      card.style.backgroundSize = `100% 100%, ${tileFit}`;
-      card.style.backgroundRepeat = "no-repeat, no-repeat";
-      card.style.backgroundPosition = "center, center";
+      const requestedFit = String(card.dataset.tileFit || "cover").toLowerCase();
+      if(requestedFit === "smartcontain"){
+        // Future-plugin opt-in: use the same image as a cover filler behind an
+        // undistorted contained foreground. Existing cards keep their old fit.
+        card.style.backgroundImage = `linear-gradient(rgba(2,6,23,.08),rgba(2,6,23,.16)), url('${src}'), url('${src}')`;
+        card.style.backgroundSize = "100% 100%, contain, cover";
+        card.style.backgroundRepeat = "no-repeat, no-repeat, no-repeat";
+        card.style.backgroundPosition = "center, center, center";
+      }else{
+        const tileFit = requestedFit === "contain" ? "contain" : "cover";
+        card.style.backgroundSize = `100% 100%, ${tileFit}`;
+        card.style.backgroundRepeat = "no-repeat, no-repeat";
+        card.style.backgroundPosition = "center, center";
+      }
       card.dataset.tileImageStatus = "image";
       card.dataset.iconOnly = cand.iconOnly ? "true" : "false";
     };
@@ -833,7 +843,11 @@ try{ speechSynthesis.cancel(); }catch(e){}
 currentView = "plugin";
 currentPlugin = plugin;
 const v66FloatControlIds = new Set(["months","numbers","salah-names","salahnames","letters"]);
-const wantsFloating = String(plugin.controls || "").toLowerCase() === "floating" || v66FloatControlIds.has(String(plugin.id||"").toLowerCase());
+const requestedMenuMode = String(plugin.menu?.mode || "").toLowerCase();
+const wantsFloating = requestedMenuMode === "floatingmenuicon"
+  || (!requestedMenuMode && (String(plugin.controls || "").toLowerCase() === "floating" || v66FloatControlIds.has(String(plugin.id||"").toLowerCase())));
+// Future plugins may opt into either existing Prism menu pattern. Existing
+// plugins without menu.mode retain their exact legacy behaviour.
 if(wantsFloating) setupAutoTopbar(); else disableAutoTopbar();
 document.body.classList.remove("landing-mode");
 document.body.classList.add("plugin-stage-mode");
