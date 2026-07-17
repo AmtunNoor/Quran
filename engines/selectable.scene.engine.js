@@ -25,13 +25,24 @@ class SelectableScene{
  async mount(){
   if(this.plugin.scenes&&!this.plugin.__sceneId)return window.PrismMountNavigablePlugin(this.ctx);
   const p=this.plugin,bg=resolvePath(p,p.backgroundImage||p.image),cards=supportsCards(p);
-  const blur=!cards&&(p.display?.blurBackground===true||p.scene?.blurBackground===true);
+  const fill=p.display?.backgroundFill||p.scene?.backgroundFill||{};
+  const blur=!cards&&(fill.enabled===true||p.display?.blurBackground===true||p.scene?.blurBackground===true);
   this.root=document.createElement('div');
   this.root.className=`prism-interaction-host prism-selectable-scene ${cards?'prism-card-scene':'prism-hotspot-scene'}`;
   this.root.dataset.pluginId=p.id||'';
-  this.root.innerHTML=`<div class="prism-scene-frame ${blur?'has-blurred-background':''}">${blur&&bg?`<div class="prism-scene-blur" style="background-image:url('${bg.replace(/'/g,"\\'")}')"></div>`:''}${bg?`<img class="prism-scene-image" src="${bg}" alt="${p.title||''}">`:''}<div class="prism-scene-layer"></div></div><div class="prism-practice-panel" hidden><button data-act="previous">‹ Previous</button><button data-act="repeat">↻ Again</button><button data-act="next">Next ›</button></div><button class="prism-your-turn-toggle" type="button" hidden>🎤 Your Turn: OFF</button><div class="prism-practice-cue" hidden aria-hidden="true"><span>🎤</span><i></i><i></i><i></i></div>`;
+  this.root.innerHTML=`<div class="prism-scene-frame ${blur?'has-blurred-background':''}">${blur&&bg?`<div class="prism-scene-blur" style="background-image:url('${bg.replace(/'/g,"\\'")}')"></div>`:''}${bg?`<img class="prism-scene-image" src="${bg}" alt="${p.title||''}">`:''}<div class="prism-scene-layer"></div></div><div class="prism-practice-panel" hidden><button data-act="previous">‹ Previous</button><button data-act="repeat">↻ Again</button><button data-act="next">Next ›</button></div><button class="prism-your-turn-toggle" type="button" hidden>🎤 Your Turn: OFF</button><div class="prism-practice-cue" hidden aria-hidden="true"><div class="prism-practice-cue-visual"><span class="prism-practice-mic" role="img" aria-label="Microphone"></span><i></i><i></i><i></i></div><b>Your Turn</b></div>`;
   this.ctx.host.appendChild(this.root);
   this.frame=this.root.querySelector('.prism-scene-frame');this.img=this.root.querySelector('.prism-scene-image');this.layer=this.root.querySelector('.prism-scene-layer');this.panel=this.root.querySelector('.prism-practice-panel');this.cue=this.root.querySelector('.prism-practice-cue');this.toggle=this.root.querySelector('.prism-your-turn-toggle');
+  if(blur){
+    this.root.style.setProperty('--prism-bg-blur',q(fill.blurPx,22)+'px');
+    this.root.style.setProperty('--prism-bg-scale',q(fill.scale,1.08));
+    this.root.style.setProperty('--prism-bg-brightness',q(fill.brightness,0.72));
+    this.root.style.setProperty('--prism-bg-saturation',q(fill.saturation,1.05));
+    this.root.style.setProperty('--prism-bg-overlay',q(fill.overlayOpacity,0.10));
+  }
+  const cueConfig=p.practice?.yourTurn?.cueConfig||p.practiceCue||{};
+  this.root.dataset.practiceCuePlacement=String(cueConfig.placement||'sceneCenter');
+  this.root.dataset.practiceCueColor=String(cueConfig.color||cueConfig.waveColor||'warmGold');
   this.audio=new Audio();this.audio.preload='auto';this.audio.playsInline=true;this.buildItems(cards);
   this.panel.addEventListener('click',e=>{const a=e.target?.dataset?.act;if(a)this.action(a);});
   this.toggle.addEventListener('click',()=>{if(!this.practice)return;this.practice.yourTurn=!this.practice.yourTurn;this.toggle.textContent=`🎤 Your Turn: ${this.practice.yourTurn?'ON':'OFF'}`;});
