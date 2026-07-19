@@ -20,6 +20,36 @@ function effectColor(value){
   return palette[key]||palette.softcyan;
 }
 function supportsCards(plugin){const type=plugin.layout?.type;return type==='carousel3D'||type==='orbit'||plugin.presentation==='cards';}
+
+function prismDiagEnabled(){try{return new URLSearchParams(location.search).get('prismDebug')==='1';}catch(e){return false;}}
+function prismDiag(message,data){
+  if(!prismDiagEnabled())return;
+  const stamp=new Date().toLocaleTimeString();
+  const detail=data===undefined?'':` ${typeof data==='string'?data:JSON.stringify(data)}`;
+  console.log(`[PrismDiag ${stamp}] ${message}`,data??'');
+  let panel=document.getElementById('prism-diagnostic-panel');
+  if(!panel){
+    panel=document.createElement('div');panel.id='prism-diagnostic-panel';
+    panel.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;max-height:38vh;overflow:auto;background:rgba(2,8,28,.94);color:#dffcff;border:2px solid #52d6ff;border-radius:12px;padding:9px;font:600 12px/1.35 monospace;white-space:pre-wrap;box-shadow:0 0 18px rgba(82,214,255,.45);pointer-events:none';
+    panel.textContent='PRISM DIAGNOSTICS (temporary)\n';document.body.appendChild(panel);
+  }
+  panel.textContent+=`${stamp}  ${message}${detail}\n`;panel.scrollTop=panel.scrollHeight;
+}
+
+async function waitForImageReady(img){
+  if(!img)return;
+  if(img.complete&&img.naturalWidth>0)return;
+  if(typeof img.decode==='function'){
+    try{await img.decode();if(img.naturalWidth>0)return;}catch(e){}
+  }
+  await new Promise(resolve=>{
+    let done=false;
+    const finish=()=>{if(done)return;done=true;img.removeEventListener('load',finish);img.removeEventListener('error',finish);resolve();};
+    img.addEventListener('load',finish,{once:true});
+    img.addEventListener('error',finish,{once:true});
+    setTimeout(finish,2500);
+  });
+}
 function clamp(v,min,max){v=Number(v);return Number.isFinite(v)?Math.min(max,Math.max(min,v)):min;}
 function listEffects(plugin,item){
   const raw=item?.effects||plugin.effects?.selection||plugin.effects||[];
@@ -42,6 +72,7 @@ function cropStyle(crop){
 class SelectableScene{
  constructor(ctx){this.ctx=ctx;this.plugin=ctx.plugin;this.root=null;this.items=[];this.selected=-1;this.practice=null;this.initialSelectionApplied=false;this.keyHandler=e=>this.onKey(e);this.resizeHandler=()=>this.layout();}
  async mount(){
+  prismDiag('SelectableScene.mount start',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,engine:this.plugin.engine});
   if(this.plugin.scenes&&!this.plugin.__sceneId)return window.PrismMountNavigablePlugin(this.ctx);
   const p=this.plugin,bg=resolvePath(p,p.backgroundImage||p.image),cards=supportsCards(p);
   const fill=p.display?.backgroundFill||p.scene?.backgroundFill||{};
@@ -51,7 +82,7 @@ class SelectableScene{
   this.root.className=`prism-interaction-host prism-selectable-scene ${cards?'prism-card-scene':'prism-hotspot-scene'}`;
   this.root.dataset.pluginId=p.id||'';
   this.root.innerHTML=`<div class="prism-scene-frame ${blur?'has-blurred-background':''}">${blur&&bg?`<div class="prism-scene-blur" style="background-image:url('${bg.replace(/'/g,"\\'")}')"></div>`:''}${bg&&!blurOnly?`<img class="prism-scene-image" src="${bg}" alt="${p.title||''}">`:''}<div class="prism-scene-layer"></div></div><div class="prism-practice-panel" hidden><button data-act="previous">‹ Previous</button><button data-act="repeat">↻ Again</button><button data-act="next">Next ›</button></div>`;
-  this.ctx.host.appendChild(this.root);
+  this.ctx.host.appendChild(this.root);prismDiag('Scene DOM attached',{plugin:p.id,scene:p.__sceneId||null,cards});
   this.frame=this.root.querySelector('.prism-scene-frame');this.img=this.root.querySelector('.prism-scene-image');this.layer=this.root.querySelector('.prism-scene-layer');this.panel=this.root.querySelector('.prism-practice-panel');
   if(blur){
     this.root.style.setProperty('--prism-bg-blur',q(fill.blurPx,22)+'px');
@@ -67,16 +98,21 @@ class SelectableScene{
   this.audio.addEventListener('ended',this.audioEndedHandler);
   this.panel.addEventListener('click',e=>{const a=e.target?.dataset?.act;if(a)this.action(a);});
   this.img?.addEventListener('load',()=>{this.layout();this.applyInitialSelection();});window.addEventListener('resize',this.resizeHandler);window.addEventListener('orientationchange',this.resizeHandler);document.addEventListener('keydown',this.keyHandler,true);
-  if(!this.img||this.img.complete){this.layout();await this.applyInitialSelection();}else requestAnimationFrame(()=>this.applyInitialSelection());this.ctx.setFocusable?.(this.root);
+  await waitForImageReady(this.img);prismDiag('Scene image ready',{src:this.img?.currentSrc||this.img?.src||null,naturalWidth:this.img?.naturalWidth||0,naturalHeight:this.img?.naturalHeight||0});
+  this.layout();
+  await this.applyInitialSelection();
+  requestAnimationFrame(()=>this.layout());
+  setTimeout(()=>this.layout(),120);
+  this.ctx.setFocusable?.(this.root);
   return this;
  }
  async applyInitialSelection(){if(this.initialSelectionApplied||!this.items.length)return;const raw=this.plugin.defaultSelectedIndex;const initial=Number.isInteger(raw)?raw:0;if(initial<0||initial>=this.items.length)return;this.initialSelectionApplied=true;await this.select(initial,false);}
  buildItems(cards){
-  (this.plugin.items||[]).forEach((it,i)=>{const el=document.createElement('button');el.type='button';el.className='prism-scene-item';el.dataset.index=i;el.setAttribute('aria-label',it.name||it.id||`Item ${i+1}`);
+  (this.plugin.items||[]).forEach((it,i)=>{const el=document.createElement('button');el.type='button';el.className='prism-scene-item';el.dataset.index=i;el.setAttribute('aria-label',it.name||it.id||`Item ${i+1}`);el.setAttribute('role','button');
    const [light,strong]=effectColor(it.effectColor||it.color||this.plugin.effect?.color);el.style.setProperty('--prism-effect-light',light);el.style.setProperty('--prism-effect-strong',strong);const radius=it.borderRadius||this.plugin.layout?.borderRadius||this.plugin.effects?.borderRadius||'clamp(22px,5.5vw,42px)';el.style.setProperty('--prism-card-radius',String(radius));el.style.borderRadius=String(radius);const mask=clamp(it.inactiveMaskOpacity??this.plugin.effects?.inactiveMaskOpacity??.18,0,.7);el.style.setProperty('--prism-inactive-mask',String(mask));
    const fx=listEffects(this.plugin,it);fx.forEach(name=>el.classList.add(`fx-${name}`));
    if(cards){const image=resolvePath(this.plugin,it.sourceImage||it.image||it.tileImage);const crop=it.sourceCrop||it.crop;const art=image?(crop?`<span class="prism-card-art prism-card-art-crop" style="background-image:url('${image.replace(/'/g,"\\'")}');${cropStyle(crop)}"></span>`:`<img src="${image}" alt="">`):'';el.innerHTML=`<span class="prism-card-face">${art}${it.label!==false?`<span class="prism-card-label">${it.name||''}</span>`:''}</span><span class="prism-item-halo"></span><span class="prism-item-mask"></span>`;}else el.innerHTML='<span class="prism-item-halo"></span><span class="prism-item-mask"></span>';
-   el.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();const wasActive=this.selected===i;await this.select(i,false);const mode=this.plugin.activation?.mode||this.plugin.activationMode||(cards?'activeTap':'immediate');if(mode==='immediate'||wasActive)await this.activateSelected();});this.layer.appendChild(el);this.items.push({config:it,el});
+   el.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();const wasActive=this.selected===i;prismDiag('Item click',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:i,item:it.id,targetScene:it.targetScene||null,wasActive});await this.select(i,false);const mode=this.plugin.activation?.mode||this.plugin.activationMode||(cards?'activeTap':'immediate');prismDiag('Activation decision',{mode,wasActive,willActivate:mode==='immediate'||wasActive});if(mode==='immediate'||wasActive)await this.activateSelected();});this.layer.appendChild(el);this.items.push({config:it,el});
   });
  }
  layout(){
@@ -108,6 +144,7 @@ class SelectableScene{
   this.items.forEach(({config,el})=>{const b=config.bounds||{};let x=b.x,y=b.y,w=b.width,h=b.height;if(x==null&&b.centerX!=null)x=q(b.centerX,0)-q(b.width,0)/2;if(y==null&&b.centerY!=null)y=q(b.centerY,0)-q(b.height,0)/2;el.style.left=q(x,0)+'%';el.style.top=q(y,0)+'%';el.style.width=q(w,10)+'%';el.style.height=q(h,10)+'%';el.style.borderRadius=q(config.borderRadiusPercent,this.plugin.effect?.halo?.borderRadiusPercent||13)+'%';});
  }
  async select(i,user){
+  prismDiag('Select requested',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:i,user:!!user});
   if(i<0||i>=this.items.length)return;
   this.selected=i;
   this.items.forEach((o,n)=>{const active=n===i;o.el.classList.toggle('is-active',active);o.el.classList.toggle('is-dimmed',!active&&o.el.classList.contains('fx-spotlight'));o.el.setAttribute('aria-selected',active?'true':'false');o.el.tabIndex=active?0:-1;});
@@ -126,9 +163,10 @@ class SelectableScene{
   if(user)await this.activateSelected();
  }
  async activateSelected(){
-  if(this.selected<0)return;
+  if(this.selected<0){prismDiag('Activation blocked: no selection');return;}
   const it=this.items[this.selected].config;
-  if(it.targetScene&&this.ctx.navigator){await this.ctx.navigator.go(it.targetScene);return;}
+  prismDiag('Activate selected',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:this.selected,item:it.id,targetScene:it.targetScene||null,audio:it.audio||this.plugin.primaryAudio||null,hasNavigator:!!this.ctx.navigator});
+  if(it.targetScene&&this.ctx.navigator){prismDiag('Calling navigator.go',it.targetScene);await this.ctx.navigator.go(it.targetScene);return;}
   const audio=resolvePath(this.plugin,it.audio||this.plugin.primaryAudio);
   if(audio)this.playMode();
  }
