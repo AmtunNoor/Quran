@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "39547370bd8edaa093bb93d6222415bb6770201525fd883bb3a57f56636503f9",
+  "version": "58ee6b6310d1f7029ffffe50969b37b140bc5436bfe157e49dffa8f3038c5e56",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -183,16 +183,8 @@
     {
       "path": "engines/practice.controller.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
-      "size": 5068,
-      "sha256": "a541cebcfe23a8915f14e52bf1d0c7dd1df15ccd45d7cd16766b338ee440e65e",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "engines/practice.cue.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.cue.js",
-      "size": 4093,
-      "sha256": "554f4260e448ed58bf46e697fe4049c3b3e966a8ba04411a2903e44eba519abf",
+      "size": 4287,
+      "sha256": "257e6846dc81284e2a377dce8e96b0f87f68612c6471bbb6c9b2c8321604626e",
       "priority": 0,
       "lane": "general"
     },
@@ -223,8 +215,8 @@
     {
       "path": "engines/selectable.layouts.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.layouts.js",
-      "size": 2304,
-      "sha256": "ee0c4d8ee7a3e40c2d9232749f317462c500c92418b7f08eec69f204dbaf6c40",
+      "size": 2478,
+      "sha256": "c8532f8cc46cc524198985664209d1efe3a624ce15f8e7aab620202d69dbfe5b",
       "priority": 0,
       "lane": "general"
     },
@@ -255,8 +247,8 @@
     {
       "path": "index.html",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
-      "size": 3607,
-      "sha256": "9110905a3a49696fb153db976464f29d690c37a74d15a18a84402a6317efc9b2",
+      "size": 3596,
+      "sha256": "0bd28f58dfaf199728cce37c06d4d92336ad9eb0c8c63c74f89d1a89365e4c41",
       "priority": 0,
       "lane": "general"
     },
@@ -391,8 +383,8 @@
     {
       "path": "menu.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
-      "size": 76138,
-      "sha256": "b2b5ac8f143ffe562ae5c5e0382cc2405dba5b93f5401e95e0b0b1011c012694",
+      "size": 74426,
+      "sha256": "e12061cd794b483e2e22ea5e9e2acff74cb86296d82f8062b105f330ad217bd7",
       "priority": 0,
       "lane": "general"
     },
@@ -623,8 +615,8 @@
     {
       "path": "plugins/azan/plugin.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/azan/plugin.json",
-      "size": 3228,
-      "sha256": "cfee649cad6a601d44fa2b6c06b81d10480ad77572cc5208ec148126c280f32a",
+      "size": 3232,
+      "sha256": "8808b35ee812ad34a7b0a571d6418c976f07da6c48f0f751f94693cf6c739bb6",
       "priority": 0,
       "lane": "general"
     },
@@ -789,158 +781,6 @@
       "lane": "general"
     },
     {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/engines/selectable.scene.engine.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/engines/selectable.scene.engine.js",
-      "size": 14732,
-      "sha256": "73edcab3f07c78de9cb8c04a7a29c99fdb8ee8df2780366e91e2eaf51aebebcd",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/index.html",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/index.html",
-      "size": 3611,
-      "sha256": "ce4f19f320af6a582366401c8c8449385d01700ae1a2247b63c41bf951efa70a",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/menu.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/menu.json",
-      "size": 76243,
-      "sha256": "7e5dfc9a40717ad98e0659575ffdfb8f6dfbc3b5c1fcdfea7562e89d2577347d",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/plugins/animals/plugin.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/plugins/animals/plugin.json",
-      "size": 4046,
-      "sha256": "e129a1e46b396cc41e894871355a17086c8385ae6d4eee9123219ddc1c989a9c",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/SHA256SUMS.txt",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/SHA256SUMS.txt",
-      "size": 524,
-      "sha256": "acbd742cb6af05a2e87591a222a2a036364d718acc6b62a203b16207023c9d86",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/snapshot.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/snapshot.json",
-      "size": 30366,
-      "sha256": "385b245595033e97afd4b7b388deafc1a15d77f40d7c6d38e5a4808eebc27005",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/styles/prism.interactions.css",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_3_Targeted_Interaction_Patch/styles/prism.interactions.css",
-      "size": 18872,
-      "sha256": "43d454c93bacf4a227295702c2610384e41b52d3702fbd1c0f897bc4849235f4",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_4_Diagnostic_Patch/engines/scene.navigator.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_4_Diagnostic_Patch/engines/scene.navigator.js",
-      "size": 3094,
-      "sha256": "6d10cd84798f065e979e8b4784495938270af2f551409e57e7cdeb2349478c27",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_4_Diagnostic_Patch/engines/selectable.scene.engine.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_4_Diagnostic_Patch/engines/selectable.scene.engine.js",
-      "size": 16837,
-      "sha256": "5f06b78fd30decfa77bf47c9f13dde598c86046f539f3a6f9fc722e4a19e61e4",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "Prism_Runtime_v3_1_4_Diagnostic_Patch/index.html",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/Prism_Runtime_v3_1_4_Diagnostic_Patch/index.html",
-      "size": 3585,
-      "sha256": "8497f1e3ed3fa4ba2740652b4c86d42ccb03bacd64c3ae9b2df3d445bcd61d00",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/engines/selectable.layouts.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/engines/selectable.layouts.js",
-      "size": 2478,
-      "sha256": "c8532f8cc46cc524198985664209d1efe3a624ce15f8e7aab620202d69dbfe5b",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/engines/selectable.scene.engine.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/engines/selectable.scene.engine.js",
-      "size": 14122,
-      "sha256": "b2b1ab4dd9b9ac6aed1c40a28f85599197c0475158da6741ecefa39626d9f37e",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/index.html",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/index.html",
-      "size": 3636,
-      "sha256": "81204a82a350a03c0ef73e73cd919c2389d3d1c53fff83667a039d7edd69d7e2",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/menu.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/menu.json",
-      "size": 76310,
-      "sha256": "df6c24c6336fd4f1c673f420db40c49c9a2d91f87563a958867cc8aeba5e6f3d",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/plugins/animals/plugin.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/plugins/animals/plugin.json",
-      "size": 4105,
-      "sha256": "d1cfc5edefca1ba1852200c32e075ad6809b1a227bb4afb63d193de429e97c55",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/plugins/azan/plugin.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/plugins/azan/plugin.json",
-      "size": 3228,
-      "sha256": "cfee649cad6a601d44fa2b6c06b81d10480ad77572cc5208ec148126c280f32a",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/SHA256SUMS.txt",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/SHA256SUMS.txt",
-      "size": 886,
-      "sha256": "f3b56a065ad4af8707b14887dab192d1e9dd238f83ff75f991d8d6d7e0add526",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/snapshot.json",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/snapshot.json",
-      "size": 30087,
-      "sha256": "c13417a9344e9c4417c37ac4ff95e0586765ba995bf13add13b54097a49b63cd",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "prism312_patch/styles/prism.interactions.css",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/prism312_patch/styles/prism.interactions.css",
-      "size": 17840,
-      "sha256": "571f066450e38a8d69e8699ff0ba5afdd085a882fec957be27482fbc662b0169",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
       "path": "salahnames/salahnames.jpeg",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/salahnames/salahnames.jpeg",
       "size": 83573,
@@ -967,8 +807,8 @@
     {
       "path": "styles/prism.interactions.css",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
-      "size": 16759,
-      "sha256": "5c18c45ee7933f9a31bd4fe4fd4538c586d5d1ec1aea6d1bd6fafd2eae43b495",
+      "size": 17840,
+      "sha256": "571f066450e38a8d69e8699ff0ba5afdd085a882fec957be27482fbc662b0169",
       "priority": 0,
       "lane": "general"
     },
