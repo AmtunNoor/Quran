@@ -61,3 +61,10 @@ body.landing-mode .card[data-tile-image-status="image"][data-tile-fit="contain"]
 .prism-interactive-hotspots.scene-fx-fade.scene-fx-rise .prism-scene-image{animation:prism-scene-rise-in .58s cubic-bezier(.2,.8,.2,1) both}
 @keyframes prism-scene-fade-in{from{opacity:0}to{opacity:1}}
 @keyframes prism-scene-rise-in{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+
+/* Runtime Freeze v3.1.1 hotfix: generic card-layer visibility hardening. */
+.prism-card-scene .prism-scene-layer{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;display:block!important;visibility:visible!important;z-index:4!important}
+.prism-card-scene .prism-scene-item{display:block!important;visibility:visible!important;min-width:120px;min-height:160px}
+.prism-card-scene .prism-card-face,.prism-card-scene .prism-card-art{display:block;visibility:visible}
+.prism-card-scene .prism-card-art{background-position:center;background-repeat:no-repeat}
