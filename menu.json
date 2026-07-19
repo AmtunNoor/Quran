@@ -1245,7 +1245,6 @@
           "title": "Animals in the Qur’an",
           "engine": "selectableScene",
           "presentation": "cards",
-          "backgroundImage": "animals.webp",
           "display": {
             "backgroundMode": "none"
           },
@@ -1253,22 +1252,19 @@
             "type": "carousel3D",
             "loop": true,
             "spacingPercent": 28,
-            "sideOpacity": 0.72,
-            "sideScale": 0.88,
+            "sideOpacity": 0.42,
+            "sideScale": 0.84,
             "centerScale": 1.08,
             "sideAngleDeg": 18,
             "itemWidth": "min(31vw,340px)",
-            "itemHeight": "min(58vh,560px)",
-            "borderRadius": "clamp(24px,6vw,46px)"
+            "itemHeight": "min(58vh,560px)"
           },
           "effects": {
             "selection": [
               "spotlight",
-              "grow",
               "glow",
               "sparkle"
-            ],
-            "inactiveMaskOpacity": 0.16
+            ]
           },
           "defaultSelectedIndex": 0,
           "items": [
@@ -1328,10 +1324,7 @@
               "targetScene": "insects",
               "effectColor": "softViolet"
             }
-          ],
-          "activation": {
-            "mode": "immediate"
-          }
+          ]
         },
         "land": {
           "title": "Land Animals",
@@ -1396,6 +1389,9 @@
       },
       "practiceCue": {
         "enabled": false
+      },
+      "activation": {
+        "mode": "immediate"
       },
       "type": "plugin",
       "renderer": "selectableScene",
