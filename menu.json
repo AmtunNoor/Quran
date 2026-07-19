@@ -1009,11 +1009,11 @@
           "actualRecording": false,
           "cueConfig": {
             "type": "microphone",
-            "placement": "sceneCenter",
+            "placement": "belowContent",
             "size": "large",
             "color": "warmGold",
-            "waveColor": "golden",
-            "label": "Your Turn",
+            "waveColor": "cyanElectricBlue",
+            "label": "⭐ Now You Try!",
             "actualRecording": false
           }
         }
@@ -1030,7 +1030,10 @@
             "height": 49.45
           },
           "supports": [],
-          "effectColor": "warmGold"
+          "effectColor": "warmGold",
+          "practiceCue": {
+            "enabled": false
+          }
         },
         {
           "id": "madinah",
@@ -1054,7 +1057,10 @@
               "enabled": true
             }
           },
-          "effectColor": "softCyan"
+          "effectColor": "softCyan",
+          "practiceCue": {
+            "enabled": true
+          }
         },
         {
           "id": "world",
@@ -1067,7 +1073,10 @@
             "height": 49.52
           },
           "supports": [],
-          "effectColor": "softViolet"
+          "effectColor": "softViolet",
+          "practiceCue": {
+            "enabled": false
+          }
         }
       ],
       "landingTileFit": "smartContain",
@@ -1092,6 +1101,23 @@
         "showLoop": true,
         "showLearningModes": true
       },
+      "practiceCue": {
+        "enabled": true,
+        "default": false,
+        "trigger": "afterAudio",
+        "label": "⭐ Now You Try! ⭐",
+        "placement": "belowContent",
+        "animation": "riseFade",
+        "waves": "symmetricVoicePulse",
+        "micColor": "warmGold",
+        "waveColors": [
+          "cyan",
+          "electricBlue"
+        ],
+        "durationMs": 3600,
+        "actualRecording": false
+      },
+      "defaultSelectedIndex": 1,
       "type": "plugin",
       "renderer": "selectableScene",
       "primaryAudio": null,
