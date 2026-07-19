@@ -68,3 +68,15 @@ body.landing-mode .card[data-tile-image-status="image"][data-tile-fit="contain"]
 .prism-card-scene .prism-scene-item{display:block!important;visibility:visible!important;min-width:120px;min-height:160px}
 .prism-card-scene .prism-card-face,.prism-card-scene .prism-card-art{display:block;visibility:visible}
 .prism-card-scene .prism-card-art{background-position:center;background-repeat:no-repeat}
+
+
+/* Runtime Freeze v3.1.2 targeted carousel/selection fix. */
+/* Keep layout transforms owned by the layout engine; effects decorate rather than replace them. */
+.prism-card-scene .prism-scene-item.fx-grow.is-active{transform:var(--prism-layout-transform)!important}
+.prism-card-scene .prism-scene-item{border-radius:var(--prism-card-radius,clamp(22px,5.5vw,42px))}
+.prism-card-scene .prism-card-face,.prism-card-scene .prism-card-art,.prism-card-scene .prism-item-mask,.prism-card-scene .prism-item-halo{border-radius:inherit}
+.prism-card-scene .prism-scene-item.is-dimmed .prism-item-mask{background:rgba(3,8,25,var(--prism-inactive-mask,.18));backdrop-filter:saturate(.78) brightness(.88);-webkit-backdrop-filter:saturate(.78) brightness(.88)}
+.prism-card-scene .prism-scene-item.is-dimmed{filter:saturate(.78) brightness(.88)}
+.prism-card-scene .prism-scene-item.is-active{filter:saturate(1.06) brightness(1.03)}
+.prism-hotspot-scene .prism-scene-item{z-index:5}
+.prism-hotspot-scene .prism-scene-item:focus-visible{outline:3px solid rgba(255,230,120,.95);outline-offset:3px}
