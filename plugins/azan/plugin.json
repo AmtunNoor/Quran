@@ -146,5 +146,8 @@
     "durationMs": 3600,
     "actualRecording": false
   },
-  "defaultSelectedIndex": 1
+  "defaultSelectedIndex": 1,
+  "activation": {
+    "mode": "immediate"
+  }
 }
