@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "e716fe6bbc74a04214c387a32b7f7528e7817994251bc4678414004846291c45",
+  "version": "d22c0d54c98eabab2c8cb8633a65d828a6c8113ba7be364b1319453827185941",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -799,8 +799,8 @@
     {
       "path": "styles/prism.interactions.css",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
-      "size": 8699,
-      "sha256": "113391084310794f0583950a35eca5e84308a2c944e16630aeb94db92eb892ec",
+      "size": 16164,
+      "sha256": "56e8fd6ce2d26b6c973304441371ab52b6c4a2335b41bcd49d1e60de586572a3",
       "priority": 0,
       "lane": "general"
     },
