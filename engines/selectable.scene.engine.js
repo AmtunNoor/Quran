@@ -39,16 +39,20 @@ function prismDiag(message,data){
 async function waitForImageReady(img){
   if(!img)return;
   if(img.complete&&img.naturalWidth>0)return;
-  if(typeof img.decode==='function'){
-    try{await img.decode();if(img.naturalWidth>0)return;}catch(e){}
-  }
-  await new Promise(resolve=>{
+  // Some Chromium/WebView builds can leave HTMLImageElement.decode() pending.
+  // Never allow image decoding to block hotspot layout or initial selection.
+  const timeout=new Promise(resolve=>setTimeout(resolve,1600));
+  const loaded=new Promise(resolve=>{
     let done=false;
     const finish=()=>{if(done)return;done=true;img.removeEventListener('load',finish);img.removeEventListener('error',finish);resolve();};
     img.addEventListener('load',finish,{once:true});
     img.addEventListener('error',finish,{once:true});
-    setTimeout(finish,2500);
   });
+  if(typeof img.decode==='function'){
+    try{await Promise.race([img.decode().catch(()=>{}),loaded,timeout]);}catch(e){}
+  }else{
+    await Promise.race([loaded,timeout]);
+  }
 }
 function clamp(v,min,max){v=Number(v);return Number.isFinite(v)?Math.min(max,Math.max(min,v)):min;}
 function listEffects(plugin,item){
@@ -101,8 +105,9 @@ class SelectableScene{
   await waitForImageReady(this.img);prismDiag('Scene image ready',{src:this.img?.currentSrc||this.img?.src||null,naturalWidth:this.img?.naturalWidth||0,naturalHeight:this.img?.naturalHeight||0});
   this.layout();
   await this.applyInitialSelection();
-  requestAnimationFrame(()=>this.layout());
-  setTimeout(()=>this.layout(),120);
+  requestAnimationFrame(()=>{this.layout();this.applyInitialSelection();});
+  setTimeout(()=>{this.layout();this.applyInitialSelection();},120);
+  setTimeout(()=>{this.layout();this.applyInitialSelection();},650);
   this.ctx.setFocusable?.(this.root);
   return this;
  }
@@ -112,7 +117,23 @@ class SelectableScene{
    const [light,strong]=effectColor(it.effectColor||it.color||this.plugin.effect?.color);el.style.setProperty('--prism-effect-light',light);el.style.setProperty('--prism-effect-strong',strong);const radius=it.borderRadius||this.plugin.layout?.borderRadius||this.plugin.effects?.borderRadius||'clamp(22px,5.5vw,42px)';el.style.setProperty('--prism-card-radius',String(radius));el.style.borderRadius=String(radius);const mask=clamp(it.inactiveMaskOpacity??this.plugin.effects?.inactiveMaskOpacity??.18,0,.7);el.style.setProperty('--prism-inactive-mask',String(mask));
    const fx=listEffects(this.plugin,it);fx.forEach(name=>el.classList.add(`fx-${name}`));
    if(cards){const image=resolvePath(this.plugin,it.sourceImage||it.image||it.tileImage);const crop=it.sourceCrop||it.crop;const art=image?(crop?`<span class="prism-card-art prism-card-art-crop" style="background-image:url('${image.replace(/'/g,"\\'")}');${cropStyle(crop)}"></span>`:`<img src="${image}" alt="">`):'';el.innerHTML=`<span class="prism-card-face">${art}${it.label!==false?`<span class="prism-card-label">${it.name||''}</span>`:''}</span><span class="prism-item-halo"></span><span class="prism-item-mask"></span>`;}else el.innerHTML='<span class="prism-item-halo"></span><span class="prism-item-mask"></span>';
-   el.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();const wasActive=this.selected===i;prismDiag('Item click',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:i,item:it.id,targetScene:it.targetScene||null,wasActive});await this.select(i,false);const mode=this.plugin.activation?.mode||this.plugin.activationMode||(cards?'activeTap':'immediate');prismDiag('Activation decision',{mode,wasActive,willActivate:mode==='immediate'||wasActive});if(mode==='immediate'||wasActive)await this.activateSelected();});this.layer.appendChild(el);this.items.push({config:it,el});
+   el.addEventListener('click',async e=>{
+    e.preventDefault();e.stopPropagation();
+    const wasActive=this.selected===i;
+    const mode=this.plugin.activation?.mode||this.plugin.activationMode||'immediate';
+    prismDiag('Item click',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:i,item:it.id,targetScene:it.targetScene||null,wasActive,mode});
+    try{
+      await this.select(i,false);
+    }catch(error){
+      console.error('Prism selection failed',error);
+      prismDiag('Selection error',{message:String(error?.message||error)});
+    }
+    const willActivate=mode==='immediate'||wasActive;
+    prismDiag('Activation decision',{mode,wasActive,willActivate});
+    if(willActivate){
+      try{await this.activateItem(i);}catch(error){console.error('Prism activation failed',error);prismDiag('Activation error',{message:String(error?.message||error)});}
+    }
+   });this.layer.appendChild(el);this.items.push({config:it,el});
   });
  }
  layout(){
@@ -162,14 +183,16 @@ class SelectableScene{
   }
   if(user)await this.activateSelected();
  }
- async activateSelected(){
-  if(this.selected<0){prismDiag('Activation blocked: no selection');return;}
-  const it=this.items[this.selected].config;
-  prismDiag('Activate selected',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:this.selected,item:it.id,targetScene:it.targetScene||null,audio:it.audio||this.plugin.primaryAudio||null,hasNavigator:!!this.ctx.navigator});
+ async activateItem(index){
+  if(index<0||index>=this.items.length){prismDiag('Activation blocked: invalid index',index);return;}
+  this.selected=index;
+  const it=this.items[index].config;
+  prismDiag('Activate selected',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index,item:it.id,targetScene:it.targetScene||null,audio:it.audio||this.plugin.primaryAudio||null,hasNavigator:!!this.ctx.navigator});
   if(it.targetScene&&this.ctx.navigator){prismDiag('Calling navigator.go',it.targetScene);await this.ctx.navigator.go(it.targetScene);return;}
   const audio=resolvePath(this.plugin,it.audio||this.plugin.primaryAudio);
   if(audio)this.playMode();
  }
+ async activateSelected(){return this.activateItem(this.selected);}
  playMode(){if(this.selected<0)return;const mode=this.ctx.getMode?.()||'listen';this.hideDecision();this.practiceCue?.hide();if(!this.practice){this.audio.loop=this.ctx.isLoop?.()||false;this.audio.currentTime=0;this.audio.play().catch(()=>{});return;}const item=this.items[this.selected]?.config||{};if(mode==='repeat5')return this.practice.repeatCurrent(item.practice?.repeatCount||this.plugin.practice?.repeatCount||5);if(mode==='hifz')return this.practice.runHifz();if(mode==='learnListen')return this.practice.playCurrentOnce();return this.practice.playFull(this.ctx.isLoop?.()||false);}
  action(a){if(!this.practice)return;const mode=this.ctx.getMode?.()||'repeat5';if(a==='repeat')this.practice.repeatAgain(mode);if(a==='next')this.practice.next(mode);if(a==='previous')this.practice.previous(mode);}
  showDecision(){this.panel.hidden=false;this.setPlaying(false);this.panel.querySelector('[data-act="repeat"]')?.focus();}hideDecision(){this.panel.hidden=true;}setPlaying(v){this.root.classList.toggle('is-playing',!!v);}
