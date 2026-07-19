@@ -1118,6 +1118,9 @@
         "actualRecording": false
       },
       "defaultSelectedIndex": 1,
+      "activation": {
+        "mode": "immediate"
+      },
       "type": "plugin",
       "renderer": "selectableScene",
       "primaryAudio": null,
