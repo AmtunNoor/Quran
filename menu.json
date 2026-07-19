@@ -1189,6 +1189,320 @@
     ]
   },
   {
+    "title": "Animals in the Qur’an",
+    "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=animals",
+    "plugin": {
+      "id": "animals",
+      "title": "Animals in the Qur’an",
+      "priority": 14,
+      "folder": "plugins/animals",
+      "theme": "animals",
+      "engine": "selectableScene",
+      "enabled": true,
+      "showOnLanding": true,
+      "landingTileImage": "plugins/animals/animals_icon.webp",
+      "tileImage": "plugins/animals/animals_icon.webp",
+      "supports": [],
+      "initialScene": "habitats",
+      "menu": {
+        "mode": "persistentTopbar",
+        "showHome": true,
+        "showStop": true,
+        "showLoop": false,
+        "showLearningModes": false
+      },
+      "scenes": {
+        "habitats": {
+          "title": "Animals in the Qur’an",
+          "engine": "selectableScene",
+          "presentation": "cards",
+          "backgroundImage": "animals.webp",
+          "display": {
+            "backgroundMode": "blurOnly",
+            "backgroundFill": {
+              "enabled": true,
+              "source": "sameImage",
+              "fit": "cover",
+              "blurPx": 24,
+              "scale": 1.1,
+              "brightness": 0.72,
+              "saturation": 1.08,
+              "overlayOpacity": 0.08
+            }
+          },
+          "layout": {
+            "type": "carousel3D",
+            "loop": true,
+            "spacingPercent": 28,
+            "sideOpacity": 0.42,
+            "sideScale": 0.84,
+            "centerScale": 1.08,
+            "sideAngleDeg": 18,
+            "itemWidth": "min(31vw,340px)",
+            "itemHeight": "min(58vh,560px)"
+          },
+          "effects": {
+            "selection": [
+              "spotlight",
+              "grow",
+              "glow",
+              "sparkle"
+            ]
+          },
+          "defaultSelectedIndex": 0,
+          "items": [
+            {
+              "id": "land",
+              "name": "Land Animals",
+              "label": false,
+              "sourceImage": "animals.webp",
+              "sourceCrop": {
+                "x": 3.7,
+                "y": 27.2,
+                "width": 23.2,
+                "height": 64
+              },
+              "targetScene": "land",
+              "effectColor": "green"
+            },
+            {
+              "id": "birds",
+              "name": "Birds",
+              "label": false,
+              "sourceImage": "animals.webp",
+              "sourceCrop": {
+                "x": 27.7,
+                "y": 27.2,
+                "width": 22.6,
+                "height": 64
+              },
+              "targetScene": "birds",
+              "effectColor": "blue"
+            },
+            {
+              "id": "water",
+              "name": "Water Animals",
+              "label": false,
+              "sourceImage": "animals.webp",
+              "sourceCrop": {
+                "x": 50.7,
+                "y": 27.2,
+                "width": 22.6,
+                "height": 64
+              },
+              "targetScene": "water",
+              "effectColor": "softCyan"
+            },
+            {
+              "id": "insects",
+              "name": "Insects & Small Creatures",
+              "label": false,
+              "sourceImage": "animals.webp",
+              "sourceCrop": {
+                "x": 73.3,
+                "y": 27.2,
+                "width": 23.1,
+                "height": 64
+              },
+              "targetScene": "insects",
+              "effectColor": "softViolet"
+            }
+          ]
+        },
+        "land": {
+          "title": "Land Animals",
+          "engine": "interactiveHotspots",
+          "backgroundImage": "land.webp",
+          "display": {
+            "blurBackground": true
+          },
+          "effects": {
+            "scene": [
+              "fade",
+              "rise"
+            ]
+          },
+          "entities": []
+        },
+        "birds": {
+          "title": "Birds",
+          "engine": "interactiveHotspots",
+          "backgroundImage": "birds.webp",
+          "display": {
+            "blurBackground": true
+          },
+          "effects": {
+            "scene": [
+              "fade",
+              "rise"
+            ]
+          },
+          "entities": []
+        },
+        "water": {
+          "title": "Water Animals",
+          "engine": "interactiveHotspots",
+          "backgroundImage": "water.webp",
+          "display": {
+            "blurBackground": true
+          },
+          "effects": {
+            "scene": [
+              "fade",
+              "rise"
+            ]
+          },
+          "entities": []
+        },
+        "insects": {
+          "title": "Insects & Small Creatures",
+          "engine": "interactiveHotspots",
+          "backgroundImage": "insects.webp",
+          "display": {
+            "blurBackground": true
+          },
+          "effects": {
+            "scene": [
+              "fade",
+              "rise"
+            ]
+          },
+          "entities": []
+        }
+      },
+      "practiceCue": {
+        "enabled": false
+      },
+      "type": "plugin",
+      "renderer": "selectableScene",
+      "backgroundImage": "plugins/animals/animals_icon.webp",
+      "primaryAudio": null,
+      "audios": [],
+      "images": [
+        "plugins/animals/animals_icon.webp",
+        "plugins/animals/animals.webp",
+        "plugins/animals/birds.webp",
+        "plugins/animals/insects.webp",
+        "plugins/animals/land.webp",
+        "plugins/animals/water.webp"
+      ],
+      "playFromLanding": false,
+      "autoStart": false,
+      "directAudio": false,
+      "action": "open-plugin",
+      "effect": null,
+      "audioMode": "single-file-pauses",
+      "segmentDetection": "silence",
+      "fallback": "duration",
+      "learningMode": null,
+      "tilePalette": [
+        "linear-gradient(135deg,#f97316,#facc15)",
+        "linear-gradient(135deg,#22c55e,#14b8a6)",
+        "linear-gradient(135deg,#38bdf8,#6366f1)",
+        "linear-gradient(135deg,#ec4899,#8b5cf6)",
+        "linear-gradient(135deg,#ef4444,#fb7185)",
+        "linear-gradient(135deg,#84cc16,#06b6d4)",
+        "linear-gradient(135deg,#a855f7,#f472b6)",
+        "linear-gradient(135deg,#0ea5e9,#22c55e)"
+      ],
+      "sequence": [],
+      "coordinates": {},
+      "numbers": {},
+      "spotlight": null,
+      "displayMode": null,
+      "chunkMode": null,
+      "slices": [],
+      "slicesFile": "learn.master.slices.json",
+      "lockedDesign": true
+    },
+    "syncFiles": [
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
+        "path": "index.html"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/animals_icon.webp",
+        "path": "plugins/animals/animals_icon.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/animals.webp",
+        "path": "plugins/animals/animals.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/birds.webp",
+        "path": "plugins/animals/birds.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/insects.webp",
+        "path": "plugins/animals/insects.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/land.webp",
+        "path": "plugins/animals/land.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/plugin.json",
+        "path": "plugins/animals/plugin.json"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/water.webp",
+        "path": "plugins/animals/water.webp"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/grid.engine.js",
+        "path": "engines/grid.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
+        "path": "engines/interactive.hotspots.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
+        "path": "engines/practice.controller.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/prism.legacy.engine.js",
+        "path": "engines/prism.legacy.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/quran.engine.js",
+        "path": "engines/quran.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/scene.navigator.js",
+        "path": "engines/scene.navigator.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.layouts.js",
+        "path": "engines/selectable.layouts.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
+        "path": "engines/selectable.scene.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/story.engine.js",
+        "path": "engines/story.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/visual.engine.js",
+        "path": "engines/visual.engine.js"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
+        "path": "styles/prism.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
+        "path": "styles/prism.interactions.css"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
+        "path": "learn.master.slices.json"
+      }
+    ]
+  },
+  {
     "title": "Arabic Numbers",
     "mainUrl": "file:///data/user/0/com.noor.prism/files/index.html?plugin=numbers&autoplay=1",
     "plugin": {
