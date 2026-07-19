@@ -1,0 +1,183 @@
+{
+  "id": "animals",
+  "title": "Animals in the Qur’an",
+  "priority": 14,
+  "folder": "plugins/animals",
+  "theme": "animals",
+  "engine": "selectableScene",
+  "enabled": true,
+  "showOnLanding": true,
+  "landingTileImage": "plugins/animals/animals_icon.webp",
+  "tileImage": "plugins/animals/animals_icon.webp",
+  "supports": [],
+  "initialScene": "habitats",
+  "menu": {
+    "mode": "persistentTopbar",
+    "showHome": true,
+    "showStop": true,
+    "showLoop": false,
+    "showLearningModes": false
+  },
+  "scenes": {
+    "habitats": {
+      "title": "Animals in the Qur’an",
+      "engine": "selectableScene",
+      "presentation": "cards",
+      "backgroundImage": "animals.webp",
+      "display": {
+        "backgroundMode": "blurOnly",
+        "backgroundFill": {
+          "enabled": true,
+          "source": "sameImage",
+          "fit": "cover",
+          "blurPx": 24,
+          "scale": 1.1,
+          "brightness": 0.72,
+          "saturation": 1.08,
+          "overlayOpacity": 0.08
+        }
+      },
+      "layout": {
+        "type": "carousel3D",
+        "loop": true,
+        "spacingPercent": 28,
+        "sideOpacity": 0.42,
+        "sideScale": 0.84,
+        "centerScale": 1.08,
+        "sideAngleDeg": 18,
+        "itemWidth": "min(31vw,340px)",
+        "itemHeight": "min(58vh,560px)"
+      },
+      "effects": {
+        "selection": [
+          "spotlight",
+          "grow",
+          "glow",
+          "sparkle"
+        ]
+      },
+      "defaultSelectedIndex": 0,
+      "items": [
+        {
+          "id": "land",
+          "name": "Land Animals",
+          "label": false,
+          "sourceImage": "animals.webp",
+          "sourceCrop": {
+            "x": 3.7,
+            "y": 27.2,
+            "width": 23.2,
+            "height": 64.0
+          },
+          "targetScene": "land",
+          "effectColor": "green"
+        },
+        {
+          "id": "birds",
+          "name": "Birds",
+          "label": false,
+          "sourceImage": "animals.webp",
+          "sourceCrop": {
+            "x": 27.7,
+            "y": 27.2,
+            "width": 22.6,
+            "height": 64.0
+          },
+          "targetScene": "birds",
+          "effectColor": "blue"
+        },
+        {
+          "id": "water",
+          "name": "Water Animals",
+          "label": false,
+          "sourceImage": "animals.webp",
+          "sourceCrop": {
+            "x": 50.7,
+            "y": 27.2,
+            "width": 22.6,
+            "height": 64.0
+          },
+          "targetScene": "water",
+          "effectColor": "softCyan"
+        },
+        {
+          "id": "insects",
+          "name": "Insects & Small Creatures",
+          "label": false,
+          "sourceImage": "animals.webp",
+          "sourceCrop": {
+            "x": 73.3,
+            "y": 27.2,
+            "width": 23.1,
+            "height": 64.0
+          },
+          "targetScene": "insects",
+          "effectColor": "softViolet"
+        }
+      ]
+    },
+    "land": {
+      "title": "Land Animals",
+      "engine": "interactiveHotspots",
+      "backgroundImage": "land.webp",
+      "display": {
+        "blurBackground": true
+      },
+      "effects": {
+        "scene": [
+          "fade",
+          "rise"
+        ]
+      },
+      "entities": []
+    },
+    "birds": {
+      "title": "Birds",
+      "engine": "interactiveHotspots",
+      "backgroundImage": "birds.webp",
+      "display": {
+        "blurBackground": true
+      },
+      "effects": {
+        "scene": [
+          "fade",
+          "rise"
+        ]
+      },
+      "entities": []
+    },
+    "water": {
+      "title": "Water Animals",
+      "engine": "interactiveHotspots",
+      "backgroundImage": "water.webp",
+      "display": {
+        "blurBackground": true
+      },
+      "effects": {
+        "scene": [
+          "fade",
+          "rise"
+        ]
+      },
+      "entities": []
+    },
+    "insects": {
+      "title": "Insects & Small Creatures",
+      "engine": "interactiveHotspots",
+      "backgroundImage": "insects.webp",
+      "display": {
+        "blurBackground": true
+      },
+      "effects": {
+        "scene": [
+          "fade",
+          "rise"
+        ]
+      },
+      "entities": []
+    }
+  },
+  "practiceCue": {
+    "enabled": false
+  }
+}
