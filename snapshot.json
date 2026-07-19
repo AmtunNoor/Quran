@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "a35661100a1f351b649cc32c6033e69dd5b6e5773395441a03e69bb9d1e3fb84",
+  "version": "93c6025de5aea18331046918eb53fd7c41727609b2efce12a24a683800d6cf68",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -383,8 +383,8 @@
     {
       "path": "menu.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
-      "size": 74539,
-      "sha256": "ec4df25c739c101aca38656c851b3c96845418c5e97804b74e1716119ac44f62",
+      "size": 74598,
+      "sha256": "89108ebe022aef95ad32a5b5750108ebe814aa941cbfce76ff840e35ba87154b",
       "priority": 0,
       "lane": "general"
     },
@@ -615,8 +615,8 @@
     {
       "path": "plugins/azan/plugin.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/azan/plugin.json",
-      "size": 3185,
-      "sha256": "dbb90a4d124c0d57b9e542b6449f1f3e73647c166a81f363d3b2ab6d35b576a2",
+      "size": 3232,
+      "sha256": "8808b35ee812ad34a7b0a571d6418c976f07da6c48f0f751f94693cf6c739bb6",
       "priority": 0,
       "lane": "general"
     },
