@@ -20,6 +20,7 @@ function effectColor(value){
   return palette[key]||palette.softcyan;
 }
 function supportsCards(plugin){const type=plugin.layout?.type;return type==='carousel3D'||type==='orbit'||plugin.presentation==='cards';}
+function clamp(v,min,max){v=Number(v);return Number.isFinite(v)?Math.min(max,Math.max(min,v)):min;}
 function listEffects(plugin,item){
   const raw=item?.effects||plugin.effects?.selection||plugin.effects||[];
   const out=new Set(Array.isArray(raw)?raw:(typeof raw==='string'?[raw]:[]));
@@ -39,7 +40,7 @@ function cropStyle(crop){
   return `background-size:${sx}% ${sy}%;background-position:${px}% ${py}%;`;
 }
 class SelectableScene{
- constructor(ctx){this.ctx=ctx;this.plugin=ctx.plugin;this.root=null;this.items=[];this.selected=-1;this.practice=null;this.keyHandler=e=>this.onKey(e);this.resizeHandler=()=>this.layout();}
+ constructor(ctx){this.ctx=ctx;this.plugin=ctx.plugin;this.root=null;this.items=[];this.selected=-1;this.practice=null;this.initialSelectionApplied=false;this.keyHandler=e=>this.onKey(e);this.resizeHandler=()=>this.layout();}
  async mount(){
   if(this.plugin.scenes&&!this.plugin.__sceneId)return window.PrismMountNavigablePlugin(this.ctx);
   const p=this.plugin,bg=resolvePath(p,p.backgroundImage||p.image),cards=supportsCards(p);
@@ -65,17 +66,17 @@ class SelectableScene{
   this.audioEndedHandler=()=>{if(!this.audio.loop&&this.practiceCue?.enabled&&this.practiceCue.config.trigger==='afterAudio')this.practiceCue.show();};
   this.audio.addEventListener('ended',this.audioEndedHandler);
   this.panel.addEventListener('click',e=>{const a=e.target?.dataset?.act;if(a)this.action(a);});
-  this.img?.addEventListener('load',this.resizeHandler);window.addEventListener('resize',this.resizeHandler);window.addEventListener('orientationchange',this.resizeHandler);document.addEventListener('keydown',this.keyHandler,true);
-  if(!this.img||this.img.complete)this.layout();this.ctx.setFocusable?.(this.root);
-  const initial=Number.isInteger(p.defaultSelectedIndex)?p.defaultSelectedIndex:-1;if(initial>=0&&initial<this.items.length)await this.select(initial,false);
+  this.img?.addEventListener('load',()=>{this.layout();this.applyInitialSelection();});window.addEventListener('resize',this.resizeHandler);window.addEventListener('orientationchange',this.resizeHandler);document.addEventListener('keydown',this.keyHandler,true);
+  if(!this.img||this.img.complete){this.layout();await this.applyInitialSelection();}else requestAnimationFrame(()=>this.applyInitialSelection());this.ctx.setFocusable?.(this.root);
   return this;
  }
+ async applyInitialSelection(){if(this.initialSelectionApplied||!this.items.length)return;const raw=this.plugin.defaultSelectedIndex;const initial=Number.isInteger(raw)?raw:0;if(initial<0||initial>=this.items.length)return;this.initialSelectionApplied=true;await this.select(initial,false);}
  buildItems(cards){
   (this.plugin.items||[]).forEach((it,i)=>{const el=document.createElement('button');el.type='button';el.className='prism-scene-item';el.dataset.index=i;el.setAttribute('aria-label',it.name||it.id||`Item ${i+1}`);
-   const [light,strong]=effectColor(it.effectColor||it.color||this.plugin.effect?.color);el.style.setProperty('--prism-effect-light',light);el.style.setProperty('--prism-effect-strong',strong);
+   const [light,strong]=effectColor(it.effectColor||it.color||this.plugin.effect?.color);el.style.setProperty('--prism-effect-light',light);el.style.setProperty('--prism-effect-strong',strong);const radius=it.borderRadius||this.plugin.layout?.borderRadius||this.plugin.effects?.borderRadius||'clamp(22px,5.5vw,42px)';el.style.setProperty('--prism-card-radius',String(radius));el.style.borderRadius=String(radius);const mask=clamp(it.inactiveMaskOpacity??this.plugin.effects?.inactiveMaskOpacity??.18,0,.7);el.style.setProperty('--prism-inactive-mask',String(mask));
    const fx=listEffects(this.plugin,it);fx.forEach(name=>el.classList.add(`fx-${name}`));
    if(cards){const image=resolvePath(this.plugin,it.sourceImage||it.image||it.tileImage);const crop=it.sourceCrop||it.crop;const art=image?(crop?`<span class="prism-card-art prism-card-art-crop" style="background-image:url('${image.replace(/'/g,"\\'")}');${cropStyle(crop)}"></span>`:`<img src="${image}" alt="">`):'';el.innerHTML=`<span class="prism-card-face">${art}${it.label!==false?`<span class="prism-card-label">${it.name||''}</span>`:''}</span><span class="prism-item-halo"></span><span class="prism-item-mask"></span>`;}else el.innerHTML='<span class="prism-item-halo"></span><span class="prism-item-mask"></span>';
-   el.addEventListener('click',async()=>{await this.select(i,false);await this.activateSelected();});this.layer.appendChild(el);this.items.push({config:it,el});
+   el.addEventListener('click',async e=>{e.preventDefault();e.stopPropagation();const wasActive=this.selected===i;await this.select(i,false);const mode=this.plugin.activation?.mode||this.plugin.activationMode||(cards?'activeTap':'immediate');if(mode==='immediate'||wasActive)await this.activateSelected();});this.layer.appendChild(el);this.items.push({config:it,el});
   });
  }
  layout(){
@@ -109,7 +110,7 @@ class SelectableScene{
  async select(i,user){
   if(i<0||i>=this.items.length)return;
   this.selected=i;
-  this.items.forEach((o,n)=>{const active=n===i;o.el.classList.toggle('is-active',active);o.el.classList.toggle('is-dimmed',!active&&o.el.classList.contains('fx-spotlight'));});
+  this.items.forEach((o,n)=>{const active=n===i;o.el.classList.toggle('is-active',active);o.el.classList.toggle('is-dimmed',!active&&o.el.classList.contains('fx-spotlight'));o.el.setAttribute('aria-selected',active?'true':'false');o.el.tabIndex=active?0:-1;});
   this.layout();
   const it=this.items[i].config;
   this.ctx.onSelection?.(it,i);
