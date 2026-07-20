@@ -12,7 +12,7 @@
   "supports": [],
   "initialScene": "habitats",
   "menu": {
-    "mode": "persistentTopbar",
+    "mode": "floatingMenuIcon",
     "showHome": true,
     "showStop": true,
     "showLoop": false,
@@ -29,20 +29,28 @@
       "layout": {
         "type": "carousel3D",
         "loop": true,
-        "spacingPercent": 28,
-        "sideOpacity": 0.42,
+        "spacingPercent": 27,
+        "sideOpacity": 0.62,
         "sideScale": 0.84,
-        "centerScale": 1.08,
+        "centerScale": 1.05,
         "sideAngleDeg": 18,
         "itemWidth": "min(31vw,340px)",
-        "itemHeight": "min(58vh,560px)"
+        "itemHeight": "min(58vh,560px)",
+        "mobileSideOpacity": 0.58,
+        "mobileSideScale": 0.78,
+        "mobileCenterScale": 1.0,
+        "mobileSpacingPercent": 58,
+        "mobileSideAngleDeg": 12,
+        "mobileItemWidth": "min(66vw,340px)",
+        "mobileItemHeight": "min(62vh,560px)"
       },
       "effects": {
         "selection": [
           "spotlight",
           "glow",
           "sparkle"
-        ]
+        ],
+        "inactiveMaskOpacity": 0.1
       },
       "defaultSelectedIndex": 0,
       "items": [
@@ -169,6 +177,6 @@
     "enabled": false
   },
   "activation": {
-    "mode": "immediate"
+    "mode": "selectThenActivate"
   }
 }
