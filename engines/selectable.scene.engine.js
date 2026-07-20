@@ -73,6 +73,11 @@ function cropStyle(crop){
   const px=(100-w)>0?(x/(100-w))*100:50,py=(100-h)>0?(y/(100-h))*100:50;
   return `background-size:${sx}% ${sy}%;background-position:${px}% ${py}%;`;
 }
+function makePracticeCue(options){
+  const Cue=window.PrismPracticeCue;
+  if(typeof Cue==='function'){try{return new Cue(options);}catch(error){console.error('Prism PracticeCue init failed',error);}}
+  return {enabled:false,config:{enabled:false,trigger:'afterAudio'},update(){return this;},show(){},hide(){},destroy(){}};
+}
 class SelectableScene{
  constructor(ctx){this.ctx=ctx;this.plugin=ctx.plugin;this.root=null;this.items=[];this.selected=-1;this.practice=null;this.initialSelectionApplied=false;this.keyHandler=e=>this.onKey(e);this.resizeHandler=()=>this.layout();}
  async mount(){
@@ -96,7 +101,7 @@ class SelectableScene{
     this.root.style.setProperty('--prism-bg-overlay',q(fill.overlayOpacity,0.10));
   }
   this.audio=new Audio();this.audio.preload='auto';this.audio.playsInline=true;this.buildItems(cards);
-  this.practiceCue=new window.PrismPracticeCue({host:this.root,plugin:p,onEnabledChange:(enabled,config)=>{this.cueEnabled=enabled;if(this.practice){this.practice.setCueEnabled(enabled);this.practice.setCueTrigger(config.trigger);}}});
+  this.practiceCue=makePracticeCue({host:this.root,plugin:p,onEnabledChange:(enabled,config)=>{this.cueEnabled=enabled;if(this.practice){this.practice.setCueEnabled(enabled);this.practice.setCueTrigger(config.trigger);}}});
   this.cueEnabled=this.practiceCue.enabled;
   this.audioEndedHandler=()=>{if(!this.audio.loop&&this.practiceCue?.enabled&&this.practiceCue.config.trigger==='afterAudio')this.practiceCue.show();};
   this.audio.addEventListener('ended',this.audioEndedHandler);
