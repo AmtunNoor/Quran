@@ -1009,7 +1009,7 @@
       "effect": {
         "type": "carouselFocus",
         "dimOthers": true,
-        "inactiveOpacity": 0.35,
+        "inactiveOpacity": 0.62,
         "activeScale": 1.035,
         "halo": {
           "borderRadiusPercent": 13
@@ -1134,12 +1134,16 @@
           "cyan",
           "electricBlue"
         ],
-        "durationMs": 3600,
-        "actualRecording": false
+        "durationMs": 4200,
+        "actualRecording": false,
+        "dimBackground": true
       },
       "defaultSelectedIndex": 1,
       "activation": {
         "mode": "immediate"
+      },
+      "effects": {
+        "inactiveMaskOpacity": 0.16
       },
       "type": "plugin",
       "renderer": "selectableScene",
