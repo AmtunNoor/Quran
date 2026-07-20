@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "1b38342c56cab9290fca854522fae2b28097055ccbf27bf776be63245352af77",
+  "version": "077daaaedced547ae68e16f32cd1e95d6d895444775dbb8cdbabab0221ed0aa1",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -175,8 +175,8 @@
     {
       "path": "engines/interactive.hotspots.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
-      "size": 8564,
-      "sha256": "3616cbe4eef3fad2ac73534063c61f35a5b8363748cba21526f4e5f4bd7f2124",
+      "size": 8254,
+      "sha256": "e6902ec65b178d7bb3e52996f2753b603a5e28730fa945cdbf65f70d71662939",
       "priority": 0,
       "lane": "general"
     },
@@ -185,14 +185,6 @@
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
       "size": 4287,
       "sha256": "257e6846dc81284e2a377dce8e96b0f87f68612c6471bbb6c9b2c8321604626e",
-      "priority": 0,
-      "lane": "general"
-    },
-    {
-      "path": "engines/practice.cue.js",
-      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.cue.js",
-      "size": 3063,
-      "sha256": "1c1fde1014f29419967b513f8674dd97d2b6fdf17f0f04275ac5d7a27acce4ed",
       "priority": 0,
       "lane": "general"
     },
@@ -231,8 +223,8 @@
     {
       "path": "engines/selectable.scene.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
-      "size": 17987,
-      "sha256": "b7b418d2ce87e63f12b380b5026b3afd1e948707c5953fba62dccc9ff2d44c7b",
+      "size": 17674,
+      "sha256": "596ad4b9bd016ee41505551ba441432ad3cc7d06b1cfb1118f97d70be214a050",
       "priority": 0,
       "lane": "general"
     },
@@ -391,8 +383,8 @@
     {
       "path": "menu.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
-      "size": 76142,
-      "sha256": "92183a9c3612a10345a89522439b4333374ae34beadd35d00ed868d776658e23",
+      "size": 74426,
+      "sha256": "e12061cd794b483e2e22ea5e9e2acff74cb86296d82f8062b105f330ad217bd7",
       "priority": 0,
       "lane": "general"
     },
