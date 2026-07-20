@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "4c26102e43e807920318be0425767ddda802677ede55e25d3624b69562abaf0e",
+  "version": "4973b0a3edbe27922b2ac582d05056fad7591deb471224b5b2383be725853cae",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -215,8 +215,8 @@
     {
       "path": "engines/scene.navigator.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/scene.navigator.js",
-      "size": 3094,
-      "sha256": "6d10cd84798f065e979e8b4784495938270af2f551409e57e7cdeb2349478c27",
+      "size": 2434,
+      "sha256": "e6985290233e058faab7d5a2c6147f3020403f8368705375cb620d91a29ac01d",
       "priority": 0,
       "lane": "general"
     },
