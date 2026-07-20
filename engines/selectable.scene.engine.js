@@ -116,7 +116,7 @@ class SelectableScene{
   this.ctx.setFocusable?.(this.root);
   return this;
  }
- async applyInitialSelection(){if(this.initialSelectionApplied||!this.items.length)return;const raw=this.plugin.defaultSelectedIndex;const initial=Number.isInteger(raw)?raw:0;if(initial<0||initial>=this.items.length)return;this.initialSelectionApplied=true;await this.select(initial,false);}
+ async applyInitialSelection(){if(this.initialSelectionApplied||!this.items.length)return;const restored=this.ctx.restoreState?.selected;const raw=Number.isInteger(restored)?restored:this.plugin.defaultSelectedIndex;const initial=Number.isInteger(raw)?raw:0;if(initial<0||initial>=this.items.length)return;this.initialSelectionApplied=true;await this.select(initial,false);}
  buildItems(cards){
   (this.plugin.items||[]).forEach((it,i)=>{const el=document.createElement('button');el.type='button';el.className='prism-scene-item';el.dataset.index=i;el.setAttribute('aria-label',it.name||it.id||`Item ${i+1}`);el.setAttribute('role','button');
    const [light,strong]=effectColor(it.effectColor||it.color||this.plugin.effect?.color);el.style.setProperty('--prism-effect-light',light);el.style.setProperty('--prism-effect-strong',strong);const radius=it.borderRadius||this.plugin.layout?.borderRadius||this.plugin.effects?.borderRadius||'clamp(22px,5.5vw,42px)';el.style.setProperty('--prism-card-radius',String(radius));el.style.borderRadius=String(radius);const mask=clamp(it.inactiveMaskOpacity??this.plugin.effects?.inactiveMaskOpacity??.18,0,.7);el.style.setProperty('--prism-inactive-mask',String(mask));
@@ -133,7 +133,7 @@ class SelectableScene{
       console.error('Prism selection failed',error);
       prismDiag('Selection error',{message:String(error?.message||error)});
     }
-    const willActivate=mode==='immediate'||wasActive;
+    const willActivate=mode==='immediate'||mode==='singleTap'||wasActive;
     prismDiag('Activation decision',{mode,wasActive,willActivate});
     if(willActivate){
       try{await this.activateItem(i);}catch(error){console.error('Prism activation failed',error);prismDiag('Activation error',{message:String(error?.message||error)});}
@@ -203,6 +203,7 @@ class SelectableScene{
  showDecision(){this.panel.hidden=false;this.setPlaying(false);this.panel.querySelector('[data-act="repeat"]')?.focus();}hideDecision(){this.panel.hidden=true;}setPlaying(v){this.root.classList.toggle('is-playing',!!v);}
  saveProgress(n,total){try{localStorage.setItem(`prism:${this.plugin.id}:${this.items[this.selected].config.id}:segment`,String(n));}catch(e){}this.items[this.selected]?.el.style.setProperty('--progress',`${total?((n+1)/total)*100:0}%`);}loadProgress(){try{return Number(localStorage.getItem(`prism:${this.plugin.id}:${this.items[this.selected].config.id}:segment`))||0;}catch(e){return 0;}}complete(){this.root.classList.add('is-complete');setTimeout(()=>this.root?.classList.remove('is-complete'),1200);}onModeChange(){if(this.selected>=0)this.playMode();}onLoopChange(){if(this.audio)this.audio.loop=this.ctx.isLoop?.()||false;}
  onKey(e){if(!this.ctx.isActive?.())return;if((e.key==='Escape'||e.key==='Backspace'||e.key==='BrowserBack')&&this.ctx.navigator){e.preventDefault();this.ctx.navigator.back();return;}if(this.practice?.waiting){if(e.key==='Enter'||e.key==='OK'){e.preventDefault();this.action('repeat');return;}if(e.key==='ArrowRight'){e.preventDefault();this.action('next');return;}if(e.key==='ArrowLeft'){e.preventDefault();this.action('previous');return;}}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();let n=this.selected<0?0:this.selected+(e.key==='ArrowRight'?1:-1);n=(n+this.items.length)%this.items.length;this.select(n,false);this.items[n].el.focus();}if((e.key==='Enter'||e.key==='OK')&&this.selected>=0){e.preventDefault();this.activateSelected();}}
+ getState(){return {selected:this.selected};}
  stop(){this.practice?.stop();this.audio?.pause();this.hideDecision();this.practiceCue?.hide();}destroy(){this.stop();this.audio?.removeEventListener('ended',this.audioEndedHandler);this.practiceCue?.destroy();document.removeEventListener('keydown',this.keyHandler,true);window.removeEventListener('resize',this.resizeHandler);window.removeEventListener('orientationchange',this.resizeHandler);this.root?.remove();}
 }
 window.PrismEngines=window.PrismEngines||{};window.PrismEngines.selectableScene={mount:ctx=>new SelectableScene(ctx).mount()};
