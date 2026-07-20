@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "dc592802de8e28eb945cffde024b6d982f44f255b0b4d7f83febb52e60139eeb",
+  "version": "4c26102e43e807920318be0425767ddda802677ede55e25d3624b69562abaf0e",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -191,8 +191,8 @@
     {
       "path": "engines/practice.cue.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.cue.js",
-      "size": 3063,
-      "sha256": "1c1fde1014f29419967b513f8674dd97d2b6fdf17f0f04275ac5d7a27acce4ed",
+      "size": 3267,
+      "sha256": "337e408d70961b3c5847e2c7f5b4f4139f78774ae0801787066c2923abacd910",
       "priority": 0,
       "lane": "general"
     },
