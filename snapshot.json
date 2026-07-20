@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "a4e085d8656ddc80ca6d7d77321e10522d9a4756510f683226d3bf3881d70469",
+  "version": "9fee2240467aef1f74f78d9fe5df5500757b94cd9ed19388531411b54a8d10ad",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -175,8 +175,8 @@
     {
       "path": "engines/interactive.hotspots.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
-      "size": 8564,
-      "sha256": "3616cbe4eef3fad2ac73534063c61f35a5b8363748cba21526f4e5f4bd7f2124",
+      "size": 8805,
+      "sha256": "5cd5b268e65dbe512bcc82ada3d89a0e3c3c41379cf0dd8603a809d9c7c47cca",
       "priority": 0,
       "lane": "general"
     },
@@ -191,8 +191,8 @@
     {
       "path": "engines/practice.cue.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.cue.js",
-      "size": 3063,
-      "sha256": "1c1fde1014f29419967b513f8674dd97d2b6fdf17f0f04275ac5d7a27acce4ed",
+      "size": 3267,
+      "sha256": "337e408d70961b3c5847e2c7f5b4f4139f78774ae0801787066c2923abacd910",
       "priority": 0,
       "lane": "general"
     },
@@ -215,24 +215,24 @@
     {
       "path": "engines/scene.navigator.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/scene.navigator.js",
-      "size": 3094,
-      "sha256": "6d10cd84798f065e979e8b4784495938270af2f551409e57e7cdeb2349478c27",
+      "size": 2434,
+      "sha256": "e6985290233e058faab7d5a2c6147f3020403f8368705375cb620d91a29ac01d",
       "priority": 0,
       "lane": "general"
     },
     {
       "path": "engines/selectable.layouts.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.layouts.js",
-      "size": 2478,
-      "sha256": "c8532f8cc46cc524198985664209d1efe3a624ce15f8e7aab620202d69dbfe5b",
+      "size": 3189,
+      "sha256": "4f0ead6d203d539e926a004c91dd586632606917ea6e76068299aa9e795d75e2",
       "priority": 0,
       "lane": "general"
     },
     {
       "path": "engines/selectable.scene.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
-      "size": 17987,
-      "sha256": "b7b418d2ce87e63f12b380b5026b3afd1e948707c5953fba62dccc9ff2d44c7b",
+      "size": 18136,
+      "sha256": "6886e33342c22a06504ef2de3cc74f941f717368ac64ad118bff2733d64bb96f",
       "priority": 0,
       "lane": "general"
     },
@@ -255,8 +255,8 @@
     {
       "path": "index.html",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
-      "size": 3593,
-      "sha256": "70c911df1c0c338c91fc4e0e146dc8e1840f63845e0080dc0fb767fb779c8040",
+      "size": 3598,
+      "sha256": "1f8dfe81e73e8d4f9503fc0070790ead3629233bde44306b92446ac3b6bfff13",
       "priority": 0,
       "lane": "general"
     },
@@ -391,8 +391,8 @@
     {
       "path": "menu.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
-      "size": 76577,
-      "sha256": "0d4bd5c0757a21a8aa05051f683322705d89543d370ac6cc174b21aaea359388",
+      "size": 76573,
+      "sha256": "432a0682c97ae69a4e9c0b26e23e1d6c2c4192134394f76719666f9025906ce8",
       "priority": 0,
       "lane": "general"
     },
@@ -623,8 +623,8 @@
     {
       "path": "plugins/azan/plugin.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/azan/plugin.json",
-      "size": 3311,
-      "sha256": "decec1543d6ef3bedae4b1820b4a13fe2bac4fe83f2884b70c89e92f1c05303b",
+      "size": 3307,
+      "sha256": "e55200a6419e4ff7051c54fdd4c0be6bac3637c5ae67f345f99edfeb29a0e32a",
       "priority": 0,
       "lane": "general"
     },
@@ -805,6 +805,14 @@
       "lane": "module-audio"
     },
     {
+      "path": "SHA256SUMS.txt",
+      "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/SHA256SUMS.txt",
+      "size": 529,
+      "sha256": "1d3056765af7b288c283c4015c0cb17b2c475cbbe39025226b56acc75efcd9cc",
+      "priority": 0,
+      "lane": "general"
+    },
+    {
       "path": "styles/prism.css",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.css",
       "size": 121869,
@@ -815,8 +823,8 @@
     {
       "path": "styles/prism.interactions.css",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/styles/prism.interactions.css",
-      "size": 17840,
-      "sha256": "571f066450e38a8d69e8699ff0ba5afdd085a882fec957be27482fbc662b0169",
+      "size": 20299,
+      "sha256": "fe546e02d95caf8c20674f14ca1d327a646acc37ece43b7b8fb705174fe4a747",
       "priority": 0,
       "lane": "general"
     },
