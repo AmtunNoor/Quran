@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "adc42fdd21c110d31e9dcfd5cf598505dc35415d1b8f0cad855b025faa7ad3dd",
+  "version": "0c9ad80965069be8a03361fbc342cc96171417ac71fa7fa700671decceb747c2",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -223,8 +223,8 @@
     {
       "path": "engines/selectable.scene.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/selectable.scene.engine.js",
-      "size": 17674,
-      "sha256": "596ad4b9bd016ee41505551ba441432ad3cc7d06b1cfb1118f97d70be214a050",
+      "size": 17987,
+      "sha256": "b7b418d2ce87e63f12b380b5026b3afd1e948707c5953fba62dccc9ff2d44c7b",
       "priority": 0,
       "lane": "general"
     },
