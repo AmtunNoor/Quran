@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "077daaaedced547ae68e16f32cd1e95d6d895444775dbb8cdbabab0221ed0aa1",
+  "version": "adc42fdd21c110d31e9dcfd5cf598505dc35415d1b8f0cad855b025faa7ad3dd",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -175,8 +175,8 @@
     {
       "path": "engines/interactive.hotspots.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
-      "size": 8254,
-      "sha256": "e6902ec65b178d7bb3e52996f2753b603a5e28730fa945cdbf65f70d71662939",
+      "size": 8564,
+      "sha256": "3616cbe4eef3fad2ac73534063c61f35a5b8363748cba21526f4e5f4bd7f2124",
       "priority": 0,
       "lane": "general"
     },
