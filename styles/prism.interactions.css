@@ -80,3 +80,31 @@ body.landing-mode .card[data-tile-image-status="image"][data-tile-fit="contain"]
 .prism-card-scene .prism-scene-item.is-active{filter:saturate(1.06) brightness(1.03)}
 .prism-hotspot-scene .prism-scene-item{z-index:5}
 .prism-hotspot-scene .prism-scene-item:focus-visible{outline:3px solid rgba(255,230,120,.95);outline-offset:3px}
+
+
+/* Prism Runtime v3.1.7: responsive carousel, scene return and PracticeCue polish. */
+.prism-card-scene .prism-scene-frame{background:radial-gradient(circle at 50% 42%,rgba(27,49,94,.54),rgba(3,10,35,.98) 68%)!important}
+.prism-card-scene .prism-scene-image{display:none!important}
+.prism-scene-item.is-dimmed .prism-item-mask{background:rgba(3,8,25,var(--prism-inactive-mask,.20));backdrop-filter:saturate(.78) brightness(.90);-webkit-backdrop-filter:saturate(.78) brightness(.90)}
+.prism-hotspot-scene .prism-scene-item.is-dimmed{filter:saturate(.76) brightness(.84)}
+.prism-card-scene .prism-scene-item.is-dimmed{filter:saturate(.82) brightness(.91)}
+.prism-card-scene .prism-scene-item.is-active{filter:saturate(1.05) brightness(1.03)}
+.prism-practice-cue-dim{position:absolute;inset:0;z-index:17;background:rgba(2,7,25,.44);backdrop-filter:brightness(.72) saturate(.82);-webkit-backdrop-filter:brightness(.72) saturate(.82);opacity:0;transition:opacity .28s ease;pointer-events:none}
+.prism-interaction-host.is-practice-cue-active .prism-practice-cue-dim{opacity:1}
+.prism-practice-cue-shell{bottom:clamp(54px,7vh,100px);z-index:20;gap:5px}
+.prism-practice-cue-visual{width:clamp(190px,25vw,300px);height:clamp(94px,13vw,142px)}
+.prism-practice-mic{width:clamp(48px,6.2vw,72px);height:clamp(72px,9.5vw,108px)}
+.prism-voice-waves{width:clamp(48px,7vw,82px);height:clamp(64px,8.5vw,96px)}
+.prism-practice-cue-toggle{min-width:clamp(165px,27vw,260px);font-weight:800}
+.prism-scene-back{position:absolute;left:clamp(10px,2vw,24px);top:clamp(10px,2vw,24px);z-index:22;border:1.5px solid rgba(255,255,255,.58);border-radius:999px;padding:9px 15px;background:rgba(7,20,48,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font:800 clamp(13px,1.5vw,20px)/1 system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.35);cursor:pointer}
+.prism-scene-back:focus-visible{outline:3px solid #52d6ff;outline-offset:3px}
+@media(max-width:700px){
+ .prism-card-scene .prism-scene-layer{overflow:hidden!important}
+ .prism-card-scene .prism-scene-item{transition:transform .28s ease,opacity .28s ease,filter .28s ease}
+ .prism-practice-cue-shell{bottom:max(58px,calc(env(safe-area-inset-bottom) + 48px));gap:2px}
+ .prism-practice-cue-visual{width:190px;height:92px}
+ .prism-practice-mic{width:48px;height:72px}
+ .prism-voice-waves{width:48px;height:64px}
+ .prism-scene-back{left:8px;top:8px;padding:9px 11px}
+ .prism-scene-back span{display:none}
+}
