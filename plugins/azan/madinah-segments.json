@@ -1,12 +1,12 @@
 {
   "id": "madinah",
   "audio": "plugins/azan/madina.mp3",
-  "version": 1,
-  "status": "ready-for-app-test",
+  "version": 2,
+  "status": "runtime-freeze-audited",
   "analysis": {
     "sourceDurationSeconds": 232.548,
     "method": "Natural phrase gaps plus low-energy melodic resting points",
-    "note": "Phrase boundaries are high-confidence. Internal toddler splits are recommended starting points and should be checked once in the actual Prism 5x playback."
+    "note": "Natural phrase boundaries retained. Segments over 11 seconds were split only at waveform low-energy melodic resting points; verify once by ear during final device smoke test."
   },
   "learningSegments": [
     {
@@ -52,8 +52,14 @@
       "phrase": "p04"
     },
     {
-      "id": "m04b",
+      "id": "m04b1",
       "start": 64.33,
+      "end": 71.66,
+      "phrase": "p04"
+    },
+    {
+      "id": "m04b2",
+      "start": 71.66,
       "end": 75.73,
       "phrase": "p04"
     },
@@ -70,8 +76,14 @@
       "phrase": "p05"
     },
     {
-      "id": "m06a",
+      "id": "m06a1",
       "start": 97.13,
+      "end": 103.15,
+      "phrase": "p06"
+    },
+    {
+      "id": "m06a2",
+      "start": 103.15,
       "end": 110.02,
       "phrase": "p06"
     },
@@ -118,8 +130,14 @@
       "phrase": "p09"
     },
     {
-      "id": "m10a",
+      "id": "m10a1",
       "start": 177.39,
+      "end": 184.01,
+      "phrase": "p10"
+    },
+    {
+      "id": "m10a2",
+      "start": 184.01,
       "end": 188.45,
       "phrase": "p10"
     },
@@ -142,8 +160,14 @@
       "phrase": "p11"
     },
     {
-      "id": "m12",
+      "id": "m12a",
       "start": 214.78,
+      "end": 224.04,
+      "phrase": "p12"
+    },
+    {
+      "id": "m12b",
+      "start": 224.04,
       "end": 232.54,
       "phrase": "p12"
     }
