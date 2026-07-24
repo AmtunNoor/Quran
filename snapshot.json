@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "14944504b2a5478c2ad600a12e7c8bbdb7723bceaa1b302e86729d069a6a089b",
+  "version": "929d4afb34a859645d4d5b4330376ccae0af50724d89520c7c189ee00d07c038",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -255,16 +255,16 @@
     {
       "path": "index.html",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/index.html",
-      "size": 3582,
-      "sha256": "007218386764f6165af9400cb6c848bd6e2b1b897cd22763f8a29553534d8971",
+      "size": 3528,
+      "sha256": "57948ad579f92245f3a827d473d6112bd19745daecfdeb877f9c6ad572bc2d92",
       "priority": 0,
       "lane": "general"
     },
     {
       "path": "learn.master.slices.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
-      "size": 269,
-      "sha256": "1efb82b9304e00a2e548160b6206a1f7081c024a1b64095c33d41b43aeb5ffd9",
+      "size": 412,
+      "sha256": "009c412702ce6de71c232d38470678f6cce57d3c7acbff587bd5ce8d90a7628c",
       "priority": 0,
       "lane": "general"
     },
@@ -391,8 +391,8 @@
     {
       "path": "menu.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
-      "size": 77697,
-      "sha256": "b888b33a64dd5ecb1c9b5ba2557fb1d1116cce6c0841e3c71d2fbea31c4db1b1",
+      "size": 77841,
+      "sha256": "b31e65584e9793002e12aad83107157ec26540541318eae3a15d12cc54c42d7c",
       "priority": 0,
       "lane": "general"
     },
