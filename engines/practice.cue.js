@@ -14,7 +14,7 @@ class PrismPracticeCue{
     if(!this.host||!this.config.enabled)return;
     const dim=document.createElement('div');dim.className='prism-practice-cue-dim';dim.hidden=true;
     const shell=document.createElement('div');shell.className='prism-practice-cue-shell';
-    shell.innerHTML='<div class="prism-practice-cue-visual" hidden><span class="prism-voice-waves prism-voice-waves-left"><i></i><i></i><i></i></span><span class="prism-practice-mic" aria-hidden="true"></span><span class="prism-voice-waves prism-voice-waves-right"><i></i><i></i><i></i></span></div><button type="button" class="prism-practice-cue-toggle"></button>';
+    shell.innerHTML='<div class="prism-practice-cue-visual" hidden><span class="prism-cue-sparkle s1">✦</span><span class="prism-cue-sparkle s2">✦</span><span class="prism-voice-waves prism-voice-waves-left"><i></i><i></i><i></i></span><span class="prism-practice-mic" aria-hidden="true"><span class="prism-mic-grille"><i></i><i></i><i></i><i></i><i></i></span><span class="prism-mic-highlight"></span><span class="prism-mic-yoke"></span><span class="prism-mic-stem"></span><span class="prism-mic-base"></span></span><span class="prism-voice-waves prism-voice-waves-right"><i></i><i></i><i></i></span></div><button type="button" class="prism-practice-cue-toggle"></button>';
     this.host.appendChild(dim);this.host.appendChild(shell);this.dim=dim;this.shell=shell;this.visual=shell.querySelector('.prism-practice-cue-visual');this.toggle=shell.querySelector('.prism-practice-cue-toggle');
     this.toggle.addEventListener('click',()=>this.setEnabled(!this.enabled,true));this.refresh();requestAnimationFrame(()=>this.layout());
   }
