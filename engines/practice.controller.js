@@ -65,9 +65,21 @@ class PrismPracticeController {
   }
   async runHifz(){
     if(!this.segments.length) return this.playFull(false);
-    this.cancel(); const token=this.token,upto=this.index,first=this.segments[0],last=this.segments[upto]; this.options.onPlaying?.();
-    await this.playRange(first.start,last.end,token); if(token!==this.token)return;
-    await this.runCue({start:first.start,end:last.end},token,'duringHifzGap'); if(token!==this.token)return;
+    this.cancel(); const token=this.token,upto=this.index; this.options.onPlaying?.();
+    // Hifz deliberately reuses the exact same canonical segment boundaries as 5x.
+    // The difference is progression: practise the current slice, then review all
+    // learnt slices in order. Never turn the cumulative range into one toddler-long chunk.
+    const current=this.segments[upto];
+    await this.playRange(current.start,current.end,token); if(token!==this.token)return;
+    await this.runCue(current,token,'duringHifzGap'); if(token!==this.token)return;
+    if(upto>0){
+      const gap=Number(this.meta?.hifz?.pauseBetweenSegmentsMs)||180;
+      for(let i=0;i<=upto;i++){
+        const s=this.segments[i];
+        await this.playRange(s.start,s.end,token); if(token!==this.token)return;
+        if(i<upto)await this.sleep(gap,token);
+      }
+    }
     this.waiting=true; this.options.onDecision?.(this.index);
   }
   sleep(ms,token){return new Promise(r=>setTimeout(()=>r(token===this.token),ms));}
