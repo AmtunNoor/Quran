@@ -108,3 +108,38 @@ body.landing-mode .card[data-tile-image-status="image"][data-tile-fit="contain"]
  .prism-scene-back{left:8px;top:8px;padding:9px 11px}
  .prism-scene-back span{display:none}
 }
+
+
+/* Prism v3.2.0 RC2 — final opt-in interaction polish. */
+.prism-card-scene.is-swipe-enabled .prism-scene-layer{touch-action:pan-y;overscroll-behavior-x:contain}
+.prism-card-scene.is-swipe-enabled.is-dragging .prism-scene-item{transition:none!important}
+.prism-card-scene.is-swipe-enabled:not(.is-dragging) .prism-scene-item{transition:transform .32s cubic-bezier(.2,.78,.22,1),opacity .30s ease,filter .30s ease!important}
+
+/* One Habitats control in every orientation; mirrors Prism's yellow menu controls. */
+.prism-scene-back{display:inline-flex!important;align-items:center;justify-content:center;gap:.35em;padding:clamp(8px,1.2vw,12px) clamp(13px,2vw,21px)!important;border:2px solid rgba(255,255,255,.78)!important;border-radius:999px!important;background:linear-gradient(90deg,#facc15,#fde68a)!important;color:#172554!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.72),0 5px 16px rgba(0,0,0,.28),0 0 15px rgba(250,204,21,.22)!important;font-family:"Fredoka","Baloo 2","Nunito",system-ui,sans-serif!important;font-weight:900!important;text-shadow:0 1px 0 rgba(255,255,255,.48)!important}
+.prism-scene-back .prism-back-arrow{font-size:1.18em;line-height:1;color:#1d4ed8}
+.prism-scene-back .prism-habitat-label{display:inline-flex!important;align-items:center;gap:.3em!important}
+.prism-scene-back .prism-habitat-label i{font-style:normal;filter:drop-shadow(0 1px 1px rgba(0,0,0,.22));animation:prism-paw-bounce 2.4s ease-in-out infinite}
+.prism-scene-back .prism-habitat-label i:last-child{animation-delay:.28s}
+@keyframes prism-paw-bounce{0%,72%,100%{transform:translateY(0) rotate(0)}80%{transform:translateY(-3px) rotate(-7deg)}88%{transform:translateY(0) rotate(4deg)}}
+@media(max-width:700px){.prism-scene-back{left:max(8px,env(safe-area-inset-left))!important;top:max(8px,env(safe-area-inset-top))!important;padding:8px 12px!important;font-size:clamp(12px,3.6vw,16px)!important}.prism-scene-back span{display:inline-flex!important}}
+
+/* Generic opt-in image zoom for interactive scenes. */
+.prism-interactive-hotspots.is-zoom-enabled .prism-scene-frame{touch-action:none;overflow:hidden;cursor:zoom-in}
+.prism-interactive-hotspots.is-zoom-enabled .prism-scene-image,.prism-interactive-hotspots.is-zoom-enabled .prism-scene-layer{will-change:transform;transition:transform .10s linear}
+
+/* Premium child-friendly PracticeCue: dimensional mic, glowing grille, listening waves. */
+.prism-practice-cue-visual{isolation:isolate;overflow:visible!important}
+.prism-practice-mic{border:0!important;background:linear-gradient(145deg,#fff5bd 0%,#f6cf55 22%,#d89a1f 58%,#8c5309 100%)!important;border-radius:46% 46% 42% 42%!important;box-shadow:inset 5px 5px 10px rgba(255,255,255,.62),inset -5px -7px 11px rgba(91,48,0,.30),0 0 0 2px rgba(255,237,166,.82),0 0 22px rgba(255,199,55,.55),0 12px 22px rgba(0,0,0,.34)!important;animation:prism-mic-breathe 1.9s ease-in-out infinite}
+.prism-practice-mic::before,.prism-practice-mic::after{content:none!important}
+.prism-mic-grille{position:absolute;left:15%;right:15%;top:10%;height:50%;border-radius:42% 42% 32% 32%;overflow:hidden;background:linear-gradient(180deg,#2e79d6,#0d3c8d 60%,#071e55);box-shadow:inset 0 0 0 2px rgba(192,235,255,.72),inset 0 -8px 14px rgba(0,8,35,.55),0 0 12px rgba(72,202,255,.55)}
+.prism-mic-grille i{position:absolute;left:13%;right:13%;height:2px;background:rgba(216,246,255,.68);box-shadow:0 0 5px rgba(94,220,255,.72)}
+.prism-mic-grille i:nth-child(1){top:18%}.prism-mic-grille i:nth-child(2){top:34%}.prism-mic-grille i:nth-child(3){top:50%}.prism-mic-grille i:nth-child(4){top:66%}.prism-mic-grille i:nth-child(5){top:82%}
+.prism-mic-highlight{position:absolute;left:19%;top:9%;width:18%;height:42%;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,0));filter:blur(.4px);opacity:.7}
+.prism-mic-yoke{position:absolute;left:7%;right:7%;top:42%;height:42%;border:clamp(3px,.42vw,5px) solid #ffe28a;border-top:0;border-radius:0 0 999px 999px;box-shadow:0 0 10px rgba(255,205,68,.5)}
+.prism-mic-stem{position:absolute;left:50%;top:80%;width:10%;height:28%;transform:translateX(-50%);border-radius:999px;background:linear-gradient(90deg,#a9680d,#ffe18a,#a9680d);box-shadow:0 0 7px rgba(255,205,68,.42)}
+.prism-mic-base{position:absolute;left:17%;right:17%;top:103%;height:9%;border-radius:999px;background:linear-gradient(90deg,#9b5b08,#ffe89b 48%,#a36109);box-shadow:0 3px 8px rgba(0,0,0,.35),0 0 10px rgba(255,205,68,.42)}
+.prism-cue-sparkle{position:absolute;color:#fff1a6;text-shadow:0 0 8px #ffd64f,0 0 13px #55dfff;opacity:0;animation:prism-cue-twinkle 2.7s ease-in-out infinite}.prism-cue-sparkle.s1{left:28%;top:10%}.prism-cue-sparkle.s2{right:27%;top:24%;animation-delay:1.1s}
+.prism-practice-cue-shell:not(.is-cue-active) .prism-cue-sparkle{display:none}
+@keyframes prism-mic-breathe{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.08);transform:scale(1.025)}}
+@keyframes prism-cue-twinkle{0%,70%,100%{opacity:0;transform:scale(.6) rotate(0)}80%{opacity:1;transform:scale(1.15) rotate(20deg)}90%{opacity:.35;transform:scale(.85) rotate(38deg)}}
