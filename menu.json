@@ -1360,7 +1360,16 @@
               "targetScene": "insects",
               "effectColor": "softViolet"
             }
-          ]
+          ],
+          "touch": {
+            "swipe": true,
+            "axis": "horizontal",
+            "thresholdPx": 40,
+            "horizontalRatio": 1.25,
+            "oneCardPerSwipe": true,
+            "tapSelectedToOpen": true,
+            "suppressClickAfterSwipeMs": 450
+          }
         },
         "land": {
           "title": "Land Animals",
@@ -1375,7 +1384,13 @@
               "rise"
             ]
           },
-          "entities": []
+          "entities": [],
+          "navigation": {
+            "backLabel": "🐾 Habitats 🐾",
+            "backTarget": "previous",
+            "preserveCarouselSelection": true,
+            "reuseFloatingMenu": true
+          }
         },
         "birds": {
           "title": "Birds",
@@ -1390,7 +1405,13 @@
               "rise"
             ]
           },
-          "entities": []
+          "entities": [],
+          "navigation": {
+            "backLabel": "🐾 Habitats 🐾",
+            "backTarget": "previous",
+            "preserveCarouselSelection": true,
+            "reuseFloatingMenu": true
+          }
         },
         "water": {
           "title": "Water Animals",
@@ -1405,7 +1426,13 @@
               "rise"
             ]
           },
-          "entities": []
+          "entities": [],
+          "navigation": {
+            "backLabel": "🐾 Habitats 🐾",
+            "backTarget": "previous",
+            "preserveCarouselSelection": true,
+            "reuseFloatingMenu": true
+          }
         },
         "insects": {
           "title": "Insects & Small Creatures",
@@ -1420,7 +1447,13 @@
               "rise"
             ]
           },
-          "entities": []
+          "entities": [],
+          "navigation": {
+            "backLabel": "🐾 Habitats 🐾",
+            "backTarget": "previous",
+            "preserveCarouselSelection": true,
+            "reuseFloatingMenu": true
+          }
         }
       },
       "practiceCue": {
