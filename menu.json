@@ -1009,7 +1009,7 @@
       "effect": {
         "type": "carouselFocus",
         "dimOthers": true,
-        "inactiveOpacity": 0.64,
+        "inactiveOpacity": 0.58,
         "activeScale": 1.035,
         "halo": {
           "borderRadiusPercent": 13
@@ -1036,6 +1036,11 @@
             "label": "⭐ Now You Try!",
             "actualRecording": false
           }
+        },
+        "hifz": {
+          "useCanonicalSegments": true,
+          "cumulativeReview": "segmentBySegment",
+          "longContinuousChunks": false
         }
       },
       "items": [
@@ -1142,14 +1147,15 @@
         "actualRecording": false,
         "dimBackground": true,
         "maxTileOverlapRatio": 0.34,
-        "responsive": true
+        "responsive": true,
+        "visualStyle": "prismStudioMic"
       },
       "defaultSelectedIndex": 1,
       "activation": {
         "mode": "immediate"
       },
       "effects": {
-        "inactiveMaskOpacity": 0.24
+        "inactiveMaskOpacity": 0.3
       },
       "type": "plugin",
       "renderer": "selectableScene",
