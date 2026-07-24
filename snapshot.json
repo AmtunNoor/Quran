@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "9db61467b6decd4816e610ba2f50e573ddf2c7db1b7de09a40f23290a6dcc444",
+  "version": "14944504b2a5478c2ad600a12e7c8bbdb7723bceaa1b302e86729d069a6a089b",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -391,8 +391,8 @@
     {
       "path": "menu.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/menu.json",
-      "size": 76577,
-      "sha256": "0d4bd5c0757a21a8aa05051f683322705d89543d370ac6cc174b21aaea359388",
+      "size": 77697,
+      "sha256": "b888b33a64dd5ecb1c9b5ba2557fb1d1116cce6c0841e3c71d2fbea31c4db1b1",
       "priority": 0,
       "lane": "general"
     },
@@ -575,8 +575,8 @@
     {
       "path": "plugins/animals/plugin.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/animals/plugin.json",
-      "size": 4259,
-      "sha256": "00073cc8db272e09f1bec573edeab8f7800c1c09d0e7e48821dbdb35ea7de088",
+      "size": 5247,
+      "sha256": "5dab71c9c8fcd80663ef624e137b41ce78b7a21b53cb10e7e87a5f8d71ee93a2",
       "priority": 0,
       "lane": "general"
     },
@@ -615,16 +615,16 @@
     {
       "path": "plugins/azan/madinah-segments.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/azan/madinah-segments.json",
-      "size": 4161,
-      "sha256": "f302f1d6a62b1beb62e6389fbf9347c48ea850a7296f8bb73f6562a2dc1bc0a6",
+      "size": 4587,
+      "sha256": "d05e1e10c28c48b8f4f0721e8507d60dcaa4699d4014b9d510698acb0cdfe673",
       "priority": 0,
       "lane": "general"
     },
     {
       "path": "plugins/azan/plugin.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/plugins/azan/plugin.json",
-      "size": 3311,
-      "sha256": "decec1543d6ef3bedae4b1820b4a13fe2bac4fe83f2884b70c89e92f1c05303b",
+      "size": 3431,
+      "sha256": "8887a64b36435ec6f61430b736360e640bbb357b4474482edfb197b29c4df22b",
       "priority": 0,
       "lane": "general"
     },
