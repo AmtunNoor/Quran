@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "315eaabf07842dba94065d032d33f23f0eb3ea42fd481497138fc66f91b1dd04",
+  "version": "5e2844b970b8fe2da5ecee221241e4a28f4b93ae2611e49275b4f8531a6ff832",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -175,24 +175,24 @@
     {
       "path": "engines/interactive.hotspots.engine.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/interactive.hotspots.engine.js",
-      "size": 8805,
-      "sha256": "5cd5b268e65dbe512bcc82ada3d89a0e3c3c41379cf0dd8603a809d9c7c47cca",
+      "size": 9088,
+      "sha256": "161351db49511244d3cd03bebd203cf6863e706dcc216b447afb09feb1c844c6",
       "priority": 0,
       "lane": "general"
     },
     {
       "path": "engines/practice.controller.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.controller.js",
-      "size": 4287,
-      "sha256": "257e6846dc81284e2a377dce8e96b0f87f68612c6471bbb6c9b2c8321604626e",
+      "size": 4963,
+      "sha256": "20364a13be608e31b82438db33ff2b634cf8a5b798761e164d0c6c6010261208",
       "priority": 0,
       "lane": "general"
     },
     {
       "path": "engines/practice.cue.js",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/engines/practice.cue.js",
-      "size": 3267,
-      "sha256": "337e408d70961b3c5847e2c7f5b4f4139f78774ae0801787066c2923abacd910",
+      "size": 4757,
+      "sha256": "b595ce8b366fd1695c919c2d2fdcb288dcb184fa1d8f6d6282f942ac4501b77c",
       "priority": 0,
       "lane": "general"
     },
