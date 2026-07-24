@@ -21,20 +21,8 @@ function effectColor(value){
 }
 function supportsCards(plugin){const type=plugin.layout?.type;return type==='carousel3D'||type==='orbit'||plugin.presentation==='cards';}
 
-function prismDiagEnabled(){try{return new URLSearchParams(location.search).get('prismDebug')==='1';}catch(e){return false;}}
-function prismDiag(message,data){
-  if(!prismDiagEnabled())return;
-  const stamp=new Date().toLocaleTimeString();
-  const detail=data===undefined?'':` ${typeof data==='string'?data:JSON.stringify(data)}`;
-  console.log(`[PrismDiag ${stamp}] ${message}`,data??'');
-  let panel=document.getElementById('prism-diagnostic-panel');
-  if(!panel){
-    panel=document.createElement('div');panel.id='prism-diagnostic-panel';
-    panel.style.cssText='position:fixed;left:8px;right:8px;bottom:8px;z-index:2147483647;max-height:38vh;overflow:auto;background:rgba(2,8,28,.94);color:#dffcff;border:2px solid #52d6ff;border-radius:12px;padding:9px;font:600 12px/1.35 monospace;white-space:pre-wrap;box-shadow:0 0 18px rgba(82,214,255,.45);pointer-events:none';
-    panel.textContent='PRISM DIAGNOSTICS (temporary)\n';document.body.appendChild(panel);
-  }
-  panel.textContent+=`${stamp}  ${message}${detail}\n`;panel.scrollTop=panel.scrollHeight;
-}
+function prismDiagEnabled(){return false;}
+function prismDiag(){}
 
 async function waitForImageReady(img){
   if(!img)return;
@@ -79,7 +67,7 @@ function makePracticeCue(options){
   return {enabled:false,config:{enabled:false,trigger:'afterAudio'},update(){return this;},show(){},hide(){},destroy(){}};
 }
 class SelectableScene{
- constructor(ctx){this.ctx=ctx;this.plugin=ctx.plugin;this.root=null;this.items=[];this.selected=-1;this.practice=null;this.initialSelectionApplied=false;this.keyHandler=e=>this.onKey(e);this.resizeHandler=()=>this.layout();}
+ constructor(ctx){this.ctx=ctx;this.plugin=ctx.plugin;this.root=null;this.items=[];this.selected=-1;this.practice=null;this.initialSelectionApplied=false;this.pointer=null;this.suppressClickUntil=0;this.keyHandler=e=>this.onKey(e);this.resizeHandler=()=>{this.layout();this.practiceCue?.layout?.();};this.pointerDownHandler=e=>this.onPointerDown(e);this.pointerMoveHandler=e=>this.onPointerMove(e);this.pointerUpHandler=e=>this.onPointerUp(e);this.pointerCancelHandler=()=>this.cancelPointer();}
  async mount(){
   prismDiag('SelectableScene.mount start',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,engine:this.plugin.engine});
   if(this.plugin.scenes&&!this.plugin.__sceneId)return window.PrismMountNavigablePlugin(this.ctx);
@@ -100,10 +88,10 @@ class SelectableScene{
     this.root.style.setProperty('--prism-bg-saturation',q(fill.saturation,1.05));
     this.root.style.setProperty('--prism-bg-overlay',q(fill.overlayOpacity,0.10));
   }
-  this.audio=new Audio();this.audio.preload='auto';this.audio.playsInline=true;this.buildItems(cards);
+  this.audio=new Audio();this.audio.preload='auto';this.audio.playsInline=true;this.buildItems(cards);this.bindTouch(cards);
   this.practiceCue=makePracticeCue({host:this.root,plugin:p,onEnabledChange:(enabled,config)=>{this.cueEnabled=enabled;if(this.practice){this.practice.setCueEnabled(enabled);this.practice.setCueTrigger(config.trigger);}}});
   this.cueEnabled=this.practiceCue.enabled;
-  this.audioEndedHandler=()=>{if(!this.audio.loop&&this.practiceCue?.enabled&&this.practiceCue.config.trigger==='afterAudio')this.practiceCue.show();};
+  this.audioEndedHandler=()=>{const t=this.practiceCue?.config?.trigger;const triggers=new Set(Array.isArray(t)?t:String(t||'').split(/[\s,|]+/));if(!this.audio.loop&&this.practiceCue?.enabled&&(triggers.has('afterAudio')||triggers.has('auto')))this.practiceCue.show();};
   this.audio.addEventListener('ended',this.audioEndedHandler);
   this.panel.addEventListener('click',e=>{const a=e.target?.dataset?.act;if(a)this.action(a);});
   this.img?.addEventListener('load',()=>{this.layout();this.applyInitialSelection();});window.addEventListener('resize',this.resizeHandler);window.addEventListener('orientationchange',this.resizeHandler);document.addEventListener('keydown',this.keyHandler,true);
@@ -124,6 +112,7 @@ class SelectableScene{
    if(cards){const image=resolvePath(this.plugin,it.sourceImage||it.image||it.tileImage);const crop=it.sourceCrop||it.crop;const art=image?(crop?`<span class="prism-card-art prism-card-art-crop" style="background-image:url('${image.replace(/'/g,"\\'")}');${cropStyle(crop)}"></span>`:`<img src="${image}" alt="">`):'';el.innerHTML=`<span class="prism-card-face">${art}${it.label!==false?`<span class="prism-card-label">${it.name||''}</span>`:''}</span><span class="prism-item-halo"></span><span class="prism-item-mask"></span>`;}else el.innerHTML='<span class="prism-item-halo"></span><span class="prism-item-mask"></span>';
    el.addEventListener('click',async e=>{
     e.preventDefault();e.stopPropagation();
+    if(performance.now()<this.suppressClickUntil)return;
     const wasActive=this.selected===i;
     const mode=this.plugin.activation?.mode||this.plugin.activationMode||'immediate';
     prismDiag('Item click',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:i,item:it.id,targetScene:it.targetScene||null,wasActive,mode});
@@ -141,6 +130,46 @@ class SelectableScene{
    });this.layer.appendChild(el);this.items.push({config:it,el});
   });
  }
+ bindTouch(cards){
+  const cfg=this.plugin.touch||{};
+  if(!cards||cfg.swipe!==true||!this.layer)return;
+  this.root.classList.add('is-swipe-enabled');
+  this.layer.addEventListener('pointerdown',this.pointerDownHandler,{passive:true});
+  this.layer.addEventListener('pointermove',this.pointerMoveHandler,{passive:false});
+  this.layer.addEventListener('pointerup',this.pointerUpHandler,{passive:true});
+  this.layer.addEventListener('pointercancel',this.pointerCancelHandler,{passive:true});
+ }
+ onPointerDown(e){
+  if(e.isPrimary===false||e.button>0)return;
+  const cfg=this.plugin.touch||{};
+  this.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,started:performance.now(),horizontal:false,cancelled:false,threshold:q(cfg.thresholdPx,40),ratio:Math.max(1.05,q(cfg.horizontalRatio,1.25))};
+ }
+ onPointerMove(e){
+  const p=this.pointer;if(!p||p.id!==e.pointerId)return;
+  p.lastX=e.clientX;p.lastY=e.clientY;
+  const dx=p.lastX-p.x,dy=p.lastY-p.y;
+  if(!p.horizontal&&Math.abs(dx)>=8){
+   if(Math.abs(dx)>Math.abs(dy)*p.ratio){p.horizontal=true;this.root.classList.add('is-swiping');}
+   else if(Math.abs(dy)>Math.abs(dx)){p.cancelled=true;}
+  }
+  if(p.horizontal&&!p.cancelled)e.preventDefault();
+ }
+ onPointerUp(e){
+  const p=this.pointer;if(!p||p.id!==e.pointerId)return;
+  p.lastX=e.clientX;p.lastY=e.clientY;
+  const dx=p.lastX-p.x,dy=p.lastY-p.y;
+  const valid=p.horizontal&&!p.cancelled&&Math.abs(dx)>=p.threshold&&Math.abs(dx)>Math.abs(dy)*p.ratio;
+  this.root.classList.remove('is-swiping');this.pointer=null;
+  if(!valid)return;
+  this.suppressClickUntil=performance.now()+450;
+  const direction=dx<0?1:-1;
+  let next=this.selected<0?0:this.selected+direction;
+  if(this.plugin.layout?.loop!==false)next=(next+this.items.length)%this.items.length;
+  else next=Math.max(0,Math.min(this.items.length-1,next));
+  if(next!==this.selected){this.select(next,false);this.items[next]?.el.focus({preventScroll:true});}
+ }
+ cancelPointer(){this.pointer=null;this.root?.classList.remove('is-swiping');}
+
  layout(){
   if(supportsCards(this.plugin)){
     // Card scenes must remain usable even when a browser has a stale/missing
@@ -163,11 +192,12 @@ class SelectableScene{
         record.el.style.transform=`translate(calc(-50% + ${delta*26}vw),-50%) perspective(900px) rotateY(${delta*-18}deg) scale(${delta===0?1.08:.84})`;
       });
     }
+    this.practiceCue?.layout?.();
     return;
   }
   if(!this.img?.naturalWidth||!this.frame)return;const r=renderedContainRect(this.img,this.frame);
   this.layer.style.left=r.left+'px';this.layer.style.top=r.top+'px';this.layer.style.width=r.width+'px';this.layer.style.height=r.height+'px';
-  this.items.forEach(({config,el})=>{const b=config.bounds||{};let x=b.x,y=b.y,w=b.width,h=b.height;if(x==null&&b.centerX!=null)x=q(b.centerX,0)-q(b.width,0)/2;if(y==null&&b.centerY!=null)y=q(b.centerY,0)-q(b.height,0)/2;el.style.left=q(x,0)+'%';el.style.top=q(y,0)+'%';el.style.width=q(w,10)+'%';el.style.height=q(h,10)+'%';el.style.borderRadius=q(config.borderRadiusPercent,this.plugin.effect?.halo?.borderRadiusPercent||13)+'%';});
+  this.items.forEach(({config,el})=>{const b=config.bounds||{};let x=b.x,y=b.y,w=b.width,h=b.height;if(x==null&&b.centerX!=null)x=q(b.centerX,0)-q(b.width,0)/2;if(y==null&&b.centerY!=null)y=q(b.centerY,0)-q(b.height,0)/2;el.style.left=q(x,0)+'%';el.style.top=q(y,0)+'%';el.style.width=q(w,10)+'%';el.style.height=q(h,10)+'%';el.style.borderRadius=q(config.borderRadiusPercent,this.plugin.effect?.halo?.borderRadiusPercent||13)+'%';});this.practiceCue?.layout?.();
  }
  async select(i,user){
   prismDiag('Select requested',{plugin:this.plugin.id,scene:this.plugin.__sceneId||null,index:i,user:!!user});
@@ -181,9 +211,9 @@ class SelectableScene{
   const audio=resolvePath(this.plugin,it.audio||this.plugin.primaryAudio);
   if(audio)this.audio.src=audio;else this.audio.removeAttribute('src');
   this.practice?.stop();this.practice=null;
-  this.practiceCue.update(it);this.cueEnabled=this.practiceCue.enabled;
+  this.practiceCue.update(it).anchorTo?.(this.items[i].el);this.cueEnabled=this.practiceCue.enabled;
   if(it.segmentsFile||this.plugin.segmentsFile){
-    this.practice=new window.PrismPracticeController({audio:this.audio,cueEnabled:this.cueEnabled,cueTrigger:this.practiceCue.config.trigger,onPlaying:()=>{this.practiceCue.hide();this.setPlaying(true);},onDecision:()=>this.showDecision(),onDecisionEnd:()=>this.hideDecision(),onYourTurn:(v,ms)=>v?this.practiceCue.show(ms):this.practiceCue.hide(),onIndexChange:(n,total)=>this.saveProgress(n,total),onComplete:()=>this.complete()});
+    this.practice=new window.PrismPracticeController({audio:this.audio,cueEnabled:this.cueEnabled,cueTrigger:this.practiceCue.config.trigger,onPlaying:()=>{this.practiceCue.hide();this.setPlaying(true);},onDecision:()=>this.showDecision(),onDecisionEnd:()=>this.hideDecision(),onYourTurn:(v,ms)=>{if(v){this.setPlaying(false);this.practiceCue.show(ms);}else this.practiceCue.hide();},onIndexChange:(n,total)=>this.saveProgress(n,total),onComplete:()=>this.complete()});
     try{await this.practice.load(resolvePath(this.plugin,it.segmentsFile||this.plugin.segmentsFile));this.practice.setIndex(this.loadProgress());}catch(e){console.error('Prism segment load failed',e);}
   }
   if(user)await this.activateSelected();
@@ -204,7 +234,7 @@ class SelectableScene{
  saveProgress(n,total){try{localStorage.setItem(`prism:${this.plugin.id}:${this.items[this.selected].config.id}:segment`,String(n));}catch(e){}this.items[this.selected]?.el.style.setProperty('--progress',`${total?((n+1)/total)*100:0}%`);}loadProgress(){try{return Number(localStorage.getItem(`prism:${this.plugin.id}:${this.items[this.selected].config.id}:segment`))||0;}catch(e){return 0;}}complete(){this.root.classList.add('is-complete');setTimeout(()=>this.root?.classList.remove('is-complete'),1200);}onModeChange(){if(this.selected>=0)this.playMode();}onLoopChange(){if(this.audio)this.audio.loop=this.ctx.isLoop?.()||false;}
  onKey(e){if(!this.ctx.isActive?.())return;if((e.key==='Escape'||e.key==='Backspace'||e.key==='BrowserBack')&&this.ctx.navigator){e.preventDefault();this.ctx.navigator.back();return;}if(this.practice?.waiting){if(e.key==='Enter'||e.key==='OK'){e.preventDefault();this.action('repeat');return;}if(e.key==='ArrowRight'){e.preventDefault();this.action('next');return;}if(e.key==='ArrowLeft'){e.preventDefault();this.action('previous');return;}}if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();let n=this.selected<0?0:this.selected+(e.key==='ArrowRight'?1:-1);n=(n+this.items.length)%this.items.length;this.select(n,false);this.items[n].el.focus();}if((e.key==='Enter'||e.key==='OK')&&this.selected>=0){e.preventDefault();this.activateSelected();}}
  getState(){return {selected:this.selected};}
- stop(){this.practice?.stop();this.audio?.pause();this.hideDecision();this.practiceCue?.hide();}destroy(){this.stop();this.audio?.removeEventListener('ended',this.audioEndedHandler);this.practiceCue?.destroy();document.removeEventListener('keydown',this.keyHandler,true);window.removeEventListener('resize',this.resizeHandler);window.removeEventListener('orientationchange',this.resizeHandler);this.root?.remove();}
+ stop(){this.practice?.stop();this.audio?.pause();this.hideDecision();this.practiceCue?.hide();}destroy(){this.stop();this.cancelPointer();this.audio?.removeEventListener('ended',this.audioEndedHandler);this.practiceCue?.destroy();document.removeEventListener('keydown',this.keyHandler,true);window.removeEventListener('resize',this.resizeHandler);window.removeEventListener('orientationchange',this.resizeHandler);this.layer?.removeEventListener('pointerdown',this.pointerDownHandler);this.layer?.removeEventListener('pointermove',this.pointerMoveHandler);this.layer?.removeEventListener('pointerup',this.pointerUpHandler);this.layer?.removeEventListener('pointercancel',this.pointerCancelHandler);this.root?.remove();}
 }
 window.PrismEngines=window.PrismEngines||{};window.PrismEngines.selectableScene={mount:ctx=>new SelectableScene(ctx).mount()};
 })();
