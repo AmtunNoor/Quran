@@ -20,7 +20,7 @@ function applyCarousel3D(root,records,selected,cfg){
     const scale=distance===0?centerScale:Math.max(sideScale-.06*Math.max(0,distance-1),mobile?.58:.68);
     const opacity=distance===0?1:Math.max(sideOpacity-(mobile?.28:.12)*Math.max(0,distance-1),mobile?.06:.20);
     r.el.style.left='50%';r.el.style.top='50%';r.el.style.width=itemWidth;r.el.style.height=itemHeight;r.el.style.opacity=String(opacity);
-    const transform=`translate(calc(-50% + ${delta*spacing}vw),-50%) perspective(900px) rotateY(${delta*-angle}deg) scale(${scale})`;
+    const transform=`translate(calc(-50% + ${delta*spacing}vw + var(--prism-swipe-drag, 0px)),-50%) perspective(900px) rotateY(${delta*-angle}deg) scale(${scale})`;
     r.el.style.setProperty('--prism-layout-transform',transform);r.el.style.transform=transform;r.el.style.zIndex=String(100-distance);
     r.el.style.pointerEvents=(mobile&&distance>1)?'none':'auto';
   });
