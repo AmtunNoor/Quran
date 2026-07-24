@@ -18,7 +18,7 @@
   "effect": {
     "type": "carouselFocus",
     "dimOthers": true,
-    "inactiveOpacity": 0.62,
+    "inactiveOpacity": 0.64,
     "activeScale": 1.035,
     "halo": {
       "borderRadiusPercent": 13
@@ -133,7 +133,11 @@
   "practiceCue": {
     "enabled": true,
     "default": false,
-    "trigger": "afterAudio",
+    "trigger": [
+      "afterAudio",
+      "afterEachSegment",
+      "duringHifzGap"
+    ],
     "label": "⭐ Now You Try! ⭐",
     "placement": "belowContent",
     "animation": "riseFade",
@@ -145,13 +149,15 @@
     ],
     "durationMs": 4200,
     "actualRecording": false,
-    "dimBackground": true
+    "dimBackground": true,
+    "maxTileOverlapRatio": 0.34,
+    "responsive": true
   },
   "defaultSelectedIndex": 1,
   "activation": {
     "mode": "immediate"
   },
   "effects": {
-    "inactiveMaskOpacity": 0.16
+    "inactiveMaskOpacity": 0.24
   }
 }
