@@ -142,7 +142,8 @@ class SelectableScene{
  onPointerDown(e){
   if(e.isPrimary===false||e.button>0)return;
   const cfg=this.plugin.touch||{};
-  this.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,started:performance.now(),horizontal:false,cancelled:false,threshold:q(cfg.thresholdPx,40),ratio:Math.max(1.05,q(cfg.horizontalRatio,1.25))};
+  this.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,started:performance.now(),horizontal:false,cancelled:false,threshold:q(cfg.thresholdPx,34),ratio:Math.max(1.05,q(cfg.horizontalRatio,1.18))};
+  try{this.layer?.setPointerCapture?.(e.pointerId);}catch(_){}
  }
  onPointerMove(e){
   const p=this.pointer;if(!p||p.id!==e.pointerId)return;
@@ -152,23 +153,31 @@ class SelectableScene{
    if(Math.abs(dx)>Math.abs(dy)*p.ratio){p.horizontal=true;this.root.classList.add('is-swiping');}
    else if(Math.abs(dy)>Math.abs(dx)){p.cancelled=true;}
   }
-  if(p.horizontal&&!p.cancelled)e.preventDefault();
+  if(p.horizontal&&!p.cancelled){
+    e.preventDefault();
+    const maxDrag=Math.min(window.innerWidth*.24,150);
+    const drag=Math.max(-maxDrag,Math.min(maxDrag,dx));
+    this.layer.style.setProperty('--prism-swipe-drag',`${drag}px`);
+    this.root.classList.add('is-dragging');
+  }
  }
  onPointerUp(e){
   const p=this.pointer;if(!p||p.id!==e.pointerId)return;
   p.lastX=e.clientX;p.lastY=e.clientY;
   const dx=p.lastX-p.x,dy=p.lastY-p.y;
   const valid=p.horizontal&&!p.cancelled&&Math.abs(dx)>=p.threshold&&Math.abs(dx)>Math.abs(dy)*p.ratio;
-  this.root.classList.remove('is-swiping');this.pointer=null;
+  this.root.classList.remove('is-swiping','is-dragging');this.layer?.style.removeProperty('--prism-swipe-drag');
+  try{this.layer?.releasePointerCapture?.(e.pointerId);}catch(_){}
+  this.pointer=null;
   if(!valid)return;
-  this.suppressClickUntil=performance.now()+450;
+  this.suppressClickUntil=performance.now()+q(this.plugin.touch?.suppressClickAfterSwipeMs,520);
   const direction=dx<0?1:-1;
   let next=this.selected<0?0:this.selected+direction;
   if(this.plugin.layout?.loop!==false)next=(next+this.items.length)%this.items.length;
   else next=Math.max(0,Math.min(this.items.length-1,next));
   if(next!==this.selected){this.select(next,false);this.items[next]?.el.focus({preventScroll:true});}
  }
- cancelPointer(){this.pointer=null;this.root?.classList.remove('is-swiping');}
+ cancelPointer(){this.pointer=null;this.root?.classList.remove('is-swiping','is-dragging');this.layer?.style.removeProperty('--prism-swipe-drag');}
 
  layout(){
   if(supportsCards(this.plugin)){
