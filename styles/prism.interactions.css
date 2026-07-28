@@ -143,3 +143,84 @@ body.landing-mode .card[data-tile-image-status="image"][data-tile-fit="contain"]
 .prism-practice-cue-shell:not(.is-cue-active) .prism-cue-sparkle{display:none}
 @keyframes prism-mic-breathe{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.08);transform:scale(1.025)}}
 @keyframes prism-cue-twinkle{0%,70%,100%{opacity:0;transform:scale(.6) rotate(0)}80%{opacity:1;transform:scale(1.15) rotate(20deg)}90%{opacity:.35;transform:scale(.85) rotate(38deg)}}
+
+/* Prism v3.2.0 RC3 — targeted freeze correction: reliable touch zoom + premium emoji PracticeCue. */
+.prism-interactive-hotspots.is-zoom-enabled .prism-scene-frame{
+  touch-action:none!important;
+  overscroll-behavior:none;
+  -webkit-user-select:none;
+  user-select:none;
+}
+.prism-interactive-hotspots.is-zoom-enabled .prism-scene-image{
+  -webkit-user-drag:none;
+  user-select:none;
+  pointer-events:none;
+}
+.prism-interactive-hotspots.is-zoom-enabled .prism-scene-layer{touch-action:none!important}
+.prism-interactive-hotspots.is-zoom-enabled.is-zoomed .prism-scene-frame{cursor:grab}
+
+/* The actual 🎤 emoji is now the focal symbol, but presented inside a polished Prism recording stage. */
+.prism-practice-cue-visual{width:clamp(220px,29vw,340px)!important;height:clamp(116px,16vw,176px)!important;gap:clamp(7px,1.4vw,16px)!important}
+.prism-practice-mic{
+  position:relative!important;
+  width:clamp(82px,10vw,118px)!important;
+  height:clamp(92px,11.5vw,132px)!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:none!important;
+  box-shadow:none!important;
+  animation:prism-mic-stage-float 2.2s ease-in-out infinite!important;
+  filter:drop-shadow(0 12px 15px rgba(0,0,0,.32));
+}
+.prism-practice-mic::before,.prism-practice-mic::after{content:none!important}
+.prism-mic-aura{
+  position:absolute;inset:5% -6% 2%;border-radius:48% 48% 45% 45%;
+  background:radial-gradient(circle at 50% 44%,rgba(91,225,255,.34) 0 28%,rgba(54,116,255,.19) 42%,rgba(255,207,72,.14) 57%,transparent 72%);
+  box-shadow:0 0 28px rgba(72,210,255,.45),0 0 50px rgba(255,204,63,.20);
+  animation:prism-mic-aura-pulse 1.65s ease-in-out infinite;
+}
+.prism-mic-glass{
+  position:absolute;left:7%;right:7%;top:0;height:78%;display:flex;align-items:center;justify-content:center;
+  border:clamp(2px,.3vw,4px) solid rgba(255,235,157,.94);border-radius:44% 44% 39% 39%;
+  background:linear-gradient(150deg,rgba(255,255,255,.38),rgba(46,190,255,.20) 30%,rgba(22,74,176,.42) 62%,rgba(5,24,78,.65));
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.72),inset 0 -12px 20px rgba(0,20,80,.34),0 0 0 2px rgba(255,199,53,.20),0 0 20px rgba(67,205,255,.46),0 7px 18px rgba(0,0,0,.26);
+  backdrop-filter:blur(3px) saturate(1.25);-webkit-backdrop-filter:blur(3px) saturate(1.25);
+}
+.prism-mic-emoji{
+  position:relative;z-index:2;display:block;font-size:clamp(48px,6.2vw,72px);line-height:1;
+  transform:translateY(-1%);filter:drop-shadow(0 3px 2px rgba(0,0,0,.18)) drop-shadow(0 0 7px rgba(255,239,166,.50));
+  animation:prism-mic-emoji-listen 1.25s ease-in-out infinite;
+}
+.prism-mic-shine{
+  position:absolute;z-index:3;left:15%;top:10%;width:21%;height:42%;border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.10) 55%,transparent);
+  transform:rotate(10deg);filter:blur(.3px);pointer-events:none;
+}
+.prism-mic-listen-ring{
+  position:absolute;left:0;right:0;top:-6%;height:87%;border:2px solid rgba(91,226,255,.42);border-radius:48%;
+  box-shadow:0 0 10px rgba(78,214,255,.38),inset 0 0 11px rgba(255,211,80,.12);
+  animation:prism-mic-listen-ring 1.45s ease-out infinite;
+}
+.prism-mic-pedestal{
+  position:absolute;left:23%;right:23%;bottom:2%;height:15%;border-radius:50% 50% 44% 44%;
+  background:linear-gradient(180deg,#fff0a2 0%,#f7cb4a 28%,#c88913 72%,#7c4605 100%);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.72),0 5px 8px rgba(0,0,0,.28),0 0 16px rgba(255,204,67,.45);
+}
+.prism-mic-pedestal::before{content:"";position:absolute;left:45%;width:10%;height:58%;bottom:74%;border-radius:999px;background:linear-gradient(90deg,#9a5a09,#ffe785,#a26009);box-shadow:0 0 7px rgba(255,208,70,.4)}
+.prism-voice-waves{width:clamp(48px,6.5vw,78px)!important;height:clamp(76px,9vw,106px)!important}
+.prism-voice-waves i{border-width:clamp(3px,.38vw,5px)!important;filter:drop-shadow(0 0 7px rgba(71,210,255,.85))!important}
+.prism-practice-cue-shell.is-cue-active .prism-practice-cue-toggle{animation:prism-now-try-softglow 1.8s ease-in-out infinite}
+.prism-cue-sparkle.s1{left:24%!important;top:4%!important}.prism-cue-sparkle.s2{right:24%!important;top:18%!important}
+@keyframes prism-mic-stage-float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.018)}}
+@keyframes prism-mic-aura-pulse{0%,100%{opacity:.68;transform:scale(.96)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes prism-mic-emoji-listen{0%,100%{transform:translateY(-1%) scale(1)}50%{transform:translateY(-1%) scale(1.055)}}
+@keyframes prism-mic-listen-ring{0%{opacity:.8;transform:scale(.92)}70%{opacity:.20;transform:scale(1.10)}100%{opacity:0;transform:scale(1.14)}}
+@keyframes prism-now-try-softglow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.10) drop-shadow(0 0 7px rgba(77,218,255,.45))}}
+@media(max-width:700px){
+ .prism-practice-cue-visual{width:220px!important;height:116px!important}
+ .prism-practice-mic{width:82px!important;height:92px!important}
+ .prism-mic-emoji{font-size:48px!important}
+ .prism-voice-waves{width:48px!important;height:76px!important}
+}
+@media(prefers-reduced-motion:reduce){.prism-practice-mic,.prism-mic-aura,.prism-mic-emoji,.prism-mic-listen-ring,.prism-practice-cue-toggle{animation:none!important}}
