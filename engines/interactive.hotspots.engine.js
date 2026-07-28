@@ -24,14 +24,57 @@ class InteractiveHotspots{
   const z=this.plugin.zoom||this.plugin.display?.zoom;if(!z?.enabled||!this.frame)return;
   this.root.classList.add('is-zoom-enabled');
   const min=Number(z.min||1),max=Number(z.max||3);
-  const apply=()=>{const t=`translate(${this.panX}px,${this.panY}px) scale(${this.zoom})`;this.img.style.transform=t;this.layer.style.transform=t;this.img.style.transformOrigin='50% 50%';this.layer.style.transformOrigin='50% 50%';};
+  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+  const apply=()=>{if(this.zoom<=min+.001){this.zoom=min;this.panX=this.panY=0;}const t=`translate(${this.panX}px,${this.panY}px) scale(${this.zoom})`;this.img.style.transform=t;this.layer.style.transform=t;this.img.style.transformOrigin='50% 50%';this.layer.style.transformOrigin='50% 50%';this.root.classList.toggle('is-zoomed',this.zoom>min+.01);};
   const reset=()=>{this.zoom=min;this.panX=this.panY=0;apply();};this.resetZoom=reset;
+  const distance=(a,b)=>Math.hypot(a.clientX-b.clientX,a.clientY-b.clientY);
+  const midpoint=(a,b)=>({x:(a.clientX+b.clientX)/2,y:(a.clientY+b.clientY)/2});
+
+  // Touch Events are deliberately used on phones/tablets as a robust fallback for
+  // WebViews where multi-touch PointerEvents can be cancelled before the second finger arrives.
+  let touchPinch=null,touchPan=null,touchMoved=false,lastTouchTap=0;
+  this.zoomTouchStart=e=>{
+    if(e.target.closest?.('.prism-scene-back'))return;
+    touchMoved=false;
+    if(e.touches.length===2&&z.pinch!==false){
+      e.preventDefault();const a=e.touches[0],b=e.touches[1],m=midpoint(a,b);
+      touchPinch={distance:Math.max(1,distance(a,b)),zoom:this.zoom,midX:m.x,midY:m.y,panX:this.panX,panY:this.panY};touchPan=null;
+    }else if(e.touches.length===1){
+      const t=e.touches[0];touchPan={x:t.clientX,y:t.clientY,panX:this.panX,panY:this.panY};touchPinch=null;
+    }
+  };
+  this.zoomTouchMove=e=>{
+    if(e.touches.length===2&&touchPinch&&z.pinch!==false){
+      e.preventDefault();touchMoved=true;const a=e.touches[0],b=e.touches[1],m=midpoint(a,b);
+      this.zoom=clamp(touchPinch.zoom*(distance(a,b)/touchPinch.distance),min,max);
+      this.panX=touchPinch.panX+(m.x-touchPinch.midX);this.panY=touchPinch.panY+(m.y-touchPinch.midY);apply();return;
+    }
+    if(e.touches.length===1&&touchPan&&this.zoom>min+.01&&z.pan!==false){
+      e.preventDefault();const t=e.touches[0];
+      if(Math.abs(t.clientX-touchPan.x)>3||Math.abs(t.clientY-touchPan.y)>3)touchMoved=true;
+      this.panX=touchPan.panX+(t.clientX-touchPan.x);this.panY=touchPan.panY+(t.clientY-touchPan.y);apply();
+    }
+  };
+  this.zoomTouchEnd=e=>{
+    if(e.touches.length===1){const t=e.touches[0];touchPan={x:t.clientX,y:t.clientY,panX:this.panX,panY:this.panY};touchPinch=null;return;}
+    if(e.touches.length===0){
+      const now=performance.now();if(!touchMoved&&z.doubleTapReset!==false&&now-lastTouchTap<330)reset();
+      if(!touchMoved)lastTouchTap=now;touchPinch=null;touchPan=null;
+    }
+  };
+  this.frame.addEventListener('touchstart',this.zoomTouchStart,{passive:false});
+  this.frame.addEventListener('touchmove',this.zoomTouchMove,{passive:false});
+  this.frame.addEventListener('touchend',this.zoomTouchEnd,{passive:false});
+  this.frame.addEventListener('touchcancel',this.zoomTouchEnd,{passive:false});
+
+  // Pointer/mouse path: keeps desktop drag-pan and stylus support without fighting touch gestures.
   let pinchStart=null,panStart=null;
-  this.zoomDown=e=>{if(e.target.closest?.('.prism-scene-back'))return;this.zoomPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});try{this.frame.setPointerCapture?.(e.pointerId);}catch(_){};if(this.zoomPointers.size===1)panStart={x:e.clientX,y:e.clientY,px:this.panX,py:this.panY};if(this.zoomPointers.size===2){const a=[...this.zoomPointers.values()];pinchStart={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),z:this.zoom};}};
-  this.zoomMove=e=>{if(!this.zoomPointers.has(e.pointerId))return;this.zoomPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(this.zoomPointers.size===2&&pinchStart){e.preventDefault();const a=[...this.zoomPointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);this.zoom=Math.max(min,Math.min(max,pinchStart.z*(d/Math.max(1,pinchStart.d))));apply();}else if(this.zoomPointers.size===1&&this.zoom>min+.01&&panStart){e.preventDefault();this.panX=panStart.px+(e.clientX-panStart.x);this.panY=panStart.py+(e.clientY-panStart.y);apply();}};
-  this.zoomUp=e=>{this.zoomPointers.delete(e.pointerId);pinchStart=null;panStart=null;const now=performance.now();if(now-this.lastTap<320&&z.doubleTapReset!==false)reset();this.lastTap=now;};
-  this.zoomWheel=e=>{if(!z.wheel&&z.wheel!==undefined)return;e.preventDefault();this.zoom=Math.max(min,Math.min(max,this.zoom*(e.deltaY<0?1.12:.89)));if(this.zoom<=min+.01){this.panX=this.panY=0;}apply();};
-  this.frame.addEventListener('pointerdown',this.zoomDown,{passive:true});this.frame.addEventListener('pointermove',this.zoomMove,{passive:false});this.frame.addEventListener('pointerup',this.zoomUp,{passive:true});this.frame.addEventListener('pointercancel',this.zoomUp,{passive:true});this.frame.addEventListener('wheel',this.zoomWheel,{passive:false});
+  this.zoomDown=e=>{if(e.pointerType==='touch'||e.target.closest?.('.prism-scene-back'))return;this.zoomPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});try{this.frame.setPointerCapture?.(e.pointerId);}catch(_){};if(this.zoomPointers.size===1)panStart={x:e.clientX,y:e.clientY,px:this.panX,py:this.panY};if(this.zoomPointers.size===2){const a=[...this.zoomPointers.values()];pinchStart={d:Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y),z:this.zoom};}};
+  this.zoomMove=e=>{if(e.pointerType==='touch'||!this.zoomPointers.has(e.pointerId))return;this.zoomPointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(this.zoomPointers.size===2&&pinchStart){e.preventDefault();const a=[...this.zoomPointers.values()],d=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);this.zoom=clamp(pinchStart.z*(d/Math.max(1,pinchStart.d)),min,max);apply();}else if(this.zoomPointers.size===1&&this.zoom>min+.01&&panStart&&z.pan!==false){e.preventDefault();this.panX=panStart.px+(e.clientX-panStart.x);this.panY=panStart.py+(e.clientY-panStart.y);apply();}};
+  this.zoomUp=e=>{if(e.pointerType==='touch')return;this.zoomPointers.delete(e.pointerId);pinchStart=null;panStart=null;};
+  this.zoomWheel=e=>{if(z.wheel===false)return;e.preventDefault();this.zoom=clamp(this.zoom*(e.deltaY<0?1.12:.89),min,max);apply();};
+  this.zoomDblClick=e=>{if(z.doubleTapReset!==false){e.preventDefault();reset();}};
+  this.frame.addEventListener('pointerdown',this.zoomDown,{passive:true});this.frame.addEventListener('pointermove',this.zoomMove,{passive:false});this.frame.addEventListener('pointerup',this.zoomUp,{passive:true});this.frame.addEventListener('pointercancel',this.zoomUp,{passive:true});this.frame.addEventListener('wheel',this.zoomWheel,{passive:false});this.frame.addEventListener('dblclick',this.zoomDblClick);
  }
  build(){(this.plugin.entities||[]).forEach((it,i)=>{const el=document.createElement('button');el.type='button';el.className=`prism-hotspot effect-${it.effect||'scaleGlow'}`;el.setAttribute('aria-label',it.name||it.id||`Item ${i+1}`);el.addEventListener('click',()=>this.activate(i,true));this.layer.appendChild(el);this.records.push({config:it,el});});}
  layout(){if(!this.img?.naturalWidth||!this.frame)return;const r=renderedContainRect(this.img,this.frame);this.layer.style.left=r.left+'px';this.layer.style.top=r.top+'px';this.layer.style.width=r.width+'px';this.layer.style.height=r.height+'px';this.records.forEach(({config,el})=>{const b=config.bounds||{};el.style.left=Number(b.x||0)+'%';el.style.top=Number(b.y||0)+'%';el.style.width=Number(b.width||10)+'%';el.style.height=Number(b.height||10)+'%';});this.practiceCue?.layout?.();}
@@ -39,7 +82,7 @@ class InteractiveHotspots{
  playSelected(){if(this.selected<0)return;this.practiceCue?.hide();const rec=this.records[this.selected],it=rec.config;rec.el.classList.remove('is-active');void rec.el.offsetWidth;rec.el.classList.add('is-active');setTimeout(()=>rec.el.classList.remove('is-active'),Number(it.effectDurationMs)||1800);const mode=this.ctx.getMode?.()||'listen';if(this.practice){if(mode==='repeat5')return this.practice.repeatCurrent(it.practice?.repeatCount||5);if(mode==='hifz')return this.practice.runHifz();if(mode==='learnListen')return this.practice.playCurrentOnce();return this.practice.playFull(this.ctx.isLoop?.()||false);}if(this.audio.src){this.audio.loop=this.ctx.isLoop?.()||false;this.audio.currentTime=0;this.audio.play().catch(()=>{});}}
  action(a){if(!this.practice)return;const mode=this.ctx.getMode?.()||'repeat5';if(a==='repeat')this.practice.repeatAgain(mode);if(a==='next')this.practice.next(mode);if(a==='previous')this.practice.previous(mode);}saveProgress(it,n){try{localStorage.setItem(`prism:${this.plugin.id}:${it.id}:segment`,String(n));}catch(e){}}loadProgress(it){try{return Number(localStorage.getItem(`prism:${this.plugin.id}:${it.id}:segment`))||0;}catch(e){return 0;}}
  onKey(e){if(!this.ctx.isActive?.())return;if((e.key==='Escape'||e.key==='Backspace'||e.key==='BrowserBack')&&this.ctx.navigator){e.preventDefault();this.ctx.navigator.back();return;}if(this.practice?.waiting){if(e.key==='Enter'||e.key==='OK'){e.preventDefault();this.action('repeat');return;}if(e.key==='ArrowRight'){e.preventDefault();this.action('next');return;}if(e.key==='ArrowLeft'){e.preventDefault();this.action('previous');return;}}if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();let next=-1;if(this.selected>=0){const explicit=this.records[this.selected].config.navigation?.[e.key.replace('Arrow','').toLowerCase()];if(explicit)next=this.records.findIndex(r=>r.config.id===explicit);if(next<0)next=nearest(this.records,this.selected,e.key);}else next=0;if(next>=0){this.activate(next,false);this.records[next].el.focus();}}if((e.key==='Enter'||e.key==='OK')&&this.selected>=0){e.preventDefault();this.activate(this.selected,true);}}
- onModeChange(){if(this.selected>=0)this.playSelected();}onLoopChange(){this.audio.loop=this.ctx.isLoop?.()||false;}stop(){this.practice?.stop();this.audio.pause();this.panel.hidden=true;this.practiceCue?.hide();}destroy(){this.stop();this.resetZoom?.();this.audio?.removeEventListener('ended',this.audioEndedHandler);this.frame?.removeEventListener('pointerdown',this.zoomDown);this.frame?.removeEventListener('pointermove',this.zoomMove);this.frame?.removeEventListener('pointerup',this.zoomUp);this.frame?.removeEventListener('pointercancel',this.zoomUp);this.frame?.removeEventListener('wheel',this.zoomWheel);this.practiceCue?.destroy();document.removeEventListener('keydown',this.keyHandler,true);window.removeEventListener('resize',this.resizeHandler);window.removeEventListener('orientationchange',this.resizeHandler);this.root?.remove();}
+ onModeChange(){if(this.selected>=0)this.playSelected();}onLoopChange(){this.audio.loop=this.ctx.isLoop?.()||false;}stop(){this.practice?.stop();this.audio.pause();this.panel.hidden=true;this.practiceCue?.hide();}destroy(){this.stop();this.resetZoom?.();this.audio?.removeEventListener('ended',this.audioEndedHandler);this.frame?.removeEventListener('pointerdown',this.zoomDown);this.frame?.removeEventListener('pointermove',this.zoomMove);this.frame?.removeEventListener('pointerup',this.zoomUp);this.frame?.removeEventListener('pointercancel',this.zoomUp);this.frame?.removeEventListener('wheel',this.zoomWheel);this.frame?.removeEventListener('dblclick',this.zoomDblClick);this.frame?.removeEventListener('touchstart',this.zoomTouchStart);this.frame?.removeEventListener('touchmove',this.zoomTouchMove);this.frame?.removeEventListener('touchend',this.zoomTouchEnd);this.frame?.removeEventListener('touchcancel',this.zoomTouchEnd);this.practiceCue?.destroy();document.removeEventListener('keydown',this.keyHandler,true);window.removeEventListener('resize',this.resizeHandler);window.removeEventListener('orientationchange',this.resizeHandler);this.root?.remove();}
 }
 window.PrismEngines=window.PrismEngines||{};window.PrismEngines.interactiveHotspots={mount:ctx=>new InteractiveHotspots(ctx).mount()};
 })();
