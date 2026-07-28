@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "34010d2a93af771f9d004bd7a807a00a3222eb32ac35052b6a9354b829b30047",
+  "version": "ec228d180d3e2c3d09db21159b8bd0455269d9ed10a20cff20d7044fb5589d46",
   "entryPoint": "index.html",
   "aliases": {
     "quran/index.html": "index.html"
@@ -263,8 +263,8 @@
     {
       "path": "learn.master.slices.json",
       "url": "https://raw.githubusercontent.com/AmtunNoor/Quran/main/learn.master.slices.json",
-      "size": 412,
-      "sha256": "009c412702ce6de71c232d38470678f6cce57d3c7acbff587bd5ce8d90a7628c",
+      "size": 523,
+      "sha256": "92e6efa88dcb12eaa39fb86517b52628e6b1e31d64d731896cff885d3af3efd3",
       "priority": 0,
       "lane": "general"
     },
